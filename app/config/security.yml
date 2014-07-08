@@ -1,12 +1,21 @@
 security:
     providers:
-        in_memory:
-            memory: ~
+        gitki_user_provider:
+            id: ddr.gitki.security.user_Provider
 
     firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-
-        default:
+        secured_area:
             anonymous: ~
+            oauth:
+                resource_owners:
+                    github:          "/login/check-github"
+                login_path:        /login
+                use_forward:       false
+                failure_path:      /login
+
+                oauth_user_provider:
+                    service: ddr.gitki.security.user_Provider
+
+    access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        #- { path: ^, roles: ROLE_OAUTH_USER }

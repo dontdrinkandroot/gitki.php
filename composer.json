@@ -2,7 +2,7 @@
     "name": "dontdrinkandroot/gitki",
     "license": "Apache2",
     "type": "project",
-    "description": "Git backed markup wiki",
+    "description": "Git backed MarkDown wiki",
     "autoload": {
         "psr-0": {
             "": "src/",
@@ -29,7 +29,8 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "dontdrinkandroot/symfony-extension-bundle": "dev-master",
         "braincrafted/bootstrap-bundle": "~2.0",
-        "cpliakas/git-wrapper": "~1.0"
+        "cpliakas/git-wrapper": "~1.0",
+        "hwi/oauth-bundle": "0.3.*"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

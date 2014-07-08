@@ -17,7 +17,9 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new \Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
-            new \Net\Dontdrinkandroot\Symfony\ExtensionBundle\DdrSymfonyExtensionBundle()
+            new \Net\Dontdrinkandroot\Symfony\ExtensionBundle\DdrSymfonyExtensionBundle(),
+            new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
+            new Net\Dontdrinkandroot\Gitki\BaseBundle\DdrGitkiBaseBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
