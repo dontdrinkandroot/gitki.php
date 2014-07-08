@@ -67,3 +67,7 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+braincrafted_bootstrap:
+    auto_configure:
+        assetic: false

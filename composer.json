@@ -1,11 +1,20 @@
 {
-    "name": "symfony/framework-standard-edition",
-    "license": "MIT",
+    "name": "dontdrinkandroot/gitki",
+    "license": "Apache2",
     "type": "project",
-    "description": "The \"Symfony Standard Edition\" distribution",
+    "description": "Git backed markup wiki",
     "autoload": {
-        "psr-0": { "": "src/", "SymfonyStandard": "app/" }
+        "psr-0": {
+            "": "src/",
+            "SymfonyStandard": "app/"
+        }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/dontdrinkandroot/symfony-extension-bundle.php"
+        }
+    ],
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.5.*",
@@ -17,7 +26,9 @@
         "symfony/monolog-bundle": "~2.4",
         "sensio/distribution-bundle": "~3.0",
         "sensio/framework-extra-bundle": "~3.0",
-        "incenteev/composer-parameter-handler": "~2.0"
+        "incenteev/composer-parameter-handler": "~2.0",
+        "dontdrinkandroot/symfony-extension-bundle": "dev-master",
+        "braincrafted/bootstrap-bundle": "~2.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
@@ -51,11 +62,9 @@
         "symfony-bin-dir": "bin",
         "symfony-var-dir": "var",
         "symfony-web-dir": "web",
+        "symfony-assets-install": "symlink",
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
-        },
-        "branch-alias": {
-            "dev-master": "2.5-dev"
         }
     }
 }
