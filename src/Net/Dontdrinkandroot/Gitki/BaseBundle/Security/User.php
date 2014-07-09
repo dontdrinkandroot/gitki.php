@@ -16,7 +16,7 @@ class User implements UserInterface
 
     protected $realName;
 
-    protected $eMail;
+    protected $eMails;
 
     public function getRoles()
     {
@@ -48,11 +48,6 @@ class User implements UserInterface
         $this->realName = $realName;
     }
 
-    public function setEMail($eMail)
-    {
-        $this->eMail = $eMail;
-    }
-
     public function setId($id)
     {
         $this->id = $id;
@@ -68,9 +63,9 @@ class User implements UserInterface
         return $this->login;
     }
 
-    public function getEMail()
+    public function getPrimaryEMail()
     {
-        return $this->eMail;
+        return $this->eMails[0];
     }
 
     public function getId()
@@ -81,6 +76,16 @@ class User implements UserInterface
     public function getRealName()
     {
         return $this->realName;
+    }
+
+    public function setEMails($eMails)
+    {
+        $this->eMails = $eMails;
+    }
+
+    public function getEMails()
+    {
+        return $this->eMails;
     }
 
 } 

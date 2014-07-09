@@ -4,10 +4,10 @@
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Security;
 
 
+use Github\Client;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\OAuthAwareUserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -20,7 +20,16 @@ class UserProvider implements OAuthAwareUserProviderInterface, UserProviderInter
         $user->setId($response->getResponse()['id']);
         $user->setLogin($response->getResponse()['login']);
         $user->setRealName($response->getResponse()['name']);
-        $user->setEMail($response->getResponse()['email']);
+
+        $client = new Client();
+        $client->authenticate($response->getAccessToken(), Client::AUTH_HTTP_TOKEN);
+        /* @var \Github\Api\CurrentUser $currentUserApi */
+        $currentUserApi = $client->api('me');
+        $emails = $currentUserApi->emails();
+        $allEMails = $emails->all();
+
+        // TODO: no distinction which is the primary yet, api does not support it?!
+        $user->setEMails($allEMails);
 
         return $user;
     }

@@ -6,10 +6,13 @@ security:
     firewalls:
         secured_area:
             anonymous: ~
+            logout:
+                path:   /logout
+                target: /
             oauth:
                 resource_owners:
                     github:          "/login/check-github"
-                login_path:        /login
+                login_path:        /connect/github
                 use_forward:       false
                 failure_path:      /login
 
@@ -18,4 +21,5 @@ security:
 
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        #- { path: ^, roles: ROLE_OAUTH_USER }
+        - { path: ^/connect, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: ROLE_OAUTH_USER }

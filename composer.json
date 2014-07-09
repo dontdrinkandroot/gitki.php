@@ -30,7 +30,8 @@
         "dontdrinkandroot/symfony-extension-bundle": "dev-master",
         "braincrafted/bootstrap-bundle": "~2.0",
         "cpliakas/git-wrapper": "~1.0",
-        "hwi/oauth-bundle": "0.3.*"
+        "hwi/oauth-bundle": "0.3.*",
+        "knplabs/github-api": "1.2.*"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
