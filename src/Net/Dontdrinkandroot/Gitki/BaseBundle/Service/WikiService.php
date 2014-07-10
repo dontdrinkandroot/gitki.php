@@ -46,6 +46,10 @@ class WikiService
     public function createLock(User $user, $pagePath)
     {
         $lockPath = $this->getLockPath($pagePath);
+        $lockDir = dirname($lockPath);
+        if (!file_exists($lockDir)) {
+            mkdir($lockDir, 0755, true);
+        }
         file_put_contents($lockPath, $user->getLogin());
     }
 

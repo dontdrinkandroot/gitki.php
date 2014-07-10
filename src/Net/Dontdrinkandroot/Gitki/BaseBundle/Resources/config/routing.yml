@@ -5,10 +5,14 @@ ddr_gitki_base_homepage:
 ddr_gitki_wiki_page_edit:
     path:   /wiki/{path}.md/edit
     defaults: { _controller: DdrGitkiBaseBundle:Wiki:pageEdit }
+    requirements:
+        path: .+
 
 ddr_gitki_wiki_page:
     path:   /wiki/{path}.md
     defaults: { _controller: DdrGitkiBaseBundle:Wiki:page }
+    requirements:
+        path: .+
 
 ddr_gitki_wiki_directory:
     path:   /wiki/{path}
