@@ -1,7 +1,9 @@
 {% extends 'DdrGitkiBaseBundle::base.html.twig' %}
 {% block content %}
     <div class="page-header">
-        <a href="{{ path('ddr_gitki_wiki_page_edit', {'path': path}) }}" class="btn btn-default pull-right">Edit</a>
+        {% if app.user %}
+            <a href="{{ path('ddr_gitki_wiki_page_edit', {'path': path}) }}" class="btn btn-default pull-right">Edit</a>
+        {% endif %}
         <h1>{{ heading }}</h1>
     </div>
     {{ body|raw }}

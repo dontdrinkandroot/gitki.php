@@ -22,4 +22,4 @@ security:
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/connect, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/, roles: ROLE_OAUTH_USER }
+        - { path: \.md/edit$, roles: ROLE_OAUTH_USER }
