@@ -15,8 +15,10 @@ parameters:
     secret:            ThisTokenIsNotSoSecretChangeIt
 
     debug_toolbar:          true
-    debug_redirects:        false
+    debug_redirects:         false
     use_assetic_controller: true
 
     github_client_id:   ~
     github_secret:      ~
+
+    repository_path:    ~

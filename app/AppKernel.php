@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new \Net\Dontdrinkandroot\Symfony\ExtensionBundle\DdrSymfonyExtensionBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
             new Net\Dontdrinkandroot\Gitki\BaseBundle\DdrGitkiBaseBundle(),
+            new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

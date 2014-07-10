@@ -1,0 +1,42 @@
+{% extends 'DdrGitkiBaseBundle::base.html.twig' %}
+{% block content %}
+    <div class="row editor">
+        <div class="col-md-6">
+            {{ form(form) }}
+        </div>
+        <div class="col-md-6">
+            <div id="preview"></div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/markdown.js') }}"></script>
+    <script type="text/javascript">
+
+        function Editor(input, preview) {
+
+            this.typeTimeout = undefined;
+
+            this.update = function () {
+                preview.html(function() {
+                    return markdown.toHTML(input.val());
+                });
+            };
+
+            input.editor = this;
+
+            input.keypress(function() {
+                clearTimeout(input.editor.typeTimeout);
+                input.editor.typeTimeout = setTimeout(function() {
+                    preview.html(function() {
+                        return markdown.toHTML(input.val());
+                    });;
+                }, 200);
+            });
+
+            this.update();
+        }
+        new Editor($("#form_content"), $("#preview"));
+    </script>
+{% endblock %}
