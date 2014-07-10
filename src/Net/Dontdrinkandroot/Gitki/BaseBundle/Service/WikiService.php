@@ -90,8 +90,6 @@ class WikiService
         file_put_contents($absolutePath, $content);
         $git = new GitWrapper();
         $workingCopy = $git->workingCopy($this->repositoryPath);
-//        $git->git('config user.name "GitKi"', $this->repositoryPath);
-//        $git->git('config user.email gitki@dontdrinkandroot.net', $this->repositoryPath);
         $workingCopy->add($absolutePath);
         $workingCopy->commit(
             array(

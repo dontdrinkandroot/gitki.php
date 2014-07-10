@@ -2,8 +2,12 @@ parameters:
 #    ddr_gitki_base.example.class: Net\Dontdrinkandroot\Gitki\BaseBundle\Example
 
 services:
-    ddr.gitki.security.user_Provider:
+    ddr.gitki.security.user_provider:
         class: Net\Dontdrinkandroot\Gitki\BaseBundle\Security\UserProvider
+        arguments:
+            - %users_admin%
+            - %users_commit%
+            - %users_watch%
 
     ddr.gitki.service.wiki:
         class: Net\Dontdrinkandroot\Gitki\BaseBundle\Service\WikiService

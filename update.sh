@@ -1,2 +1,2 @@
 #!/bin/bash
-git pull && composer install && app/console cache:clear --env=prod && app/console assetic:dump && app/console assetic:dump --env=prod
+git pull && composer install && bin/console cache:clear --env=prod && bin/console assetic:dump && bin/console assetic:dump --env=prod

@@ -7,7 +7,6 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class WikiController extends BaseController
 {
@@ -20,6 +19,11 @@ class WikiController extends BaseController
     public function pageAction($path)
     {
         if (!$this->getWikiService()->pageExists($path)) {
+
+            if (null === $this->getUser()) {
+                throw new NotFoundHttpException('This page does not exist');
+            }
+
             return $this->redirect(
                 $this->generateUrl(
                     'ddr_gitki_wiki_page_edit',
@@ -60,7 +64,7 @@ class WikiController extends BaseController
 
         $form = $this->createFormBuilder()
             ->add('content', 'textarea')
-            ->add('commitMessage', 'text', array('label' => 'Commit Message'))
+            ->add('commitMessage', 'text', array('label' => 'Commit Message', 'required' => true))
             ->add('save', 'submit')
             ->getForm();
 

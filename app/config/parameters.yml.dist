@@ -22,3 +22,7 @@ parameters:
     github_secret:      ~
 
     repository_path:    ~
+
+    users_admin:        ~
+    users_commit:       ~
+    users_watch:        ~

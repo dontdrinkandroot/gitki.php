@@ -4,7 +4,6 @@
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Security;
 
 
-use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class User implements UserInterface
@@ -18,9 +17,16 @@ class User implements UserInterface
 
     protected $eMails;
 
+    protected $roles = array('ROLE_OAUTH_USER');
+
     public function getRoles()
     {
-        return array('ROLE_USER', 'ROLE_OAUTH_USER');
+        return $this->roles;
+    }
+
+    public function addRole($role)
+    {
+        $this->roles[] = $role;
     }
 
     public function getPassword()
