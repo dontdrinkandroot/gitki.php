@@ -87,4 +87,39 @@ class PathTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('sub/subsub', $path->getSegment(1)->toString());
     }
 
+    public function testMarkdownPath()
+    {
+        $path = new Path('sub/index.md');
+        $this->assertEquals('index.md', $path->getLastSegmentName());
+    }
+
+    public function testGetParentPath()
+    {
+        $path = new Path('');
+        $this->assertNull($path->getParentPath());
+
+        $path = new Path('sub');
+        $parentPath = $path->getParentPath();
+        $this->assertEquals(0, $parentPath->getNumSegments());
+        $this->assertEquals(1, $path->getNumSegments());
+
+        $path = new Path('sub/subsub');
+        $parentPath = $path->getParentPath();
+        $this->assertEquals(1, $parentPath->getNumSegments());
+        $this->assertEquals(2, $path->getNumSegments());
+        $this->assertEquals('sub', $parentPath->getLastSegmentName());
+    }
+
+    public function testAddSegment()
+    {
+        $path = new Path();
+        $newPath = $path->addSegment('sub');
+        $this->assertNull($path->getLastSegment());
+        $this->assertEquals('sub', $newPath->getLastSegment()->toString());
+
+        $newPath = $newPath->addSegment('subsub');
+        $this->assertEquals('sub/subsub', $newPath->getLastSegment()->toString());
+        $this->assertEquals(2, $newPath->getNumSegments());
+    }
+
 } 
