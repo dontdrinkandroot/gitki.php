@@ -27,3 +27,4 @@ security:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/connect, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: \.md/edit$, roles: ROLE_COMMITER }
+        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }

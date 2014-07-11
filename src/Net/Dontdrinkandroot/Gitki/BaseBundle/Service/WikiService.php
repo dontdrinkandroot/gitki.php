@@ -6,19 +6,30 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Service;
 // TODO: make sure that file is in repository
 
 use GitWrapper\GitWrapper;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\PageSavedEvent;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockExpiredException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Security\User;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class WikiService
 {
 
+    /**
+     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
     protected $repositoryPath;
 
-    public function __construct($repositoryPath)
+    public function __construct($repositoryPath, EventDispatcherInterface $eventDispatcher)
     {
         if (empty($repositoryPath)) {
             throw new \Exception('Repository path must not be empty');
         }
         $this->repositoryPath = $repositoryPath;
+
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function pageExists($pagePath)
@@ -27,25 +38,13 @@ class WikiService
         return file_exists($absolutePath);
     }
 
-    public function isLocked(User $user, $pagePath)
-    {
-        $lockPath = $this->getLockPath($pagePath);
-        if (!file_exists($lockPath)) {
-            return false;
-        }
-
-        if ($this->isLockExpired($lockPath)) {
-            $this->removeLockFile($lockPath);
-            return false;
-        }
-
-        $lockLogin = $this->getLockLogin($lockPath);
-        return ($lockLogin != $user->getLogin());
-    }
 
     public function createLock(User $user, $pagePath)
     {
         $lockPath = $this->getLockPath($pagePath);
+
+        $this->assertUnlocked($user, $lockPath);
+
         $lockDir = dirname($lockPath);
         if (!file_exists($lockDir)) {
             mkdir($lockDir, 0755, true);
@@ -61,7 +60,6 @@ class WikiService
         }
 
         if ($this->isLockExpired($lockPath)) {
-            $this->removeLockFile($lockPath);
             return;
         }
 
@@ -86,6 +84,9 @@ class WikiService
 
     public function savePage(User $user, $pagePath, $content, $commitMessage)
     {
+        $lockPath = $this->getLockPath($pagePath);
+        $this->assertHasLock($user, $lockPath);
+
         $absolutePath = $this->getAbsolutePath($pagePath);
         file_put_contents($absolutePath, $content);
         $git = new GitWrapper();
@@ -94,9 +95,44 @@ class WikiService
         $workingCopy->commit(
             array(
                 'm' => $commitMessage,
-                'author' => '"' . $user->getRealName() . ' <' . $user->getPrimaryEMail() . '>' . '"'
+                'author' => $this->getAuthor($user)
             )
         );
+
+        $this->eventDispatcher->dispatch(
+            'ddr.gitki.wiki.page.saved',
+            new PageSavedEvent($pagePath, $user->getLogin(), time(), $content, $commitMessage)
+        );
+    }
+
+    public function assertUnlocked(User $user, $lockPath)
+    {
+        if (!file_exists($lockPath)) {
+            return true;
+        }
+
+        if ($this->isLockExpired($lockPath)) {
+            return true;
+        }
+
+        $lockLogin = $this->getLockLogin($lockPath);
+        if ($lockLogin == $user->getLogin()) {
+            return true;
+        }
+
+        throw new PageLockedException($lockLogin, $this->getLockExpiry($lockPath));
+    }
+
+    protected function assertHasLock(User $user, $lockPath)
+    {
+        if (file_exists($lockPath) && !$this->isLockExpired($lockPath)) {
+            $lockLogin = $this->getLockLogin($lockPath);
+            if ($lockLogin == $user->getLogin($user)) {
+                return true;
+            }
+        }
+
+        throw new PageLockExpiredException();
     }
 
     protected function removeLockFile($lockPath)
@@ -123,10 +159,31 @@ class WikiService
         return $lockPath;
     }
 
-    private function isLockExpired($lockPath)
+    protected function isLockExpired($lockPath)
+    {
+        $expired = time() > $this->getLockExpiry($lockPath);
+        if ($expired) {
+            $this->removeLockFile($lockPath);
+        }
+
+        return $expired;
+    }
+
+    protected function getLockExpiry($lockPath)
     {
         $mTime = filemtime($lockPath);
-        return ((time() - $mTime) > 60 * 5);
+        return $mTime + (60 * 5);
+    }
+
+    protected function getAuthor(User $user)
+    {
+        $name = $user->getLogin();
+        if (null != $user->getRealName()) {
+            $name = $user->getRealName();
+        }
+        $email = $user->getPrimaryEMail();
+
+        return "\"$name <$email>\"";
     }
 
 

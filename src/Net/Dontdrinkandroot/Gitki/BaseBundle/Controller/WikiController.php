@@ -4,6 +4,8 @@
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Controller;
 
 
+use GitWrapper\GitException;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -11,9 +13,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class WikiController extends BaseController
 {
 
-    public function pathAction($path)
+    public function indexAction()
     {
-
+        return $this->redirect($this->generateUrl('ddr_gitki_wiki_page', array('path' => 'index')));
     }
 
     public function pageAction($path)
@@ -55,11 +57,12 @@ class WikiController extends BaseController
     public function pageEditAction(Request $request, $path)
     {
         $user = $this->getUser();
-        if ($this->getWikiService()->isLocked($user, $path)) {
-            throw new ConflictHttpException('Page is locked');
-        }
 
-        $this->getWikiService()->createLock($user, $path);
+        try {
+            $this->getWikiService()->createLock($user, $path);
+        } catch (PageLockedException $e) {
+            throw new ConflictHttpException($e->getMessage());
+        }
         $content = $this->getWikiService()->getContent($path);
 
         $form = $this->createFormBuilder()
@@ -73,14 +76,18 @@ class WikiController extends BaseController
         if ($form->isValid()) {
             $content = $form->get('content')->getData();
             $commitMessage = $form->get('commitMessage')->getData();
-            $this->getWikiService()->savePage($user, $path, $content, $commitMessage);
-            $this->getWikiService()->removeLock($user, $path);
-            return $this->redirect(
-                $this->generateUrl(
-                    'ddr_gitki_wiki_page',
-                    array('path' => $path)
-                )
-            );
+            try {
+                $this->getWikiService()->savePage($user, $path, $content, $commitMessage);
+                $this->getWikiService()->removeLock($user, $path);
+                return $this->redirect(
+                    $this->generateUrl(
+                        'ddr_gitki_wiki_page',
+                        array('path' => $path)
+                    )
+                );
+            } catch (GitException $e) {
+                throw $e;
+            }
         } else {
             if (!$form->isSubmitted()) {
                 $form->setData(

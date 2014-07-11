@@ -59,14 +59,20 @@ class UserProvider implements OAuthAwareUserProviderInterface, UserProviderInter
 
     public function loadUserByOAuthUserResponse(UserResponseInterface $response)
     {
-        $id = $response->getResponse()['id'];
-        $login = $response->getResponse()['login'];
-        $realName = $response->getResponse()['name'];
+        $fields = $response->getResponse();
 
         $user = new User();
+
+        $id = $fields['id'];
         $user->setId($id);
+
+        $login = $fields['login'];
         $user->setLogin($login);
-        $user->setRealName($realName);
+
+        if (array_key_exists('name', $fields)) {
+            $realName = $fields['name'];
+            $user->setRealName($realName);
+        }
 
         $client = new Client();
         $client->authenticate($response->getAccessToken(), Client::AUTH_HTTP_TOKEN);
