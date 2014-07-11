@@ -17,7 +17,7 @@ class User implements UserInterface
 
     protected $eMails;
 
-    protected $roles = array('ROLE_OAUTH_USER');
+    protected $roles = array('ROLE_USER');
 
     public function getRoles()
     {
