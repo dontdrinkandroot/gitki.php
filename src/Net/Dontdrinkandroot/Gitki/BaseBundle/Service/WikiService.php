@@ -9,8 +9,10 @@ use GitWrapper\GitWrapper;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\PageSavedEvent;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockExpiredException;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\DirectoryListing;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Security\User;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Finder\Finder;
 
 class WikiService
 {
@@ -34,7 +36,7 @@ class WikiService
 
     public function pageExists($pagePath)
     {
-        $absolutePath = $this->getAbsolutePath($pagePath);
+        $absolutePath = $this->getAbsolutePagePath($pagePath);
         return file_exists($absolutePath);
     }
 
@@ -74,7 +76,7 @@ class WikiService
 
     public function getContent($pagePath)
     {
-        $absolutePath = $this->getAbsolutePath($pagePath);
+        $absolutePath = $this->getAbsolutePagePath($pagePath);
         if (!file_exists($absolutePath)) {
             return '';
         }
@@ -87,7 +89,7 @@ class WikiService
         $lockPath = $this->getLockPath($pagePath);
         $this->assertHasLock($user, $lockPath);
 
-        $absolutePath = $this->getAbsolutePath($pagePath);
+        $absolutePath = $this->getAbsolutePagePath($pagePath);
         file_put_contents($absolutePath, $content);
         $git = new GitWrapper();
         $workingCopy = $git->workingCopy($this->repositoryPath);
@@ -123,6 +125,31 @@ class WikiService
         throw new PageLockedException($lockLogin, $this->getLockExpiry($lockPath));
     }
 
+    public function listDirectory($directoryPath)
+    {
+        $absolutePath = $this->getAbsoluteDirectoryPath($directoryPath);
+        $files = array();
+        $subDirectories = array();
+
+        $finder = new Finder();
+        $finder->in($absolutePath);
+        $finder->name('*.md');
+        $finder->depth(0);
+        foreach ($finder->files() as $file) {
+            $files[] = $file->getRelativePathname();
+        }
+
+        $finder = new Finder();
+        $finder->in($absolutePath);
+        $finder->depth(0);
+        $finder->ignoreDotFiles(true);
+        foreach ($finder->directories() as $directory) {
+            $subDirectories[] = $directory->getRelativePathname();
+        }
+
+        return new DirectoryListing($directoryPath, $files, $subDirectories);
+    }
+
     protected function assertHasLock(User $user, $lockPath)
     {
         if (file_exists($lockPath) && !$this->isLockExpired($lockPath)) {
@@ -145,15 +172,21 @@ class WikiService
         return file_get_contents($lockPath);
     }
 
-    protected function getAbsolutePath($pagePath)
+    protected function getAbsolutePagePath($pagePath)
     {
         $absolutePath = $this->repositoryPath . '/' . $pagePath . '.md';
         return $absolutePath;
     }
 
+    protected function getAbsoluteDirectoryPath($directoryPath)
+    {
+        $absolutePath = $this->repositoryPath . '/' . $directoryPath;
+        return $absolutePath;
+    }
+
     protected function getLockPath($pagePath)
     {
-        $absolutePagePath = $this->getAbsolutePath($pagePath);
+        $absolutePagePath = $this->getAbsolutePagePath($pagePath);
         $lockPath = $absolutePagePath . '.lock';
 
         return $lockPath;

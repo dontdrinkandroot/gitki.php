@@ -13,9 +13,15 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class WikiController extends BaseController
 {
 
-    public function indexAction()
+    public function listDirectoryAction($path = '')
     {
-        return $this->redirect($this->generateUrl('ddr_gitki_wiki_page', array('path' => 'index')));
+        $directoryListing = $this->getWikiService()->listDirectory($path);
+        return $this->render(
+            'DdrGitkiBaseBundle:Wiki:directoryListing.html.twig',
+            array(
+                'directoryListing' => $directoryListing
+            )
+        );
     }
 
     public function pageAction($path)
@@ -99,8 +105,7 @@ class WikiController extends BaseController
             }
         }
 
-
         return $this->render('DdrGitkiBaseBundle:Wiki:pageedit.html.twig', array('form' => $form->createView()));
     }
 
-} 
+}

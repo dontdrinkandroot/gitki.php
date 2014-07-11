@@ -2,10 +2,6 @@ ddr_gitki_base_homepage:
     path:     /
     defaults: { _controller: DdrGitkiBaseBundle:Default:index }
 
-ddr_gitki_wiki_index:
-    path:   /wiki/
-    defaults: { _controller: DdrGitkiBaseBundle:Wiki:index }
-
 ddr_gitki_wiki_page_edit:
     path:   /wiki/{path}.md/edit
     defaults: { _controller: DdrGitkiBaseBundle:Wiki:pageEdit }
@@ -20,4 +16,10 @@ ddr_gitki_wiki_page:
 
 ddr_gitki_wiki_directory:
     path:   /wiki/{path}
-    defaults: { _controller: DdrGitkiBaseBundle:Wiki:directory }
+    defaults: { _controller: DdrGitkiBaseBundle:Wiki:listDirectory }
+    requirements:
+        path: .+
+
+ddr_gitki_wiki_base_directory:
+    path:   /wiki/
+    defaults: { _controller: DdrGitkiBaseBundle:Wiki:listDirectory }
