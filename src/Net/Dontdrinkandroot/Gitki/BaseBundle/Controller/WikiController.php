@@ -7,7 +7,9 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Controller;
 use GitWrapper\GitException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -131,6 +133,38 @@ class WikiController extends BaseController
                 array('path' => $directoryIndexPath)
             )
         );
+    }
+
+    public function showFileAction(Request $request, $path)
+    {
+        $locator = new Path($path);
+        $file = $this->getWikiService()->getFile($locator);
+
+        $response = new Response();
+        $lastModified = new \DateTime();
+        $lastModified->setTimestamp($file->getMTime());
+        $response->setLastModified($lastModified);
+        if ($response->isNotModified($request)) {
+            return $response;
+        }
+
+        $response->headers->set('Content-Type', $file->getMimeType());
+        $response->setContent($this->getContents($file));
+
+        return $response;
+    }
+
+    protected function getContents(File $file)
+    {
+        $level = error_reporting(0);
+        $content = file_get_contents($file->getPathname());
+        error_reporting($level);
+        if (false === $content) {
+            $error = error_get_last();
+            throw new \RuntimeException($error['message']);
+        }
+
+        return $content;
     }
 
 }

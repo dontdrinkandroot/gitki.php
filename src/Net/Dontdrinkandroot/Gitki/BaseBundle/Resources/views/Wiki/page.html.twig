@@ -1,6 +1,6 @@
 {% extends 'DdrGitkiBaseBundle::base.html.twig' %}
 {% block content %}
-    <div class="page-header">{{ include('DdrGitkiBaseBundle:Wiki:pathBreadcrumb.partial.html.twig', {'path' : locator}) }}
+    <div class="page-header">{{ include('DdrGitkiBaseBundle:Wiki:pageBreadcrumb.partial.html.twig', {'path' : locator}) }}
 
         {% if is_granted('ROLE_COMMITER') %}
             <div class="btn-group pull-right">

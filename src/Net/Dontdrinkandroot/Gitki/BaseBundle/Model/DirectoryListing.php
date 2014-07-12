@@ -13,11 +13,14 @@ class DirectoryListing
 
     private $subdirectories;
 
-    function __construct($path, $pages, $subdirectories)
+    private $otherFiles;
+
+    function __construct($path, $pages, $subdirectories, $otherFiles)
     {
         $this->path = $path;
         $this->pages = $pages;
         $this->subdirectories = $subdirectories;
+        $this->otherFiles = $otherFiles;
     }
 
     public function getPages()
@@ -33,6 +36,11 @@ class DirectoryListing
     public function getSubdirectories()
     {
         return $this->subdirectories;
+    }
+
+    public function getOtherFiles()
+    {
+        return $this->otherFiles;
     }
 
 }

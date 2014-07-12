@@ -15,6 +15,7 @@ use Net\Dontdrinkandroot\Gitki\BaseBundle\Security\User;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\File\File;
 
 class WikiService
 {
@@ -153,16 +154,20 @@ class WikiService
     public function listDirectory(Path $path)
     {
         $absolutePath = $this->getAbsolutePath($path);
-        $files = array();
+        $pages = array();
         $subDirectories = array();
+        $otherFiles = array();
 
         $finder = new Finder();
         $finder->in($absolutePath);
-        $finder->name('*.md');
         $finder->depth(0);
         foreach ($finder->files() as $file) {
             /* @var \Symfony\Component\Finder\SplFileInfo $file */
-            $files[] = $path->addSegment($file->getRelativePathname());
+            if ($file->getExtension() == "md") {
+                $pages[] = $path->addSegment($file->getRelativePathname());
+            } else {
+                $otherFiles[] = $path->addSegment($file->getRelativePathname());
+            }
         }
 
         $finder = new Finder();
@@ -174,7 +179,7 @@ class WikiService
             $subDirectories[] = $path->addSegment($directory->getRelativePathname());
         }
 
-        return new DirectoryListing($path, $files, $subDirectories);
+        return new DirectoryListing($path, $pages, $subDirectories, $otherFiles);
     }
 
     protected function assertHasLock(User $user, $lockPath)
@@ -249,6 +254,16 @@ class WikiService
         $workingCopy = $git->workingCopy($this->repositoryPath);
 
         return $workingCopy;
+    }
+
+    /**
+     * @param Path $path
+     * @return File
+     */
+    public function getFile(Path $path)
+    {
+        $absolutePath = $this->getAbsolutePath($path);
+        return new File($absolutePath);
     }
 
 
