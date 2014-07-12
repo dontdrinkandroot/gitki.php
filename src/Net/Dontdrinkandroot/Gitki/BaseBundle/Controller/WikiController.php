@@ -6,6 +6,7 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Controller;
 
 use GitWrapper\GitException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -15,7 +16,8 @@ class WikiController extends BaseController
 
     public function listDirectoryAction($path = '')
     {
-        $directoryListing = $this->getWikiService()->listDirectory($path);
+        $locator = new Path($path);
+        $directoryListing = $this->getWikiService()->listDirectory($locator);
         return $this->render(
             'DdrGitkiBaseBundle:Wiki:directoryListing.html.twig',
             array(
@@ -26,7 +28,9 @@ class WikiController extends BaseController
 
     public function pageAction($path)
     {
-        if (!$this->getWikiService()->pageExists($path)) {
+        $locator = new Path($path);
+
+        if (!$this->getWikiService()->pageExists($locator)) {
 
             if (null === $this->getUser()) {
                 throw new NotFoundHttpException('This page does not exist');
@@ -40,7 +44,7 @@ class WikiController extends BaseController
             );
         }
 
-        $content = $this->getWikiService()->getContent($path);
+        $content = $this->getWikiService()->getContent($locator);
         $content = $this->getMarkdownParser()->transformMarkdown($content);
 
         $heading = null;
@@ -55,21 +59,23 @@ class WikiController extends BaseController
             array(
                 'heading' => $heading,
                 'body' => $body,
-                'path' => $path
+                'path' => $path,
+                'locator' => $locator
             )
         );
     }
 
     public function pageEditAction(Request $request, $path)
     {
+        $locator = new Path($path);
         $user = $this->getUser();
 
         try {
-            $this->getWikiService()->createLock($user, $path);
+            $this->getWikiService()->createLock($user, $locator);
         } catch (PageLockedException $e) {
             throw new ConflictHttpException($e->getMessage());
         }
-        $content = $this->getWikiService()->getContent($path);
+        $content = $this->getWikiService()->getContent($locator);
 
         $form = $this->createFormBuilder()
             ->add('content', 'textarea')
@@ -80,11 +86,12 @@ class WikiController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+
             $content = $form->get('content')->getData();
             $commitMessage = $form->get('commitMessage')->getData();
             try {
-                $this->getWikiService()->savePage($user, $path, $content, $commitMessage);
-                $this->getWikiService()->removeLock($user, $path);
+                $this->getWikiService()->savePage($user, $locator, $content, $commitMessage);
+                $this->getWikiService()->removeLock($user, $locator);
                 return $this->redirect(
                     $this->generateUrl(
                         'ddr_gitki_wiki_page',
@@ -94,7 +101,9 @@ class WikiController extends BaseController
             } catch (GitException $e) {
                 throw $e;
             }
+
         } else {
+
             if (!$form->isSubmitted()) {
                 $form->setData(
                     array(
@@ -106,6 +115,22 @@ class WikiController extends BaseController
         }
 
         return $this->render('DdrGitkiBaseBundle:Wiki:pageedit.html.twig', array('form' => $form->createView()));
+    }
+
+    public function deletePageAction($path)
+    {
+        $locator = new Path($path);
+        $directoryIndexPath = $locator->getParentPath()->toString();
+        $user = $this->getUser();
+
+        $this->getWikiService()->deletePage($user, $locator);
+
+        return $this->redirect(
+            $this->generateUrl(
+                'ddr_gitki_wiki_directory',
+                array('path' => $directoryIndexPath)
+            )
+        );
     }
 
 }

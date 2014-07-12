@@ -1,18 +1,18 @@
 {% extends 'DdrGitkiBaseBundle::base.html.twig' %}
 {% block content %}
     <div class="page-header">
-        <h1>{{ directoryListing.path }}</h1>
+        {{ include('DdrGitkiBaseBundle:Wiki:pathBreadcrumb.partial.html.twig', {'path' : directoryListing.path}) }}
     </div>
 
     <ul class="list-unstyled">
         {% for dir in directoryListing.subDirectories %}
-            <li>{{ icon('folder-close') }} <a href="./{{ dir }}">{{ dir }}</a></li>
+            <li>{{ icon('folder-close') }} <a href="{{ path('ddr_gitki_wiki_directory', {'path': dir}) }}">{{ dir.name }}</a></li>
         {% endfor %}
     </ul>
 
     <ul class="list-unstyled">
         {% for page in directoryListing.pages %}
-            <li>{{ icon('file') }} <a href="./{{ page }}">{{ page }}</a></li>
+            <li>{{ icon('file') }} <a href="{{ path('ddr_gitki_wiki_page', {'path': page}) }}">{{ page.name }}</a></li>
         {% endfor %}
     </ul>
 

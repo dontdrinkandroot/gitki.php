@@ -90,7 +90,7 @@ class PathTest extends \PHPUnit_Framework_TestCase
     public function testMarkdownPath()
     {
         $path = new Path('sub/index.md');
-        $this->assertEquals('index.md', $path->getLastSegmentName());
+        $this->assertEquals('index.md', $path->getName());
     }
 
     public function testGetParentPath()
@@ -107,7 +107,7 @@ class PathTest extends \PHPUnit_Framework_TestCase
         $parentPath = $path->getParentPath();
         $this->assertEquals(1, $parentPath->getNumSegments());
         $this->assertEquals(2, $path->getNumSegments());
-        $this->assertEquals('sub', $parentPath->getLastSegmentName());
+        $this->assertEquals('sub', $parentPath->getName());
     }
 
     public function testAddSegment()

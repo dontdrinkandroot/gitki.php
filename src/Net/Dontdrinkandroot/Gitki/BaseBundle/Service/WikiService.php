@@ -10,8 +10,10 @@ use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\PageSavedEvent;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockExpiredException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\DirectoryListing;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Security\User;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
 class WikiService
@@ -34,29 +36,35 @@ class WikiService
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function pageExists($pagePath)
+    public function pageExists(Path $path)
     {
-        $absolutePath = $this->getAbsolutePagePath($pagePath);
+        $absolutePath = $this->getAbsolutePath($path);
         return file_exists($absolutePath);
     }
 
 
-    public function createLock(User $user, $pagePath)
+    public function createLock(User $user, Path $path)
     {
-        $lockPath = $this->getLockPath($pagePath);
+        $lockPath = $this->getAbsoluteLockPath($path);
 
         $this->assertUnlocked($user, $lockPath);
 
+        $fileSystem = new Filesystem();
         $lockDir = dirname($lockPath);
-        if (!file_exists($lockDir)) {
-            mkdir($lockDir, 0755, true);
+        if (!$fileSystem->exists($lockDir)) {
+            $fileSystem->mkdir($lockDir, 0755);
         }
-        file_put_contents($lockPath, $user->getLogin());
+
+        if ($fileSystem->exists($lockPath)) {
+            $fileSystem->touch($lockPath);
+        } else {
+            file_put_contents($lockPath, $user->getLogin());
+        }
     }
 
-    public function removeLock(User $user, $pagePath)
+    public function removeLock(User $user, Path $path)
     {
-        $lockPath = $this->getLockPath($pagePath);
+        $lockPath = $this->getAbsoluteLockPath($path);
         if (!file_exists($lockPath)) {
             return;
         }
@@ -74,9 +82,9 @@ class WikiService
     }
 
 
-    public function getContent($pagePath)
+    public function getContent(Path $path)
     {
-        $absolutePath = $this->getAbsolutePagePath($pagePath);
+        $absolutePath = $this->getAbsolutePath($path);
         if (!file_exists($absolutePath)) {
             return '';
         }
@@ -84,15 +92,15 @@ class WikiService
         return file_get_contents($absolutePath);
     }
 
-    public function savePage(User $user, $pagePath, $content, $commitMessage)
+    public function savePage(User $user, Path $path, $content, $commitMessage)
     {
-        $lockPath = $this->getLockPath($pagePath);
+        $lockPath = $this->getAbsoluteLockPath($path);
         $this->assertHasLock($user, $lockPath);
 
-        $absolutePath = $this->getAbsolutePagePath($pagePath);
+        $absolutePath = $this->getAbsolutePath($path);
         file_put_contents($absolutePath, $content);
-        $git = new GitWrapper();
-        $workingCopy = $git->workingCopy($this->repositoryPath);
+
+        $workingCopy = $this->getWorkingCopy();
         $workingCopy->add($absolutePath);
         $workingCopy->commit(
             array(
@@ -103,8 +111,25 @@ class WikiService
 
         $this->eventDispatcher->dispatch(
             'ddr.gitki.wiki.page.saved',
-            new PageSavedEvent($pagePath, $user->getLogin(), time(), $content, $commitMessage)
+            new PageSavedEvent($path, $user->getLogin(), time(), $content, $commitMessage)
         );
+    }
+
+    public function deletePage(User $user, Path $path)
+    {
+        $this->createLock($user, $path);
+
+        $absolutePath = $this->getAbsolutePath($path);
+        $workingCopy = $this->getWorkingCopy();
+        $workingCopy->rm($absolutePath);
+        $workingCopy->commit(
+            array(
+                'm' => 'Removing ' . $path->toString(),
+                'author' => $this->getAuthor($user)
+            )
+        );
+
+        $this->removeLock($user, $path);
     }
 
     public function assertUnlocked(User $user, $lockPath)
@@ -125,9 +150,9 @@ class WikiService
         throw new PageLockedException($lockLogin, $this->getLockExpiry($lockPath));
     }
 
-    public function listDirectory($directoryPath)
+    public function listDirectory(Path $path)
     {
-        $absolutePath = $this->getAbsoluteDirectoryPath($directoryPath);
+        $absolutePath = $this->getAbsolutePath($path);
         $files = array();
         $subDirectories = array();
 
@@ -136,7 +161,8 @@ class WikiService
         $finder->name('*.md');
         $finder->depth(0);
         foreach ($finder->files() as $file) {
-            $files[] = $file->getRelativePathname();
+            /* @var \Symfony\Component\Finder\SplFileInfo $file */
+            $files[] = $path->addSegment($file->getRelativePathname());
         }
 
         $finder = new Finder();
@@ -144,10 +170,11 @@ class WikiService
         $finder->depth(0);
         $finder->ignoreDotFiles(true);
         foreach ($finder->directories() as $directory) {
-            $subDirectories[] = $directory->getRelativePathname();
+            /* @var \Symfony\Component\Finder\SplFileInfo $directory */
+            $subDirectories[] = $path->addSegment($directory->getRelativePathname());
         }
 
-        return new DirectoryListing($directoryPath, $files, $subDirectories);
+        return new DirectoryListing($path, $files, $subDirectories);
     }
 
     protected function assertHasLock(User $user, $lockPath)
@@ -172,24 +199,18 @@ class WikiService
         return file_get_contents($lockPath);
     }
 
-    protected function getAbsolutePagePath($pagePath)
+    protected function getAbsolutePath(Path $path)
     {
-        $absolutePath = $this->repositoryPath . '/' . $pagePath . '.md';
+        $absolutePath = $this->repositoryPath . '/' . $path->toString();
         return $absolutePath;
     }
 
-    protected function getAbsoluteDirectoryPath($directoryPath)
+    protected function getAbsoluteLockPath(Path $path)
     {
-        $absolutePath = $this->repositoryPath . '/' . $directoryPath;
-        return $absolutePath;
-    }
+        $lockPath = $path->getParentPath()->addSegment($path->getName() . '.lock');
+        $absoluteLockPath = $this->repositoryPath . '/' . $lockPath->toString();
 
-    protected function getLockPath($pagePath)
-    {
-        $absolutePagePath = $this->getAbsolutePagePath($pagePath);
-        $lockPath = $absolutePagePath . '.lock';
-
-        return $lockPath;
+        return $absoluteLockPath;
     }
 
     protected function isLockExpired($lockPath)
@@ -217,6 +238,17 @@ class WikiService
         $email = $user->getPrimaryEMail();
 
         return "\"$name <$email>\"";
+    }
+
+    /**
+     * @return \GitWrapper\GitWorkingCopy
+     */
+    protected function getWorkingCopy()
+    {
+        $git = new GitWrapper();
+        $workingCopy = $git->workingCopy($this->repositoryPath);
+
+        return $workingCopy;
     }
 
 

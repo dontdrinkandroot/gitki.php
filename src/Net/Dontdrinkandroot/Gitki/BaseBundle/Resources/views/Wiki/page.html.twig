@@ -1,8 +1,12 @@
 {% extends 'DdrGitkiBaseBundle::base.html.twig' %}
 {% block content %}
-    <div class="page-header">
+    <div class="page-header">{{ include('DdrGitkiBaseBundle:Wiki:pathBreadcrumb.partial.html.twig', {'path' : locator}) }}
+
         {% if is_granted('ROLE_COMMITER') %}
-            <a href="{{ path('ddr_gitki_wiki_page_edit', {'path': path}) }}" class="btn btn-default pull-right">Edit</a>
+            <div class="btn-group pull-right">
+                <a href="{{ path('ddr_gitki_wiki_page_delete', {'path': path}) }}" class="btn btn-default">Delete</a>
+                <a href="{{ path('ddr_gitki_wiki_page_edit', {'path': path}) }}" class="btn btn-default">Edit</a>
+            </div>
         {% endif %}
         <h1>{{ heading }}</h1>
     </div>

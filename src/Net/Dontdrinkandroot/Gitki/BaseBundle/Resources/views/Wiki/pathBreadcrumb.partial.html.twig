@@ -1,0 +1,6 @@
+<ol class="breadcrumb">
+    <li><a href="{{ path('ddr_gitki_wiki_base_directory') }}">Home</a></li>
+    {% for pathSegment in path.segments %}
+        <li><a href="{{ path('ddr_gitki_wiki_directory', {'path': pathSegment}) }}">{{ pathSegment.name }}</a></li>
+    {% endfor %}
+</ol>

@@ -4,6 +4,7 @@
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Event;
 
 
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path;
 use Symfony\Component\EventDispatcher\Event;
 
 class PageSavedEvent extends Event
@@ -15,7 +16,7 @@ class PageSavedEvent extends Event
     private $content;
     private $commitMessage;
 
-    public function __construct($path, $login, $time, $content, $commitMessage)
+    public function __construct(Path $path, $login, $time, $content, $commitMessage)
     {
         $this->path = $path;
         $this->login = $login;

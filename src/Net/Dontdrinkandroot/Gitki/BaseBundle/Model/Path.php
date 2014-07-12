@@ -67,7 +67,7 @@ class Path
     /**
      * @return null|string
      */
-    public function getLastSegmentName()
+    public function getName()
     {
         $lastSegment = $this->getLastSegment();
         if ($lastSegment === null) {
@@ -122,6 +122,21 @@ class Path
         $newPath->setSegments($newSegments);
 
         return $newPath;
+    }
+
+    public function toString()
+    {
+        $lastSegment = $this->getLastSegment();
+        if ($lastSegment === null) {
+            return '';
+        }
+
+        return $lastSegment->toString();
+    }
+
+    public function __toString()
+    {
+        return $this->toString();
     }
 
     /**
