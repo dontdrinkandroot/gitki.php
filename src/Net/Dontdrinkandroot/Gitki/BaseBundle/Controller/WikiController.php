@@ -119,6 +119,50 @@ class WikiController extends BaseController
         return $this->render('DdrGitkiBaseBundle:Wiki:pageedit.html.twig', array('form' => $form->createView()));
     }
 
+    public function renameFileAction(Request $request, $path)
+    {
+        $locator = new Path($path);
+        $user = $this->getUser();
+
+        try {
+            $this->getWikiService()->createLock($user, $locator);
+        } catch (PageLockedException $e) {
+            throw new ConflictHttpException($e->getMessage());
+        }
+
+        $form = $this->createFormBuilder()
+            ->add('newpath', 'text', array('label' => 'New path', 'required' => true))
+            ->add('rename', 'submit')
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+
+            if ($form->isValid()) {
+                $newPath = new Path($form->get('newpath')->getData());
+                $this->getWikiService()->renameFile(
+                    $user,
+                    $locator,
+                    $newPath,
+                    'Renaming ' . $locator . ' to ' . $newPath
+                );
+
+                return $this->redirect(
+                    $this->generateUrl(
+                        'ddr_gitki_wiki_directory',
+                        array('path' => $newPath->getParentPath() . '/')
+                    )
+                );
+            }
+
+        } else {
+            $form->setData(array('newpath' => $path));
+        }
+
+        return $this->render('DdrGitkiBaseBundle:Wiki:renameFile.html.twig', array('form' => $form->createView()));
+    }
+
     public function deletePageAction($path)
     {
         $locator = new Path($path);
@@ -130,7 +174,7 @@ class WikiController extends BaseController
         return $this->redirect(
             $this->generateUrl(
                 'ddr_gitki_wiki_directory',
-                array('path' => $directoryIndexPath)
+                array('path' => $directoryIndexPath . '/')
             )
         );
     }

@@ -7,6 +7,7 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Service;
 
 use GitWrapper\GitWrapper;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\PageSavedEvent;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\FileExistsException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockExpiredException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\DirectoryListing;
@@ -131,6 +132,35 @@ class WikiService
         );
 
         $this->removeLock($user, $path);
+    }
+
+    public function renameFile(User $user, Path $oldPath, Path $newPath, $commitMessage)
+    {
+        $absoluteOldPath = $this->getAbsolutePath($oldPath);
+        $absoluteNewPath = $this->getAbsolutePath($newPath);
+
+        $fileSystem = new Filesystem();
+        if ($fileSystem->exists($absoluteNewPath)) {
+            throw new FileExistsException('File ' . $absoluteNewPath . ' already exists');
+        }
+
+        $oldLockPath = $this->getAbsoluteLockPath($oldPath);
+        $newLockPath = $this->getAbsoluteLockPath($newPath);
+
+        $this->assertHasLock($user, $oldLockPath);
+        $this->createLock($user, $newPath);
+
+        $workingCopy = $this->getWorkingCopy();
+        $workingCopy->mv($absoluteOldPath, $absoluteNewPath);
+        $workingCopy->commit(
+            array(
+                'm' => $commitMessage,
+                'author' => $this->getAuthor($user)
+            )
+        );
+
+        $this->removeLock($user, $oldPath);
+        $this->removeLock($user, $newPath);
     }
 
     public function assertUnlocked(User $user, $lockPath)
@@ -265,6 +295,5 @@ class WikiService
         $absolutePath = $this->getAbsolutePath($path);
         return new File($absolutePath);
     }
-
 
 }

@@ -22,7 +22,7 @@
     <h2>Other Files</h2>
     <ul class="list-unstyled">
         {% for file in directoryListing.otherFiles %}
-            <li>{{ icon('file') }} <a href="{{ path('ddr_gitki_wiki_show_file', {'path': file}) }}">{{ file.name }}</a>
+            <li>{{ icon('file') }} <a href="{{ path('ddr_gitki_wiki_file_show', {'path': file}) }}">{{ file.name }}</a>
             </li>
         {% endfor %}
     </ul>

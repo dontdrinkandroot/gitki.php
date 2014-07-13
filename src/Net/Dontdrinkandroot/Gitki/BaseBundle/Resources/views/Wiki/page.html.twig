@@ -4,8 +4,9 @@
 
         {% if is_granted('ROLE_COMMITER') %}
             <div class="btn-group pull-right">
-                <a href="{{ path('ddr_gitki_wiki_page_delete', {'path': path}) }}" class="btn btn-default">Delete</a>
                 <a href="{{ path('ddr_gitki_wiki_page_edit', {'path': path}) }}" class="btn btn-default">Edit</a>
+                <a href="{{ path('ddr_gitki_wiki_file_rename', {'path': path}) }}" class="btn btn-default">Rename</a>
+                <a href="{{ path('ddr_gitki_wiki_page_delete', {'path': path}) }}" class="btn btn-default">Delete</a>
             </div>
         {% endif %}
         <h1>{{ heading }}</h1>

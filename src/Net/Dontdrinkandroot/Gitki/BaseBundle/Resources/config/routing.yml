@@ -26,7 +26,13 @@ ddr_gitki_wiki_directory:
     requirements:
         path: .*/
 
-ddr_gitki_wiki_show_file:
+ddr_gitki_wiki_file_rename:
+    path:   /wiki/{path}/rename
+    defaults: { _controller: DdrGitkiBaseBundle:Wiki:renameFile }
+    requirements:
+        path: .+
+
+ddr_gitki_wiki_file_show:
     path:   /wiki/{path}
     defaults: { _controller: DdrGitkiBaseBundle:Wiki:showFile }
     requirements:
