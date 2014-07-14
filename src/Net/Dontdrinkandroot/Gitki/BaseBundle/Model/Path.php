@@ -4,13 +4,13 @@
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Model;
 
 
-class Path
+abstract class Path
 {
 
     /**
      * @var PathSegment[]
      */
-    private $segments = array();
+    protected $segments = array();
 
     public function __construct($pathString = null)
     {
@@ -86,7 +86,7 @@ class Path
     }
 
     /**
-     * @return Path|null
+     * @return DirectoryPath|null
      */
     public function getParentPath()
     {
@@ -94,7 +94,7 @@ class Path
             return null;
         }
 
-        $parentPath = new Path();
+        $parentPath = new DirectoryPath();
         $parentSegments = array();
         for ($i = 0; $i < count($this->segments) - 1; $i++) {
             $parentSegments[$i] = $this->segments[$i];
@@ -105,46 +105,13 @@ class Path
     }
 
     /**
-     * @param $name
-     * @return Path
-     */
-    public function addSegment($name)
-    {
-        $newPath = new Path();
-        $newSegments = array();
-        $lastSegment = null;
-        foreach ($this->segments as $segment) {
-            $newSegments[] = $segment;
-            $lastSegment = $segment;
-        }
-
-        $newSegments[] = new PathSegment($name, $lastSegment);
-        $newPath->setSegments($newSegments);
-
-        return $newPath;
-    }
-
-    public function toString()
-    {
-        $lastSegment = $this->getLastSegment();
-        if ($lastSegment === null) {
-            return '';
-        }
-
-        return $lastSegment->toString();
-    }
-
-    public function __toString()
-    {
-        return $this->toString();
-    }
-
-    /**
      * @param PathSegment[] $segments
      */
     protected function setSegments($segments)
     {
         $this->segments = $segments;
     }
+
+    public abstract function toString();
 
 }

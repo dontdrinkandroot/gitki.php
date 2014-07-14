@@ -11,12 +11,15 @@ use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\FileExistsException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockExpiredException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\DirectoryListing;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\DirectoryPath;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FilePath;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Security\User;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class WikiService
 {
@@ -45,7 +48,7 @@ class WikiService
     }
 
 
-    public function createLock(User $user, Path $path)
+    public function createLock(User $user, FilePath $path)
     {
         $lockPath = $this->getAbsoluteLockPath($path);
 
@@ -64,7 +67,7 @@ class WikiService
         }
     }
 
-    public function removeLock(User $user, Path $path)
+    public function removeLock(User $user, FilePath $path)
     {
         $lockPath = $this->getAbsoluteLockPath($path);
         if (!file_exists($lockPath)) {
@@ -134,14 +137,14 @@ class WikiService
         $this->removeLock($user, $path);
     }
 
-    public function renameFile(User $user, Path $oldPath, Path $newPath, $commitMessage)
+    public function renameFile(User $user, FilePath $oldPath, FilePath $newPath, $commitMessage)
     {
         $absoluteOldPath = $this->getAbsolutePath($oldPath);
         $absoluteNewPath = $this->getAbsolutePath($newPath);
 
         $fileSystem = new Filesystem();
         if ($fileSystem->exists($absoluteNewPath)) {
-            throw new FileExistsException('File ' . $absoluteNewPath . ' already exists');
+            throw new FileExistsException('File ' . $newPath . ' already exists');
         }
 
         $oldLockPath = $this->getAbsoluteLockPath($oldPath);
@@ -163,6 +166,34 @@ class WikiService
         $this->removeLock($user, $newPath);
     }
 
+    public function addFile(User $user, FilePath $path, UploadedFile $file, $commitMessage)
+    {
+        $directoryPath = $path->getParentPath();
+        $absoluteFilePath = $this->getAbsolutePath($path);
+        $absoluteDirectoryPath = $this->getAbsolutePath($directoryPath);
+
+        $fileSystem = new Filesystem();
+        if ($fileSystem->exists($absoluteFilePath)) {
+            throw new FileExistsException('File ' . $path . ' already exists');
+        }
+
+        if (!$fileSystem->exists($absoluteDirectoryPath)) {
+            $fileSystem->mkdir($absoluteDirectoryPath, 0755);
+        }
+
+        $this->createLock($user, $path);
+        $file->move($absoluteDirectoryPath, $path->getName());
+        $workingCopy = $this->getWorkingCopy();
+        $workingCopy->add($absoluteFilePath);
+        $workingCopy->commit(
+            array(
+                'm' => $commitMessage,
+                'author' => $this->getAuthor($user)
+            )
+        );
+        $this->removeLock($user, $path);
+    }
+
     public function assertUnlocked(User $user, $lockPath)
     {
         if (!file_exists($lockPath)) {
@@ -181,7 +212,7 @@ class WikiService
         throw new PageLockedException($lockLogin, $this->getLockExpiry($lockPath));
     }
 
-    public function listDirectory(Path $path)
+    public function listDirectory(DirectoryPath $path)
     {
         $absolutePath = $this->getAbsolutePath($path);
         $pages = array();
@@ -194,9 +225,9 @@ class WikiService
         foreach ($finder->files() as $file) {
             /* @var \Symfony\Component\Finder\SplFileInfo $file */
             if ($file->getExtension() == "md") {
-                $pages[] = $path->addSegment($file->getRelativePathname());
+                $pages[] = $path->addFile($file->getRelativePathname());
             } else {
-                $otherFiles[] = $path->addSegment($file->getRelativePathname());
+                $otherFiles[] = $path->addFile($file->getRelativePathname());
             }
         }
 
@@ -206,7 +237,7 @@ class WikiService
         $finder->ignoreDotFiles(true);
         foreach ($finder->directories() as $directory) {
             /* @var \Symfony\Component\Finder\SplFileInfo $directory */
-            $subDirectories[] = $path->addSegment($directory->getRelativePathname());
+            $subDirectories[] = $path->addSubDirectory($directory->getRelativePathname());
         }
 
         return new DirectoryListing($path, $pages, $subDirectories, $otherFiles);
@@ -236,13 +267,16 @@ class WikiService
 
     protected function getAbsolutePath(Path $path)
     {
-        $absolutePath = $this->repositoryPath . '/' . $path->toString();
+        $absolutePath = $this->repositoryPath . '/';
+        if ($path != null) {
+            $absolutePath .= $path->toString();
+        }
         return $absolutePath;
     }
 
     protected function getAbsoluteLockPath(Path $path)
     {
-        $lockPath = $path->getParentPath()->addSegment($path->getName() . '.lock');
+        $lockPath = $path->getParentPath()->addFile($path->getName() . '.lock');
         $absoluteLockPath = $this->repositoryPath . '/' . $lockPath->toString();
 
         return $absoluteLockPath;
@@ -295,5 +329,6 @@ class WikiService
         $absolutePath = $this->getAbsolutePath($path);
         return new File($absolutePath);
     }
+
 
 }

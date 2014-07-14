@@ -6,7 +6,8 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Controller;
 
 use GitWrapper\GitException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\DirectoryPath;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FilePath;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,11 +19,13 @@ class WikiController extends BaseController
 
     public function listDirectoryAction($path = '')
     {
-        $locator = new Path($path);
+        $locator = new DirectoryPath($path);
         $directoryListing = $this->getWikiService()->listDirectory($locator);
         return $this->render(
             'DdrGitkiBaseBundle:Wiki:directoryListing.html.twig',
             array(
+                'path' => $path,
+                'locator' => $locator,
                 'directoryListing' => $directoryListing
             )
         );
@@ -30,7 +33,7 @@ class WikiController extends BaseController
 
     public function pageAction($path)
     {
-        $locator = new Path($path);
+        $locator = new FilePath($path);
 
         if (!$this->getWikiService()->pageExists($locator)) {
 
@@ -69,7 +72,7 @@ class WikiController extends BaseController
 
     public function pageEditAction(Request $request, $path)
     {
-        $locator = new Path($path);
+        $locator = new FilePath($path);
         $user = $this->getUser();
 
         try {
@@ -121,7 +124,7 @@ class WikiController extends BaseController
 
     public function renameFileAction(Request $request, $path)
     {
-        $locator = new Path($path);
+        $locator = new FilePath($path);
         $user = $this->getUser();
 
         try {
@@ -140,7 +143,7 @@ class WikiController extends BaseController
         if ($form->isSubmitted()) {
 
             if ($form->isValid()) {
-                $newPath = new Path($form->get('newpath')->getData());
+                $newPath = new FilePath($form->get('newpath')->getData());
                 $this->getWikiService()->renameFile(
                     $user,
                     $locator,
@@ -165,8 +168,7 @@ class WikiController extends BaseController
 
     public function deletePageAction($path)
     {
-        $locator = new Path($path);
-        $directoryIndexPath = $locator->getParentPath()->toString();
+        $locator = new FilePath($path);
         $user = $this->getUser();
 
         $this->getWikiService()->deletePage($user, $locator);
@@ -174,14 +176,55 @@ class WikiController extends BaseController
         return $this->redirect(
             $this->generateUrl(
                 'ddr_gitki_wiki_directory',
-                array('path' => $directoryIndexPath . '/')
+                array('path' => $locator->getParentPath()->toString())
             )
         );
     }
 
+    public function directoryUploadAction(Request $request, $path)
+    {
+        $directoryPath = new DirectoryPath($path);
+        $form = $this->createFormBuilder()
+            ->add('uploadedFile', 'file', array('label' => 'File'))
+            ->add('uploadedFileName', 'text', array('label' => 'Filename (if other)', 'required' => false))
+            ->add('Upload', 'submit')
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+
+            if ($form->isValid()) {
+                /* @var \Symfony\Component\HttpFoundation\File\UploadedFile $uploadedFile */
+                $uploadedFile = $form->get('uploadedFile')->getData();
+                $uploadedFileName = $form->get('uploadedFileName')->getData();
+                if (null == $uploadedFileName || trim($uploadedFileName) == "") {
+                    $uploadedFileName = $uploadedFile->getClientOriginalName();
+                }
+                $filePath = $directoryPath->addFile($uploadedFileName);
+                $this->getWikiService()->addFile(
+                    $this->getUser(),
+                    $filePath,
+                    $uploadedFile,
+                    'Adding ' . $filePath
+                );
+
+                return $this->redirect(
+                    $this->generateUrl(
+                        'ddr_gitki_wiki_directory',
+                        array('path' => $directoryPath->toString())
+                    )
+                );
+            }
+        } else {
+        }
+
+        return $this->render('DdrGitkiBaseBundle:Wiki:directoryUpload.html.twig', array('form' => $form->createView()));
+    }
+
     public function showFileAction(Request $request, $path)
     {
-        $locator = new Path($path);
+        $locator = new FilePath($path);
         $file = $this->getWikiService()->getFile($locator);
 
         $response = new Response();

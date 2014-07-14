@@ -20,6 +20,12 @@ ddr_gitki_wiki_page:
     requirements:
         path: .+\.md
 
+ddr_gitki_wiki_directory_upload:
+    path:   /wiki/{path}/upload
+    defaults: { _controller: DdrGitkiBaseBundle:Wiki:directoryUpload }
+    requirements:
+        path: .*
+
 ddr_gitki_wiki_directory:
     path:   /wiki/{path}
     defaults: { _controller: DdrGitkiBaseBundle:Wiki:listDirectory }

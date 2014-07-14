@@ -1,6 +1,12 @@
 {% extends 'DdrGitkiBaseBundle::base.html.twig' %}
 {% block content %}
     <div class="page-header">
+        {% if is_granted('ROLE_COMMITER') %}
+            <div class="btn-group pull-right">
+                <a href="{{ path('ddr_gitki_wiki_directory_upload', {'path': path}) }}"
+                   class="btn btn-default">Upload</a>
+            </div>
+        {% endif %}
         {{ include('DdrGitkiBaseBundle:Wiki:directoryBreadcrumb.partial.html.twig', {'path' : directoryListing.path}) }}
     </div>
 
@@ -8,7 +14,7 @@
     <ul class="list-unstyled">
         {% for dir in directoryListing.subDirectories %}
             <li>{{ icon('folder-close') }} <a
-                        href="{{ path('ddr_gitki_wiki_directory', {'path': dir ~ '/'}) }}">{{ dir.name }}</a></li>
+                        href="{{ path('ddr_gitki_wiki_directory', {'path': dir}) }}">{{ dir.name }}</a></li>
         {% endfor %}
     </ul>
 
