@@ -2,48 +2,18 @@ ddr_gitki_base_homepage:
     path:     /
     defaults: { _controller: DdrGitkiBaseBundle:Default:index }
 
-ddr_gitki_wiki_page_edit:
-    path:   /wiki/{path}/edit
-    defaults: { _controller: DdrGitkiBaseBundle:Wiki:pageEdit }
-    requirements:
-        path: .+\.md
-
-ddr_gitki_wiki_page_delete:
-    path:   /wiki/{path}/delete
-    defaults: { _controller: DdrGitkiBaseBundle:Wiki:deletePage }
-    requirements:
-        path: .+\.md
-
-ddr_gitki_wiki_page:
-    path:   /wiki/{path}
-    defaults: { _controller: DdrGitkiBaseBundle:Wiki:page }
-    requirements:
-        path: .+\.md
-
-ddr_gitki_wiki_directory_upload:
-    path:   /wiki/{path}/upload
-    defaults: { _controller: DdrGitkiBaseBundle:Wiki:directoryUpload }
-    requirements:
-        path: .*
-
 ddr_gitki_wiki_directory:
     path:   /wiki/{path}
-    defaults: { _controller: DdrGitkiBaseBundle:Wiki:listDirectory }
+    defaults: { _controller: DdrGitkiBaseBundle:Wiki:directory }
     requirements:
         path: .*/
 
-ddr_gitki_wiki_file_rename:
-    path:   /wiki/{path}/rename
-    defaults: { _controller: DdrGitkiBaseBundle:Wiki:renameFile }
-    requirements:
-        path: .+
-
-ddr_gitki_wiki_file_show:
+ddr_gitki_wiki_file:
     path:   /wiki/{path}
-    defaults: { _controller: DdrGitkiBaseBundle:Wiki:showFile }
+    defaults: { _controller: DdrGitkiBaseBundle:Wiki:file }
     requirements:
         path: .+
 
 ddr_gitki_wiki_base_directory:
     path:   /wiki/
-    defaults: { _controller: DdrGitkiBaseBundle:Wiki:listDirectory }
+    defaults: { _controller: DdrGitkiBaseBundle:Wiki:directory, path: / }

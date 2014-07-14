@@ -3,7 +3,7 @@
     <div class="page-header">
         {% if is_granted('ROLE_COMMITER') %}
             <div class="btn-group pull-right">
-                <a href="{{ path('ddr_gitki_wiki_directory_upload', {'path': path}) }}"
+                <a href="{{ path('ddr_gitki_wiki_directory', {'path': path, 'action': 'upload'}) }}"
                    class="btn btn-default">Upload</a>
             </div>
         {% endif %}
@@ -21,14 +21,22 @@
     <h2>Pages</h2>
     <ul class="list-unstyled">
         {% for page in directoryListing.pages %}
-            <li>{{ icon('file') }} <a href="{{ path('ddr_gitki_wiki_page', {'path': page}) }}">{{ page.name }}</a></li>
+            <li>
+                {{ icon('file') }}
+                <a href="{{ path('ddr_gitki_wiki_file', {'path': page}) }}">{{ page.name }}</a>
+                <a href="{{ path('ddr_gitki_wiki_file', {'path': page, 'action': 'edit'}) }}">{{ icon('pencil') }}</a>
+                <a href="{{ path('ddr_gitki_wiki_file', {'path': page, 'action': 'delete'}) }}">{{ icon('trash') }}</a>
+            </li>
         {% endfor %}
     </ul>
 
     <h2>Other Files</h2>
     <ul class="list-unstyled">
         {% for file in directoryListing.otherFiles %}
-            <li>{{ icon('file') }} <a href="{{ path('ddr_gitki_wiki_file_show', {'path': file}) }}">{{ file.name }}</a>
+            <li>
+                {{ icon('file') }}
+                <a href="{{ path('ddr_gitki_wiki_file', {'path': file}) }}">{{ file.name }}</a>
+                <a href="{{ path('ddr_gitki_wiki_file', {'path': file, 'action': 'delete'}) }}">{{ icon('trash') }}</a>
             </li>
         {% endfor %}
     </ul>

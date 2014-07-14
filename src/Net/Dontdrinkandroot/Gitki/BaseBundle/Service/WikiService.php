@@ -120,7 +120,7 @@ class WikiService
         );
     }
 
-    public function deletePage(User $user, Path $path)
+    public function deleteFile(User $user, Path $path)
     {
         $this->createLock($user, $path);
 

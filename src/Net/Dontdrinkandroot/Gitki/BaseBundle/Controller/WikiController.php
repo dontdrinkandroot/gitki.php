@@ -8,30 +8,58 @@ use GitWrapper\GitException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\DirectoryPath;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FilePath;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Utils\StringUtils;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class WikiController extends BaseController
 {
 
-    public function listDirectoryAction($path = '')
+    public function directoryAction(Request $request, $path)
     {
-        $locator = new DirectoryPath($path);
-        $directoryListing = $this->getWikiService()->listDirectory($locator);
-        return $this->render(
-            'DdrGitkiBaseBundle:Wiki:directoryListing.html.twig',
-            array(
-                'path' => $path,
-                'locator' => $locator,
-                'directoryListing' => $directoryListing
-            )
-        );
+        $action = $request->query->get('action', 'list');
+        switch ($action) {
+            case 'upload' :
+                return $this->directoryUploadAction($request, $path);
+                break;
+            default:
+                return $this->listDirectoryAction($path);
+        }
     }
 
-    public function pageAction($path)
+    public function fileAction(Request $request, $path)
+    {
+        $action = $request->query->get('action', 'show');
+        switch ($action) {
+            case 'edit' :
+                return $this->editPageAction($request, $path);
+                break;
+            case 'delete' :
+                return $this->deleteFileAction($path);
+                break;
+            case 'rename' :
+                return $this->renameFileAction($request, $path);
+                break;
+            default:
+                return $this->showFileAction($request, $path);
+        }
+    }
+
+    public function showFileAction(Request $request, $path)
+    {
+        $filePath = new FilePath($path);
+        if (StringUtils::endsWith($filePath->getName(), '.md')) {
+            return $this->showPageAction($path);
+        } else {
+            return $this->serveFileAction($request, $path);
+        }
+    }
+
+    public function showPageAction($path)
     {
         $locator = new FilePath($path);
 
@@ -43,8 +71,8 @@ class WikiController extends BaseController
 
             return $this->redirect(
                 $this->generateUrl(
-                    'ddr_gitki_wiki_page_edit',
-                    array('path' => $path)
+                    'ddr_gitki_wiki_file',
+                    array('path' => $path, 'action' => 'edit')
                 )
             );
         }
@@ -70,17 +98,42 @@ class WikiController extends BaseController
         );
     }
 
-    public function pageEditAction(Request $request, $path)
+    public function serveFileAction(Request $request, $path)
     {
-        $locator = new FilePath($path);
+        $filePath = new FilePath($path);
+        $file = $this->getWikiService()->getFile($filePath);
+
+        $response = new Response();
+        $lastModified = new \DateTime();
+        $lastModified->setTimestamp($file->getMTime());
+        $response->setLastModified($lastModified);
+        if ($response->isNotModified($request)) {
+            return $response;
+        }
+
+        $response->headers->set('Content-Type', $file->getMimeType());
+        $response->setContent($this->getContents($file));
+
+        return $response;
+    }
+
+    public function editPageAction(Request $request, $path)
+    {
+        $this->assertRole('ROLE_COMMITER');
+
+        $filePath = new FilePath($path);
+        if (!StringUtils::endsWith($filePath->getName(), '.md')) {
+            throw new HttpException(500, 'Only editing of markdown files is supported');
+        }
+
         $user = $this->getUser();
 
         try {
-            $this->getWikiService()->createLock($user, $locator);
+            $this->getWikiService()->createLock($user, $filePath);
         } catch (PageLockedException $e) {
             throw new ConflictHttpException($e->getMessage());
         }
-        $content = $this->getWikiService()->getContent($locator);
+        $content = $this->getWikiService()->getContent($filePath);
 
         $form = $this->createFormBuilder()
             ->add('content', 'textarea')
@@ -95,11 +148,11 @@ class WikiController extends BaseController
             $content = $form->get('content')->getData();
             $commitMessage = $form->get('commitMessage')->getData();
             try {
-                $this->getWikiService()->savePage($user, $locator, $content, $commitMessage);
-                $this->getWikiService()->removeLock($user, $locator);
+                $this->getWikiService()->savePage($user, $filePath, $content, $commitMessage);
+                $this->getWikiService()->removeLock($user, $filePath);
                 return $this->redirect(
                     $this->generateUrl(
-                        'ddr_gitki_wiki_page',
+                        'ddr_gitki_wiki_file',
                         array('path' => $path)
                     )
                 );
@@ -124,6 +177,8 @@ class WikiController extends BaseController
 
     public function renameFileAction(Request $request, $path)
     {
+        $this->assertRole('ROLE_COMMITER');
+
         $locator = new FilePath($path);
         $user = $this->getUser();
 
@@ -166,23 +221,41 @@ class WikiController extends BaseController
         return $this->render('DdrGitkiBaseBundle:Wiki:renameFile.html.twig', array('form' => $form->createView()));
     }
 
-    public function deletePageAction($path)
+    public function deleteFileAction($path)
     {
-        $locator = new FilePath($path);
+        $this->assertRole('ROLE_COMMITER');
+
+        $filePath = new FilePath($path);
         $user = $this->getUser();
 
-        $this->getWikiService()->deletePage($user, $locator);
+        $this->getWikiService()->deleteFile($user, $filePath);
 
         return $this->redirect(
             $this->generateUrl(
                 'ddr_gitki_wiki_directory',
-                array('path' => $locator->getParentPath()->toString())
+                array('path' => $filePath->getParentPath()->toString())
+            )
+        );
+    }
+
+    public function listDirectoryAction($path = '')
+    {
+        $locator = new DirectoryPath($path);
+        $directoryListing = $this->getWikiService()->listDirectory($locator);
+        return $this->render(
+            'DdrGitkiBaseBundle:Wiki:directoryListing.html.twig',
+            array(
+                'path' => $path,
+                'locator' => $locator,
+                'directoryListing' => $directoryListing
             )
         );
     }
 
     public function directoryUploadAction(Request $request, $path)
     {
+        $this->assertRole('ROLE_COMMITER');
+
         $directoryPath = new DirectoryPath($path);
         $form = $this->createFormBuilder()
             ->add('uploadedFile', 'file', array('label' => 'File'))
@@ -220,25 +293,6 @@ class WikiController extends BaseController
         }
 
         return $this->render('DdrGitkiBaseBundle:Wiki:directoryUpload.html.twig', array('form' => $form->createView()));
-    }
-
-    public function showFileAction(Request $request, $path)
-    {
-        $locator = new FilePath($path);
-        $file = $this->getWikiService()->getFile($locator);
-
-        $response = new Response();
-        $lastModified = new \DateTime();
-        $lastModified->setTimestamp($file->getMTime());
-        $response->setLastModified($lastModified);
-        if ($response->isNotModified($request)) {
-            return $response;
-        }
-
-        $response->headers->set('Content-Type', $file->getMimeType());
-        $response->setContent($this->getContents($file));
-
-        return $response;
     }
 
     protected function getContents(File $file)
