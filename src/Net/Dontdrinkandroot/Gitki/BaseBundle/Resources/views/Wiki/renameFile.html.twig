@@ -1,5 +1,9 @@
 {% extends 'DdrGitkiBaseBundle::base.html.twig' %}
 {% block title %} - {{ path }} - Rename{% endblock %}
 {% block content %}
+    {{ include('DdrGitkiBaseBundle:Wiki:breadcrumb.partial.html.twig', {'path' : path}) }}
+    <div class="page-header">
+        <h1>Rename File</h1>
+    </div>
     {{ form(form) }}
 {% endblock %}

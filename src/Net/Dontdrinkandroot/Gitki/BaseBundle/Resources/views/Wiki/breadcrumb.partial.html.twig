@@ -1,5 +1,5 @@
 <ol class="breadcrumb">
-    <li><a href="{{ path('ddr_gitki_wiki_base_directory') }}">Home</a></li>
+    <li><a href="{{ path('ddr_gitki_wiki_directory') }}">{{ icon('home') }}</a></li>
     {% if path.parentPath %}
         {% for pathSegment in path.parentPath.segments %}
             <li><a href="{{ path('ddr_gitki_wiki_directory', {'path': pathSegment ~ '/'}) }}">{{ pathSegment.name }}</a>

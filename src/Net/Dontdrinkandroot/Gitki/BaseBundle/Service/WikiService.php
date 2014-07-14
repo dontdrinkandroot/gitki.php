@@ -7,6 +7,7 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Service;
 
 use GitWrapper\GitWrapper;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\PageSavedEvent;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\DirectoryNotEmptyException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\FileExistsException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockExpiredException;
@@ -18,6 +19,7 @@ use Net\Dontdrinkandroot\Gitki\BaseBundle\Security\User;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -120,13 +122,13 @@ class WikiService
         );
     }
 
-    public function deleteFile(User $user, Path $path)
+    public function deleteFile(User $user, FilePath $path)
     {
         $this->createLock($user, $path);
 
         $absolutePath = $this->getAbsolutePath($path);
         $workingCopy = $this->getWorkingCopy();
-        $workingCopy->rm($absolutePath);
+        $workingCopy->rm($path);
         $workingCopy->commit(
             array(
                 'm' => 'Removing ' . $path->toString(),
@@ -135,6 +137,20 @@ class WikiService
         );
 
         $this->removeLock($user, $path);
+    }
+
+    public function deleteDirectory(User $user, DirectoryPath $path)
+    {
+        $absolutePath = $this->getAbsolutePath($path);
+        $finder = new Finder();
+        $finder->in($absolutePath);
+        $numFiles = $finder->files()->count();
+        if ($numFiles > 0) {
+            throw new DirectoryNotEmptyException($path . ' is not empty');
+        }
+
+        $fileSystem = new Filesystem();
+        $fileSystem->remove($absolutePath);
     }
 
     public function renameFile(User $user, FilePath $oldPath, FilePath $newPath, $commitMessage)
@@ -215,8 +231,11 @@ class WikiService
     public function listDirectory(DirectoryPath $path)
     {
         $absolutePath = $this->getAbsolutePath($path);
+        /* @var SplFileInfo[] $pages */
         $pages = array();
+        /* @var SplFileInfo[] $subDirectories */
         $subDirectories = array();
+        /* @var SplFileInfo[] $otherFiles */
         $otherFiles = array();
 
         $finder = new Finder();
@@ -225,9 +244,9 @@ class WikiService
         foreach ($finder->files() as $file) {
             /* @var \Symfony\Component\Finder\SplFileInfo $file */
             if ($file->getExtension() == "md") {
-                $pages[] = $path->addFile($file->getRelativePathname());
+                $pages[] = $file;
             } else {
-                $otherFiles[] = $path->addFile($file->getRelativePathname());
+                $otherFiles[] = $file;
             }
         }
 
@@ -237,8 +256,28 @@ class WikiService
         $finder->ignoreDotFiles(true);
         foreach ($finder->directories() as $directory) {
             /* @var \Symfony\Component\Finder\SplFileInfo $directory */
-            $subDirectories[] = $path->addSubDirectory($directory->getRelativePathname());
+            $subDirectories[] = $directory;
         }
+
+
+        usort(
+            $pages,
+            function (SplFileInfo $a, SplFileInfo $b) {
+                return strcmp($a->getFilename(), $b->getFilename());
+            }
+        );
+        usort(
+            $subDirectories,
+            function (SplFileInfo $a, SplFileInfo $b) {
+                return strcmp($a->getFilename(), $b->getFilename());
+            }
+        );
+        usort(
+            $otherFiles,
+            function (SplFileInfo $a, SplFileInfo $b) {
+                return strcmp($a->getFilename(), $b->getFilename());
+            }
+        );
 
         return new DirectoryListing($path, $pages, $subDirectories, $otherFiles);
     }

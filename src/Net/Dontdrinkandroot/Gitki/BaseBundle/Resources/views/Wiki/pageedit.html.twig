@@ -1,12 +1,13 @@
 {% extends 'DdrGitkiBaseBundle::base.html.twig' %}
 {% block title %} - {{ path }} - Edit{% endblock %}
 {% block content %}
+    {{ include('DdrGitkiBaseBundle:Wiki:breadcrumb.partial.html.twig', {'path' : path}) }}
     <div class="row editor">
         <div class="col-md-6">
             {{ form(form) }}
         </div>
         <div class="col-md-6">
-            <div id="preview"></div>
+            <div id="preview" class="markdown-html"></div>
         </div>
     </div>
 {% endblock %}
@@ -20,19 +21,20 @@
             this.typeTimeout = undefined;
 
             this.update = function () {
-                preview.html(function() {
+                preview.html(function () {
                     return markdown.toHTML(input.val());
                 });
             };
 
             input.editor = this;
 
-            input.keypress(function() {
+            input.keypress(function () {
                 clearTimeout(input.editor.typeTimeout);
-                input.editor.typeTimeout = setTimeout(function() {
-                    preview.html(function() {
+                input.editor.typeTimeout = setTimeout(function () {
+                    preview.html(function () {
                         return markdown.toHTML(input.val());
-                    });;
+                    });
+                    ;
                 }, 200);
             });
 

@@ -1,16 +1,28 @@
 {% extends 'DdrGitkiBaseBundle::base.html.twig' %}
 {% block title %} - {{ path }}{% endblock %}
 {% block content %}
-    <div class="page-header">{{ include('DdrGitkiBaseBundle:Wiki:pageBreadcrumb.partial.html.twig', {'path' : path}) }}
-
+    {{ include('DdrGitkiBaseBundle:Wiki:breadcrumb.partial.html.twig', {'path' : path}) }}
+    <div class="page-header">
         {% if is_granted('ROLE_COMMITER') %}
             <div class="btn-group pull-right">
-                <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'edit'}) }}" class="btn btn-default">Edit</a>
-                <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'rename'}) }}" class="btn btn-default">Rename</a>
-                <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'delete'}) }}" class="btn btn-default">Delete</a>
+                <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'edit'}) }}" class="btn btn-default"
+                   title="Edit">{{ icon('pencil') }}</a>
+                <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'rename'}) }}" class="btn btn-default"
+                   title="Rename">{{ icon('resize-horizontal') }}</a>
+                <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'delete'}) }}" class="btn btn-default"
+                   title="Delete">{{ icon('trash') }}</a>
             </div>
         {% endif %}
-        <h1>{{ heading }}</h1>
+        {% if heading %}
+            <h1>{{ heading }}</h1>
+        {% else %}
+            <h1>&nbsp;</h1>
+        {% endif %}
     </div>
-    {{ body|raw }}
+    <div class="row">
+        <div class="markdown-html col-md-9">
+            {{ body|raw }}
+        </div>
+        <div class="col-md-3"></div>
+    </div>
 {% endblock %}

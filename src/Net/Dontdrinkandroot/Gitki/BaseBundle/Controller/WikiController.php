@@ -25,7 +25,8 @@ class WikiController extends BaseController
         switch ($action) {
             case 'upload' :
                 return $this->directoryUploadAction($request, $path);
-                break;
+            case 'delete' :
+                return $this->deleteDirectoryAction($request, $path);
             default:
                 return $this->listDirectoryAction($path);
         }
@@ -37,13 +38,10 @@ class WikiController extends BaseController
         switch ($action) {
             case 'edit' :
                 return $this->editPageAction($request, $path);
-                break;
             case 'delete' :
                 return $this->deleteFileAction($path);
-                break;
             case 'rename' :
                 return $this->renameFileAction($request, $path);
-                break;
             default:
                 return $this->showFileAction($request, $path);
         }
@@ -248,15 +246,14 @@ class WikiController extends BaseController
         );
     }
 
-    public function listDirectoryAction($path = '')
+    public function listDirectoryAction($path = '/')
     {
         $directoryPath = new DirectoryPath($path);
         $directoryListing = $this->getWikiService()->listDirectory($directoryPath);
         return $this->render(
             'DdrGitkiBaseBundle:Wiki:directoryListing.html.twig',
             array(
-                'path' => $path,
-                'locator' => $directoryPath,
+                'path' => $directoryPath,
                 'directoryListing' => $directoryListing
             )
         );
@@ -305,6 +302,28 @@ class WikiController extends BaseController
         return $this->render(
             'DdrGitkiBaseBundle:Wiki:directoryUpload.html.twig',
             array('form' => $form->createView(), 'path' => $directoryPath)
+        );
+    }
+
+    public function deleteDirectoryAction(Request $request, $path)
+    {
+        $this->assertRole('ROLE_COMMITER');
+
+        $directoryPath = new DirectoryPath($path);
+        $user = $this->getUser();
+
+        $this->getWikiService()->deleteDirectory($user, $directoryPath);
+
+        $parentDirPath = $directoryPath->getParentPath()->toString();
+        if ($parentDirPath == "") {
+            $parentDirPath = "/";
+        }
+
+        return $this->redirect(
+            $this->generateUrl(
+                'ddr_gitki_wiki_directory',
+                array('path' => $parentDirPath)
+            )
         );
     }
 

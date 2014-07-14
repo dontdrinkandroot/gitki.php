@@ -1,52 +1,87 @@
 {% extends 'DdrGitkiBaseBundle::base.html.twig' %}
 {% block title %} - {{ path }}{% endblock %}
 {% block content %}
+    {{ include('DdrGitkiBaseBundle:Wiki:breadcrumb.partial.html.twig', {'path' : path}) }}
     <div class="page-header">
         {% if is_granted('ROLE_COMMITER') %}
             <div class="btn-group pull-right">
                 <a href="{{ path('ddr_gitki_wiki_directory', {'path': path, 'action': 'upload'}) }}"
-                   class="btn btn-default">Upload</a>
+                   class="btn btn-default" title="Upload File">{{ icon('upload') }}</a>
             </div>
         {% endif %}
-        {{ include('DdrGitkiBaseBundle:Wiki:directoryBreadcrumb.partial.html.twig', {'path' : directoryListing.path}) }}
+        {% if path.name %}
+            <h1>{{ path.name }}</h1>
+        {% else %}
+            <h1>{{ icon('home') }}</h1>
+        {% endif %}
     </div>
 
-    <h2>Directories</h2>
-    <ul class="list-unstyled">
+    <table class="table directory table-condensed">
+        <thead>
+        <th class="icon"></th>
+        <th>Name</th>
+        <th>Last Modified</th>
+        <th class="actions">Actions</th>
+        </thead>
+        <tbody>
         {% for dir in directoryListing.subDirectories %}
-            <li>{{ icon('folder-close') }} <a
-                        href="{{ path('ddr_gitki_wiki_directory', {'path': dir}) }}">{{ dir.name }}</a></li>
+            <tr>
+                <td class="icon">{{ icon('folder-close') }}</td>
+                <td>
+                    <a href="{{ path('ddr_gitki_wiki_directory', {'path': path ~ dir.relativePathname ~ '/'}) }}">{{ dir.filename }}</a>
+                </td>
+                <td>{{ dir.mTime|date("Y/m/d H:i:s") }}</td>
+                <td class="actions">
+                    <div class="btn-group">
+                        <a class="btn btn-default btn-xs"
+                           href="{{ path('ddr_gitki_wiki_directory', {'path': path ~ dir.relativePathname ~ '/', 'action': 'delete'}) }}"
+                           title="Delete">{{ icon('trash') }}</a>
+                    </div>
+                </td>
+            </tr>
         {% endfor %}
-    </ul>
-
-    <h2>Pages</h2>
-    <ul class="list-unstyled">
         {% for page in directoryListing.pages %}
-            <li>
-                {{ icon('file') }}
-                <a href="{{ path('ddr_gitki_wiki_file', {'path': page}) }}">{{ page.name }}</a>
-                <a href="{{ path('ddr_gitki_wiki_file', {'path': page, 'action': 'edit'}) }}"
-                   title="edit">{{ icon('pencil') }}</a>
-                <a href="{{ path('ddr_gitki_wiki_file', {'path': page, 'action': 'rename'}) }}"
-                   title="rename">{{ icon('resize-horizontal') }}</a>
-                <a href="{{ path('ddr_gitki_wiki_file', {'path': page, 'action': 'delete'}) }}"
-                   title="delete">{{ icon('trash') }}</a>
-            </li>
+            <tr>
+                <td class="icon">{{ icon('file') }}</td>
+                <td>
+                    <a href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname}) }}">{{ page.filename }}</a>
+                </td>
+                <td>{{ page.mTime|date("Y/m/d H:i:s") }}</td>
+                <td class="actions">
+                    <div class="btn-group">
+                        <a class="btn btn-default btn-xs"
+                           href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname, 'action': 'edit'}) }}"
+                           title="Edit">{{ icon('pencil') }}</a>
+                        <a class="btn btn-default btn-xs"
+                           href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname, 'action': 'rename'}) }}"
+                           title="Rename">{{ icon('resize-horizontal') }}</a>
+                        <a class="btn btn-default btn-xs"
+                           href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname, 'action': 'delete'}) }}"
+                           title="Delete">{{ icon('trash') }}</a>
+                    </div>
+                </td>
+            </tr>
         {% endfor %}
-    </ul>
-
-    <h2>Other Files</h2>
-    <ul class="list-unstyled">
         {% for file in directoryListing.otherFiles %}
-            <li>
-                {{ icon('file') }}
-                <a href="{{ path('ddr_gitki_wiki_file', {'path': file}) }}">{{ file.name }}</a>
-                <a href="{{ path('ddr_gitki_wiki_file', {'path': file, 'action': 'rename'}) }}"
-                   title="rename">{{ icon('resize-horizontal') }}</a>
-                <a href="{{ path('ddr_gitki_wiki_file', {'path': file, 'action': 'delete'}) }}"
-                   title="delete">{{ icon('trash') }}</a>
-            </li>
+            <tr>
+                <td class="icon">{{ icon('file') }}</td>
+                <td>
+                    <a href="{{ path('ddr_gitki_wiki_file', {'path': path ~ file.relativePathname}) }}">{{ file.filename }}</a>
+                </td>
+                <td>{{ file.mTime|date("Y/m/d H:i:s") }}</td>
+                <td class="actions">
+                    <div class="btn-group">
+                        <a class="btn btn-default btn-xs"
+                           href="{{ path('ddr_gitki_wiki_file', {'path': path ~ file.relativePathname, 'action': 'rename'}) }}"
+                           title="Rename">{{ icon('resize-horizontal') }}</a>
+                        <a class="btn btn-default btn-xs"
+                           href="{{ path('ddr_gitki_wiki_file', {'path': path ~ file.relativePathname, 'action': 'delete'}) }}"
+                           title="Delete">{{ icon('trash') }}</a>
+                    </div>
+                </td>
+            </tr>
         {% endfor %}
-    </ul>
+        </tbody>
+    </table>
 
 {% endblock %}
