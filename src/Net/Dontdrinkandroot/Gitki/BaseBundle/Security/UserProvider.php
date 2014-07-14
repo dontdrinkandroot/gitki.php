@@ -69,6 +69,9 @@ class UserProvider implements OAuthAwareUserProviderInterface, UserProviderInter
         $login = $fields['login'];
         $user->setLogin($login);
 
+        $accessToken = $response->getAccessToken();
+        $user->setAccessToken($accessToken);
+
         if (array_key_exists('name', $fields)) {
             $realName = $fields['name'];
             $user->setRealName($realName);

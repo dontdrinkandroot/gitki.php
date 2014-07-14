@@ -19,6 +19,8 @@ class User implements UserInterface
 
     protected $roles = array('ROLE_USER');
 
+    protected $accessToken;
+
     public function getRoles()
     {
         return $this->roles;
@@ -92,6 +94,16 @@ class User implements UserInterface
     public function getEMails()
     {
         return $this->eMails;
+    }
+
+    public function setAccessToken($accessToken)
+    {
+        $this->accessToken = $accessToken;
+    }
+
+    public function getAccessToken()
+    {
+        return $this->accessToken;
     }
 
 } 
