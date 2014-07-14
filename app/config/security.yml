@@ -26,10 +26,6 @@ security:
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/connect, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: \.md/edit$, roles: ROLE_COMMITER }
-        - { path: \.md/rename$, roles: ROLE_COMMITER }
-        - { path: \.md/delete$, roles: ROLE_COMMITER }
-        - { path: /upload$, roles: ROLE_COMMITER }
         ## Only logged in users may see content
         #- { path: ^/, roles: ROLE_USER }
         ## Only watchers may see content
