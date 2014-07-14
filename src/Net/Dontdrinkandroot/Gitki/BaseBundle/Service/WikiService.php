@@ -245,7 +245,7 @@ class WikiService
             /* @var \Symfony\Component\Finder\SplFileInfo $file */
             if ($file->getExtension() == "md") {
                 $pages[] = $file;
-            } else {
+            } else if ($file->getExtension() != 'lock') {
                 $otherFiles[] = $file;
             }
         }
