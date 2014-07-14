@@ -24,8 +24,12 @@
             <li>
                 {{ icon('file') }}
                 <a href="{{ path('ddr_gitki_wiki_file', {'path': page}) }}">{{ page.name }}</a>
-                <a href="{{ path('ddr_gitki_wiki_file', {'path': page, 'action': 'edit'}) }}">{{ icon('pencil') }}</a>
-                <a href="{{ path('ddr_gitki_wiki_file', {'path': page, 'action': 'delete'}) }}">{{ icon('trash') }}</a>
+                <a href="{{ path('ddr_gitki_wiki_file', {'path': page, 'action': 'edit'}) }}"
+                   title="edit">{{ icon('pencil') }}</a>
+                <a href="{{ path('ddr_gitki_wiki_file', {'path': page, 'action': 'rename'}) }}"
+                   title="rename">{{ icon('resize-horizontal') }}</a>
+                <a href="{{ path('ddr_gitki_wiki_file', {'path': page, 'action': 'delete'}) }}"
+                   title="delete">{{ icon('trash') }}</a>
             </li>
         {% endfor %}
     </ul>
@@ -36,7 +40,10 @@
             <li>
                 {{ icon('file') }}
                 <a href="{{ path('ddr_gitki_wiki_file', {'path': file}) }}">{{ file.name }}</a>
-                <a href="{{ path('ddr_gitki_wiki_file', {'path': file, 'action': 'delete'}) }}">{{ icon('trash') }}</a>
+                <a href="{{ path('ddr_gitki_wiki_file', {'path': file, 'action': 'rename'}) }}"
+                   title="rename">{{ icon('resize-horizontal') }}</a>
+                <a href="{{ path('ddr_gitki_wiki_file', {'path': file, 'action': 'delete'}) }}"
+                   title="delete">{{ icon('trash') }}</a>
             </li>
         {% endfor %}
     </ul>
