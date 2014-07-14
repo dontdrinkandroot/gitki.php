@@ -61,9 +61,9 @@ class WikiController extends BaseController
 
     public function showPageAction($path)
     {
-        $locator = new FilePath($path);
+        $filePath = new FilePath($path);
 
-        if (!$this->getWikiService()->pageExists($locator)) {
+        if (!$this->getWikiService()->pageExists($filePath)) {
 
             if (null === $this->getUser()) {
                 throw new NotFoundHttpException('This page does not exist');
@@ -77,7 +77,7 @@ class WikiController extends BaseController
             );
         }
 
-        $content = $this->getWikiService()->getContent($locator);
+        $content = $this->getWikiService()->getContent($filePath);
         $content = $this->getMarkdownParser()->transformMarkdown($content);
 
         $heading = null;
@@ -92,8 +92,7 @@ class WikiController extends BaseController
             array(
                 'heading' => $heading,
                 'body' => $body,
-                'path' => $path,
-                'locator' => $locator
+                'path' => $filePath,
             )
         );
     }
@@ -172,18 +171,21 @@ class WikiController extends BaseController
             }
         }
 
-        return $this->render('DdrGitkiBaseBundle:Wiki:pageedit.html.twig', array('form' => $form->createView()));
+        return $this->render(
+            'DdrGitkiBaseBundle:Wiki:pageedit.html.twig',
+            array('form' => $form->createView(), 'path' => $filePath)
+        );
     }
 
     public function renameFileAction(Request $request, $path)
     {
         $this->assertRole('ROLE_COMMITER');
 
-        $locator = new FilePath($path);
+        $filePath = new FilePath($path);
         $user = $this->getUser();
 
         try {
-            $this->getWikiService()->createLock($user, $locator);
+            $this->getWikiService()->createLock($user, $filePath);
         } catch (PageLockedException $e) {
             throw new ConflictHttpException($e->getMessage());
         }
@@ -201,9 +203,9 @@ class WikiController extends BaseController
                 $newPath = new FilePath($form->get('newpath')->getData());
                 $this->getWikiService()->renameFile(
                     $user,
-                    $locator,
+                    $filePath,
                     $newPath,
-                    'Renaming ' . $locator . ' to ' . $newPath
+                    'Renaming ' . $filePath . ' to ' . $newPath
                 );
 
                 return $this->redirect(
@@ -218,7 +220,10 @@ class WikiController extends BaseController
             $form->setData(array('newpath' => $path));
         }
 
-        return $this->render('DdrGitkiBaseBundle:Wiki:renameFile.html.twig', array('form' => $form->createView()));
+        return $this->render(
+            'DdrGitkiBaseBundle:Wiki:renameFile.html.twig',
+            array('form' => $form->createView(), 'path' => $filePath)
+        );
     }
 
     public function deleteFileAction($path)
@@ -230,23 +235,28 @@ class WikiController extends BaseController
 
         $this->getWikiService()->deleteFile($user, $filePath);
 
+        $parentDirPath = $filePath->getParentPath()->toString();
+        if ($parentDirPath == "") {
+            $parentDirPath = "/";
+        }
+
         return $this->redirect(
             $this->generateUrl(
                 'ddr_gitki_wiki_directory',
-                array('path' => $filePath->getParentPath()->toString())
+                array('path' => $parentDirPath)
             )
         );
     }
 
     public function listDirectoryAction($path = '')
     {
-        $locator = new DirectoryPath($path);
-        $directoryListing = $this->getWikiService()->listDirectory($locator);
+        $directoryPath = new DirectoryPath($path);
+        $directoryListing = $this->getWikiService()->listDirectory($directoryPath);
         return $this->render(
             'DdrGitkiBaseBundle:Wiki:directoryListing.html.twig',
             array(
                 'path' => $path,
-                'locator' => $locator,
+                'locator' => $directoryPath,
                 'directoryListing' => $directoryListing
             )
         );
@@ -292,7 +302,10 @@ class WikiController extends BaseController
         } else {
         }
 
-        return $this->render('DdrGitkiBaseBundle:Wiki:directoryUpload.html.twig', array('form' => $form->createView()));
+        return $this->render(
+            'DdrGitkiBaseBundle:Wiki:directoryUpload.html.twig',
+            array('form' => $form->createView(), 'path' => $directoryPath)
+        );
     }
 
     protected function getContents(File $file)
