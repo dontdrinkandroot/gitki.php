@@ -49,15 +49,20 @@
                 <td>{{ page.mTime|date("Y/m/d H:i:s") }}</td>
                 <td class="actions">
                     <div class="btn-group">
+                        {% if is_granted('ROLE_COMMITER') %}
+                            <a class="btn btn-default btn-xs"
+                               href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname, 'action': 'edit'}) }}"
+                               title="Edit">{{ icon('pencil') }}</a>
+                            <a class="btn btn-default btn-xs"
+                               href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname, 'action': 'rename'}) }}"
+                               title="Rename">{{ icon('resize-horizontal') }}</a>
+                            <a class="btn btn-default btn-xs"
+                               href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname, 'action': 'delete'}) }}"
+                               title="Delete">{{ icon('trash') }}</a>
+                        {% endif %}
                         <a class="btn btn-default btn-xs"
-                           href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname, 'action': 'edit'}) }}"
-                           title="Edit">{{ icon('pencil') }}</a>
-                        <a class="btn btn-default btn-xs"
-                           href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname, 'action': 'rename'}) }}"
-                           title="Rename">{{ icon('resize-horizontal') }}</a>
-                        <a class="btn btn-default btn-xs"
-                           href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname, 'action': 'delete'}) }}"
-                           title="Delete">{{ icon('trash') }}</a>
+                           href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname, 'action': 'history'}) }}"
+                           title="History">{{ icon('time') }}</a>
                     </div>
                 </td>
             </tr>
@@ -71,12 +76,17 @@
                 <td>{{ file.mTime|date("Y/m/d H:i:s") }}</td>
                 <td class="actions">
                     <div class="btn-group">
+                        {% if is_granted('ROLE_COMMITER') %}
+                            <a class="btn btn-default btn-xs"
+                               href="{{ path('ddr_gitki_wiki_file', {'path': path ~ file.relativePathname, 'action': 'rename'}) }}"
+                               title="Rename">{{ icon('resize-horizontal') }}</a>
+                            <a class="btn btn-default btn-xs"
+                               href="{{ path('ddr_gitki_wiki_file', {'path': path ~ file.relativePathname, 'action': 'delete'}) }}"
+                               title="Delete">{{ icon('trash') }}</a>
+                        {% endif %}
                         <a class="btn btn-default btn-xs"
-                           href="{{ path('ddr_gitki_wiki_file', {'path': path ~ file.relativePathname, 'action': 'rename'}) }}"
-                           title="Rename">{{ icon('resize-horizontal') }}</a>
-                        <a class="btn btn-default btn-xs"
-                           href="{{ path('ddr_gitki_wiki_file', {'path': path ~ file.relativePathname, 'action': 'delete'}) }}"
-                           title="Delete">{{ icon('trash') }}</a>
+                           href="{{ path('ddr_gitki_wiki_file', {'path': path ~ file.relativePathname, 'action': 'history'}) }}"
+                           title="History">{{ icon('time') }}</a>
                     </div>
                 </td>
             </tr>

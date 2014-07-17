@@ -6,6 +6,7 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Repository;
 
 use GitWrapper\GitWrapper;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\CommitMetadata;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FilePath;
 
 class GitRepository
 {
@@ -26,6 +27,22 @@ class GitRepository
         if (null !== $maxCount) {
             $options['max-count'] = $maxCount;
         }
+
+        $workingCopy = $this->getWorkingCopy();
+        $workingCopy->log($options);
+        $log = $workingCopy->getOutput();
+
+        return $this->parseLog($log);
+    }
+
+    public function getFileHistory(FilePath $path, $maxCount = null)
+    {
+
+        $options = array('pretty' => "format:" . LogParser::getFormatString());
+        if (null !== $maxCount) {
+            $options['max-count'] = $maxCount;
+        }
+        $options['p'] = $path->toString();
 
         $workingCopy = $this->getWorkingCopy();
         $workingCopy->log($options);

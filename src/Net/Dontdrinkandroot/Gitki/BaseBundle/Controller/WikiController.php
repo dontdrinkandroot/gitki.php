@@ -42,6 +42,8 @@ class WikiController extends BaseController
                 return $this->deleteFileAction($path);
             case 'rename' :
                 return $this->renameFileAction($request, $path);
+            case 'history' :
+                return $this->fileHistoryAction($request, $path);
             default:
                 return $this->showFileAction($request, $path);
         }
@@ -246,6 +248,20 @@ class WikiController extends BaseController
         );
     }
 
+    private function fileHistoryAction(Request $request, $path)
+    {
+        $filePath = new FilePath($path);
+        $history = $this->getWikiService()->getFileHistory($filePath);
+        return $this->render(
+            'DdrGitkiBaseBundle:Wiki:fileHistory.html.twig',
+            array(
+                'path' => $filePath,
+                'history' => $history
+            )
+        );
+    }
+
+
     public function listDirectoryAction($path = '/')
     {
         $directoryPath = new DirectoryPath($path);
@@ -339,5 +355,6 @@ class WikiController extends BaseController
 
         return $content;
     }
+
 
 }

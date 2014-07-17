@@ -1,0 +1,16 @@
+{% for commit in history %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">{{ commit.hash }}</div>
+        </div>
+        <div class="panel-body">
+            {{ commit.message }}
+        </div>
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-xs-6">{{ commit.committer }} &lt;{{ commit.eMail }}&gt;</div>
+                <div class="col-xs-6 text-right">{{ commit.timeStamp|date("Y/m/d H:i:s") }}</div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

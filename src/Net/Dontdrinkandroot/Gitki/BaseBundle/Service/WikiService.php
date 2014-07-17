@@ -289,6 +289,26 @@ class WikiService
         return new DirectoryListing($path, $pages, $subDirectories, $otherFiles);
     }
 
+    /**
+     * @param Path $path
+     * @return File
+     */
+    public function getFile(Path $path)
+    {
+        $absolutePath = $this->getAbsolutePath($path);
+        return new File($absolutePath);
+    }
+
+    public function getHistory($maxCount)
+    {
+        return $this->gitRepository->getWorkingCopyHistory($maxCount);
+    }
+
+    public function getFileHistory(FilePath $path, $maxCount = null)
+    {
+        return $this->gitRepository->getFileHistory($path, $maxCount);
+    }
+
     protected function assertHasLock(User $user, $lockPath)
     {
         if (file_exists($lockPath) && !$this->isLockExpired($lockPath)) {
@@ -366,19 +386,5 @@ class WikiService
         return $workingCopy;
     }
 
-    /**
-     * @param Path $path
-     * @return File
-     */
-    public function getFile(Path $path)
-    {
-        $absolutePath = $this->getAbsolutePath($path);
-        return new File($absolutePath);
-    }
-
-    public function getHistory($maxCount)
-    {
-        return $this->gitRepository->getWorkingCopyHistory($maxCount);
-    }
 
 }
