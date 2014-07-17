@@ -2,6 +2,10 @@ ddr_gitki_base_homepage:
     path:     /
     defaults: { _controller: DdrGitkiBaseBundle:Default:index }
 
+ddr_gitki_loggedout:
+    path:   /loggedout
+    defaults: { _controller: DdrGitkiBaseBundle:Default:loggedout }
+
 ddr_gitki_wiki_directory:
     path:   /wiki/{path}
     defaults: { _controller: DdrGitkiBaseBundle:Wiki:directory, path: / }

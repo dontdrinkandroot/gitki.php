@@ -12,7 +12,7 @@ security:
             anonymous: ~
             logout:
                 path:   /logout
-                target: /
+                target: /loggedout
             oauth:
                 resource_owners:
                     github:          "/login/check-github"
@@ -26,6 +26,7 @@ security:
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/connect, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/loggedout, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         ## Only logged in users may see content
         #- { path: ^/, roles: ROLE_USER }
         ## Only watchers may see content
