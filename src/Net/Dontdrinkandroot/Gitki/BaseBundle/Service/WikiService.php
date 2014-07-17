@@ -15,6 +15,7 @@ use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\DirectoryListing;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\DirectoryPath;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FilePath;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Security\User;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -33,13 +34,19 @@ class WikiService
 
     protected $repositoryPath;
 
-    public function __construct($repositoryPath, EventDispatcherInterface $eventDispatcher)
+    /**
+     * @var \Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository
+     */
+    protected $gitRepository;
+
+    public function __construct(GitRepository $gitRepository, $repositoryPath, EventDispatcherInterface $eventDispatcher)
     {
         if (empty($repositoryPath)) {
             throw new \Exception('Repository path must not be empty');
         }
         $this->repositoryPath = $repositoryPath;
 
+        $this->gitRepository = $gitRepository;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -369,5 +376,9 @@ class WikiService
         return new File($absolutePath);
     }
 
+    public function getHistory($maxCount)
+    {
+        return $this->gitRepository->getWorkingCopyHistory($maxCount);
+    }
 
 }

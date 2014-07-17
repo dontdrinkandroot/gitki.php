@@ -6,7 +6,7 @@ class DefaultController extends BaseController
 {
     public function indexAction()
     {
-        return $this->redirect($this->generateUrl('ddr_gitki_wiki_file', array('path' => 'index.md')));
-        //return $this->render('DdrGitkiBaseBundle:Default:index.html.twig');
+        $history = $this->getWikiService()->getHistory(20);
+        return $this->render('DdrGitkiBaseBundle:Default:index.html.twig', array('history' => $history));
     }
 }
