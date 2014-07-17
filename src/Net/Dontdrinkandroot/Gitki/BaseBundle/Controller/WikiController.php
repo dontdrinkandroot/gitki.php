@@ -130,8 +130,14 @@ class WikiController extends BaseController
         try {
             $this->getWikiService()->createLock($user, $filePath);
         } catch (PageLockedException $e) {
-            throw new ConflictHttpException($e->getMessage());
+            $renderedView = $this->renderView(
+                'DdrGitkiBaseBundle:Wiki:page.locked.html.twig',
+                array('path' => $filePath, 'lockedBy' => $e->getLockedBy())
+            );
+
+            return new Response($renderedView, 409);
         }
+
         $content = $this->getWikiService()->getContent($filePath);
 
         $form = $this->createFormBuilder()
@@ -149,6 +155,7 @@ class WikiController extends BaseController
             try {
                 $this->getWikiService()->savePage($user, $filePath, $content, $commitMessage);
                 $this->getWikiService()->removeLock($user, $filePath);
+
                 return $this->redirect(
                     $this->generateUrl(
                         'ddr_gitki_wiki_file',
@@ -252,6 +259,7 @@ class WikiController extends BaseController
     {
         $filePath = new FilePath($path);
         $history = $this->getWikiService()->getFileHistory($filePath);
+
         return $this->render(
             'DdrGitkiBaseBundle:Wiki:fileHistory.html.twig',
             array(
@@ -266,6 +274,7 @@ class WikiController extends BaseController
     {
         $directoryPath = new DirectoryPath($path);
         $directoryListing = $this->getWikiService()->listDirectory($directoryPath);
+
         return $this->render(
             'DdrGitkiBaseBundle:Wiki:directoryListing.html.twig',
             array(
