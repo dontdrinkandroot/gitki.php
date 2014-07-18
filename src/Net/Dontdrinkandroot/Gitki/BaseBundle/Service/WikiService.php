@@ -106,7 +106,7 @@ class WikiService
         return file_get_contents($absolutePath);
     }
 
-    public function savePage(User $user, Path $path, $content, $commitMessage)
+    public function savePage(User $user, FilePath $path, $content, $commitMessage)
     {
         $lockPath = $this->getAbsoluteLockPath($path);
         $this->assertHasLock($user, $lockPath);
@@ -114,14 +114,7 @@ class WikiService
         $absolutePath = $this->getAbsolutePath($path);
         file_put_contents($absolutePath, $content);
 
-        $workingCopy = $this->getWorkingCopy();
-        $workingCopy->add($absolutePath);
-        $workingCopy->commit(
-            array(
-                'm' => $commitMessage,
-                'author' => $this->getAuthor($user)
-            )
-        );
+        $this->gitRepository->addAndCommit($this->getAuthor($user), $commitMessage, $path);
 
         $this->eventDispatcher->dispatch(
             'ddr.gitki.wiki.page.saved',
@@ -133,15 +126,7 @@ class WikiService
     {
         $this->createLock($user, $path);
 
-        $absolutePath = $this->getAbsolutePath($path);
-        $workingCopy = $this->getWorkingCopy();
-        $workingCopy->rm($path);
-        $workingCopy->commit(
-            array(
-                'm' => 'Removing ' . $path->toString(),
-                'author' => $this->getAuthor($user)
-            )
-        );
+        $this->gitRepository->removeAndCommit($this->getAuthor($user), 'Removing ' . $path->toString(), $path);
 
         $this->removeLock($user, $path);
     }
@@ -162,7 +147,6 @@ class WikiService
 
     public function renameFile(User $user, FilePath $oldPath, FilePath $newPath, $commitMessage)
     {
-        $absoluteOldPath = $this->getAbsolutePath($oldPath);
         $absoluteNewPath = $this->getAbsolutePath($newPath);
 
         $fileSystem = new Filesystem();
@@ -171,19 +155,11 @@ class WikiService
         }
 
         $oldLockPath = $this->getAbsoluteLockPath($oldPath);
-        $newLockPath = $this->getAbsoluteLockPath($newPath);
 
         $this->assertHasLock($user, $oldLockPath);
         $this->createLock($user, $newPath);
 
-        $workingCopy = $this->getWorkingCopy();
-        $workingCopy->mv($absoluteOldPath, $absoluteNewPath);
-        $workingCopy->commit(
-            array(
-                'm' => $commitMessage,
-                'author' => $this->getAuthor($user)
-            )
-        );
+        $this->gitRepository->moveAndCommit($this->getAuthor($user), $commitMessage, $oldPath, $newPath);
 
         $this->removeLock($user, $oldPath);
         $this->removeLock($user, $newPath);
@@ -206,14 +182,9 @@ class WikiService
 
         $this->createLock($user, $path);
         $file->move($absoluteDirectoryPath, $path->getName());
-        $workingCopy = $this->getWorkingCopy();
-        $workingCopy->add($absoluteFilePath);
-        $workingCopy->commit(
-            array(
-                'm' => $commitMessage,
-                'author' => $this->getAuthor($user)
-            )
-        );
+
+        $this->gitRepository->addAndCommit($this->getAuthor($user), $commitMessage, $path);
+
         $this->removeLock($user, $path);
     }
 
@@ -374,17 +345,5 @@ class WikiService
 
         return "\"$name <$email>\"";
     }
-
-    /**
-     * @return \GitWrapper\GitWorkingCopy
-     */
-    protected function getWorkingCopy()
-    {
-        $git = new GitWrapper();
-        $workingCopy = $git->workingCopy($this->repositoryPath);
-
-        return $workingCopy;
-    }
-
 
 }

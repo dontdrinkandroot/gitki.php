@@ -81,4 +81,47 @@ class GitRepository
 
         return $workingCopy;
     }
+
+    public function addAndCommit($author, $commitMessage, $paths)
+    {
+        if (!is_array($paths)) {
+            $paths = array($paths);
+        }
+
+        $workingCopy = $this->getWorkingCopy();
+        foreach ($paths as $path) {
+            $workingCopy->add($path->toString());
+        }
+        $this->commit($author, $commitMessage);
+    }
+
+    public function removeAndCommit($author, $commitMessage, $paths)
+    {
+        if (!is_array($paths)) {
+            $paths = array($paths);
+        }
+
+        $workingCopy = $this->getWorkingCopy();
+        foreach ($paths as $path) {
+            $workingCopy->rm($path);
+        }
+        $this->commit($author, $commitMessage);
+    }
+
+    public function commit($author, $commitMessage)
+    {
+        $this->getWorkingCopy()->commit(
+            array(
+                'm' => $commitMessage,
+                'author' => $author
+            )
+        );
+    }
+
+    public function moveAndCommit($author, $commitMessage, $oldPath, $newPath)
+    {
+        $workingCopy = $this->getWorkingCopy();
+        $workingCopy->mv($oldPath->toString(), $newPath->toString());
+        $this->commit($author, $commitMessage);
+    }
 } 
