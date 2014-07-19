@@ -9,6 +9,7 @@ use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\DirectoryPath;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FilePath;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Utils\StringUtils;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,17 +54,20 @@ class WikiController extends BaseController
     {
         $filePath = new FilePath($path);
         if (StringUtils::endsWith($filePath->getName(), '.md')) {
-            return $this->showPageAction($path);
+            return $this->showPageAction($request, $path);
         } else {
             return $this->serveFileAction($request, $path);
         }
     }
 
-    public function showPageAction($path)
+    public function showPageAction(Request $request, $path)
     {
         $filePath = new FilePath($path);
 
-        if (!$this->getWikiService()->pageExists($filePath)) {
+        $file = null;
+        try {
+            $file = $this->getWikiService()->getFile($filePath);
+        } catch (FileNotFoundException $e) {
 
             if (null === $this->getUser()) {
                 throw new NotFoundHttpException('This page does not exist');
@@ -77,7 +81,15 @@ class WikiController extends BaseController
             );
         }
 
-        $content = $this->getWikiService()->getContent($filePath);
+        $response = new Response();
+        $lastModified = new \DateTime();
+        $lastModified->setTimestamp($file->getMTime());
+        $response->setLastModified($lastModified);
+        if ($response->isNotModified($request)) {
+            return $response;
+        }
+
+        $content = $this->getContents($file);
         $content = $this->getMarkdownParser()->transformMarkdown($content);
 
         $heading = null;
@@ -87,14 +99,18 @@ class WikiController extends BaseController
         }
         $body = preg_replace("#<h1.*</h1>#i", "", $content);
 
-        return $this->render(
-            'DdrGitkiBaseBundle:Wiki:page.html.twig',
+        $renderedView = $this->renderView(
+        'DdrGitkiBaseBundle:Wiki:page.html.twig',
             array(
                 'heading' => $heading,
                 'body' => $body,
                 'path' => $filePath,
             )
         );
+
+        $response->setContent($renderedView);
+
+        return $response;
     }
 
     public function serveFileAction(Request $request, $path)
