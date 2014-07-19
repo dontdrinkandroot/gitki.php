@@ -5,7 +5,6 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Service;
 
 // TODO: make sure that file is in repository
 
-use GitWrapper\GitWrapper;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\PageSavedEvent;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\DirectoryNotEmptyException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\FileExistsException;
@@ -39,8 +38,11 @@ class WikiService
      */
     protected $gitRepository;
 
-    public function __construct(GitRepository $gitRepository, $repositoryPath, EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        GitRepository $gitRepository,
+        $repositoryPath,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         if (empty($repositoryPath)) {
             throw new \Exception('Repository path must not be empty');
         }
@@ -53,6 +55,7 @@ class WikiService
     public function pageExists(Path $path)
     {
         $absolutePath = $this->getAbsolutePath($path);
+
         return file_exists($absolutePath);
     }
 
@@ -223,8 +226,10 @@ class WikiService
             /* @var \Symfony\Component\Finder\SplFileInfo $file */
             if ($file->getExtension() == "md") {
                 $pages[] = $file;
-            } else if ($file->getExtension() != 'lock') {
-                $otherFiles[] = $file;
+            } else {
+                if ($file->getExtension() != 'lock') {
+                    $otherFiles[] = $file;
+                }
             }
         }
 
@@ -267,6 +272,7 @@ class WikiService
     public function getFile(Path $path)
     {
         $absolutePath = $this->getAbsolutePath($path);
+
         return new File($absolutePath);
     }
 
@@ -308,12 +314,13 @@ class WikiService
         if ($path != null) {
             $absolutePath .= $path->toString();
         }
+
         return $absolutePath;
     }
 
     protected function getAbsoluteLockPath(Path $path)
     {
-        $lockPath = $path->getParentPath()->addFile($path->getName() . '.lock');
+        $lockPath = $path->getParentPath()->appendFile($path->getName() . '.lock');
         $absoluteLockPath = $this->repositoryPath . '/' . $lockPath->toString();
 
         return $absoluteLockPath;
@@ -332,6 +339,7 @@ class WikiService
     protected function getLockExpiry($lockPath)
     {
         $mTime = filemtime($lockPath);
+
         return $mTime + (60 * 5);
     }
 

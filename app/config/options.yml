@@ -1,0 +1,3 @@
+parameters:
+    gitki_wiki_name: GitKi
+    gitki_wiki_show_breadcrumbs: true

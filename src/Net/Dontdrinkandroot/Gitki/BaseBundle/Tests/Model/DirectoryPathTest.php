@@ -108,11 +108,11 @@ class DirectoryPathTest extends \PHPUnit_Framework_TestCase
     public function testAddSegment()
     {
         $path = new DirectoryPath();
-        $newPath = $path->addSubDirectory('sub');
+        $newPath = $path->appendDirectory('sub');
         $this->assertNull($path->getLastSegment());
         $this->assertEquals('sub', $newPath->getLastSegment()->toString());
 
-        $newPath = $newPath->addSubDirectory('subsub');
+        $newPath = $newPath->appendDirectory('subsub');
         $this->assertEquals('sub/subsub', $newPath->getLastSegment()->toString());
         $this->assertEquals(2, $newPath->getNumSegments());
     }

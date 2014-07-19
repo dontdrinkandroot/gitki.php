@@ -1,0 +1,19 @@
+{% extends 'DdrGitkiBaseBundle::base.html.twig' %}
+{% block title %} - {{ path }}{% endblock %}
+{% block container %}
+    {{ parent() }}
+    {% block aboveheader %}
+        {% if gitki_wiki_show_breadcrumbs %}
+            {{ include('DdrGitkiBaseBundle:Wiki:breadcrumb.partial.html.twig', {'path' : path}) }}
+        {% endif %}
+    {% endblock %}
+    <div class="page-header">
+        {% block pageheader %}
+            {% block actions %}
+            {% endblock %}
+            <h1>{% block heading %}{% endblock %}</h1>
+        {% endblock %}
+    </div>
+    {% block content %}
+    {% endblock %}
+{% endblock %}

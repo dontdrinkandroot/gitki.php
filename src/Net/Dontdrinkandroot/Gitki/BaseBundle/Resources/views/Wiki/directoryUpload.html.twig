@@ -1,9 +1,8 @@
-{% extends 'DdrGitkiBaseBundle::base.html.twig' %}
-{% block title %} - {{ path }} - Upload{% endblock %}
+{% extends 'DdrGitkiBaseBundle:Wiki:base.html.twig' %}
+{% block title %} - {{ path }} - Upload File{% endblock %}
+{% block heading %}
+    Upload File
+{% endblock %}
 {% block content %}
-    {{ include('DdrGitkiBaseBundle:Wiki:breadcrumb.partial.html.twig', {'path' : path}) }}
-    <div class="page-header">
-        <h1>Upload File</h1>
-    </div>
     {{ form(form) }}
 {% endblock %}

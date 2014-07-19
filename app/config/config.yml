@@ -1,5 +1,6 @@
 imports:
     - { resource: parameters.yml }
+    - { resource: options.yml }
     - { resource: security.yml }
 
 framework:
@@ -29,7 +30,8 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     globals:
-        wiki_name: "%wiki_name%"
+        gitki_wiki_name: "%gitki_wiki_name%"
+        gitki_wiki_show_breadcrumbs: "%gitki_wiki_show_breadcrumbs%"
 
 # Assetic Configuration
 assetic:

@@ -1,21 +1,17 @@
-{% extends 'DdrGitkiBaseBundle::base.html.twig' %}
-{% block title %} - {{ path }}{% endblock %}
+{% extends 'DdrGitkiBaseBundle:Wiki:base.html.twig' %}
+{% block title %} - {{ path }} - Listing{% endblock %}
+{% block actions %}
+    {% if is_granted('ROLE_COMMITER') %}
+        <div class="btn-group pull-right">
+            <a href="{{ path('ddr_gitki_wiki_directory', {'path': path, 'action': 'upload'}) }}"
+               class="btn btn-default" title="Upload File">{{ icon('upload') }}</a>
+        </div>
+    {% endif %}
+{% endblock %}
+{% block heading %}
+    {% if path.name %}{{ path.name }}{% else %}{{ icon('home') }}{% endif %}
+{% endblock %}
 {% block content %}
-    {{ include('DdrGitkiBaseBundle:Wiki:breadcrumb.partial.html.twig', {'path' : path}) }}
-    <div class="page-header">
-        {% if is_granted('ROLE_COMMITER') %}
-            <div class="btn-group pull-right">
-                <a href="{{ path('ddr_gitki_wiki_directory', {'path': path, 'action': 'upload'}) }}"
-                   class="btn btn-default" title="Upload File">{{ icon('upload') }}</a>
-            </div>
-        {% endif %}
-        {% if path.name %}
-            <h1>{{ path.name }}</h1>
-        {% else %}
-            <h1>{{ icon('home') }}</h1>
-        {% endif %}
-    </div>
-
     <table class="table directory table-condensed">
         <thead>
         <th class="icon"></th>

@@ -306,7 +306,7 @@ class WikiController extends BaseController
                 if (null == $uploadedFileName || trim($uploadedFileName) == "") {
                     $uploadedFileName = $uploadedFile->getClientOriginalName();
                 }
-                $filePath = $directoryPath->addFile($uploadedFileName);
+                $filePath = $directoryPath->appendFile($uploadedFileName);
                 $this->getWikiService()->addFile(
                     $this->getUser(),
                     $filePath,

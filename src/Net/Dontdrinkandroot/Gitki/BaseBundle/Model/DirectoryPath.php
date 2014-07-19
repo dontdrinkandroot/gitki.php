@@ -16,7 +16,7 @@ class DirectoryPath extends Path
      * @param $name
      * @return DirectoryPath
      */
-    public function addSubDirectory($name)
+    public function appendDirectory($name)
     {
         $newPath = new DirectoryPath();
         $newSegments = array();
@@ -36,7 +36,7 @@ class DirectoryPath extends Path
      * @param $name
      * @return FilePath
      */
-    public function addFile($name)
+    public function appendFile($name)
     {
         $newPath = new FilePath();
         $newSegments = array();
