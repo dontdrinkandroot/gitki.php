@@ -5,7 +5,7 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Service;
 
 // TODO: make sure that file is in repository
 
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\PageSavedEvent;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentSavedEvent;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\DirectoryNotEmptyException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\FileExistsException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
@@ -120,8 +120,8 @@ class WikiService
         $this->gitRepository->addAndCommit($this->getAuthor($user), $commitMessage, $path);
 
         $this->eventDispatcher->dispatch(
-            'ddr.gitki.wiki.page.saved',
-            new PageSavedEvent($path, $user->getLogin(), time(), $content, $commitMessage)
+            'ddr.gitki.wiki.markdown_document.saved',
+            new MarkdownDocumentSavedEvent($path, $user->getLogin(), time(), $content, $commitMessage)
         );
     }
 
@@ -208,6 +208,23 @@ class WikiService
 
         throw new PageLockedException($lockLogin, $this->getLockExpiry($lockPath));
     }
+
+    public function findAllMarkdownFiles()
+    {
+        $finder = new Finder();
+        $finder->in($this->repositoryPath);
+        $finder->name('*.md');
+
+        $filePaths = array();
+
+        foreach ($finder->files() as $file) {
+            /** @var SplFileInfo $file */
+            $filePaths[] = new FilePath($file->getRelativePathname());
+        }
+
+        return $filePaths;
+    }
+
 
     public function listDirectory(DirectoryPath $path)
     {
@@ -353,5 +370,6 @@ class WikiService
 
         return "\"$name <$email>\"";
     }
+
 
 }
