@@ -5,6 +5,7 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Service;
 
 // TODO: make sure that file is in repository
 
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentDeletedEvent;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentSavedEvent;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\DirectoryNotEmptyException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\FileExistsException;
@@ -16,6 +17,7 @@ use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FilePath;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Security\User;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Utils\StringUtils;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -129,9 +131,17 @@ class WikiService
     {
         $this->createLock($user, $path);
 
-        $this->gitRepository->removeAndCommit($this->getAuthor($user), 'Removing ' . $path->toString(), $path);
+        $commitMessage = 'Removing ' . $path->toString();
+        $this->gitRepository->removeAndCommit($this->getAuthor($user), $commitMessage, $path);
 
         $this->removeLock($user, $path);
+
+        if (StringUtils::endsWith($path->getName(), '.md')) {
+            $this->eventDispatcher->dispatch(
+                'ddr.gitki.wiki.markdown_document.deleted',
+                new MarkdownDocumentDeletedEvent($path, $user->getLogin(), time(), $commitMessage)
+            );
+        }
     }
 
     public function deleteDirectory(User $user, DirectoryPath $path)
@@ -166,6 +176,21 @@ class WikiService
 
         $this->removeLock($user, $oldPath);
         $this->removeLock($user, $newPath);
+
+        if (StringUtils::endsWith($oldPath->getName(), '.md')) {
+            $this->eventDispatcher->dispatch(
+                'ddr.gitki.wiki.markdown_document.deleted',
+                new MarkdownDocumentDeletedEvent($oldPath, $user->getLogin(), time(), $commitMessage)
+            );
+        }
+
+        if (StringUtils::endsWith($newPath->getName(), '.md')) {
+            $content = $this->getContent($newPath);
+            $this->eventDispatcher->dispatch(
+                'ddr.gitki.wiki.markdown_document.saved',
+                new MarkdownDocumentSavedEvent($newPath, $user->getLogin(), time(), $content, $commitMessage)
+            );
+        }
     }
 
     public function addFile(User $user, FilePath $path, UploadedFile $file, $commitMessage)

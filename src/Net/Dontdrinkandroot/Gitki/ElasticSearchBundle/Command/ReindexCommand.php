@@ -22,6 +22,8 @@ class ReindexCommand extends ElasticSearchCommand
         $wikiService = $this->getWikiService();
         $elasticSearchRepo = $this->getElasticSearchRepository();
 
+        $elasticSearchRepo->deleteMarkdownDocumentIndex();
+
         $filePaths = $wikiService->findAllMarkdownFiles();
 
         $progress = new ProgressBar($output, count($filePaths));

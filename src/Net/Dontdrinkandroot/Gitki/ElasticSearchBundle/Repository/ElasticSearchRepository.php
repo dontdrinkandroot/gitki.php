@@ -5,6 +5,7 @@ namespace Net\Dontdrinkandroot\Gitki\ElasticSearchBundle\Repository;
 
 
 use Elasticsearch\Client;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentDeletedEvent;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentSavedEvent;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FilePath;
 
@@ -36,9 +37,16 @@ class ElasticSearchRepository
         $this->client = new Client($params);
     }
 
-    public function onMarkdownDocumentSaved(MarkdownDocumentSavedEvent $event)
+    public function deleteMarkdownDocumentIndex()
     {
-        $this->indexMarkdownDocument($event->getPath(), $event->getContent());
+        //TODO: This doesn't work with the current elasticsearch api version
+//        $params = array(
+//            'index' => $this->index,
+//            'type' => 'markdown_document',
+//        );
+//        $params['body']['query']['bool']['must']['match_all'] = '';
+//
+//        return $this->client->deleteByQuery($params);
     }
 
     public function indexMarkdownDocument(FilePath $path, $content)
@@ -65,7 +73,7 @@ class ElasticSearchRepository
             'index' => $this->index,
             'type' => 'markdown_document',
         );
-        $params['body']['query']['match']['content'] = $searchString;
+        $params['body']['query']['wildcard']['content'] = $searchString;
 
         $result = $this->client->search($params);
         $numHits = $result['hits']['total'];
@@ -79,6 +87,22 @@ class ElasticSearchRepository
         }
 
         return $paths;
+    }
+
+    public function onMarkdownDocumentSaved(MarkdownDocumentSavedEvent $event)
+    {
+        $this->indexMarkdownDocument($event->getPath(), $event->getContent());
+    }
+
+    public function onMarkdownDocumentDeleted(MarkdownDocumentDeletedEvent $event)
+    {
+        $params = array(
+            'id' => $event->getPath()->toString(),
+            'index' => $this->index,
+            'type' => 'markdown_document',
+        );
+
+        return $this->client->delete($params);
     }
 
 } 
