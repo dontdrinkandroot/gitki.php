@@ -1,0 +1,12 @@
+{% extends 'DdrGitkiBaseBundle::base.html.twig' %}
+{% block title %} - Search - {{ searchString }}{% endblock %}
+{% block container %}
+    <div class="page-header">
+        <h1>Documents containing "{{ searchString }}"</h1>
+    </div>
+    <ul>
+        {% for path in paths %}
+            <li><a href="{{ path('ddr_gitki_wiki_file', {'path': path}) }}">{{ path.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
