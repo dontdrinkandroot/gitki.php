@@ -5,9 +5,11 @@ namespace Net\Dontdrinkandroot\Gitki\ElasticSearchBundle\Repository;
 
 
 use Elasticsearch\Client;
+use Knp\Bundle\MarkdownBundle\MarkdownParserInterface;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentDeletedEvent;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentSavedEvent;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FilePath;
+use Net\Dontdrinkandroot\Gitki\ElasticSearchBundle\Model\MarkdownSearchResult;
 
 class ElasticSearchRepository
 {
@@ -25,8 +27,13 @@ class ElasticSearchRepository
      */
     private $client;
 
+    /**
+     * @var \Knp\Bundle\MarkdownBundle\MarkdownParserInterface
+     */
+    private $markdownParser;
 
-    public function __construct($host, $port, $index)
+
+    public function __construct($host, $port, $index, MarkdownParserInterface $markdownParser)
     {
         $this->host = $host;
         $this->port = $port;
@@ -35,6 +42,8 @@ class ElasticSearchRepository
         $params = array();
         $params['hosts'] = array($host . ':' . $port);
         $this->client = new Client($params);
+
+        $this->markdownParser = $markdownParser;
     }
 
     public function deleteMarkdownDocumentIndex()
@@ -51,11 +60,18 @@ class ElasticSearchRepository
 
     public function indexMarkdownDocument(FilePath $path, $content)
     {
+        $parsedContent = $this->markdownParser->transformMarkdown($content);
+        $title = null;
+        if (preg_match("#<h1.*?>(.*?)</h1>#i", $parsedContent, $matches)) {
+            $title = $matches[1];
+        }
+
         $params = array(
             'id' => $path->toString(),
             'index' => $this->index,
             'type' => 'markdown_document',
             'body' => array(
+                'title' => $title,
                 'content' => $content
             )
         );
@@ -65,7 +81,7 @@ class ElasticSearchRepository
 
     /**
      * @param $searchString
-     * @return FilePath[]
+     * @return MarkdownSearchResult[]
      */
     public function searchMarkdownDocuments($searchString)
     {
@@ -73,7 +89,11 @@ class ElasticSearchRepository
             'index' => $this->index,
             'type' => 'markdown_document',
         );
-        $params['body']['query']['wildcard']['content'] = $searchString;
+
+        $searchStringParts = explode(' ', $searchString);
+        foreach ($searchStringParts as $searchStringPart) {
+            $params['body']['query']['bool']['should'][]['wildcard']['content'] = $searchStringPart . '*';
+        }
 
         $result = $this->client->search($params);
         $numHits = $result['hits']['total'];
@@ -81,12 +101,16 @@ class ElasticSearchRepository
             return array();
         }
 
-        $paths = array();
+        $searchResults = array();
         foreach ($result['hits']['hits'] as $hit) {
-            $paths[] = new FilePath($hit['_id']);
+            $searchResult = new MarkdownSearchResult();
+            $searchResult->setPath(new FilePath($hit['_id']));
+            $searchResult->setTitle($hit['_source']['title']);
+            $searchResult->setScore($hit['_score']);
+            $searchResults[] = $searchResult;
         }
 
-        return $paths;
+        return $searchResults;
     }
 
     public function onMarkdownDocumentSaved(MarkdownDocumentSavedEvent $event)

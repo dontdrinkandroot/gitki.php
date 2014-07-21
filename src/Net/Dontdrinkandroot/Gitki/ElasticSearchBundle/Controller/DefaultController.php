@@ -22,11 +22,11 @@ class DefaultController extends BaseController
 
         if ($form->isValid()) {
             $searchString = $form->get('searchString')->getData();
-            $paths = $this->getElasticSearchRepository()->searchMarkdownDocuments($searchString);
+            $results = $this->getElasticSearchRepository()->searchMarkdownDocuments($searchString);
 
             return $this->render(
                 'DdrGitkiElasticSearchBundle:Default:search.html.twig',
-                array('searchString' => $searchString, 'paths' => $paths)
+                array('searchString' => $searchString, 'results' => $results)
             );
         }
     }

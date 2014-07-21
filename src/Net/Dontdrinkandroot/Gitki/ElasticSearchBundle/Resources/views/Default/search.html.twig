@@ -5,8 +5,17 @@
         <h1>Documents containing "{{ searchString }}"</h1>
     </div>
     <ul>
-        {% for path in paths %}
-            <li><a href="{{ path('ddr_gitki_wiki_file', {'path': path}) }}">{{ path.name }}</a></li>
+        {% for result in results %}
+            <li>
+                [{{ result.score|number_format(2) }}] <a
+                        href="{{ path('ddr_gitki_wiki_file', {'path': result.path}) }}">
+                    {% if result.title is not empty %}
+                        {{ result.title }}
+                    {% else %}
+                        {{ result.path }}
+                    {% endif %}
+                </a>
+            </li>
         {% endfor %}
     </ul>
 {% endblock %}

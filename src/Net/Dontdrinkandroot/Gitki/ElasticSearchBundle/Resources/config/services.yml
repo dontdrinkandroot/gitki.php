@@ -3,7 +3,7 @@ parameters:
 services:
     ddr.gitki.repository.elasticsearch:
         class:  Net\Dontdrinkandroot\Gitki\ElasticSearchBundle\Repository\ElasticSearchRepository
-        arguments: [%gitki_elasticsearch_host%, %gitki_elasticsearch_port%, %gitki_wiki_name%]
+        arguments: [%gitki_elasticsearch_host%, %gitki_elasticsearch_port%, %gitki_wiki_name%, @markdown.parser]
         tags:
             - { name: kernel.event_listener, event: ddr.gitki.wiki.markdown_document.saved, method: onMarkdownDocumentSaved }
             - { name: kernel.event_listener, event: ddr.gitki.wiki.markdown_document.deleted, method: onMarkdownDocumentDeleted }

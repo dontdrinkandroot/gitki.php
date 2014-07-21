@@ -24,12 +24,14 @@ class SearchCommand extends ElasticSearchCommand
         $searchString = $input->getArgument('searchstring');
         /* @var ElasticSearchRepository $elasticSearchRepo */
         $elasticSearchRepo = $this->getContainer()->get('ddr.gitki.repository.elasticsearch');
-        $paths = $elasticSearchRepo->searchMarkdownDocuments($searchString);
-        if (count($paths) == 0) {
+        $results = $elasticSearchRepo->searchMarkdownDocuments($searchString);
+        if (count($results) == 0) {
             $output->writeln('No results found');
         } else {
-            foreach ($paths as $path) {
-                $output->writeln($path->toString());
+            foreach ($results as $result) {
+                $output->writeln(
+                    '[' . $result->getScore() . '] ' . $result->getTitle() . ' (' . $result->getPath()->toString() . ')'
+                );
             }
         }
     }
