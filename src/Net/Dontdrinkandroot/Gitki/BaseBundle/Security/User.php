@@ -73,7 +73,18 @@ class User implements UserInterface
 
     public function getPrimaryEMail()
     {
-        return $this->eMails[0];
+        $primaryEmail = null;
+        foreach ($this->eMails as $eMail) {
+            if ($eMail['primary']) {
+                $primaryEmail = $eMail['email'];
+            }
+        }
+
+        if (null === $primaryEmail) {
+            throw new \Exception('No primary eMail address found');
+        }
+
+        return $primaryEmail;
     }
 
     public function getId()

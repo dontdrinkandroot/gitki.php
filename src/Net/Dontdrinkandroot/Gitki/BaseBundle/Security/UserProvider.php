@@ -78,13 +78,13 @@ class UserProvider implements OAuthAwareUserProviderInterface, UserProviderInter
         }
 
         $client = new Client();
+        $client->setOption('api_version', 'v3');
         $client->authenticate($response->getAccessToken(), Client::AUTH_HTTP_TOKEN);
         /* @var \Github\Api\CurrentUser $currentUserApi */
-        $currentUserApi = $client->api('me');
+        $currentUserApi = $client->api('current_user');
         $emails = $currentUserApi->emails();
         $allEMails = $emails->all();
 
-        // TODO: no distinction which is the primary yet, api does not support it?!
         $user->setEMails($allEMails);
 
         if (array_key_exists($login, $this->adminUsers)) {
