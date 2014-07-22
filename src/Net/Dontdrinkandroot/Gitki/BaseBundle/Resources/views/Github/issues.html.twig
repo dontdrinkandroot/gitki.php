@@ -2,19 +2,33 @@
 {% block title %} - Issues{% endblock %}
 {% block container %}
     <div class="page-header">
-        {#<div class="pull-right">#}
-        {#<a href="{{ path('ddr_gitki_github_issue_create') }}" class="btn btn-default">{{ icon('plus') }}</a>#}
-        {#</div>#}
+        <div class="pull-right">
+            <a href="{{ path('ddr_gitki_github_issue_create') }}" class="btn btn-default">{{ icon('plus') }}</a>
+        </div>
         <h1>Issues</h1>
     </div>
     {% for issue in issues %}
         <div class="panel panel-default">
             <div class="panel-heading">
-                <div class="pull-right">{% for label in issue.labels %}{{ label(label.name) }}{% endfor %}<br/></div>
-                <h2 class="panel-title">{{ issue.title }}</h2>
+                <div class="pull-right">{% for label in issue.labels %}<span class="label label-default"
+                                                                             style="background-color: #{{ label.color }}">{{ label.name }}</span>{% endfor %}
+                    <br/></div>
+                <h2 class="panel-title">#{{ issue.number }}: {{ issue.title }}</h2>
             </div>
             <div class="panel-body">
-                Reporter: {{ issue.user.login }}
+                <div class="row">
+                    <div class="col-md-3 col-sm-4">
+                        Reporter: {{ issue.user.login }}
+                    </div>
+                    <div class="col-md-3 col-sm-4">
+                        {% if issue.assignee is not empty %}
+                            Assignee: {{ issue.assignee.login }}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-3 col-sm-4">
+                        Created: {{ issue.created_at }}
+                    </div>
+                </div>
             </div>
         </div>
     {% endfor %}

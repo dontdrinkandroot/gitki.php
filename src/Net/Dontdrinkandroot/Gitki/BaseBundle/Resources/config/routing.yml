@@ -19,7 +19,7 @@ ddr_gitki_wiki_file:
         path: .+
 
 ddr_gitki_github_issues:
-    path:   /github/issues
+    path:   /github/issues/
     defaults: { _controller: DdrGitkiBaseBundle:Github:issues }
 
 ddr_gitki_github_issue_create:
