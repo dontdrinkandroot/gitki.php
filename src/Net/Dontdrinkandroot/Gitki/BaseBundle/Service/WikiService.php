@@ -127,6 +127,16 @@ class WikiService
         );
     }
 
+    public function holdLock(User $user, FilePath $path)
+    {
+        $lockPath = $this->getAbsoluteLockPath($path);
+        $this->assertHasLock($user, $lockPath);
+        $fileSystem = new Filesystem();
+        $fileSystem->touch($lockPath);
+
+        return $this->getLockExpiry($lockPath);
+    }
+
     public function deleteFile(User $user, FilePath $path)
     {
         $this->createLock($user, $path);
@@ -382,7 +392,7 @@ class WikiService
     {
         $mTime = filemtime($lockPath);
 
-        return $mTime + (60 * 5);
+        return $mTime + (60);
     }
 
     protected function getAuthor(User $user)
@@ -395,6 +405,5 @@ class WikiService
 
         return "\"$name <$email>\"";
     }
-
 
 }

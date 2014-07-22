@@ -40,7 +40,9 @@ class WikiController extends BaseController
             case 'edit' :
                 return $this->editPageAction($request, $path);
             case 'delete' :
-                return $this->deleteFileAction($path);
+                return $this->deleteFileAction($request, $path);
+            case 'holdlock':
+                return $this->holdLockAction($request, $path);
             case 'rename' :
                 return $this->renameFileAction($request, $path);
             case 'history' :
@@ -100,7 +102,7 @@ class WikiController extends BaseController
         $body = preg_replace("#<h1.*</h1>#i", "", $content);
 
         $renderedView = $this->renderView(
-        'DdrGitkiBaseBundle:Wiki:page.html.twig',
+            'DdrGitkiBaseBundle:Wiki:page.html.twig',
             array(
                 'heading' => $heading,
                 'body' => $body,
@@ -130,6 +132,14 @@ class WikiController extends BaseController
         $response->setContent($this->getContents($file));
 
         return $response;
+    }
+
+    public function holdLockAction(Request $request, $path)
+    {
+        $filePath = new FilePath($path);
+        $expiry = $this->getWikiService()->holdLock($this->getUser(), $filePath);
+
+        return new Response($expiry);
     }
 
     public function editPageAction(Request $request, $path)
@@ -195,7 +205,7 @@ class WikiController extends BaseController
         }
 
         return $this->render(
-            'DdrGitkiBaseBundle:Wiki:pageedit.html.twig',
+            'DdrGitkiBaseBundle:Wiki:page.edit.html.twig',
             array('form' => $form->createView(), 'path' => $filePath)
         );
     }
@@ -249,7 +259,7 @@ class WikiController extends BaseController
         );
     }
 
-    public function deleteFileAction($path)
+    public function deleteFileAction(Request $request, $path)
     {
         $this->assertRole('ROLE_COMMITER');
 

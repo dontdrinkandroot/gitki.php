@@ -43,4 +43,19 @@
         }
         new Editor($("#form_content"), $("#preview"));
     </script>
+    <script type="text/javascript">
+        var holdLockUrl = "{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'holdlock'}) }}";
+        var timeOut = undefined;
+        function holdLock() {
+            $.get(holdLockUrl)
+                    .done(function (data) {
+                        window.setTimeout(holdLock, 10000);
+                    })
+                    .fail(function (data) {
+                        console.error(data);
+                        alert("We are sorry. Holding the page lock failed (saving won't work anymore), copy your data to the clipboard, go back and try to reedit the page.")
+                    });
+        }
+        holdLock();
+    </script>
 {% endblock %}

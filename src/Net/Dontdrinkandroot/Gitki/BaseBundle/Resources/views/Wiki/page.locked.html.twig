@@ -3,7 +3,8 @@
     {{ icon('lock') }} Locked
 {% endblock %}
 {% block content %}
-    <div class="alert alert-warning">The page you are trying to edit is locked by user {{ lockedBy }}. Please try again
+    <div class="alert alert-warning">The page you are trying to edit is locked by user "{{ lockedBy }}". Please try
+        again
         later.
     </div>
 {% endblock %}
