@@ -20,15 +20,17 @@ class DefaultController extends BaseController
 
         $form->handleRequest($request);
 
+        $results = array();
+        $searchString = null;
         if ($form->isValid()) {
             $searchString = $form->get('searchString')->getData();
             $results = $this->getElasticSearchRepository()->searchMarkdownDocuments($searchString);
-
-            return $this->render(
-                'DdrGitkiElasticSearchBundle:Default:search.html.twig',
-                array('searchString' => $searchString, 'results' => $results)
-            );
         }
+
+        return $this->render(
+            'DdrGitkiElasticSearchBundle:Default:search.html.twig',
+            array('form' => $form, 'searchString' => $searchString, 'results' => $results)
+        );
     }
 
     /**

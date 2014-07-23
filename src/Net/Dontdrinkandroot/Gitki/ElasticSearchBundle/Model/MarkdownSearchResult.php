@@ -4,7 +4,7 @@
 namespace Net\Dontdrinkandroot\Gitki\ElasticSearchBundle\Model;
 
 
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FilePath;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
 
 class MarkdownSearchResult
 {
@@ -25,7 +25,7 @@ class MarkdownSearchResult
     private $score;
 
     /**
-     * @param \Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FilePath $path
+     * @param FilePath $path
      */
     public function setPath($path)
     {
@@ -33,7 +33,7 @@ class MarkdownSearchResult
     }
 
     /**
-     * @return \Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FilePath
+     * @return FilePath
      */
     public function getPath()
     {

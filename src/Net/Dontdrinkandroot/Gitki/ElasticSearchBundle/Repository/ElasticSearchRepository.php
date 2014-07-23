@@ -8,7 +8,7 @@ use Elasticsearch\Client;
 use Knp\Bundle\MarkdownBundle\MarkdownParserInterface;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentDeletedEvent;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentSavedEvent;
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FilePath;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
 use Net\Dontdrinkandroot\Gitki\ElasticSearchBundle\Model\MarkdownSearchResult;
 
 class ElasticSearchRepository
@@ -104,7 +104,7 @@ class ElasticSearchRepository
         $searchResults = array();
         foreach ($result['hits']['hits'] as $hit) {
             $searchResult = new MarkdownSearchResult();
-            $searchResult->setPath(new FilePath($hit['_id']));
+            $searchResult->setPath(FilePath::parse($hit['_id']));
             $searchResult->setTitle($hit['_source']['title']);
             $searchResult->setScore($hit['_score']);
             $searchResults[] = $searchResult;

@@ -1,0 +1,81 @@
+<?php
+
+
+namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Tests\Model;
+
+
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
+
+class FilePathTest extends \PHPUnit_Framework_TestCase
+{
+
+    public function testBasic()
+    {
+        $path = FilePath::parse('index.md');
+        $this->assertEquals('index.md', $path->getName());
+        $this->assertEquals('md', $path->getExtension());
+        $this->assertEquals('index', $path->getFileName());
+
+        $path = FilePath::parse('sub/sub/index.md');
+        $this->assertEquals('index.md', $path->getName());
+        $this->assertEquals('md', $path->getExtension());
+        $this->assertEquals('index', $path->getFileName());
+
+        $this->assertEquals('sub/sub/', $path->getParentPath()->toString());
+    }
+
+    public function testNoExtension()
+    {
+        $path = FilePath::parse('index');
+        $this->assertEquals('index', $path->getName());
+        $this->assertNull($path->getExtension());
+        $this->assertEquals('index', $path->getFileName());
+
+        $path = FilePath::parse('sub/index');
+        $this->assertEquals('index', $path->getName());
+        $this->assertNull($path->getExtension());
+        $this->assertEquals('index', $path->getFileName());
+
+        $this->assertEquals('sub/', $path->getParentPath()->toString());
+    }
+
+    public function testDotFile()
+    {
+        $path = FilePath::parse('.index');
+        $this->assertEquals('.index', $path->getName());
+        $this->assertNull($path->getExtension());
+        $this->assertEquals('.index', $path->getFileName());
+
+        $path = FilePath::parse('sub/.index');
+        $this->assertEquals('.index', $path->getName());
+        $this->assertNull($path->getExtension());
+        $this->assertEquals('.index', $path->getFileName());
+
+        $this->assertEquals('sub/', $path->getParentPath()->toString());
+    }
+
+    public function testInvalidPath()
+    {
+        try {
+            $path = FilePath::parse('');
+            $this->fail('Exception expected');
+        } catch (\Exception $e) {
+            /* Expected */
+        }
+
+        try {
+            $path = FilePath::parse('/');
+            $this->fail('Exception expected');
+        } catch (\Exception $e) {
+            /* Expected */
+        }
+
+        try {
+            $path = FilePath::parse('bla/');
+            $this->fail('Exception expected');
+        } catch (\Exception $e) {
+            /* Expected */
+        }
+    }
+
+}

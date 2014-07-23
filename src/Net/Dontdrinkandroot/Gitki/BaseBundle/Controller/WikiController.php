@@ -6,9 +6,9 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Controller;
 
 use GitWrapper\GitException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\DirectoryPath;
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FilePath;
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Utils\StringUtils;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\DirectoryPath;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
+use Net\Dontdrinkandroot\Symfony\ExtensionBundle\Utils\StringUtils;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,7 +54,7 @@ class WikiController extends BaseController
 
     public function showFileAction(Request $request, $path)
     {
-        $filePath = new FilePath($path);
+        $filePath = FilePath::parse($path);
         if (StringUtils::endsWith($filePath->getName(), '.md')) {
             return $this->showPageAction($request, $path);
         } else {
@@ -64,7 +64,7 @@ class WikiController extends BaseController
 
     public function showPageAction(Request $request, $path)
     {
-        $filePath = new FilePath($path);
+        $filePath = FilePath::parse($path);
 
         $file = null;
         try {
@@ -87,12 +87,12 @@ class WikiController extends BaseController
         $lastModified = new \DateTime();
         $lastModified->setTimestamp($file->getMTime());
         $response->setLastModified($lastModified);
-        if ($response->isNotModified($request)) {
-            return $response;
-        }
+//        if ($response->isNotModified($request)) {
+//            return $response;
+//        }
 
         $content = $this->getContents($file);
-        $content = $this->getMarkdownParser()->transformMarkdown($content);
+        $content = $this->getMarkdownParser()->transformMarkdown($content, $filePath);
 
         $heading = null;
         $body = null;
@@ -117,7 +117,7 @@ class WikiController extends BaseController
 
     public function serveFileAction(Request $request, $path)
     {
-        $filePath = new FilePath($path);
+        $filePath = FilePath::parse($path);
         $file = $this->getWikiService()->getFile($filePath);
 
         $response = new Response();
@@ -136,7 +136,7 @@ class WikiController extends BaseController
 
     public function holdLockAction(Request $request, $path)
     {
-        $filePath = new FilePath($path);
+        $filePath = FilePath::parse($path);
         $expiry = $this->getWikiService()->holdLock($this->getUser(), $filePath);
 
         return new Response($expiry);
@@ -146,7 +146,7 @@ class WikiController extends BaseController
     {
         $this->assertRole('ROLE_COMMITER');
 
-        $filePath = new FilePath($path);
+        $filePath = FilePath::parse($path);
         if (!StringUtils::endsWith($filePath->getName(), '.md')) {
             throw new HttpException(500, 'Only editing of markdown files is supported');
         }
@@ -214,7 +214,7 @@ class WikiController extends BaseController
     {
         $this->assertRole('ROLE_COMMITER');
 
-        $filePath = new FilePath($path);
+        $filePath = FilePath::parse($path);
         $user = $this->getUser();
 
         try {
@@ -233,7 +233,7 @@ class WikiController extends BaseController
         if ($form->isSubmitted()) {
 
             if ($form->isValid()) {
-                $newPath = new FilePath($form->get('newpath')->getData());
+                $newPath = FilePath::parse($form->get('newpath')->getData());
                 $this->getWikiService()->renameFile(
                     $user,
                     $filePath,
@@ -263,7 +263,7 @@ class WikiController extends BaseController
     {
         $this->assertRole('ROLE_COMMITER');
 
-        $filePath = new FilePath($path);
+        $filePath = FilePath::parse($path);
         $user = $this->getUser();
 
         $this->getWikiService()->deleteFile($user, $filePath);
@@ -283,7 +283,7 @@ class WikiController extends BaseController
 
     private function fileHistoryAction(Request $request, $path)
     {
-        $filePath = new FilePath($path);
+        $filePath = FilePath::parse($path);
         $history = $this->getWikiService()->getFileHistory($filePath);
 
         return $this->render(
@@ -298,7 +298,7 @@ class WikiController extends BaseController
 
     public function listDirectoryAction($path = '/')
     {
-        $directoryPath = new DirectoryPath($path);
+        $directoryPath = DirectoryPath::parse($path == '/' ? '' : $path);
         $directoryListing = $this->getWikiService()->listDirectory($directoryPath);
 
         return $this->render(
@@ -314,7 +314,7 @@ class WikiController extends BaseController
     {
         $this->assertRole('ROLE_COMMITER');
 
-        $directoryPath = new DirectoryPath($path);
+        $directoryPath = DirectoryPath::parse($path);
         $form = $this->createFormBuilder()
             ->add('uploadedFile', 'file', array('label' => 'File'))
             ->add('uploadedFileName', 'text', array('label' => 'Filename (if other)', 'required' => false))
@@ -360,7 +360,7 @@ class WikiController extends BaseController
     {
         $this->assertRole('ROLE_COMMITER');
 
-        $directoryPath = new DirectoryPath($path);
+        $directoryPath = DirectoryPath::parse($path);
         $user = $this->getUser();
 
         $this->getWikiService()->deleteDirectory($user, $directoryPath);

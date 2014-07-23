@@ -4,14 +4,14 @@
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Event;
 
 
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FilePath;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
 use Symfony\Component\EventDispatcher\Event;
 
 class MarkdownDocumentSavedEvent extends Event
 {
 
     /**
-     * @var \Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FilePath
+     * @var \Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath
      */
     private $path;
     private $login;

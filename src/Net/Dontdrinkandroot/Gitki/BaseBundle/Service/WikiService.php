@@ -12,12 +12,12 @@ use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\FileExistsException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockExpiredException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\DirectoryListing;
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\DirectoryPath;
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FilePath;
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\DirectoryPath;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\Path;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Security\User;
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Utils\StringUtils;
+use Net\Dontdrinkandroot\Symfony\ExtensionBundle\Utils\StringUtils;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -54,7 +54,7 @@ class WikiService
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function pageExists(Path $path)
+    public function pageExists(FilePath $path)
     {
         $absolutePath = $this->getAbsolutePath($path);
 
@@ -101,7 +101,7 @@ class WikiService
     }
 
 
-    public function getContent(Path $path)
+    public function getContent(FilePath $path)
     {
         $absolutePath = $this->getAbsolutePath($path);
         if (!file_exists($absolutePath)) {
@@ -244,6 +244,9 @@ class WikiService
         throw new PageLockedException($lockLogin, $this->getLockExpiry($lockPath));
     }
 
+    /**
+     * @return FilePath[]
+     */
     public function findAllMarkdownFiles()
     {
         $finder = new Finder();
@@ -254,7 +257,7 @@ class WikiService
 
         foreach ($finder->files() as $file) {
             /** @var SplFileInfo $file */
-            $filePaths[] = new FilePath($file->getRelativePathname());
+            $filePaths[] = FilePath::parse($file->getRelativePathname());
         }
 
         return $filePaths;
@@ -318,10 +321,10 @@ class WikiService
     }
 
     /**
-     * @param Path $path
+     * @param FilePath $path
      * @return File
      */
-    public function getFile(Path $path)
+    public function getFile(FilePath $path)
     {
         $absolutePath = $this->getAbsolutePath($path);
 
@@ -370,7 +373,7 @@ class WikiService
         return $absolutePath;
     }
 
-    protected function getAbsoluteLockPath(Path $path)
+    protected function getAbsoluteLockPath(FilePath $path)
     {
         $lockPath = $path->getParentPath()->appendFile($path->getName() . '.lock');
         $absoluteLockPath = $this->repositoryPath . '/' . $lockPath->toString();

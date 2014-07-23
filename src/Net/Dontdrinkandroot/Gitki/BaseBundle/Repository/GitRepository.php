@@ -6,7 +6,7 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Repository;
 
 use GitWrapper\GitWrapper;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\CommitMetadata;
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FilePath;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
 
 class GitRepository
 {
@@ -82,14 +82,24 @@ class GitRepository
         return $workingCopy;
     }
 
+    /**
+     * @param string $author
+     * @param string $commitMessage
+     * @param FilePath[]|FilePath $paths
+     */
     public function addAndCommit($author, $commitMessage, $paths)
     {
+        /** @var FilePath[] $realPaths */
+        $realPaths = array();
+
         if (!is_array($paths)) {
-            $paths = array($paths);
+            $realPaths = array($paths);
+        } else {
+            $realPaths = $paths;
         }
 
         $workingCopy = $this->getWorkingCopy();
-        foreach ($paths as $path) {
+        foreach ($realPaths as $path) {
             $workingCopy->add($path->toString());
         }
         $this->commit($author, $commitMessage);
@@ -118,7 +128,7 @@ class GitRepository
         );
     }
 
-    public function moveAndCommit($author, $commitMessage, $oldPath, $newPath)
+    public function moveAndCommit($author, $commitMessage, FilePath $oldPath, FilePath $newPath)
     {
         $workingCopy = $this->getWorkingCopy();
         $workingCopy->mv($oldPath->toString(), $newPath->toString());

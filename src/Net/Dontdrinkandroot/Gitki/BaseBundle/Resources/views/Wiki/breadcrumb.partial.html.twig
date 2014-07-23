@@ -1,9 +1,11 @@
 <ol class="breadcrumb">
     <li><a href="{{ path('ddr_gitki_wiki_directory') }}">{{ icon('home') }}</a></li>
-    {% if path.parentPath %}
-        {% for pathSegment in path.parentPath.segments %}
-            <li><a href="{{ path('ddr_gitki_wiki_directory', {'path': pathSegment ~ '/'}) }}">{{ pathSegment.name }}</a>
-            </li>
+    {% if path.hasParentPath %}
+        {% for parentPath in path.collectParentPaths %}
+            {% if parentPath.name is not empty %}
+                <li><a href="{{ path('ddr_gitki_wiki_directory', {'path': parentPath}) }}">{{ parentPath.name }}</a>
+                </li>
+            {% endif %}
         {% endfor %}
     {% endif %}
     <li class="active">{{ path.name }}</li>
