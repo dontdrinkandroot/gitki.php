@@ -9,7 +9,7 @@
     {% endif %}
 {% endblock %}
 {% block heading %}
-    {% if path.name %}{{ path.name }}{% else %}{{ icon('home') }}{% endif %}
+    {% if path.name %}{{ path.name }}{% else %}<span class="fa fa-home"></span>{% endif %}
 {% endblock %}
 {% block content %}
     <table class="table directory table-condensed">
@@ -22,7 +22,7 @@
         <tbody>
         {% for dir in directoryListing.subDirectories %}
             <tr>
-                <td class="icon">{{ icon('folder-close') }}</td>
+                <td class="icon"><span class="fa fa-folder-o"></span></td>
                 <td>
                     <a href="{{ path('ddr_gitki_wiki_directory', {'path': path ~ dir.relativePathname ~ '/'}) }}">{{ dir.filename }}</a>
                 </td>
@@ -38,7 +38,7 @@
         {% endfor %}
         {% for page in directoryListing.pages %}
             <tr>
-                <td class="icon">{{ icon('file') }}</td>
+                <td class="icon"><span class="fa fa-file-o"></span></td>
                 <td>
                     <a href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname}) }}">{{ page.filename }}</a>
                 </td>
@@ -48,24 +48,24 @@
                         {% if is_granted('ROLE_COMMITER') %}
                             <a class="btn btn-default btn-xs"
                                href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname, 'action': 'edit'}) }}"
-                               title="Edit">{{ icon('pencil') }}</a>
+                               title="Edit"><span class="fa fa-fw fa-pencil"></span></a>
                             <a class="btn btn-default btn-xs"
                                href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname, 'action': 'rename'}) }}"
-                               title="Rename">{{ icon('resize-horizontal') }}</a>
+                               title="Rename"><span class="fa fa-fw fa-arrows-h"></span></a>
                             <a class="btn btn-default btn-xs"
                                href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname, 'action': 'delete'}) }}"
-                               title="Delete">{{ icon('trash') }}</a>
+                               title="Delete"><span class="fa fa-fw fa-trash-o"></span></a>
                         {% endif %}
                         <a class="btn btn-default btn-xs"
                            href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname, 'action': 'history'}) }}"
-                           title="History">{{ icon('time') }}</a>
+                           title="History"><span class="fa fa-fw fa-history"></span></a>
                     </div>
                 </td>
             </tr>
         {% endfor %}
         {% for file in directoryListing.otherFiles %}
             <tr>
-                <td class="icon">{{ icon('file') }}</td>
+                <td class="icon"><span class="fa fa-file-o"></span></td>
                 <td>
                     <a href="{{ path('ddr_gitki_wiki_file', {'path': path ~ file.relativePathname}) }}">{{ file.filename }}</a>
                 </td>
@@ -75,14 +75,14 @@
                         {% if is_granted('ROLE_COMMITER') %}
                             <a class="btn btn-default btn-xs"
                                href="{{ path('ddr_gitki_wiki_file', {'path': path ~ file.relativePathname, 'action': 'rename'}) }}"
-                               title="Rename">{{ icon('resize-horizontal') }}</a>
+                               title="Rename"><span class="fa fa-fw fa-arrows-h"></span></a>
                             <a class="btn btn-default btn-xs"
                                href="{{ path('ddr_gitki_wiki_file', {'path': path ~ file.relativePathname, 'action': 'delete'}) }}"
-                               title="Delete">{{ icon('trash') }}</a>
+                               title="Delete"><span class="fa fa-fw fa-trash-o"></span>}</a>
                         {% endif %}
                         <a class="btn btn-default btn-xs"
                            href="{{ path('ddr_gitki_wiki_file', {'path': path ~ file.relativePathname, 'action': 'history'}) }}"
-                           title="History">{{ icon('time') }}</a>
+                           title="History"><span class="fa fa-fw fa-history"></span></a>
                     </div>
                 </td>
             </tr>
