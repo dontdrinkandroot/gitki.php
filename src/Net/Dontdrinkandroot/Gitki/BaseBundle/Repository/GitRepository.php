@@ -85,16 +85,7 @@ class GitRepository
         return $metaData;
     }
 
-    /**
-     * @return \GitWrapper\GitWorkingCopy
-     */
-    protected function getWorkingCopy()
-    {
-        $git = new GitWrapper();
-        $workingCopy = $git->workingCopy($this->repositoryPath);
 
-        return $workingCopy;
-    }
 
     /**
      * @param string $author
@@ -206,5 +197,16 @@ class GitRepository
     public function remove($relativePath)
     {
         unlink($this->getAbsolutePathString($relativePath));
+    }
+
+    /**
+     * @return \GitWrapper\GitWorkingCopy
+     */
+    protected function getWorkingCopy()
+    {
+        $git = new GitWrapper();
+        $workingCopy = $git->workingCopy($this->repositoryPath);
+
+        return $workingCopy;
     }
 }

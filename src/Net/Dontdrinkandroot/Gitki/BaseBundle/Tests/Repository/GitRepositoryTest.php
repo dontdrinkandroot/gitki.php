@@ -1,0 +1,37 @@
+<?php
+
+
+namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Tests\Repository;
+
+
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\CommitMetadata;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Tests\GitRepositoryTestCase;
+
+class GitRepositoryTest extends GitRepositoryTestCase
+{
+
+    protected function createGitRepository()
+    {
+        return new GitRepository(self::TEST_PATH);
+    }
+
+    public function testAddAndCommit()
+    {
+        $gitRepository = $this->createGitRepository();
+        $filePath = FilePath::parse('test.txt');
+        $gitRepository->putContent($filePath, 'asdf');
+        $gitRepository->addAndCommit('"Tester <test@example.com>"', 'Added test.txt', $filePath);
+        $this->assertTrue($gitRepository->exists($filePath));
+
+        $history = $gitRepository->getFileHistory($filePath);
+        $this->assertCount(1, $history);
+
+        /** @var CommitMetadata $firstEntry */
+        $firstEntry = $history[0];
+        $this->assertEquals('Added test.txt', $firstEntry->getMessage());
+        $this->assertEquals('test@example.com', $firstEntry->getEMail());
+        $this->assertEquals('Tester', $firstEntry->getCommitter());
+    }
+} 
