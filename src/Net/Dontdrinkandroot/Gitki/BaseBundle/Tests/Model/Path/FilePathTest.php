@@ -17,12 +17,24 @@ class FilePathTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('md', $path->getExtension());
         $this->assertEquals('index', $path->getFileName());
 
-        $path = FilePath::parse('/sub/sub/index.md');
+        $path = FilePath::parse('index.md');
         $this->assertEquals('index.md', $path->getName());
         $this->assertEquals('md', $path->getExtension());
         $this->assertEquals('index', $path->getFileName());
 
-        $this->assertEquals('/sub/sub/', $path->getParentPath()->toAbsoluteUrlString());
+        $path = FilePath::parse('/sub/subsub/index.md');
+        $this->assertEquals('index.md', $path->getName());
+        $this->assertEquals('md', $path->getExtension());
+        $this->assertEquals('index', $path->getFileName());
+
+        $this->assertEquals('/sub/subsub/', $path->getParentPath()->toAbsoluteUrlString());
+
+        $path = FilePath::parse('sub/subsub/index.md');
+        $this->assertEquals('index.md', $path->getName());
+        $this->assertEquals('md', $path->getExtension());
+        $this->assertEquals('index', $path->getFileName());
+
+        $this->assertEquals('/sub/subsub/', $path->getParentPath()->toAbsoluteUrlString());
     }
 
     public function testNoExtension()
@@ -65,6 +77,13 @@ class FilePathTest extends \PHPUnit_Framework_TestCase
         }
 
         try {
+            $path = new FilePath('bla/bla');
+            $this->fail('Exception expected');
+        } catch (\Exception $e) {
+            /* Expected */
+        }
+
+        try {
             $path = FilePath::parse('');
             $this->fail('Exception expected');
         } catch (\Exception $e) {
@@ -73,13 +92,6 @@ class FilePathTest extends \PHPUnit_Framework_TestCase
 
         try {
             $path = FilePath::parse('/');
-            $this->fail('Exception expected');
-        } catch (\Exception $e) {
-            /* Expected */
-        }
-
-        try {
-            $path = FilePath::parse('bla/');
             $this->fail('Exception expected');
         } catch (\Exception $e) {
             /* Expected */
@@ -104,6 +116,11 @@ class FilePathTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             DIRECTORY_SEPARATOR . 'sub' . DIRECTORY_SEPARATOR . 'subsub' . DIRECTORY_SEPARATOR . 'index.md',
             $path->toAbsoluteFileString()
+        );
+        $this->assertEquals('sub/subsub/index.md', $path->toRelativeUrlString());
+        $this->assertEquals(
+            'sub' . DIRECTORY_SEPARATOR . 'subsub' . DIRECTORY_SEPARATOR . 'index.md',
+            $path->toRelativeFileString()
         );
     }
 

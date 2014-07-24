@@ -12,14 +12,14 @@ class DirectoryPathTest extends \PHPUnit_Framework_TestCase
     public function testInvalid()
     {
         try {
-            $path = DirectoryPath::parse('');
+            $path = DirectoryPath::parse('bla');
             $this->fail('Exception expected');
         } catch (\Exception $e) {
             /* Expected */
         }
 
         try {
-            $path = DirectoryPath::parse('bla');
+            $path = new DirectoryPath('bla/bla');
             $this->fail('Exception expected');
         } catch (\Exception $e) {
             /* Expected */
@@ -31,11 +31,46 @@ class DirectoryPathTest extends \PHPUnit_Framework_TestCase
         } catch (\Exception $e) {
             /* Expected */
         }
+
+        try {
+            $path = new DirectoryPath();
+            $path->appendDirectory('');
+            $this->fail('Exception expected');
+        } catch (\Exception $e) {
+            /* Expected */
+        }
+
+        try {
+            $path = new DirectoryPath();
+            $path->appendFile('');
+            $this->fail('Exception expected');
+        } catch (\Exception $e) {
+            /* Expected */
+        }
+
+        try {
+            $path = new DirectoryPath();
+            $path->appendDirectory('bla/bla');
+            $this->fail('Exception expected');
+        } catch (\Exception $e) {
+            /* Expected */
+        }
+
+        try {
+            $path = new DirectoryPath();
+            $path->appendFile('bla/bla');
+            $this->fail('Exception expected');
+        } catch (\Exception $e) {
+            /* Expected */
+        }
     }
 
     public function testRoot()
     {
         $path = DirectoryPath::parse('/');
+        $this->assertRootLevel($path);
+
+        $path = DirectoryPath::parse('');
         $this->assertRootLevel($path);
 
         $path = new DirectoryPath();
@@ -46,6 +81,7 @@ class DirectoryPathTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertFalse($path->hasParentPath());
         $this->assertEquals('/', $path->toAbsoluteUrlString());
+        $this->assertEquals(DIRECTORY_SEPARATOR, $path->toAbsoluteFileString());
         $this->assertNull($path->getName());
         $this->assertTrue($path->isRoot());
     }
@@ -53,6 +89,9 @@ class DirectoryPathTest extends \PHPUnit_Framework_TestCase
     public function testFirstLevel()
     {
         $path = DirectoryPath::parse('/sub/');
+        $this->assertFirstLevel($path);
+
+        $path = DirectoryPath::parse('sub/');
         $this->assertFirstLevel($path);
 
         $path = DirectoryPath::parse('/sub//');
@@ -78,6 +117,9 @@ class DirectoryPathTest extends \PHPUnit_Framework_TestCase
         $this->assertSecondLevel($path);
 
         $path = DirectoryPath::parse('/sub/subsub//');
+        $this->assertSecondLevel($path);
+
+        $path = DirectoryPath::parse('sub/subsub//');
         $this->assertSecondLevel($path);
     }
 

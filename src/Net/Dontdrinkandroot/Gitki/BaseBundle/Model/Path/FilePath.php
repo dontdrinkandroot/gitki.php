@@ -19,6 +19,10 @@ class FilePath extends AbstractPath
             throw new \Exception('Name must not be empty');
         }
 
+        if (strpos($name, '/') !== false) {
+            throw new \Exception('Name must not contain /');
+        }
+
         $this->fileName = $name;
         $lastDotPos = strrpos($name, '.');
         if (false !== $lastDotPos && $lastDotPos > 0) {
@@ -101,10 +105,6 @@ class FilePath extends AbstractPath
     {
         if (empty($pathString)) {
             throw new \Exception('Path String must not be empty');
-        }
-
-        if (StringUtils::getFirstChar($pathString) !== '/') {
-            throw new \Exception('Path String must start with /');
         }
 
         if (StringUtils::getLastChar($pathString) === '/') {

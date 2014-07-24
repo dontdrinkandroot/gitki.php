@@ -13,6 +13,10 @@ class DirectoryPath extends AbstractPath
 
     public function __construct($name = null)
     {
+        if (strpos($name, '/') !== false) {
+            throw new \Exception('Name must not contain /');
+        }
+
         if (!empty($name)) {
             $this->name = $name;
             $this->parentPath = new DirectoryPath();
@@ -135,8 +139,8 @@ class DirectoryPath extends AbstractPath
      */
     public static function parse($pathString)
     {
-        if (StringUtils::getFirstChar($pathString) !== '/') {
-            throw new \Exception('Path String must start with /');
+        if (empty($pathString)) {
+            return new DirectoryPath();
         }
 
         if (!(StringUtils::getLastChar($pathString) === '/')) {
