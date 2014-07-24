@@ -6,13 +6,8 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path;
 
 use Net\Dontdrinkandroot\Symfony\ExtensionBundle\Utils\StringUtils;
 
-class FilePath implements Path
+class FilePath extends AbstractPath
 {
-
-    /**
-     * @var DirectoryPath
-     */
-    protected $parentPath;
 
     protected $fileName;
 
@@ -20,12 +15,18 @@ class FilePath implements Path
 
     public function __construct($name)
     {
+        if (empty($name)) {
+            throw new \Exception('Name must not be empty');
+        }
+
         $this->fileName = $name;
         $lastDotPos = strrpos($name, '.');
         if (false !== $lastDotPos && $lastDotPos > 0) {
             $this->fileName = substr($name, 0, $lastDotPos);
             $this->extension = substr($name, $lastDotPos + 1);
         }
+
+        $this->parentPath = new DirectoryPath();
     }
 
     /**
@@ -44,46 +45,17 @@ class FilePath implements Path
     /**
      * @inheritdoc
      */
-    public function toString()
+    public function toUrlString()
     {
-        $str = '';
-        if (null !== $this->parentPath) {
-            $str .= $this->parentPath->toString();
-        }
-
-        $str .= $this->getName();
-
-        return $str;
+        return $this->parentPath->toUrlString() . $this->getName();
     }
 
     /**
      * @inheritdoc
      */
-    public function hasParentPath()
+    public function toFileString()
     {
-        return true;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getParentPath()
-    {
-        if (null !== $this->parentPath) {
-            return $this->parentPath;
-        }
-
-        return new DirectoryPath();
-    }
-
-    public function setParentPath(DirectoryPath $path)
-    {
-        $this->parentPath = $path;
-    }
-
-    public function __toString()
-    {
-        return $this->toString();
+        return $this->parentPath->toFileString() . $this->getName();
     }
 
     public function getExtension()
@@ -94,24 +66,6 @@ class FilePath implements Path
     public function getFileName()
     {
         return $this->fileName;
-    }
-
-    public function collectParentPaths()
-    {
-        if (!$this->hasParentPath()) {
-            return array();
-        }
-
-        return $this->getParentPath()->collectPaths();
-    }
-
-    public function collectPaths()
-    {
-        if (!$this->hasParentPath()) {
-            return array($this);
-        }
-
-        return array_merge($this->getParentPath()->collectPaths(), array($this));
     }
 
     /**
@@ -125,8 +79,8 @@ class FilePath implements Path
             throw new \Exception('Path String must not be empty');
         }
 
-        if (StringUtils::getFirstChar($pathString) === '/') {
-            throw new \Exception('Path String must be relative');
+        if (StringUtils::getFirstChar($pathString) !== '/') {
+            throw new \Exception('Path String must start with /');
         }
 
         if (StringUtils::getLastChar($pathString) === '/') {

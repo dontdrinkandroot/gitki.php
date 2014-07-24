@@ -42,7 +42,7 @@ class GitRepository
         if (null !== $maxCount) {
             $options['max-count'] = $maxCount;
         }
-        $options['p'] = $path->toString();
+        $options['p'] = $path->toUrlString();
 
         $workingCopy = $this->getWorkingCopy();
         $workingCopy->log($options);
@@ -100,7 +100,7 @@ class GitRepository
 
         $workingCopy = $this->getWorkingCopy();
         foreach ($realPaths as $path) {
-            $workingCopy->add($path->toString());
+            $workingCopy->add($path->toUrlString());
         }
         $this->commit($author, $commitMessage);
     }
@@ -131,7 +131,7 @@ class GitRepository
     public function moveAndCommit($author, $commitMessage, FilePath $oldPath, FilePath $newPath)
     {
         $workingCopy = $this->getWorkingCopy();
-        $workingCopy->mv($oldPath->toString(), $newPath->toString());
+        $workingCopy->mv($oldPath->toUrlString(), $newPath->toUrlString());
         $this->commit($author, $commitMessage);
     }
 } 

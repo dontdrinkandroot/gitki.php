@@ -6,20 +6,16 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path;
 
 use Net\Dontdrinkandroot\Symfony\ExtensionBundle\Utils\StringUtils;
 
-class DirectoryPath implements Path
+class DirectoryPath extends AbstractPath
 {
 
     protected $name;
-
-    /**
-     * @var DirectoryPath
-     */
-    protected $parentPath;
 
     public function __construct($name = null)
     {
         if (!empty($name)) {
             $this->name = $name;
+            $this->parentPath = new DirectoryPath();
         }
     }
 
@@ -35,10 +31,6 @@ class DirectoryPath implements Path
 
         if (strpos($name, '/') !== false) {
             throw new \Exception('Name must not contain /');
-        }
-
-        if (empty($this->name)) {
-            return new DirectoryPath($name);
         }
 
         $directoryPath = new DirectoryPath($name);
@@ -61,10 +53,6 @@ class DirectoryPath implements Path
             throw new \Exception('Name must not contain /');
         }
 
-        if (empty($this->name)) {
-            return new FilePath($name);
-        }
-
         $filePath = new FilePath($name);
         $filePath->setParentPath($this);
 
@@ -74,19 +62,26 @@ class DirectoryPath implements Path
     /**
      * @inheritdoc
      */
-    public function toString()
+    public function toUrlString()
     {
         if (null === $this->parentPath) {
-            if (empty($this->name)) {
-                return '';
-            }
-
-            return $this->name . '/';
+            return '/';
         }
 
-        return $this->parentPath->toString() . $this->name . '/';
+        return $this->parentPath->toUrlString() . $this->name . '/';
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function toFileString()
+    {
+        if (null === $this->parentPath) {
+            return DIRECTORY_SEPARATOR;
+        }
+
+        return $this->parentPath->toUrlString() . $this->name . DIRECTORY_SEPARATOR;
+    }
 
     /**
      * @return null|string
@@ -97,99 +92,40 @@ class DirectoryPath implements Path
     }
 
     /**
-     * @return bool
-     */
-    public function hasParentPath()
-    {
-        if (null === $this->parentPath) {
-            if (!empty($this->name)) {
-                return true;
-            }
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * @return DirectoryPath|null
-     */
-    public function getParentPath()
-    {
-        if (null !== $this->parentPath) {
-            return $this->parentPath;
-        }
-
-        if (!empty($this->name)) {
-            return new DirectoryPath();
-        }
-
-        return null;
-    }
-
-    public function setParentPath(DirectoryPath $path)
-    {
-        $this->parentPath = $path;
-    }
-
-    public function collectParentPaths()
-    {
-        if (!$this->hasParentPath()) {
-            return array();
-        }
-
-        return $this->getParentPath()->collectPaths();
-    }
-
-
-    public function collectPaths()
-    {
-        if (!$this->hasParentPath()) {
-            return array($this);
-        }
-
-        return array_merge($this->getParentPath()->collectPaths(), array($this));
-    }
-
-    public function __toString()
-    {
-        return $this->toString();
-    }
-
-    /**
      * @param $pathString
      * @return DirectoryPath
      * @throws \Exception
      */
     public static function parse($pathString)
     {
-        if (empty($pathString)) {
-            return new DirectoryPath();
-        }
-
-        if (StringUtils::getFirstChar($pathString) === '/') {
-            throw new \Exception('Path String must be relative');
+        if (StringUtils::getFirstChar($pathString) !== '/') {
+            throw new \Exception('Path String must start with /');
         }
 
         if (!(StringUtils::getLastChar($pathString) === '/')) {
             throw new \Exception('Path String must end with /');
         }
 
-        $lastPath = null;
+        /* Root */
+        $lastPath = new DirectoryPath();
+
         if (null !== $pathString) {
             $parts = explode('/', $pathString);
             foreach ($parts as $part) {
                 $trimmedPart = trim($part);
                 if ($trimmedPart === '..') {
-                    throw new \Exception('.. not supported');
-                }
-                if ($trimmedPart !== "" && $trimmedPart !== '.') {
-                    $directoryPath = new DirectoryPath($trimmedPart);
-                    if (null !== $lastPath) {
-                        $directoryPath->setParentPath($lastPath);
+                    if (!$lastPath->hasParentPath()) {
+                        throw new \Exception('Exceeding root level');
                     }
-                    $lastPath = $directoryPath;
+                    $lastPath = $lastPath->getParentPath();
+                } else {
+                    if ($trimmedPart !== "" && $trimmedPart !== '.') {
+                        $directoryPath = new DirectoryPath($trimmedPart);
+                        if (null !== $lastPath) {
+                            $directoryPath->setParentPath($lastPath);
+                        }
+                        $lastPath = $directoryPath;
+                    }
                 }
             }
         }

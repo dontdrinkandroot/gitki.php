@@ -30,7 +30,7 @@ class ReindexCommand extends ElasticSearchCommand
         $progress->start();
 
         foreach ($filePaths as $filePath) {
-            $progress->setMessage('Indexing ' . $filePath->toString());
+            $progress->setMessage('Indexing ' . $filePath->toUrlString());
             $progress->advance();
             $content = $wikiService->getContent($filePath);
             $elasticSearchRepo->indexMarkdownDocument($filePath, $content);

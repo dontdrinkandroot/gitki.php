@@ -30,7 +30,8 @@ class SearchCommand extends ElasticSearchCommand
         } else {
             foreach ($results as $result) {
                 $output->writeln(
-                    '[' . $result->getScore() . '] ' . $result->getTitle() . ' (' . $result->getPath()->toString() . ')'
+                    '[' . $result->getScore() . '] ' . $result->getTitle() . ' (' . $result->getPath()->toUrlString(
+                    ) . ')'
                 );
             }
         }

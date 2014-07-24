@@ -7,13 +7,13 @@ ddr_gitki_loggedout:
     defaults: { _controller: DdrGitkiBaseBundle:Default:loggedout }
 
 ddr_gitki_wiki_directory:
-    path:   /wiki/{path}
-    defaults: { _controller: DdrGitkiBaseBundle:Wiki:directory, path: / }
+    path:   /wiki{path}
+    defaults: { _controller: DdrGitkiBaseBundle:Wiki:directory }
     requirements:
-        path: .*/|
+        path: .*/
 
 ddr_gitki_wiki_file:
-    path:   /wiki/{path}
+    path:   /wiki{path}
     defaults: { _controller: DdrGitkiBaseBundle:Wiki:file }
     requirements:
         path: .+

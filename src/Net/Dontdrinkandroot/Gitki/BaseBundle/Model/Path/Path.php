@@ -23,8 +23,18 @@ interface Path
     function getParentPath();
 
     /**
+     * @return Path[]
+     */
+    function collectPaths();
+
+    /**
      * @return string
      */
-    function toString();
+    function toUrlString();
+
+    /**
+     * @return string
+     */
+    function toFileString();
 
 } 

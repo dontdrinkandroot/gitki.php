@@ -268,7 +268,7 @@ class WikiController extends BaseController
 
         $this->getWikiService()->deleteFile($user, $filePath);
 
-        $parentDirPath = $filePath->getParentPath()->toString();
+        $parentDirPath = $filePath->getParentPath()->toUrlString();
         if ($parentDirPath == "") {
             $parentDirPath = "/";
         }
@@ -295,10 +295,9 @@ class WikiController extends BaseController
         );
     }
 
-
-    public function listDirectoryAction($path = '/')
+    public function listDirectoryAction($path)
     {
-        $directoryPath = DirectoryPath::parse($path == '/' ? '' : $path);
+        $directoryPath = DirectoryPath::parse($path);
         $directoryListing = $this->getWikiService()->listDirectory($directoryPath);
 
         return $this->render(
@@ -343,7 +342,7 @@ class WikiController extends BaseController
                 return $this->redirect(
                     $this->generateUrl(
                         'ddr_gitki_wiki_directory',
-                        array('path' => $directoryPath->toString())
+                        array('path' => $directoryPath->toUrlString())
                     )
                 );
             }
@@ -365,7 +364,7 @@ class WikiController extends BaseController
 
         $this->getWikiService()->deleteDirectory($user, $directoryPath);
 
-        $parentDirPath = $directoryPath->getParentPath()->toString();
+        $parentDirPath = $directoryPath->getParentPath()->toUrlString();
         if ($parentDirPath == "") {
             $parentDirPath = "/";
         }

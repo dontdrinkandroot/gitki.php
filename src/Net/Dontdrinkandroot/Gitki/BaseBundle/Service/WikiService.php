@@ -141,7 +141,7 @@ class WikiService
     {
         $this->createLock($user, $path);
 
-        $commitMessage = 'Removing ' . $path->toString();
+        $commitMessage = 'Removing ' . $path->toUrlString();
         $this->gitRepository->removeAndCommit($this->getAuthor($user), $commitMessage, $path);
 
         $this->removeLock($user, $path);
@@ -365,9 +365,9 @@ class WikiService
 
     protected function getAbsolutePath(Path $path)
     {
-        $absolutePath = $this->repositoryPath . '/';
+        $absolutePath = $this->repositoryPath;
         if ($path != null) {
-            $absolutePath .= $path->toString();
+            $absolutePath .= $path->toUrlString();
         }
 
         return $absolutePath;
@@ -376,7 +376,7 @@ class WikiService
     protected function getAbsoluteLockPath(FilePath $path)
     {
         $lockPath = $path->getParentPath()->appendFile($path->getName() . '.lock');
-        $absoluteLockPath = $this->repositoryPath . '/' . $lockPath->toString();
+        $absoluteLockPath = $this->repositoryPath . $lockPath->toUrlString();
 
         return $absoluteLockPath;
     }
