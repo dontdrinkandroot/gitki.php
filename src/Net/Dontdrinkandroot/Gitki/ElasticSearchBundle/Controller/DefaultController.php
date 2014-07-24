@@ -29,7 +29,7 @@ class DefaultController extends BaseController
 
         return $this->render(
             'DdrGitkiElasticSearchBundle:Default:search.html.twig',
-            array('form' => $form, 'searchString' => $searchString, 'results' => $results)
+            array('form' => $form->createView(), 'searchString' => $searchString, 'results' => $results)
         );
     }
 

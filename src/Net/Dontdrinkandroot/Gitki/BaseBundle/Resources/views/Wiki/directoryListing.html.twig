@@ -4,7 +4,7 @@
     {% if is_granted('ROLE_COMMITER') %}
         <div class="btn-group pull-right">
             <a href="{{ path('ddr_gitki_wiki_directory', {'path': path, 'action': 'upload'}) }}"
-               class="btn btn-default" title="Upload File">{{ icon('upload') }}</a>
+               class="btn btn-default btn-xs" title="Upload File"><span class="fa fa-upload"></span></a>
         </div>
     {% endif %}
 {% endblock %}
@@ -31,7 +31,7 @@
                     <div class="btn-group">
                         <a class="btn btn-default btn-xs"
                            href="{{ path('ddr_gitki_wiki_directory', {'path': path ~ dir.relativePathname ~ '/', 'action': 'delete'}) }}"
-                           title="Delete">{{ icon('trash') }}</a>
+                           title="Delete"><span class="fa fa-fw fa-trash-o"></span></a>
                     </div>
                 </td>
             </tr>
@@ -78,7 +78,7 @@
                                title="Rename"><span class="fa fa-fw fa-arrows-h"></span></a>
                             <a class="btn btn-default btn-xs"
                                href="{{ path('ddr_gitki_wiki_file', {'path': path ~ file.relativePathname, 'action': 'delete'}) }}"
-                               title="Delete"><span class="fa fa-fw fa-trash-o"></span>}</a>
+                               title="Delete"><span class="fa fa-fw fa-trash-o"></span></a>
                         {% endif %}
                         <a class="btn btn-default btn-xs"
                            href="{{ path('ddr_gitki_wiki_file', {'path': path ~ file.relativePathname, 'action': 'history'}) }}"

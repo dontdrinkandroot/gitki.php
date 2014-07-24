@@ -1,9 +1,14 @@
 {% extends 'DdrGitkiBaseBundle::base.html.twig' %}
 {% block title %} - Search - {{ searchString }}{% endblock %}
+{% block navbar_form %}{% endblock %}
 {% block container %}
+
     <div class="page-header">
-        <h1>Documents containing "{{ searchString }}"</h1>
+        <h1>Search</h1>
     </div>
+    {{ form(form) }}
+    <hr/>
+    <h2>Documents containing "{{ searchString }}"</h2>
     <ul>
         {% for result in results %}
             <li>

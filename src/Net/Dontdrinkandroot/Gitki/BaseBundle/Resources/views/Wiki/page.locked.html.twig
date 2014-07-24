@@ -1,6 +1,6 @@
 {% extends 'DdrGitkiBaseBundle:Wiki:base.html.twig' %}
 {% block heading %}
-    {{ icon('lock') }} Locked
+    <span class="fa fa-lock"></span> Locked
 {% endblock %}
 {% block content %}
     <div class="alert alert-warning">The page you are trying to edit is locked by user "{{ lockedBy }}". Please try
