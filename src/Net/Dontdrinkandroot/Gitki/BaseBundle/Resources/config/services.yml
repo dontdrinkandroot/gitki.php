@@ -17,3 +17,5 @@ services:
         class: Net\Dontdrinkandroot\Gitki\BaseBundle\Service\WikiService
         arguments: [@ddr.gitki.repository.git, @event_dispatcher]
 
+    ddr.gitki.parser.markdown:
+        class: Knp\Bundle\MarkdownBundle\Parser\Preset\Max

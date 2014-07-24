@@ -2,10 +2,6 @@ ddr_gitki_base:
     resource: "@DdrGitkiBaseBundle/Resources/config/routing.yml"
     prefix:   /
 
-ddr_gitki_elasticsearch:
-    resource: "@DdrGitkiElasticSearchBundle/Resources/config/routing.yml"
-    prefix:   /search/
-
 hwi_oauth_redirect:
     resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
     prefix:   /connect

@@ -1,3 +1,6 @@
+imports:
+    resource: "@DdrGitkiBaseBundle/Resources/config/routing.yml"
+
 ddr_gitki_elasticsearch_search:
-    path:   /
+    path:   /search/
     defaults: { _controller: DdrGitkiElasticSearchBundle:Default:search }
