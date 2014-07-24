@@ -3,8 +3,6 @@
 
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Service;
 
-// TODO: make sure that file is in repository
-
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentDeletedEvent;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentSavedEvent;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\DirectoryNotEmptyException;
@@ -33,8 +31,6 @@ class WikiService
      */
     protected $eventDispatcher;
 
-    protected $repositoryPath;
-
     /**
      * @var \Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository
      */
@@ -42,206 +38,193 @@ class WikiService
 
     public function __construct(
         GitRepository $gitRepository,
-        $repositoryPath,
         EventDispatcherInterface $eventDispatcher
     ) {
-        if (empty($repositoryPath)) {
-            throw new \Exception('Repository path must not be empty');
-        }
-        $this->repositoryPath = $repositoryPath;
-
         $this->gitRepository = $gitRepository;
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function pageExists(FilePath $path)
+    public function exists(Path $relativePath)
     {
-        $absolutePath = $this->getAbsolutePath($path);
-
-        return file_exists($absolutePath);
+        return $this->gitRepository->exists($relativePath);
     }
 
 
-    public function createLock(User $user, FilePath $path)
+    public function createLock(User $user, FilePath $relativeFilePath)
     {
-        $lockPath = $this->getAbsoluteLockPath($path);
+        $relativeLockPath = $this->getLockPath($relativeFilePath);
+        $relativeLockDir = $relativeLockPath->getParentPath();
 
-        $this->assertUnlocked($user, $lockPath);
+        $this->assertUnlocked($user, $relativeLockPath);
 
-        $fileSystem = new Filesystem();
-        $lockDir = dirname($lockPath);
-        if (!$fileSystem->exists($lockDir)) {
-            $fileSystem->mkdir($lockDir, 0755);
+        if (!$this->gitRepository->exists($relativeLockDir)) {
+            $this->gitRepository->mkdir($relativeLockDir);
         }
 
-        if ($fileSystem->exists($lockPath)) {
-            $fileSystem->touch($lockPath);
+        if ($this->gitRepository->exists($relativeLockPath)) {
+            $this->gitRepository->touch($relativeLockPath);
         } else {
-            file_put_contents($lockPath, $user->getLogin());
+            $this->gitRepository->putContent($relativeLockPath, $user->getLogin());
         }
     }
 
-    public function removeLock(User $user, FilePath $path)
+    public function removeLock(User $user, FilePath $relativeFilePath)
     {
-        $lockPath = $this->getAbsoluteLockPath($path);
-        if (!file_exists($lockPath)) {
+        $relativeLockPath = $this->getLockPath($relativeFilePath);
+        if (!$this->gitRepository->exists($relativeLockPath)) {
             return;
         }
 
-        if ($this->isLockExpired($lockPath)) {
+        if ($this->isLockExpired($relativeLockPath)) {
             return;
         }
 
-        $lockLogin = $this->getLockLogin($lockPath);
+        $lockLogin = $this->getLockLogin($relativeLockPath);
         if ($lockLogin != $user->getLogin()) {
             throw new \Exception('Cannot remove lock of different user');
         }
 
-        $this->removeLockFile($lockPath);
+        $this->removeLockFile($relativeLockPath);
     }
 
-
-    public function getContent(FilePath $path)
+    public function getContent(FilePath $relativeFilePath)
     {
-        $absolutePath = $this->getAbsolutePath($path);
-        if (!file_exists($absolutePath)) {
-            return '';
-        }
-
-        return file_get_contents($absolutePath);
+        return $this->gitRepository->getContent($relativeFilePath);
     }
 
-    public function savePage(User $user, FilePath $path, $content, $commitMessage)
+    public function savePage(User $user, FilePath $relativeFilePath, $content, $commitMessage)
     {
-        $lockPath = $this->getAbsoluteLockPath($path);
-        $this->assertHasLock($user, $lockPath);
+        $relativeLockPath = $this->getLockPath($relativeFilePath);
+        $this->assertHasLock($user, $relativeLockPath);
 
-        $absolutePath = $this->getAbsolutePath($path);
-        file_put_contents($absolutePath, $content);
+        $this->gitRepository->putContent($relativeFilePath, $content);
 
-        $this->gitRepository->addAndCommit($this->getAuthor($user), $commitMessage, $path);
+        $this->gitRepository->addAndCommit($this->getAuthor($user), $commitMessage, $relativeFilePath);
 
         $this->eventDispatcher->dispatch(
             'ddr.gitki.wiki.markdown_document.saved',
-            new MarkdownDocumentSavedEvent($path, $user->getLogin(), time(), $content, $commitMessage)
+            new MarkdownDocumentSavedEvent($relativeFilePath, $user->getLogin(), time(), $content, $commitMessage)
         );
     }
 
-    public function holdLock(User $user, FilePath $path)
+    public function holdLock(User $user, FilePath $relativeFilePath)
     {
-        $lockPath = $this->getAbsoluteLockPath($path);
+        $lockPath = $this->getLockPath($relativeFilePath);
         $this->assertHasLock($user, $lockPath);
-        $fileSystem = new Filesystem();
-        $fileSystem->touch($lockPath);
+
+        $this->gitRepository->touch($lockPath);
 
         return $this->getLockExpiry($lockPath);
     }
 
-    public function deleteFile(User $user, FilePath $path)
+    public function deleteFile(User $user, FilePath $relativeFilePath)
     {
-        $this->createLock($user, $path);
+        $this->createLock($user, $relativeFilePath);
 
-        $commitMessage = 'Removing ' . $path->toUrlString();
-        $this->gitRepository->removeAndCommit($this->getAuthor($user), $commitMessage, $path);
+        $commitMessage = 'Removing ' . $relativeFilePath->toRelativeUrlString();
+        $this->gitRepository->removeAndCommit($this->getAuthor($user), $commitMessage, $relativeFilePath);
 
-        $this->removeLock($user, $path);
+        $this->removeLock($user, $relativeFilePath);
 
-        if (StringUtils::endsWith($path->getName(), '.md')) {
+        if (StringUtils::endsWith($relativeFilePath->getName(), '.md')) {
             $this->eventDispatcher->dispatch(
                 'ddr.gitki.wiki.markdown_document.deleted',
-                new MarkdownDocumentDeletedEvent($path, $user->getLogin(), time(), $commitMessage)
+                new MarkdownDocumentDeletedEvent($relativeFilePath, $user->getLogin(), time(), $commitMessage)
             );
         }
     }
 
-    public function deleteDirectory(User $user, DirectoryPath $path)
+    public function deleteDirectory(DirectoryPath $relativeDirectoryPath)
     {
-        $absolutePath = $this->getAbsolutePath($path);
+        $absoluteDirectoryPath = $this->gitRepository->getAbsolutePath($relativeDirectoryPath);
         $finder = new Finder();
-        $finder->in($absolutePath);
+        $finder->in($this->gitRepository->getAbsolutePathString($relativeDirectoryPath));
         $numFiles = $finder->files()->count();
         if ($numFiles > 0) {
-            throw new DirectoryNotEmptyException($path . ' is not empty');
+            throw new DirectoryNotEmptyException($relativeDirectoryPath->toRelativeFileString() . ' is not empty');
         }
 
         $fileSystem = new Filesystem();
-        $fileSystem->remove($absolutePath);
+        $fileSystem->remove($absoluteDirectoryPath);
     }
 
-    public function renameFile(User $user, FilePath $oldPath, FilePath $newPath, $commitMessage)
+    public function renameFile(User $user, FilePath $relativeOldFilePath, FilePath $relativeNewFilePath, $commitMessage)
     {
-        $absoluteNewPath = $this->getAbsolutePath($newPath);
-
-        $fileSystem = new Filesystem();
-        if ($fileSystem->exists($absoluteNewPath)) {
-            throw new FileExistsException('File ' . $newPath . ' already exists');
+        if ($this->gitRepository->exists($relativeNewFilePath)) {
+            throw new FileExistsException('File ' . $relativeNewFilePath->toRelativeFileString() . ' already exists');
         }
 
-        $oldLockPath = $this->getAbsoluteLockPath($oldPath);
+        $oldLockPath = $this->getLockPath($relativeOldFilePath);
 
         $this->assertHasLock($user, $oldLockPath);
-        $this->createLock($user, $newPath);
+        $this->createLock($user, $relativeNewFilePath);
 
-        $this->gitRepository->moveAndCommit($this->getAuthor($user), $commitMessage, $oldPath, $newPath);
+        $this->gitRepository->moveAndCommit(
+            $this->getAuthor($user),
+            $commitMessage,
+            $relativeOldFilePath,
+            $relativeNewFilePath
+        );
 
-        $this->removeLock($user, $oldPath);
-        $this->removeLock($user, $newPath);
+        $this->removeLock($user, $relativeOldFilePath);
+        $this->removeLock($user, $relativeNewFilePath);
 
-        if (StringUtils::endsWith($oldPath->getName(), '.md')) {
+        if (StringUtils::endsWith($relativeOldFilePath->getName(), '.md')) {
             $this->eventDispatcher->dispatch(
                 'ddr.gitki.wiki.markdown_document.deleted',
-                new MarkdownDocumentDeletedEvent($oldPath, $user->getLogin(), time(), $commitMessage)
+                new MarkdownDocumentDeletedEvent($relativeOldFilePath, $user->getLogin(), time(), $commitMessage)
             );
         }
 
-        if (StringUtils::endsWith($newPath->getName(), '.md')) {
-            $content = $this->getContent($newPath);
+        if (StringUtils::endsWith($relativeNewFilePath->getName(), '.md')) {
+            $content = $this->getContent($relativeNewFilePath);
             $this->eventDispatcher->dispatch(
                 'ddr.gitki.wiki.markdown_document.saved',
-                new MarkdownDocumentSavedEvent($newPath, $user->getLogin(), time(), $content, $commitMessage)
+                new MarkdownDocumentSavedEvent($relativeNewFilePath, $user->getLogin(), time(
+                ), $content, $commitMessage)
             );
         }
     }
 
-    public function addFile(User $user, FilePath $path, UploadedFile $file, $commitMessage)
+    public function addFile(User $user, FilePath $relativeFilePath, UploadedFile $uploadedFile, $commitMessage)
     {
-        $directoryPath = $path->getParentPath();
-        $absoluteFilePath = $this->getAbsolutePath($path);
-        $absoluteDirectoryPath = $this->getAbsolutePath($directoryPath);
+        $relativeDirectoryPath = $relativeFilePath->getParentPath();
 
-        $fileSystem = new Filesystem();
-        if ($fileSystem->exists($absoluteFilePath)) {
-            throw new FileExistsException('File ' . $path . ' already exists');
+        if ($this->gitRepository->exists($relativeFilePath)) {
+            throw new FileExistsException('File ' . $relativeFilePath->toRelativeFileString() . ' already exists');
         }
 
-        if (!$fileSystem->exists($absoluteDirectoryPath)) {
-            $fileSystem->mkdir($absoluteDirectoryPath, 0755);
+        if (!$this->gitRepository->exists($relativeDirectoryPath)) {
+            $this->gitRepository->mkdir($relativeDirectoryPath);
         }
 
-        $this->createLock($user, $path);
-        $file->move($absoluteDirectoryPath, $path->getName());
+        $this->createLock($user, $relativeFilePath);
+        $uploadedFile->move(
+            $this->gitRepository->getAbsolutePath($relativeDirectoryPath),
+            $relativeFilePath->getName()
+        );
 
-        $this->gitRepository->addAndCommit($this->getAuthor($user), $commitMessage, $path);
+        $this->gitRepository->addAndCommit($this->getAuthor($user), $commitMessage, $relativeFilePath);
 
-        $this->removeLock($user, $path);
+        $this->removeLock($user, $relativeFilePath);
     }
 
-    public function assertUnlocked(User $user, $lockPath)
+    protected function assertUnlocked(User $user, FilePath $relativeLockPath)
     {
-        if (!file_exists($lockPath)) {
+        if (!$this->gitRepository->exists($relativeLockPath)) {
             return true;
         }
 
-        if ($this->isLockExpired($lockPath)) {
+        if ($this->isLockExpired($relativeLockPath)) {
             return true;
         }
 
-        $lockLogin = $this->getLockLogin($lockPath);
+        $lockLogin = $this->getLockLogin($relativeLockPath);
         if ($lockLogin == $user->getLogin()) {
             return true;
         }
 
-        throw new PageLockedException($lockLogin, $this->getLockExpiry($lockPath));
+        throw new PageLockedException($lockLogin, $this->getLockExpiry($relativeLockPath));
     }
 
     /**
@@ -250,23 +233,22 @@ class WikiService
     public function findAllMarkdownFiles()
     {
         $finder = new Finder();
-        $finder->in($this->repositoryPath);
+        $finder->in($this->gitRepository->getRepositoryPath()->toAbsoluteFileString());
         $finder->name('*.md');
 
         $filePaths = array();
 
         foreach ($finder->files() as $file) {
             /** @var SplFileInfo $file */
-            $filePaths[] = FilePath::parse($file->getRelativePathname());
+            $filePaths[] = FilePath::parse('/' . $file->getRelativePathname());
         }
 
         return $filePaths;
     }
 
 
-    public function listDirectory(DirectoryPath $path)
+    public function listDirectory(DirectoryPath $relativeDirectoryPath)
     {
-        $absolutePath = $this->getAbsolutePath($path);
         /* @var SplFileInfo[] $pages */
         $pages = array();
         /* @var SplFileInfo[] $subDirectories */
@@ -275,7 +257,7 @@ class WikiService
         $otherFiles = array();
 
         $finder = new Finder();
-        $finder->in($absolutePath);
+        $finder->in($this->gitRepository->getAbsolutePathString($relativeDirectoryPath));
         $finder->depth(0);
         foreach ($finder->files() as $file) {
             /* @var \Symfony\Component\Finder\SplFileInfo $file */
@@ -289,7 +271,7 @@ class WikiService
         }
 
         $finder = new Finder();
-        $finder->in($absolutePath);
+        $finder->in($this->gitRepository->getAbsolutePathString($relativeDirectoryPath));
         $finder->depth(0);
         $finder->ignoreDotFiles(true);
         foreach ($finder->directories() as $directory) {
@@ -317,7 +299,7 @@ class WikiService
             }
         );
 
-        return new DirectoryListing($path, $pages, $subDirectories, $otherFiles);
+        return new DirectoryListing($relativeDirectoryPath, $pages, $subDirectories, $otherFiles);
     }
 
     /**
@@ -326,9 +308,9 @@ class WikiService
      */
     public function getFile(FilePath $path)
     {
-        $absolutePath = $this->getAbsolutePath($path);
+        $absolutePath = $this->gitRepository->getAbsolutePath($path);
 
-        return new File($absolutePath);
+        return new File($absolutePath->toAbsoluteFileString());
     }
 
     public function getHistory($maxCount)
@@ -343,7 +325,7 @@ class WikiService
 
     protected function assertHasLock(User $user, $lockPath)
     {
-        if (file_exists($lockPath) && !$this->isLockExpired($lockPath)) {
+        if ($this->gitRepository->exists($lockPath) && !$this->isLockExpired($lockPath)) {
             $lockLogin = $this->getLockLogin($lockPath);
             if ($lockLogin == $user->getLogin($user)) {
                 return true;
@@ -355,30 +337,20 @@ class WikiService
 
     protected function removeLockFile($lockPath)
     {
-        unlink($lockPath);
+        $this->gitRepository->remove($lockPath);
     }
 
     protected function getLockLogin($lockPath)
     {
-        return file_get_contents($lockPath);
+        return $this->gitRepository->getContent($lockPath);
     }
 
-    protected function getAbsolutePath(Path $path)
+    protected function getLockPath(FilePath $relativeFilePath)
     {
-        $absolutePath = $this->repositoryPath;
-        if ($path != null) {
-            $absolutePath .= $path->toUrlString();
-        }
+        $name = $relativeFilePath->getName();
+        $relativeLockPath = $relativeFilePath->getParentPath()->appendFile($name . '.lock');
 
-        return $absolutePath;
-    }
-
-    protected function getAbsoluteLockPath(FilePath $path)
-    {
-        $lockPath = $path->getParentPath()->appendFile($path->getName() . '.lock');
-        $absoluteLockPath = $this->repositoryPath . $lockPath->toUrlString();
-
-        return $absoluteLockPath;
+        return $relativeLockPath;
     }
 
     protected function isLockExpired($lockPath)
@@ -391,9 +363,9 @@ class WikiService
         return $expired;
     }
 
-    protected function getLockExpiry($lockPath)
+    protected function getLockExpiry(FilePath $relativeLockPath)
     {
-        $mTime = filemtime($lockPath);
+        $mTime = $this->gitRepository->getModificationTime($relativeLockPath);
 
         return $mTime + (60);
     }

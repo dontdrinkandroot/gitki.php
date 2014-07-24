@@ -45,17 +45,41 @@ class FilePath extends AbstractPath
     /**
      * @inheritdoc
      */
-    public function toUrlString()
+    public function toAbsoluteUrlString()
     {
-        return $this->parentPath->toUrlString() . $this->getName();
+        return $this->parentPath->toAbsoluteUrlString() . $this->getName();
     }
 
     /**
      * @inheritdoc
      */
-    public function toFileString()
+    public function toRelativeUrlString()
     {
-        return $this->parentPath->toFileString() . $this->getName();
+        return $this->parentPath->toRelativeUrlString() . $this->getName();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function toAbsoluteFileString()
+    {
+        return $this->parentPath->toAbsoluteFileString() . $this->getName();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function toRelativeFileString()
+    {
+        return $this->parentPath->toRelativeFileString() . $this->getName();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function prepend(DirectoryPath $path)
+    {
+        return FilePath::parse($path->toAbsoluteUrlString() . $this->toAbsoluteUrlString());
     }
 
     public function getExtension()

@@ -5,6 +5,7 @@ namespace Net\Dontdrinkandroot\Gitki\ElasticSearchBundle\Parser;
 
 
 use Knp\Bundle\MarkdownBundle\Parser\MarkdownParser;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
 
 class Link
@@ -36,6 +37,9 @@ class Link
 class RepositoryAwareMarkdownParser extends MarkdownParser
 {
 
+    /**
+     * @var FilePath|null
+     */
     private $currentPath = null;
 
     private $gitRepository;
@@ -126,7 +130,18 @@ class RepositoryAwareMarkdownParser extends MarkdownParser
             return true;
         }
 
-        var_dump($url);
+        //TODO: Filter non internal urls (http:...)
+
+        try {
+            $repositoryPath = $this->currentPath->getParentPath()->appendPathString($url);
+            $fileExists = $this->gitRepository->exists($repositoryPath);
+            //var_dump($repositoryPath . ':' . $fileExists);
+            if (!$fileExists) {
+                return false;
+            }
+        } catch (\Exception $e) {
+        }
+
 
         return true;
     }

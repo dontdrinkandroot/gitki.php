@@ -6,20 +6,34 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Repository;
 
 use GitWrapper\GitWrapper;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\CommitMetadata;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\DirectoryPath;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\Path;
+use Symfony\Component\Filesystem\Filesystem;
 
 class GitRepository
 {
+
+    /**
+     * @var Filesystem
+     */
+    protected $fileSystem = null;
 
     private $repositoryPath;
 
     public function __construct($repositoryPath)
     {
-        $this->repositoryPath = $repositoryPath;
+        $this->repositoryPath = DirectoryPath::parse($repositoryPath);
+    }
+
+    public function getRepositoryPath()
+    {
+        return $this->repositoryPath;
     }
 
     /**
-     * @return \Net\Dontdrinkandroot\Gitki\BaseBundle\Model\CommitMetadata[]
+     * @param null|int $maxCount
+     * @return CommitMetadata[]
      */
     public function getWorkingCopyHistory($maxCount = null)
     {
@@ -42,7 +56,7 @@ class GitRepository
         if (null !== $maxCount) {
             $options['max-count'] = $maxCount;
         }
-        $options['p'] = $path->toUrlString();
+        $options['p'] = $path->toRelativeFileString();
 
         $workingCopy = $this->getWorkingCopy();
         $workingCopy->log($options);
@@ -100,7 +114,7 @@ class GitRepository
 
         $workingCopy = $this->getWorkingCopy();
         foreach ($realPaths as $path) {
-            $workingCopy->add($path->toUrlString());
+            $workingCopy->add($path->toRelativeFileString());
         }
         $this->commit($author, $commitMessage);
     }
@@ -113,7 +127,7 @@ class GitRepository
 
         $workingCopy = $this->getWorkingCopy();
         foreach ($paths as $path) {
-            $workingCopy->rm($path);
+            $workingCopy->rm($path->toRelativeFileString());
         }
         $this->commit($author, $commitMessage);
     }
@@ -131,7 +145,66 @@ class GitRepository
     public function moveAndCommit($author, $commitMessage, FilePath $oldPath, FilePath $newPath)
     {
         $workingCopy = $this->getWorkingCopy();
-        $workingCopy->mv($oldPath->toUrlString(), $newPath->toUrlString());
+        $workingCopy->mv($oldPath->toRelativeFileString(), $newPath->toRelativeFileString());
         $this->commit($author, $commitMessage);
     }
-} 
+
+    public function exists(Path $path)
+    {
+        $absolutePath = $this->getAbsolutePath($path);
+
+        return $this->getFileSystem()->exists($absolutePath->toAbsoluteFileString());
+    }
+
+    public function getAbsolutePath(Path $path)
+    {
+        return $path->prepend($this->getRepositoryPath());
+    }
+
+    public function getAbsolutePathString(Path $relativePath)
+    {
+        return $this->getAbsolutePath($relativePath)->toAbsoluteFileString();
+    }
+
+    /**
+     * @return Filesystem
+     */
+    protected function getFileSystem()
+    {
+        if (null === $this->fileSystem) {
+            $this->fileSystem = new Filesystem();
+        }
+
+        return $this->fileSystem;
+    }
+
+    public function mkdir(DirectoryPath $relativePath)
+    {
+        $this->getFileSystem()->mkdir($this->getAbsolutePathString($relativePath), 0755);
+    }
+
+    public function touch(FilePath $relativePath)
+    {
+        $this->getFileSystem()->touch($this->getAbsolutePathString($relativePath));
+    }
+
+    public function putContent(FilePath $relativePath, $content)
+    {
+        file_put_contents($this->getAbsolutePathString($relativePath), $content);
+    }
+
+    public function getContent(FilePath $relativePath)
+    {
+        return file_get_contents($this->getAbsolutePathString($relativePath));
+    }
+
+    public function getModificationTime(Path $relativePath)
+    {
+        return filemtime($this->getAbsolutePathString($relativePath));
+    }
+
+    public function remove($relativePath)
+    {
+        unlink($this->getAbsolutePathString($relativePath));
+    }
+}

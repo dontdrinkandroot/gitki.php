@@ -87,9 +87,9 @@ class WikiController extends BaseController
         $lastModified = new \DateTime();
         $lastModified->setTimestamp($file->getMTime());
         $response->setLastModified($lastModified);
-//        if ($response->isNotModified($request)) {
-//            return $response;
-//        }
+        if ($response->isNotModified($request)) {
+            return $response;
+        }
 
         $content = $this->getContents($file);
         $content = $this->getMarkdownParser()->transformMarkdown($content, $filePath);
@@ -164,8 +164,6 @@ class WikiController extends BaseController
             return new Response($renderedView, 409);
         }
 
-        $content = $this->getWikiService()->getContent($filePath);
-
         $form = $this->createFormBuilder()
             ->add('content', 'textarea')
             ->add('commitMessage', 'text', array('label' => 'Commit Message', 'required' => true))
@@ -193,6 +191,11 @@ class WikiController extends BaseController
             }
 
         } else {
+
+            $content = null;
+            if ($this->getWikiService()->exists($filePath)) {
+                $content = $this->getWikiService()->getContent($filePath);
+            }
 
             if (!$form->isSubmitted()) {
                 $form->setData(
@@ -268,7 +271,7 @@ class WikiController extends BaseController
 
         $this->getWikiService()->deleteFile($user, $filePath);
 
-        $parentDirPath = $filePath->getParentPath()->toUrlString();
+        $parentDirPath = $filePath->getParentPath()->toAbsoluteUrlString();
         if ($parentDirPath == "") {
             $parentDirPath = "/";
         }
@@ -342,7 +345,7 @@ class WikiController extends BaseController
                 return $this->redirect(
                     $this->generateUrl(
                         'ddr_gitki_wiki_directory',
-                        array('path' => $directoryPath->toUrlString())
+                        array('path' => $directoryPath->toAbsoluteUrlString())
                     )
                 );
             }
@@ -360,11 +363,10 @@ class WikiController extends BaseController
         $this->assertRole('ROLE_COMMITER');
 
         $directoryPath = DirectoryPath::parse($path);
-        $user = $this->getUser();
 
-        $this->getWikiService()->deleteDirectory($user, $directoryPath);
+        $this->getWikiService()->deleteDirectory($directoryPath);
 
-        $parentDirPath = $directoryPath->getParentPath()->toUrlString();
+        $parentDirPath = $directoryPath->getParentPath()->toAbsoluteUrlString();
         if ($parentDirPath == "") {
             $parentDirPath = "/";
         }

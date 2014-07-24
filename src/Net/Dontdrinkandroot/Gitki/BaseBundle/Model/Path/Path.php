@@ -23,6 +23,12 @@ interface Path
     function getParentPath();
 
     /**
+     * @param DirectoryPath $path
+     * @return Path
+     */
+    function prepend(DirectoryPath $path);
+
+    /**
      * @return Path[]
      */
     function collectPaths();
@@ -30,11 +36,21 @@ interface Path
     /**
      * @return string
      */
-    function toUrlString();
+    function toAbsoluteUrlString();
 
     /**
      * @return string
      */
-    function toFileString();
+    function toRelativeUrlString();
+
+    /**
+     * @return string
+     */
+    function toAbsoluteFileString();
+
+    /**
+     * @return string
+     */
+    function toRelativeFileString();
 
 } 

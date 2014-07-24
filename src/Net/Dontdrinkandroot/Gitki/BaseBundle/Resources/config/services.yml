@@ -15,5 +15,5 @@ services:
 
     ddr.gitki.service.wiki:
         class: Net\Dontdrinkandroot\Gitki\BaseBundle\Service\WikiService
-        arguments: [@ddr.gitki.repository.git, %repository_path%, @event_dispatcher]
+        arguments: [@ddr.gitki.repository.git, @event_dispatcher]
 

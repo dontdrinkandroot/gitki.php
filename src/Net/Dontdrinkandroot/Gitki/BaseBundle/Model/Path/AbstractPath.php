@@ -47,6 +47,6 @@ abstract class AbstractPath implements Path
 
     public function __toString()
     {
-        return $this->toUrlString();
+        return $this->toAbsoluteUrlString();
     }
-} 
+}

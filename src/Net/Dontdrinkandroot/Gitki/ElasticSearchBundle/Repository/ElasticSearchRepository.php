@@ -67,7 +67,7 @@ class ElasticSearchRepository
         }
 
         $params = array(
-            'id' => $path->toUrlString(),
+            'id' => $path->toAbsoluteUrlString(),
             'index' => $this->index,
             'type' => 'markdown_document',
             'body' => array(
@@ -121,7 +121,7 @@ class ElasticSearchRepository
     public function onMarkdownDocumentDeleted(MarkdownDocumentDeletedEvent $event)
     {
         $params = array(
-            'id' => $event->getPath()->toUrlString(),
+            'id' => $event->getPath()->toAbsoluteUrlString(),
             'index' => $this->index,
             'type' => 'markdown_document',
         );

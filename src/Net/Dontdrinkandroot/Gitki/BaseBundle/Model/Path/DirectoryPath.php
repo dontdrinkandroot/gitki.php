@@ -62,25 +62,57 @@ class DirectoryPath extends AbstractPath
     /**
      * @inheritdoc
      */
-    public function toUrlString()
+    public function toAbsoluteUrlString()
     {
         if (null === $this->parentPath) {
             return '/';
         }
 
-        return $this->parentPath->toUrlString() . $this->name . '/';
+        return $this->parentPath->toAbsoluteUrlString() . $this->name . '/';
     }
 
     /**
      * @inheritdoc
      */
-    public function toFileString()
+    public function toRelativeUrlString()
+    {
+        if (null === $this->parentPath) {
+            return '';
+        }
+
+        return $this->parentPath->toRelativeUrlString() . $this->name . '/';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function toAbsoluteFileString()
     {
         if (null === $this->parentPath) {
             return DIRECTORY_SEPARATOR;
         }
 
-        return $this->parentPath->toUrlString() . $this->name . DIRECTORY_SEPARATOR;
+        return $this->parentPath->toAbsoluteUrlString() . $this->name . DIRECTORY_SEPARATOR;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function toRelativeFileString()
+    {
+        if (null === $this->parentPath) {
+            return '';
+        }
+
+        return $this->parentPath->toRelativeFileString() . $this->name . DIRECTORY_SEPARATOR;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function prepend(DirectoryPath $path)
+    {
+        return DirectoryPath::parse($path->toAbsoluteUrlString() . $this->toAbsoluteUrlString());
     }
 
     /**
@@ -89,6 +121,11 @@ class DirectoryPath extends AbstractPath
     public function getName()
     {
         return $this->name;
+    }
+
+    public function isRoot()
+    {
+        return null === $this->parentPath && null === $this->name;
     }
 
     /**
@@ -106,9 +143,40 @@ class DirectoryPath extends AbstractPath
             throw new \Exception('Path String must end with /');
         }
 
-        /* Root */
-        $lastPath = new DirectoryPath();
+        return self::parseDirectoryPath($pathString, new DirectoryPath());
+    }
 
+    public function appendPathString($pathString)
+    {
+        $lastPath = $this;
+
+        $filePart = null;
+        $directoryPart = $pathString;
+        if (!StringUtils::endsWith($pathString, '/')) {
+            $filePart = $pathString;
+            $lastSlashPos = strrpos($pathString, '/');
+            if (false !== $lastSlashPos) {
+                $directoryPart = substr($pathString, 0, $lastSlashPos + 1);
+                $filePart = substr($pathString, $lastSlashPos + 1);
+            }
+        }
+
+        $directoryPath = self::parseDirectoryPath($directoryPart, $lastPath);
+
+        if (null !== $filePart) {
+            $filePath = new FilePath($filePart);
+            $filePath->setParentPath($directoryPath);
+
+            return $filePath;
+        }
+
+        return $directoryPath;
+    }
+
+
+    protected static function parseDirectoryPath($pathString, DirectoryPath $rootPath)
+    {
+        $lastPath = $rootPath;
         if (null !== $pathString) {
             $parts = explode('/', $pathString);
             foreach ($parts as $part) {
