@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new Net\Dontdrinkandroot\Gitki\BaseBundle\DdrGitkiBaseBundle(),
             new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
             new Net\Dontdrinkandroot\Gitki\ElasticSearchBundle\DdrGitkiElasticSearchBundle(),
+            new Net\Dontdrinkandroot\Gitki\GitHubIssuesBundle\DdrGitkiGitHubIssuesBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
@@ -35,6 +36,6 @@ class AppKernel extends Kernel
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
+        $loader->load(__DIR__ . '/config/config_' . $this->getEnvironment() . '.yml');
     }
 }

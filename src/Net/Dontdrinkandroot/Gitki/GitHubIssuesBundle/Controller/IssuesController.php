@@ -1,30 +1,31 @@
 <?php
 
 
-namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Controller;
+namespace Net\Dontdrinkandroot\Gitki\GitHubIssuesBundle\Controller;
 
 
 use Github\Api\Issue;
 use Github\Client;
 use Github\HttpClient\CachedHttpClient;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 
-class GithubController extends BaseController
+class IssuesController extends BaseController
 {
 
     const ORGANIZATION = 'philipsorst';
     const PROJECT = 'gitki.php';
 
-    public function issuesAction()
+    public function listAction()
     {
         $issues = $this->getIssueApi()->all(self::ORGANIZATION, self::PROJECT);
 
-        return $this->render('DdrGitkiBaseBundle:Github:issues.html.twig', array('issues' => $issues));
+        return $this->render('DdrGitkiGitHubIssuesBundle:Issues:list.html.twig', array('issues' => $issues));
     }
 
-    public function createIssueAction(Request $request)
+    public function createAction(Request $request)
     {
-        $this->assertRole('ROLE_USER');
+        $this->assertRole('ROLE_GITHUB_USER');
 
         $form = $this->createFormBuilder()
             ->add('title', 'text', array('label' => 'Title', 'required' => true))
@@ -54,11 +55,14 @@ class GithubController extends BaseController
                     )
                 );
 
-                return $this->redirect($this->generateUrl('ddr_gitki_github_issues'));
+                return $this->redirect($this->generateUrl('ddr_gitki_issues_list'));
             }
         }
 
-        return $this->render('DdrGitkiBaseBundle:Github:issue_create.html.twig', array('form' => $form->createView()));
+        return $this->render(
+            'DdrGitkiGitHubIssuesBundle:Issues:create.html.twig',
+            array('form' => $form->createView())
+        );
     }
 
     /**

@@ -21,11 +21,3 @@ ddr_gitki_wiki_file:
     defaults: { _controller: DdrGitkiBaseBundle:Wiki:file }
     requirements:
         path: .+
-
-ddr_gitki_github_issues:
-    path:   /github/issues/
-    defaults: { _controller: DdrGitkiBaseBundle:Github:issues }
-
-ddr_gitki_github_issue_create:
-    path:   /github/issues/create
-    defaults: { _controller: DdrGitkiBaseBundle:Github:createIssue }

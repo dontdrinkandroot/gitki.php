@@ -3,8 +3,9 @@
 {% block container %}
     <div class="page-header">
         <div class="pull-right">
-            <a href="{{ path('ddr_gitki_github_issue_create') }}" class="btn btn-default"><span
-                        class="fa fa-plus"></span></a>
+            {% if is_granted('ROLE_GITHUB_USER') %}
+                <a href="{{ path('ddr_gitki_issues_create') }}" class="btn btn-default"><span class="fa fa-plus"></span></a>
+            {% endif %}
         </div>
         <h1>Issues</h1>
     </div>

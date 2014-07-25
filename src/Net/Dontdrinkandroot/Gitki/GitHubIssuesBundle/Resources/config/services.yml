@@ -1,0 +1,7 @@
+parameters:
+#    ddr_gitki_git_hub_issues.example.class: Net\Dontdrinkandroot\Gitki\GitHubIssuesBundle\Example
+
+services:
+#    ddr_gitki_git_hub_issues.example:
+#        class: %ddr_gitki_git_hub_issues.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

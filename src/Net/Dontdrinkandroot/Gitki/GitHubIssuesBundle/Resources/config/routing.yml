@@ -1,0 +1,7 @@
+ddr_gitki_issues_list:
+    path:   /
+    defaults: { _controller: DdrGitkiGitHubIssuesBundle:Issues:list }
+
+ddr_gitki_issues_create:
+    path:   /create
+    defaults: { _controller: DdrGitkiGitHubIssuesBundle:Issues:create }
