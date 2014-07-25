@@ -24,5 +24,8 @@ class DdrGitkiElasticSearchExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
+
+        $container->setParameter('ddr_gitki_elastic_search.host', $config['host']);
+        $container->setParameter('ddr_gitki_elastic_search.port', $config['port']);
     }
 }

@@ -22,8 +22,6 @@ parameters:
     github_secret:      ~
 
     gitki_wiki_name:            GitKi
-    gitki_elasticsearch_host:   localhost
-    gitki_elasticsearch_port:   9200
 
     repository_path:    ~
 
