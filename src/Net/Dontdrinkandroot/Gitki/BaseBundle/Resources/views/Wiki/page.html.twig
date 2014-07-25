@@ -19,30 +19,19 @@
 {% block pageheader %}{% endblock %}
 {% block content %}
     <div class="markdown-page">
-        <div class="row">
+        {% if gitki_wiki_show_toc %}
+            <div class="row">
             <div class="col-md-3 col-md-push-9">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h2 class="panel-title">TOC</h2>
-                    </div>
-                    <div class="panel-body">
-                        <ul>
-                            {% for h2 in document.toc %}
-                                <li><a href="#{{ h2.attributes.id }}">{{ h2.text }}</a>
-                                    <ul>
-                                        {% for h3 in h2.children %}
-                                            <li><a href="#{{ h3.attributes.id }}">{{ h3.text }}</a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
+                {{ include('DdrGitkiBaseBundle:Wiki:page.toc.partial.html') }}
             </div>
             <div class="markdown-html col-md-9 col-md-pull-3">
                 {{ document.html|raw }}
             </div>
         </div>
+        {% else %}
+            <div class="markdown-html">
+                {{ document.html|raw }}
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

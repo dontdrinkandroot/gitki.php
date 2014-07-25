@@ -32,6 +32,7 @@ twig:
     globals:
         gitki_wiki_name: "%gitki_wiki_name%"
         gitki_wiki_show_breadcrumbs: "%gitki_wiki_show_breadcrumbs%"
+        gitki_wiki_show_toc: "%gitki_wiki_show_toc%"
 
 # Assetic Configuration
 assetic:

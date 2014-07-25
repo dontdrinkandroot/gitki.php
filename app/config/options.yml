@@ -1,2 +1,3 @@
 parameters:
     gitki_wiki_show_breadcrumbs: true
+    gitki_wiki_show_toc: true
