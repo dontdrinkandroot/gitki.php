@@ -61,7 +61,7 @@ class UserProvider implements OAuthAwareUserProviderInterface, UserProviderInter
     {
         $fields = $response->getResponse();
 
-        $user = new User();
+        $user = new GitHubUser();
 
         $id = $fields['id'];
         $user->setId($id);
@@ -118,7 +118,7 @@ class UserProvider implements OAuthAwareUserProviderInterface, UserProviderInter
 
     public function supportsClass($class)
     {
-        return $class === 'Net\\Dontdrinkandroot\\Gitki\\BaseBundle\\Security\\User';
+        return $class === 'Net\\Dontdrinkandroot\\Gitki\\BaseBundle\\Security\\GitHubUser';
     }
 
 

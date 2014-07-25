@@ -14,26 +14,26 @@ class MarkdownDocumentDeletedEvent extends Event
      * @var FilePath
      */
     private $path;
-    private $login;
+    private $email;
     private $time;
     private $commitMessage;
 
-    public function __construct(FilePath $path, $login, $time, $commitMessage)
+    public function __construct(FilePath $path, $email, $time, $commitMessage)
     {
         $this->path = $path;
-        $this->login = $login;
+        $this->email = $email;
         $this->time = $time;
         $this->commitMessage = $commitMessage;
     }
 
-    public function setLogin($login)
+    public function setEmail($login)
     {
-        $this->login = $login;
+        $this->email = $login;
     }
 
-    public function getLogin()
+    public function getEmail()
     {
-        return $this->login;
+        return $this->email;
     }
 
     public function setPath($path)

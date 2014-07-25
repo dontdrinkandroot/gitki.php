@@ -201,7 +201,7 @@ class WikiController extends BaseController
                 $form->setData(
                     array(
                         'content' => $content,
-                        'commitMessage' => 'Editing ' . $path
+                        'commitMessage' => 'Editing ' . $filePath->toRelativeUrlString()
                     )
                 );
             }

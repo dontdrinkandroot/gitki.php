@@ -86,7 +86,6 @@ class GitRepository
     }
 
 
-
     /**
      * @param string $author
      * @param string $commitMessage
@@ -112,12 +111,17 @@ class GitRepository
 
     public function removeAndCommit($author, $commitMessage, $paths)
     {
+        /** @var FilePath[] $realPaths */
+        $realPaths = array();
+
         if (!is_array($paths)) {
-            $paths = array($paths);
+            $realPaths = array($paths);
+        } else {
+            $realPaths = $paths;
         }
 
         $workingCopy = $this->getWorkingCopy();
-        foreach ($paths as $path) {
+        foreach ($realPaths as $path) {
             $workingCopy->rm($path->toRelativeFileString());
         }
         $this->commit($author, $commitMessage);
