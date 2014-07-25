@@ -1,5 +1,5 @@
 {% extends 'DdrGitkiBaseBundle:Wiki:base.html.twig' %}
-{% block title %} - {{ heading }}{% endblock %}
+{% block title %} - {{ document.title }}{% endblock %}
 {% block actions %}
     <div class="btn-group pull-right">
         {% if is_granted('ROLE_COMMITER') %}
@@ -16,14 +16,33 @@
            title="History"><span class="fa fa-history"></span></a>
     </div>
 {% endblock %}
-{% block heading %}
-    {% if heading %}{{ heading }}{% else %}&nbsp;{% endif %}
-{% endblock %}
+{% block pageheader %}{% endblock %}
 {% block content %}
-    <div class="row">
-        <div class="markdown-html col-md-9">
-            {{ body|raw }}
+    <div class="markdown-page">
+        <div class="row">
+            <div class="col-md-3 col-md-push-9">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">TOC</h2>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            {% for h2 in document.toc %}
+                                <li><a href="#{{ h2.attributes.id }}">{{ h2.text }}</a>
+                                    <ul>
+                                        {% for h3 in h2.children %}
+                                            <li><a href="#{{ h3.attributes.id }}">{{ h3.text }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="markdown-html col-md-9 col-md-pull-3">
+                {{ document.html|raw }}
+            </div>
         </div>
-        <div class="col-md-3"></div>
     </div>
 {% endblock %}

@@ -10,6 +10,7 @@ use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\FileExistsException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockExpiredException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\DirectoryListing;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\DirectoryPath;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\Path;
@@ -27,20 +28,27 @@ class WikiService
 {
 
     /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+     * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
 
     /**
-     * @var \Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository
+     * @var GitRepository
      */
     protected $gitRepository;
 
+    /**
+     * @var MarkdownService
+     */
+    protected $markdownService;
+
     public function __construct(
         GitRepository $gitRepository,
+        MarkdownService $markdownService,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->gitRepository = $gitRepository;
+        $this->markdownService = $markdownService;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -92,6 +100,17 @@ class WikiService
         return $this->gitRepository->getContent($relativeFilePath);
     }
 
+    /**
+     * @param FilePath $relativeFilePath
+     * @return ParsedMarkdownDocument
+     */
+    public function getParsedMarkdownDocument(FilePath $relativeFilePath)
+    {
+        $content = $this->getContent($relativeFilePath);
+
+        return $this->markdownService->parse($relativeFilePath, $content);
+    }
+
     public function savePage(User $user, FilePath $relativeFilePath, $content, $commitMessage)
     {
         $relativeLockPath = $this->getLockPath($relativeFilePath);
@@ -101,9 +120,12 @@ class WikiService
 
         $this->gitRepository->addAndCommit($this->getAuthor($user), $commitMessage, $relativeFilePath);
 
+        $parsedMarkdownDocument = $this->markdownService->parse($relativeFilePath, $content);
+
         $this->eventDispatcher->dispatch(
             'ddr.gitki.wiki.markdown_document.saved',
-            new MarkdownDocumentSavedEvent($relativeFilePath, $user->getEmail(), time(), $content, $commitMessage)
+            new MarkdownDocumentSavedEvent($relativeFilePath, $user->getEmail(), time(
+            ), $parsedMarkdownDocument, $commitMessage)
         );
     }
 
@@ -178,10 +200,11 @@ class WikiService
 
         if (StringUtils::endsWith($relativeNewFilePath->getName(), '.md')) {
             $content = $this->getContent($relativeNewFilePath);
+            $parsedMarkdownDocument = $this->markdownService->parse($relativeNewFilePath, $content);
             $this->eventDispatcher->dispatch(
                 'ddr.gitki.wiki.markdown_document.saved',
                 new MarkdownDocumentSavedEvent($relativeNewFilePath, $user->getEmail(), time(
-                ), $content, $commitMessage)
+                ), $parsedMarkdownDocument, $commitMessage)
             );
         }
     }

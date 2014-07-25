@@ -13,9 +13,11 @@ services:
         class: Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository
         arguments: [%repository_path%]
 
+    ddr.gitki.service.markdown:
+        class: Net\Dontdrinkandroot\Gitki\BaseBundle\Service\RepositoryAwareMarkdownService
+        arguments: [@ddr.gitki.repository.git]
+
     ddr.gitki.service.wiki:
         class: Net\Dontdrinkandroot\Gitki\BaseBundle\Service\WikiService
-        arguments: [@ddr.gitki.repository.git, @event_dispatcher]
+        arguments: [@ddr.gitki.repository.git, @ddr.gitki.service.markdown, @event_dispatcher]
 
-    ddr.gitki.parser.markdown:
-        class: Knp\Bundle\MarkdownBundle\Parser\Preset\Max

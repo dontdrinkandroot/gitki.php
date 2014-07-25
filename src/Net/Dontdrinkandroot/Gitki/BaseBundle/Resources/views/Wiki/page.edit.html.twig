@@ -1,14 +1,15 @@
 {% extends 'DdrGitkiBaseBundle:Wiki:base.html.twig' %}
 {% block title %} - {{ path }} - Edit{% endblock %}
-{% block heading %}
-{% endblock %}
+{% block pageheader %}{% endblock %}
 {% block content %}
-    <div class="row editor">
-        <div class="col-md-6">
-            {{ form(form) }}
-        </div>
-        <div class="col-md-6">
-            <div id="preview" class="markdown-html"></div>
+    <div class="markdown-page">
+        <div class="row editor">
+            <div class="col-md-6">
+                {{ form(form) }}
+            </div>
+            <div class="col-md-6">
+                <div id="preview" class="markdown-html"></div>
+            </div>
         </div>
     </div>
 {% endblock %}

@@ -15,11 +15,13 @@
     {{ parent() }}
     {% block aboveheader %}
     {% endblock %}
-    <div class="page-header">
-        {% block pageheader %}
-            <h1>{% block heading %}{% endblock %}</h1>
-        {% endblock %}
-    </div>
+    {% block pageheader %}
+        <div class="page-header">
+            {% block pageheader_content %}
+                <h1>{% block heading %}{% endblock %}</h1>
+            {% endblock %}
+        </div>
+    {% endblock %}
     {% block content %}
     {% endblock %}
 {% endblock %}

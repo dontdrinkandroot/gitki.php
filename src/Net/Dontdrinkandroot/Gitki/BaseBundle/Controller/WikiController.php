@@ -91,22 +91,20 @@ class WikiController extends BaseController
             return $response;
         }
 
-        $content = $this->getContents($file);
-        $content = $this->getMarkdownParser()->transformMarkdown($content, $filePath);
+        $document = $this->getWikiService()->getParsedMarkdownDocument($filePath);
 
-        $heading = null;
+        /*$heading = null;
         $body = null;
         if (preg_match("#<h1.*?>(.*?)</h1>#i", $content, $matches)) {
             $heading = $matches[1];
         }
-        $body = preg_replace("#<h1.*</h1>#i", "", $content);
+        $body = preg_replace("#<h1.*</h1>#i", "", $content);*/
 
         $renderedView = $this->renderView(
             'DdrGitkiBaseBundle:Wiki:page.html.twig',
             array(
-                'heading' => $heading,
-                'body' => $body,
                 'path' => $filePath,
+                'document' => $document
             )
         );
 

@@ -4,6 +4,7 @@
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Event;
 
 
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -16,26 +17,26 @@ class MarkdownDocumentSavedEvent extends Event
     private $path;
     private $email;
     private $time;
-    private $content;
+    private $document;
     private $commitMessage;
 
-    public function __construct(FilePath $path, $email, $time, $content, $commitMessage)
+    public function __construct(FilePath $path, $email, $time, ParsedMarkdownDocument $document, $commitMessage)
     {
         $this->path = $path;
         $this->email = $email;
         $this->time = $time;
-        $this->content = $content;
+        $this->document = $document;
         $this->commitMessage = $commitMessage;
     }
 
-    public function setContent($content)
+    public function setDocument($content)
     {
-        $this->content = $content;
+        $this->document = $content;
     }
 
-    public function getContent()
+    public function getDocument()
     {
-        return $this->content;
+        return $this->document;
     }
 
     public function setEmail($login)

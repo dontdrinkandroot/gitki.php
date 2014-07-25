@@ -8,6 +8,7 @@ use Elasticsearch\Client;
 use Knp\Bundle\MarkdownBundle\MarkdownParserInterface;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentDeletedEvent;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentSavedEvent;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
 use Net\Dontdrinkandroot\Gitki\ElasticSearchBundle\Model\MarkdownSearchResult;
 
@@ -27,13 +28,8 @@ class ElasticSearchRepository
      */
     private $client;
 
-    /**
-     * @var \Knp\Bundle\MarkdownBundle\MarkdownParserInterface
-     */
-    private $markdownParser;
 
-
-    public function __construct($host, $port, $index, MarkdownParserInterface $markdownParser)
+    public function __construct($host, $port, $index)
     {
         $this->host = $host;
         $this->port = $port;
@@ -42,8 +38,6 @@ class ElasticSearchRepository
         $params = array();
         $params['hosts'] = array($host . ':' . $port);
         $this->client = new Client($params);
-
-        $this->markdownParser = $markdownParser;
     }
 
     public function deleteMarkdownDocumentIndex()
@@ -58,21 +52,15 @@ class ElasticSearchRepository
 //        return $this->client->deleteByQuery($params);
     }
 
-    public function indexMarkdownDocument(FilePath $path, $content)
+    public function indexMarkdownDocument(FilePAth $path, ParsedMarkdownDocument $parsedMarkdownDocument)
     {
-        $parsedContent = $this->markdownParser->transformMarkdown($content);
-        $title = null;
-        if (preg_match("#<h1.*?>(.*?)</h1>#i", $parsedContent, $matches)) {
-            $title = $matches[1];
-        }
-
         $params = array(
             'id' => $path->toAbsoluteUrlString(),
             'index' => $this->index,
             'type' => 'markdown_document',
             'body' => array(
-                'title' => $title,
-                'content' => $content
+                'title' => $parsedMarkdownDocument->getTitle(),
+                'content' => $parsedMarkdownDocument->getSource()
             )
         );
 
@@ -115,7 +103,7 @@ class ElasticSearchRepository
 
     public function onMarkdownDocumentSaved(MarkdownDocumentSavedEvent $event)
     {
-        $this->indexMarkdownDocument($event->getPath(), $event->getContent());
+        $this->indexMarkdownDocument($event->getPath(), $event->getDocument());
     }
 
     public function onMarkdownDocumentDeleted(MarkdownDocumentDeletedEvent $event)
