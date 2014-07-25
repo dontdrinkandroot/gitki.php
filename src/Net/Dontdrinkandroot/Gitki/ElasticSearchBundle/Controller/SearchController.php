@@ -8,7 +8,7 @@ use Net\Dontdrinkandroot\Gitki\BaseBundle\Controller\BaseController;
 use Net\Dontdrinkandroot\Gitki\ElasticSearchBundle\Repository\ElasticSearchRepository;
 use Symfony\Component\HttpFoundation\Request;
 
-class DefaultController extends BaseController
+class SearchController extends BaseController
 {
 
     public function searchAction(Request $request)
@@ -28,7 +28,7 @@ class DefaultController extends BaseController
         }
 
         return $this->render(
-            'DdrGitkiElasticSearchBundle:Default:search.html.twig',
+            'DdrGitkiElasticSearchBundle:Search:search.html.twig',
             array('form' => $form->createView(), 'searchString' => $searchString, 'results' => $results)
         );
     }
