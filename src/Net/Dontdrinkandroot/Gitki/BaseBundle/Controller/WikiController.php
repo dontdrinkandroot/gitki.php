@@ -379,6 +379,13 @@ class WikiController extends BaseController
         );
     }
 
+    public function historyAction()
+    {
+        $history = $this->getWikiService()->getHistory(20);
+
+        return $this->render('DdrGitkiBaseBundle:Wiki:history.html.twig', array('history' => $history));
+    }
+
     protected function getContents(File $file)
     {
         $level = error_reporting(0);

@@ -6,6 +6,10 @@ ddr_gitki_loggedout:
     path:   /loggedout
     defaults: { _controller: DdrGitkiBaseBundle:Default:loggedout }
 
+ddr_gitki_history:
+    path:   /history
+    defaults: { _controller: DdrGitkiBaseBundle:Wiki:history }
+
 ddr_gitki_wiki_directory:
     path:   /wiki{path}
     defaults: { _controller: DdrGitkiBaseBundle:Wiki:directory }
