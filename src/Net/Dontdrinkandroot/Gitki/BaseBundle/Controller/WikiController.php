@@ -108,13 +108,6 @@ class WikiController extends BaseController
 
         $document = $this->getWikiService()->getParsedMarkdownDocument($filePath);
 
-        /*$heading = null;
-        $body = null;
-        if (preg_match("#<h1.*?>(.*?)</h1>#i", $content, $matches)) {
-            $heading = $matches[1];
-        }
-        $body = preg_replace("#<h1.*</h1>#i", "", $content);*/
-
         $renderedView = $this->renderView(
             'DdrGitkiBaseBundle:Wiki:page.html.twig',
             array(
@@ -380,9 +373,6 @@ class WikiController extends BaseController
         $this->getWikiService()->deleteDirectory($directoryPath);
 
         $parentDirPath = $directoryPath->getParentPath()->toAbsoluteUrlString();
-        if ($parentDirPath == "") {
-            $parentDirPath = "/";
-        }
 
         return $this->redirect(
             $this->generateUrl(

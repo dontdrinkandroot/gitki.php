@@ -5,11 +5,6 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-/**
- * This is the class that validates and merges configuration from your app/config files
- *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
- */
 class Configuration implements ConfigurationInterface
 {
     /**
@@ -20,9 +15,28 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('ddr_gitki_base');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        // @formatter:off
+        $rootNode
+            ->children()
+                ->arrayNode('oauth')
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('client_id')->isRequired()->end()
+                            ->scalarNode('secret')->isRequired()->end()
+                            ->arrayNode('users_admin')
+                                ->prototype('scalar')->end()
+                            ->end()
+                            ->arrayNode('users_commit')
+                                ->prototype('scalar')->end()
+                            ->end()
+                            ->arrayNode('users_watch')
+                                ->prototype('scalar')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+        // @formatter:on
 
         return $treeBuilder;
     }

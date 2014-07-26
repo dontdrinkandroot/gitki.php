@@ -18,13 +18,5 @@ parameters:
     debug_redirects:         false
     use_assetic_controller: true
 
-    github_client_id:   ~
-    github_secret:      ~
-
     gitki_wiki_name:            GitKi
-
     repository_path:    ~
-
-    users_admin:        ~
-    users_commit:       ~
-    users_watch:        ~

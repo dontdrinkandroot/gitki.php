@@ -83,10 +83,4 @@ braincrafted_bootstrap:
 
 hwi_oauth:
     firewall_name: secured_area
-    resource_owners:
-        github:
-            type:                github
-            client_id:           %github_client_id%
-            client_secret:       %github_secret%
-            scope:               "user:email,public_repo"
 

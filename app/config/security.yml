@@ -14,12 +14,9 @@ security:
                 path:   /logout
                 target: /loggedout
             oauth:
-                resource_owners:
-                    github:          "/login/check-github"
-                login_path:        /connect/github
+                login_path:        /login
                 use_forward:       false
                 failure_path:      /login
-
                 oauth_user_provider:
                     service: ddr.gitki.security.user_provider
 

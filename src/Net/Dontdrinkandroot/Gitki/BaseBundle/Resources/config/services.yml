@@ -2,12 +2,28 @@ parameters:
 #    ddr_gitki_base.example.class: Net\Dontdrinkandroot\Gitki\BaseBundle\Example
 
 services:
+
+    ddr.gitki.security.response_handler.github:
+        class: Net\Dontdrinkandroot\Gitki\BaseBundle\Security\GitHubResponseHandler
+        arguments:
+            - %ddr_gitki_base.github_users_admin%
+            - %ddr_gitki_base.github_users_commit%
+            - %ddr_gitki_base.github_users_watch%
+
+    ddr.gitki.security.response_handler.google:
+        class: Net\Dontdrinkandroot\Gitki\BaseBundle\Security\GoogleResponseHandler
+        arguments:
+            - %ddr_gitki_base.google_users_admin%
+            - %ddr_gitki_base.google_users_commit%
+            - %ddr_gitki_base.google_users_watch%
+
+
     ddr.gitki.security.user_provider:
         class: Net\Dontdrinkandroot\Gitki\BaseBundle\Security\UserProvider
-        arguments:
-            - %users_admin%
-            - %users_commit%
-            - %users_watch%
+        calls:
+            - [registerHandler, [@ddr.gitki.security.response_handler.github]]
+            - [registerHandler, [@ddr.gitki.security.response_handler.google]]
+
 
     ddr.gitki.repository.git:
         class: Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository
