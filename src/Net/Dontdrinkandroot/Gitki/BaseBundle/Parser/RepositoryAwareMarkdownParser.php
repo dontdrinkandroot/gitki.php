@@ -3,8 +3,10 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Parser;
 
 use Michelf\MarkdownExtra;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\DirectoryPath;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
+use Net\Dontdrinkandroot\Symfony\ExtensionBundle\Utils\StringUtils;
 
 class Attributes
 {
@@ -233,12 +235,6 @@ class RepositoryAwareMarkdownParser extends MarkdownExtra implements MarkdownPar
 
     protected function doExtraAttributesAsObject($tag_name, $attr)
     {
-        #
-        # Parse attributes caught by the $this->id_class_attr_catch_re expression
-        # and return the HTML-formatted list of attributes.
-        #
-        # Currently supported attributes are .class and #id.
-        #
         $attributes = new Attributes();
 
         if (empty($attr)) {
@@ -271,22 +267,35 @@ class RepositoryAwareMarkdownParser extends MarkdownExtra implements MarkdownPar
 
     private function targetExists($url)
     {
-        if (null === $this->path) {
-            return true;
-        }
-
-        //TODO: Filter non internal urls (http:...)
-
         try {
-            $repositoryPath = $this->path->getParentPath()->appendPathString($url);
-            $fileExists = $this->gitRepository->exists($repositoryPath);
-            //var_dump($repositoryPath . ':' . $fileExists);
-            if (!$fileExists) {
-                return false;
+            $urlParts = parse_url($url);
+
+            if (array_key_exists('scheme', $urlParts)) {
+                return true;
             }
+
+            if (array_key_exists('host', $urlParts)) {
+                return true;
+            }
+
+            $urlPath = $urlParts['path'];
+            $path = null;
+            if (StringUtils::startsWith($urlPath, '/')) {
+                if (StringUtils::endsWith($urlPath, '/')) {
+                    $path = DirectoryPath::parse($urlPath);
+                } else {
+                    $path = FilePath::parse($urlPath);
+                }
+            } else {
+                $path = $this->path->getParentPath()->appendPathString($urlPath);
+            }
+
+            $fileExists = $this->gitRepository->exists($path);
+
+            return $fileExists;
+
         } catch (\Exception $e) {
         }
-
 
         return true;
     }

@@ -3,8 +3,8 @@
         <h2 class="panel-title">TOC</h2>
     </div>
     <div class="panel-body">
-        <ul>
-            {% for h2 in document.toc %}
+        <ul class="list-unstyled">
+        {% for h2 in document.toc %}
             <li><a href="#{{ h2.attributes.id }}">{{ h2.text }}</a>
                 <ul>
                     {% for h3 in h2.children %}
