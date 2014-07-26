@@ -9,6 +9,7 @@ use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\CommitMetadata;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\DirectoryPath;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\Path;
+use Net\Dontdrinkandroot\Symfony\ExtensionBundle\Utils\StringUtils;
 use Symfony\Component\Filesystem\Filesystem;
 
 class GitRepository
@@ -23,7 +24,17 @@ class GitRepository
 
     public function __construct($repositoryPath)
     {
-        $this->repositoryPath = DirectoryPath::parse($repositoryPath);
+        $pathString = $repositoryPath;
+
+        if (!StringUtils::startsWith($pathString, '/')) {
+            throw new \Exception('Repository Path must be absolute');
+        }
+
+        if (!StringUtils::endsWith($pathString, '/')) {
+            $pathString .= '/';
+        }
+
+        $this->repositoryPath = DirectoryPath::parse($pathString);
     }
 
     public function getRepositoryPath()

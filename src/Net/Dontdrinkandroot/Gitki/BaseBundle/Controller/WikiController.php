@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -20,8 +21,15 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class WikiController extends BaseController
 {
 
+    /**
+     * @param Request $request
+     * @param string $path
+     * @return Response
+     */
     public function directoryAction(Request $request, $path)
     {
+        $this->checkPreconditions($request, $path);
+
         $action = $request->query->get('action', 'list');
         switch ($action) {
             case 'upload' :
@@ -33,8 +41,15 @@ class WikiController extends BaseController
         }
     }
 
+    /**
+     * @param Request $request
+     * @param string $path
+     * @return Response
+     */
     public function fileAction(Request $request, $path)
     {
+        $this->checkPreconditions($request, $path);
+
         $action = $request->query->get('action', 'show');
         switch ($action) {
             case 'edit' :
@@ -395,6 +410,13 @@ class WikiController extends BaseController
         }
 
         return $content;
+    }
+
+    protected function checkPreconditions($request, $path)
+    {
+        if (StringUtils::startsWith($path, '/.git')) {
+            throw new AccessDeniedHttpException();
+        }
     }
 
 
