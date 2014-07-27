@@ -1,20 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8"/>
-    <title>{{ gitki_wiki_name }}{% block title %}{% endblock %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% block stylesheet %}
-        <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
-              media="screen"/>
-        <link rel="stylesheet" type="text/css"
-              href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
-              media="screen"/>
-        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/ddrgitkibase/css/style.css') }}" media="screen"/>
-    {% endblock %}
-</head>
-<body>
-<div id="content" class="container">
+{% extends 'DdrGitkiBaseBundle::base.html.twig' %}
+{% block navbar %}{% endblock %}
+{% block container %}
     <div class="page-header">
         <h1>Login</h1>
     </div>
@@ -24,17 +10,9 @@
     <div class="row">
         {% for owner in hwi_oauth_resource_owners() %}
             <div class="col-md-2">
-                <a class="btn btn-default btn-block"
-                   href="{{ hwi_oauth_login_url(owner) }}">{{ owner | trans({}, 'HWIOAuthBundle') }}</a>
+                <a class="btn btn-default btn-block" href="{{ hwi_oauth_login_url(owner) }}"><span class="fa fa-fw fa-{{ owner }}"></span> {{ owner | trans({}, 'HWIOAuthBundle')|capitalize }}</a>
             </div>
         {% endfor %}
     </div>
 </div>
-
-{% block javascript %}
-    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 {% endblock %}
-
-</body>
-</html>
