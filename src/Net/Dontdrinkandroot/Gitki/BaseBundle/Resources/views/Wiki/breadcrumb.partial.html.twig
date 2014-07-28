@@ -1,5 +1,5 @@
-<ol class="breadcrumb">
-    <li><a href="{{ path('ddr_gitki_wiki_directory', {'path': '/'}) }}"><span class="fa fa-home"></span></a></li>
+<ol class="breadcrumb pull-left-sm">
+<li><a href="{{ path('ddr_gitki_wiki_directory', {'path': '/'}) }}"><span class="fa fa-home"></span></a></li>
     {% if path.hasParentPath %}
         {% for parentPath in path.parentPath.collectPaths %}
             {% if parentPath.name is not empty %}

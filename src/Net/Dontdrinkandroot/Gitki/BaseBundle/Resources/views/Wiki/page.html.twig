@@ -1,8 +1,8 @@
 {% extends 'DdrGitkiBaseBundle:Wiki:base.html.twig' %}
 {% block title %} - {{ document.title }}{% endblock %}
 {% block actions %}
-    <div class="btn-group pull-right">
-        {% if is_granted('ROLE_COMMITER') %}
+    <div class="btn-group pull-right-sm actions">
+    {% if is_granted('ROLE_COMMITER') %}
             <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'edit'}) }}" class="btn btn-default btn-xs"
                title="Edit"><span class="fa fa-pencil"></span></a>
             <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'rename'}) }}"
