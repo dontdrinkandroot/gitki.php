@@ -1,14 +1,14 @@
 <?php
 
 
-namespace Net\Dontdrinkandroot\Gitki\ElasticSearchBundle\Command;
+namespace Net\Dontdrinkandroot\Gitki\ElasticsearchBundle\Command;
 
 
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ReindexCommand extends ElasticSearchCommand
+class ReindexCommand extends ElasticsearchCommand
 {
 
     protected function configure()
@@ -20,7 +20,7 @@ class ReindexCommand extends ElasticSearchCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $wikiService = $this->getWikiService();
-        $elasticSearchRepo = $this->getElasticSearchRepository();
+        $elasticSearchRepo = $this->getElasticsearchRepository();
 
         $elasticSearchRepo->deleteMarkdownDocumentIndex();
 

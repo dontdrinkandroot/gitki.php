@@ -3,4 +3,4 @@ imports:
 
 ddr_gitki_elasticsearch_search:
     path:   /search/
-    defaults: { _controller: DdrGitkiElasticSearchBundle:Search:search }
+    defaults: { _controller: DdrGitkiElasticsearchBundle:Search:search }

@@ -1,20 +1,20 @@
 <?php
 
 
-namespace Net\Dontdrinkandroot\Gitki\ElasticSearchBundle\Command;
+namespace Net\Dontdrinkandroot\Gitki\ElasticsearchBundle\Command;
 
 
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Service\WikiService;
-use Net\Dontdrinkandroot\Gitki\ElasticSearchBundle\Repository\ElasticSearchRepository;
+use Net\Dontdrinkandroot\Gitki\ElasticsearchBundle\Repository\ElasticsearchRepository;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
-abstract class ElasticSearchCommand extends ContainerAwareCommand
+abstract class ElasticsearchCommand extends ContainerAwareCommand
 {
 
     /**
-     * @return ElasticSearchRepository
+     * @return ElasticsearchRepository
      */
-    protected function getElasticSearchRepository()
+    protected function getElasticsearchRepository()
     {
         return $this->getContainer()->get('ddr.gitki.repository.elasticsearch');
     }

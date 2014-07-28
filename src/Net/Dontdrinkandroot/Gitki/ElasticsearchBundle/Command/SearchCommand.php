@@ -1,15 +1,14 @@
 <?php
 
 
-namespace Net\Dontdrinkandroot\Gitki\ElasticSearchBundle\Command;
+namespace Net\Dontdrinkandroot\Gitki\ElasticsearchBundle\Command;
 
 
-use Net\Dontdrinkandroot\Gitki\ElasticSearchBundle\Repository\ElasticSearchRepository;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SearchCommand extends ElasticSearchCommand
+class SearchCommand extends ElasticsearchCommand
 {
 
     protected function configure()
@@ -22,8 +21,7 @@ class SearchCommand extends ElasticSearchCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $searchString = $input->getArgument('searchstring');
-        /* @var ElasticSearchRepository $elasticSearchRepo */
-        $elasticSearchRepo = $this->getContainer()->get('ddr.gitki.repository.elasticsearch');
+        $elasticSearchRepo = $this->getElasticsearchRepository();
         $results = $elasticSearchRepo->searchMarkdownDocuments($searchString);
         if (count($results) == 0) {
             $output->writeln('No results found');

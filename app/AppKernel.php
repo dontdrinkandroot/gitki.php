@@ -18,7 +18,7 @@ class AppKernel extends Kernel
             new \Net\Dontdrinkandroot\Symfony\ExtensionBundle\DdrSymfonyExtensionBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
             new Net\Dontdrinkandroot\Gitki\BaseBundle\DdrGitkiBaseBundle(),
-            new Net\Dontdrinkandroot\Gitki\ElasticSearchBundle\DdrGitkiElasticSearchBundle(),
+            new Net\Dontdrinkandroot\Gitki\ElasticsearchBundle\DdrGitkiElasticsearchBundle(),
             new Net\Dontdrinkandroot\Gitki\GitHubIssuesBundle\DdrGitkiGitHubIssuesBundle(),
         );
 

@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Net\Dontdrinkandroot\Gitki\ElasticSearchBundle\Controller;
+namespace Net\Dontdrinkandroot\Gitki\ElasticsearchBundle\Controller;
 
 
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Controller\BaseController;
-use Net\Dontdrinkandroot\Gitki\ElasticSearchBundle\Repository\ElasticSearchRepository;
+use Net\Dontdrinkandroot\Gitki\ElasticSearchBundle\Repository\ElasticsearchRepository;
 use Symfony\Component\HttpFoundation\Request;
 
 class SearchController extends BaseController
@@ -24,19 +24,19 @@ class SearchController extends BaseController
         $searchString = null;
         if ($form->isValid()) {
             $searchString = $form->get('searchString')->getData();
-            $results = $this->getElasticSearchRepository()->searchMarkdownDocuments($searchString);
+            $results = $this->getElasticsearchRepository()->searchMarkdownDocuments($searchString);
         }
 
         return $this->render(
-            'DdrGitkiElasticSearchBundle:Search:search.html.twig',
+            'DdrGitkiElasticsearchBundle:Search:search.html.twig',
             array('form' => $form->createView(), 'searchString' => $searchString, 'results' => $results)
         );
     }
 
     /**
-     * @return ElasticSearchRepository
+     * @return ElasticsearchRepository
      */
-    protected function getElasticSearchRepository()
+    protected function getElasticsearchRepository()
     {
         return $this->get('ddr.gitki.repository.elasticsearch');
     }

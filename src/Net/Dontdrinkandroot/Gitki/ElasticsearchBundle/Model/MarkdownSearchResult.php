@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Net\Dontdrinkandroot\Gitki\ElasticSearchBundle\Model;
+namespace Net\Dontdrinkandroot\Gitki\ElasticsearchBundle\Model;
 
 
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;

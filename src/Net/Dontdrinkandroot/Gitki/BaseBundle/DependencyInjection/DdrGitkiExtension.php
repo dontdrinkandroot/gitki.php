@@ -19,46 +19,12 @@ class DdrGitkiExtension extends Extension implements PrependExtensionInterface
     /**
      * {@inheritDoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
-    {
-        $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
-
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.yml');
-
-        $container->setParameter('ddr_gitki_base.repository_path', $config['repository_path']);
-        $container->setParameter('ddr_gitki_base.name', $config['name']);
-
-        if (isset($config['oauth']) && isset($config['oauth']['github'])) {
-            $container->setParameter('ddr_gitki_base.github_users_admin', $config['oauth']['github']['users_admin']);
-            $container->setParameter('ddr_gitki_base.github_users_commit', $config['oauth']['github']['users_commit']);
-            $container->setParameter('ddr_gitki_base.github_users_watch', $config['oauth']['github']['users_watch']);
-        } else {
-            $container->setParameter('ddr_gitki_base.github_users_admin', array());
-            $container->setParameter('ddr_gitki_base.github_users_commit', array());
-            $container->setParameter('ddr_gitki_base.github_users_watch', array());
-        }
-
-        if (isset($config['oauth']) && isset($config['oauth']['google'])) {
-            $container->setParameter('ddr_gitki_base.google_users_admin', $config['oauth']['google']['users_admin']);
-            $container->setParameter('ddr_gitki_base.google_users_commit', $config['oauth']['google']['users_commit']);
-            $container->setParameter('ddr_gitki_base.google_users_watch', $config['oauth']['google']['users_watch']);
-        } else {
-            $container->setParameter('ddr_gitki_base.google_users_admin', array());
-            $container->setParameter('ddr_gitki_base.google_users_commit', array());
-            $container->setParameter('ddr_gitki_base.google_users_watch', array());
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function prepend(ContainerBuilder $container)
     {
         $bundles = $container->getParameter('kernel.bundles');
         $configs = $container->getExtensionConfig($this->getAlias());
-        $config = $this->processConfiguration(new Configuration(), $configs);
+        $configuration = $this->getConfiguration($configs, $container);
+        $config = $this->processConfiguration($configuration, $configs);
 
         $hwiOauthConfig = array('resource_owners' => array());
         $securityConfig = array('firewalls' => array('secured_area' => array('oauth' => array('resource_owners' => array()))));
@@ -97,4 +63,51 @@ class DdrGitkiExtension extends Extension implements PrependExtensionInterface
         $container->prependExtensionConfig('hwi_oauth', $hwiOauthConfig);
         $container->prependExtensionConfig('twig', $twigConfig);
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public function load(array $configs, ContainerBuilder $container)
+    {
+        $configuration = $this->getConfiguration($configs, $container);
+        $config = $this->processConfiguration($configuration, $configs);
+
+        $this->doLoad($config, $container);
+    }
+
+    public function getConfiguration(array $config, ContainerBuilder $container)
+    {
+        return new Configuration();
+    }
+
+    protected function doLoad($config, ContainerBuilder $container)
+    {
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.yml');
+
+        $container->setParameter('ddr_gitki_base.repository_path', $config['repository_path']);
+        $container->setParameter('ddr_gitki_base.name', $config['name']);
+
+        if (isset($config['oauth']) && isset($config['oauth']['github'])) {
+            $container->setParameter('ddr_gitki_base.github_users_admin', $config['oauth']['github']['users_admin']);
+            $container->setParameter('ddr_gitki_base.github_users_commit', $config['oauth']['github']['users_commit']);
+            $container->setParameter('ddr_gitki_base.github_users_watch', $config['oauth']['github']['users_watch']);
+        } else {
+            $container->setParameter('ddr_gitki_base.github_users_admin', array());
+            $container->setParameter('ddr_gitki_base.github_users_commit', array());
+            $container->setParameter('ddr_gitki_base.github_users_watch', array());
+        }
+
+        if (isset($config['oauth']) && isset($config['oauth']['google'])) {
+            $container->setParameter('ddr_gitki_base.google_users_admin', $config['oauth']['google']['users_admin']);
+            $container->setParameter('ddr_gitki_base.google_users_commit', $config['oauth']['google']['users_commit']);
+            $container->setParameter('ddr_gitki_base.google_users_watch', $config['oauth']['google']['users_watch']);
+        } else {
+            $container->setParameter('ddr_gitki_base.google_users_admin', array());
+            $container->setParameter('ddr_gitki_base.google_users_commit', array());
+            $container->setParameter('ddr_gitki_base.google_users_watch', array());
+        }
+    }
+
 }

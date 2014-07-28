@@ -45,7 +45,7 @@ assetic:
     assets:
         markdown-js:
             inputs:
-                - %kernel.root_dir%/../vendor/evilstreak/markdown-js/lib/markdown.js
+                - "%kernel.root_dir%/../vendor/evilstreak/markdown-js/lib/markdown.js"
             output: js/markdown.js
 
 braincrafted_bootstrap:
@@ -56,4 +56,4 @@ hwi_oauth:
     firewall_name: secured_area
 
 ddr_gitki:
-    repository_path: %repository_path%
+    repository_path: "%repository_path%"

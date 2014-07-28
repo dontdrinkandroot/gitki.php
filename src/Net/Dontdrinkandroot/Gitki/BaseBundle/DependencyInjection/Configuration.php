@@ -47,6 +47,12 @@ class Configuration implements ConfigurationInterface
             ->end();
         // @formatter:on
 
+        $this->postProcessRootNode($rootNode);
+
         return $treeBuilder;
+    }
+
+    protected function postProcessRootNode($rootNode)
+    {
     }
 }
