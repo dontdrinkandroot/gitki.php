@@ -8,8 +8,14 @@ use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-class DdrGitkiBaseExtension extends Extension implements PrependExtensionInterface
+class DdrGitkiExtension extends Extension implements PrependExtensionInterface
 {
+
+    public function getAlias()
+    {
+        return "ddr_gitki";
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -42,6 +48,9 @@ class DdrGitkiBaseExtension extends Extension implements PrependExtensionInterfa
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function prepend(ContainerBuilder $container)
     {
         $bundles = $container->getParameter('kernel.bundles');
