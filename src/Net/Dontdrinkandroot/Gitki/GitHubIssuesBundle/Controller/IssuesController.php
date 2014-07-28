@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 class IssuesController extends BaseController
 {
 
-    const ORGANIZATION = 'philipsorst';
+    const ORGANIZATION = 'dontdrinkandroot';
     const PROJECT = 'gitki.php';
 
     public function listAction()
