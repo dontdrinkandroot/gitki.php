@@ -27,7 +27,7 @@ services:
 
     ddr.gitki.repository.git:
         class: Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository
-        arguments: [%repository_path%]
+        arguments: [%ddr_gitki_base.repository_path%]
 
     ddr.gitki.service.markdown:
         class: Net\Dontdrinkandroot\Gitki\BaseBundle\Service\RepositoryAwareMarkdownService

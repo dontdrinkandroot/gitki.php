@@ -27,6 +27,8 @@ class DdrGitkiExtension extends Extension implements PrependExtensionInterface
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
 
+        $container->setParameter('ddr_gitki_base.repository_path', $config['repository_path']);
+
         if (isset($config['oauth']) && isset($config['oauth']['github'])) {
             $container->setParameter('ddr_gitki_base.github_users_admin', $config['oauth']['github']['users_admin']);
             $container->setParameter('ddr_gitki_base.github_users_commit', $config['oauth']['github']['users_commit']);
@@ -59,6 +61,11 @@ class DdrGitkiExtension extends Extension implements PrependExtensionInterface
 
         $hwiOauthConfig = array('resource_owners' => array());
         $securityConfig = array('firewalls' => array('secured_area' => array('oauth' => array('resource_owners' => array()))));
+        $twigConfig = array('globals' => array());
+
+        $twigConfig['globals']['ddr_gitki_name'] = $config['name'];
+        $twigConfig['globals']['ddr_gitki_show_toc'] = $config['twig']['show_toc'];
+        $twigConfig['globals']['ddr_gitki_show_breadcrumbs'] = $config['twig']['show_breadcrumbs'];
 
         if (isset($config['oauth']['github'])) {
 
@@ -87,5 +94,6 @@ class DdrGitkiExtension extends Extension implements PrependExtensionInterface
 
         $container->prependExtensionConfig('security', $securityConfig);
         $container->prependExtensionConfig('hwi_oauth', $hwiOauthConfig);
+        $container->prependExtensionConfig('twig', $twigConfig);
     }
 }

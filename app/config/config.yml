@@ -29,10 +29,6 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
-    globals:
-        gitki_wiki_name: "%gitki_wiki_name%"
-        gitki_wiki_show_breadcrumbs: "%gitki_wiki_show_breadcrumbs%"
-        gitki_wiki_show_toc: "%gitki_wiki_show_toc%"
 
 # Assetic Configuration
 assetic:
@@ -59,3 +55,5 @@ braincrafted_bootstrap:
 hwi_oauth:
     firewall_name: secured_area
 
+ddr_gitki:
+    repository_path: %repository_path%

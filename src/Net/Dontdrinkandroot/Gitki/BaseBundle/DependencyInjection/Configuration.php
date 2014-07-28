@@ -18,6 +18,8 @@ class Configuration implements ConfigurationInterface
         // @formatter:off
         $rootNode
             ->children()
+                ->scalarNode('repository_path')->isRequired()->end()
+                ->scalarNode('name')->defaultValue('GitKi')->end()
                 ->arrayNode('oauth')
                     ->prototype('array')
                         ->children()
@@ -33,6 +35,13 @@ class Configuration implements ConfigurationInterface
                                 ->prototype('scalar')->end()
                             ->end()
                         ->end()
+                    ->end()
+                ->end()
+                ->arrayNode('twig')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('show_breadcrumbs')->defaultTrue()->end()
+                        ->booleanNode('show_toc')->defaultTrue()->end()
                     ->end()
                 ->end()
             ->end();

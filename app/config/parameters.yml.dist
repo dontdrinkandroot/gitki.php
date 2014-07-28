@@ -6,5 +6,4 @@ parameters:
     debug_redirects:         false
     use_assetic_controller: true
 
-    gitki_wiki_name:            GitKi
     repository_path:    ~
