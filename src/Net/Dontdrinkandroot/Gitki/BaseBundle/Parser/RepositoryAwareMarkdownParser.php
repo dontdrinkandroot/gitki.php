@@ -233,6 +233,39 @@ class RepositoryAwareMarkdownParser extends MarkdownExtra implements MarkdownPar
         return "\n" . $this->hashBlock($heading->toHtml()) . "\n\n";
     }
 
+    protected function _doFencedCodeBlocks_callback($matches)
+    {
+        $classname =& $matches[2];
+        $attrs =& $matches[3];
+        $codeblock = $matches[4];
+        $codeblock = htmlspecialchars($codeblock, ENT_NOQUOTES);
+        $codeblock = preg_replace_callback(
+            '/^\n+/',
+            array(&$this, '_doFencedCodeBlocks_newlines'),
+            $codeblock
+        );
+
+        if ($classname != "") {
+            if ($classname{0} == '.') {
+                $classname = substr($classname, 1);
+            }
+            $attr_str = ' class="' . $this->code_class_prefix . $classname . '"';
+
+            $geshi = new \GeSHi($codeblock, $classname);
+            $codeblock = $geshi->parse_code();
+
+
+        } else {
+            $attr_str = $this->doExtraAttributes($this->code_attr_on_pre ? "pre" : "code", $attrs);
+        }
+        $pre_attr_str = $this->code_attr_on_pre ? $attr_str : '';
+        $code_attr_str = $this->code_attr_on_pre ? '' : $attr_str;
+        //$codeblock = "<pre$pre_attr_str><code$code_attr_str>$codeblock</code></pre>";
+        //TODO: recinclude attrs somehow
+
+        return "\n\n" . $this->hashBlock($codeblock) . "\n\n";
+    }
+
     protected function doExtraAttributesAsObject($tag_name, $attr)
     {
         $attributes = new Attributes();

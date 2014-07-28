@@ -28,6 +28,7 @@ class DdrGitkiExtension extends Extension implements PrependExtensionInterface
         $loader->load('services.yml');
 
         $container->setParameter('ddr_gitki_base.repository_path', $config['repository_path']);
+        $container->setParameter('ddr_gitki_base.name', $config['name']);
 
         if (isset($config['oauth']) && isset($config['oauth']['github'])) {
             $container->setParameter('ddr_gitki_base.github_users_admin', $config['oauth']['github']['users_admin']);

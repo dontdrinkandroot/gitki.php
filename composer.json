@@ -42,7 +42,8 @@
         "knplabs/github-api": "1.2.*",
         "michelf/php-markdown": "1.4.*",
         "evilstreak/markdown-js": "0.5.*",
-        "elasticsearch/elasticsearch": "~1.0"
+        "elasticsearch/elasticsearch": "~1.0",
+        "geshi/geshi": "dev-master"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",
