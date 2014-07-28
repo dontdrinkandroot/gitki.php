@@ -1,18 +1,21 @@
-{% extends 'DdrGitkiBaseBundle::base.html.twig' %}
-{% block navbar %}{% endblock %}
-{% block container %}
-    <div class="page-header">
-        <h1>Login</h1>
+{% extends 'DdrGitkiBaseBundle::scaffold.html.twig' %}
+{% block title %}- Login{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="page-header">
+            <h1>Login</h1>
+        </div>
+        {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+        <div class="row">
+            {% for owner in hwi_oauth_resource_owners() %}
+                <div class="col-md-2">
+                    <a class="btn btn-default btn-block" href="{{ hwi_oauth_login_url(owner) }}"><span
+                                class="fa fa-fw fa-{{ owner }}"></span> {{ owner | trans({}, 'HWIOAuthBundle')|capitalize }}
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
     </div>
-    {% if error %}
-        <div class="alert alert-danger">{{ error }}</div>
-    {% endif %}
-    <div class="row">
-        {% for owner in hwi_oauth_resource_owners() %}
-            <div class="col-md-2">
-                <a class="btn btn-default btn-block" href="{{ hwi_oauth_login_url(owner) }}"><span class="fa fa-fw fa-{{ owner }}"></span> {{ owner | trans({}, 'HWIOAuthBundle')|capitalize }}</a>
-            </div>
-        {% endfor %}
-    </div>
-</div>
 {% endblock %}
