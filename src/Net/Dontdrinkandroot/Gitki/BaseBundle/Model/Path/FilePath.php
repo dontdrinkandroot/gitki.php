@@ -97,6 +97,14 @@ class FilePath extends AbstractPath
     }
 
     /**
+     * @inheritdoc
+     */
+    function isDirectoryPath()
+    {
+        return false;
+    }
+
+    /**
      * @param $pathString
      * @return FilePath
      * @throws \Exception

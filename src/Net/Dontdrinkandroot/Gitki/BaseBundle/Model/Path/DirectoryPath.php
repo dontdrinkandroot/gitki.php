@@ -177,6 +177,13 @@ class DirectoryPath extends AbstractPath
         return $directoryPath;
     }
 
+    /**
+     * @inheritdoc
+     */
+    function isDirectoryPath()
+    {
+        return true;
+    }
 
     protected static function parseDirectoryPath($pathString, DirectoryPath $rootPath)
     {

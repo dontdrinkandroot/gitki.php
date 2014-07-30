@@ -49,4 +49,12 @@ abstract class AbstractPath implements Path
     {
         return $this->toAbsoluteUrlString();
     }
+
+    /**
+     * @inheritdoc
+     */
+    function isFilePath()
+    {
+        return !$this->isDirectoryPath();
+    }
 }

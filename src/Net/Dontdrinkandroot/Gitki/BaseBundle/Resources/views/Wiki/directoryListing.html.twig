@@ -16,7 +16,7 @@
         <thead>
         <th class="icon"></th>
         <th>Name</th>
-        <th>Last Modified</th>
+        <th class="hidden-xs">Last Modified</th>
         <th class="actions">Actions</th>
         </thead>
         <tbody>
@@ -26,7 +26,7 @@
                 <td>
                     <a href="{{ path('ddr_gitki_wiki_directory', {'path': path ~ dir.relativePathname ~ '/'}) }}">{{ dir.filename }}</a>
                 </td>
-                <td>{{ dir.mTime|date("Y/m/d H:i:s") }}</td>
+                <td class="hidden-xs">{{ dir.mTime|date("Y/m/d H:i:s") }}</td>
                 <td class="actions">
                     <div class="btn-group">
                         <a class="btn btn-default btn-xs"
@@ -42,7 +42,7 @@
                 <td>
                     <a href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname}) }}">{{ page.filename }}</a>
                 </td>
-                <td>{{ page.mTime|date("Y/m/d H:i:s") }}</td>
+                <td class="hidden-xs">{{ page.mTime|date("Y/m/d H:i:s") }}</td>
                 <td class="actions">
                     <div class="btn-group">
                         {% if is_granted('ROLE_COMMITER') %}
@@ -69,7 +69,7 @@
                 <td>
                     <a href="{{ path('ddr_gitki_wiki_file', {'path': path ~ file.relativePathname}) }}">{{ file.filename }}</a>
                 </td>
-                <td>{{ file.mTime|date("Y/m/d H:i:s") }}</td>
+                <td class="hidden-xs">{{ file.mTime|date("Y/m/d H:i:s") }}</td>
                 <td class="actions">
                     <div class="btn-group">
                         {% if is_granted('ROLE_COMMITER') %}

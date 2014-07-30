@@ -53,4 +53,14 @@ interface Path
      */
     function toRelativeFileString();
 
+    /**
+     * @return bool
+     */
+    function isFilePath();
+
+    /**
+     * @return bool
+     */
+    function isDirectoryPath();
+
 } 

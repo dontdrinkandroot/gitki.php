@@ -11,7 +11,13 @@
             <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'delete'}) }}"
                class="btn btn-default btn-xs"
                title="Delete"><span class="fa fa-trash-o"></span></a>
+            <a href="{{ path('ddr_gitki_wiki_directory', {'path': path.parentPath, 'action': 'upload'}) }}"
+               class="btn btn-default btn-xs" title="Upload File to containing folder"><span
+                        class="fa fa-upload"></span></a>
         {% endif %}
+        <a href="{{ path('ddr_gitki_wiki_directory', {'path': path.parentPath, 'action': 'show'}) }}"
+           class="btn btn-default btn-xs"
+           title="View containing folder"><span class="fa fa-folder-o"></span></a>
         <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'history'}) }}" class="btn btn-default btn-xs"
            title="History"><span class="fa fa-history"></span></a>
     </div>
