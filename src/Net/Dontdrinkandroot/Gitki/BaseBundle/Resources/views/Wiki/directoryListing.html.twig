@@ -2,9 +2,9 @@
 {% block title %} - {{ path }} - Listing{% endblock %}
 {% block actions %}
     {% if is_granted('ROLE_COMMITER') %}
-        <div class="btn-group pull-right-sm actions">
-        <a href="{{ path('ddr_gitki_wiki_directory', {'path': path, 'action': 'upload'}) }}"
-               class="btn btn-default btn-xs" title="Upload File"><span class="fa fa-upload"></span></a>
+        <div class="btn-group actions pull-right-sm">
+            <a href="{{ path('ddr_gitki_wiki_directory', {'path': path, 'action': 'upload'}) }}"
+               class="btn btn-default" title="Upload File"><span class="fa fa-upload"></span></a>
         </div>
     {% endif %}
 {% endblock %}
