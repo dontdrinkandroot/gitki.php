@@ -14,7 +14,6 @@ security:
                 path:   /logout
                 target: /loggedout
             oauth:
-                login_path:        /login
                 use_forward:       false
                 failure_path:      /login
                 oauth_user_provider:
