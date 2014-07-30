@@ -5,20 +5,3 @@ ddr_gitki_git_hub_issues:
 ddr_gitki_base:
     resource: "@DdrGitkiBaseBundle/Resources/config/routing.yml"
     prefix:   /
-
-hwi_oauth_redirect:
-    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
-    prefix:   /connect
-
-hwi_oauth_login:
-    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
-    prefix:   /login
-
-google_login:
-    pattern: /login/check-google
-
-github_login:
-    pattern: /login/check-github
-
-logout:
-    path:   /logout

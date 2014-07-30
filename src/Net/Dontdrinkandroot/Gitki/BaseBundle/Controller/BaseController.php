@@ -7,6 +7,7 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Controller;
 use Knp\Bundle\MarkdownBundle\MarkdownParserInterface;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Service\WikiService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class BaseController extends Controller
@@ -20,13 +21,6 @@ class BaseController extends Controller
         return $this->get('ddr.gitki.service.wiki');
     }
 
-    /**
-     * @return MarkdownParserInterface
-     */
-    protected function getMarkdownParser()
-    {
-        return $this->get('markdown.parser');
-    }
 
     protected function assertRole($role)
     {
@@ -35,4 +29,18 @@ class BaseController extends Controller
         }
     }
 
-} 
+    protected function hasRole($role)
+    {
+        return $this->get('security.context')->isGranted($role);
+    }
+
+
+    protected function getEnvironment()
+    {
+        /** @var Kernel $kernel */
+        $kernel = $this->container->get('kernel');
+
+        return $kernel->getEnvironment();
+    }
+
+}

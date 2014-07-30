@@ -102,7 +102,7 @@ class WikiController extends BaseController
         $lastModified = new \DateTime();
         $lastModified->setTimestamp($file->getMTime());
         $response->setLastModified($lastModified);
-        if ($response->isNotModified($request)) {
+        if ($this->getEnvironment() === 'prod' && $response->isNotModified($request)) {
             return $response;
         }
 

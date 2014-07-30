@@ -2,7 +2,7 @@
 {% block title %} - {{ document.title }}{% endblock %}
 {% block actions %}
     <div class="btn-group pull-right-sm actions">
-    {% if is_granted('ROLE_COMMITER') %}
+        {% if is_granted('ROLE_COMMITER') %}
             <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'edit'}) }}" class="btn btn-default btn-xs"
                title="Edit"><span class="fa fa-pencil"></span></a>
             <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'rename'}) }}"
@@ -19,15 +19,15 @@
 {% block pageheader %}{% endblock %}
 {% block content %}
     <div class="markdown-page">
-        {% if ddr_gitki_show_toc %}
+        {% if ddr_gitki_show_toc and document.toc is not empty %}
             <div class="row">
-            <div class="col-md-3 col-md-push-9">
-                {{ include('DdrGitkiBaseBundle:Wiki:page.toc.partial.html') }}
+                <div class="col-md-3 col-md-push-9">
+                    {{ include('DdrGitkiBaseBundle:Wiki:page.toc.partial.html') }}
+                </div>
+                <div class="markdown-html col-md-9 col-md-pull-3">
+                    {{ document.html|raw }}
+                </div>
             </div>
-            <div class="markdown-html col-md-9 col-md-pull-3">
-                {{ document.html|raw }}
-            </div>
-        </div>
         {% else %}
             <div class="markdown-html">
                 {{ document.html|raw }}

@@ -15,6 +15,7 @@
     </li>
 {% else %}
     <li>
-        <a href="{{ path('hwi_oauth_service_redirect', {'service' : 'github'}) }}">Login</a>
+        {#<a href="{{ path('hwi_oauth_service_redirect', {'service' : 'github'}) }}">Login</a>#}
+        <a href="{{ path('login_manual') }}">Login</a>
     </li>
 {% endif %}
