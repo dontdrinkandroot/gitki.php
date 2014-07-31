@@ -13,6 +13,16 @@ class DdrGitkiExtension extends BaseExtension
     public function prepend(ContainerBuilder $container)
     {
         parent::prepend($container);
+
+        $configs = $container->getExtensionConfig($this->getAlias());
+        $configuration = $this->getConfiguration($configs, $container);
+        $config = $this->processConfiguration($configuration, $configs);
+
+        $name = $config['name'];
+        $name = str_replace(' ', '_', strtolower($name));
+        $config['elasticsearch']['index_name'] = $name;
+
+        $container->prependExtensionConfig('ddr_gitki', $config);
     }
 
     /**
@@ -40,5 +50,6 @@ class DdrGitkiExtension extends BaseExtension
 
         $container->setParameter('ddr_gitki_elasticsearch.host', $config['elasticsearch']['host']);
         $container->setParameter('ddr_gitki_elasticsearch.port', $config['elasticsearch']['port']);
+        $container->setParameter('ddr_gitki_elasticsearch.index_name', $config['elasticsearch']['index_name']);
     }
 }

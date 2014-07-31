@@ -17,13 +17,11 @@ services:
             - %ddr_gitki_base.google_users_commit%
             - %ddr_gitki_base.google_users_watch%
 
-
     ddr.gitki.security.user_provider:
         class: Net\Dontdrinkandroot\Gitki\BaseBundle\Security\UserProvider
         calls:
             - [registerHandler, [@ddr.gitki.security.response_handler.github]]
             - [registerHandler, [@ddr.gitki.security.response_handler.google]]
-
 
     ddr.gitki.repository.git:
         class: Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository
