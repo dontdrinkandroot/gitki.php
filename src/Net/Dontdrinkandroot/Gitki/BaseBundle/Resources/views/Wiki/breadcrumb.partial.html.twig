@@ -1,20 +1,12 @@
 <ol class="breadcrumb pull-left-sm">
-    {% if path.isFilePath %}
-        <li><a href="{{ path('ddr_gitki_wiki_file', {'path': '/index.md'}) }}"><span class="fa fa-home"></span></a></li>
-    {% else %}
-        <li><a href="{{ path('ddr_gitki_wiki_directory', {'path': '/'}) }}"><span class="fa fa-home"></span></a></li>
-    {% endif %}
+    <li><a href="{{ path('ddr_gitki_wiki_directory', {'path': '/', 'action': 'index'}) }}"><span
+                    class="fa fa-home"></span></a></li>
     {% if path.hasParentPath %}
         {% for parentPath in path.parentPath.collectPaths %}
             {% if parentPath.name is not empty %}
-                {% if path.isFilePath %}
-                    <li>
-                        <a href="{{ path('ddr_gitki_wiki_file', {'path': parentPath ~ 'index.md'}) }}">{{ parentPath.name }}</a>
-                    </li>
-                {% else %}
-                    <li><a href="{{ path('ddr_gitki_wiki_directory', {'path': parentPath}) }}">{{ parentPath.name }}</a>
-                    </li>
-                {% endif %}
+                <li>
+                    <a href="{{ path('ddr_gitki_wiki_directory', {'path': parentPath, 'action': 'index'}) }}">{{ parentPath.name }}</a>
+                </li>
             {% endif %}
         {% endfor %}
     {% endif %}

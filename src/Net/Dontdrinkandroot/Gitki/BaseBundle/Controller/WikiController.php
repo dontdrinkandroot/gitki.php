@@ -32,6 +32,8 @@ class WikiController extends BaseController
 
         $action = $request->query->get('action', 'list');
         switch ($action) {
+            case 'index' :
+                return $this->directoryIndexAction($request, $path);
             case 'upload' :
                 return $this->directoryUploadAction($request, $path);
             case 'delete' :
@@ -303,6 +305,22 @@ class WikiController extends BaseController
                 'history' => $history
             )
         );
+    }
+
+    public function directoryIndexAction(Request $request, $path)
+    {
+        $dirPath = DirectoryPath::parse($path);
+        $indexFilePath = $dirPath->appendFile('index.md');
+
+        if ($this->getWikiService()->exists($indexFilePath)) {
+            return $this->redirect(
+                $this->generateUrl('ddr_gitki_wiki_file', array('path' => $indexFilePath->toAbsoluteUrlString()))
+            );
+        } else {
+            return $this->redirect(
+                $this->generateUrl('ddr_gitki_wiki_directory', array('path' => $dirPath->toAbsoluteUrlString()))
+            );
+        }
     }
 
     public function listDirectoryAction($path)

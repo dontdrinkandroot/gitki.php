@@ -3,7 +3,6 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Parser;
 
 use Michelf\MarkdownExtra;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\DirectoryPath;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
 use Net\Dontdrinkandroot\Symfony\ExtensionBundle\Utils\StringUtils;
@@ -314,11 +313,8 @@ class RepositoryAwareMarkdownParser extends MarkdownExtra implements MarkdownPar
             $urlPath = $urlParts['path'];
             $path = null;
             if (StringUtils::startsWith($urlPath, '/')) {
-                if (StringUtils::endsWith($urlPath, '/')) {
-                    $path = DirectoryPath::parse($urlPath);
-                } else {
-                    $path = FilePath::parse($urlPath);
-                }
+                /* Absolute paths won't work */
+                return false;
             } else {
                 $path = $this->path->getParentPath()->appendPathString($urlPath);
             }
