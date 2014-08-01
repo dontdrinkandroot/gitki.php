@@ -207,7 +207,7 @@ class WikiController extends BaseController
                 $form->setData(
                     array(
                         'content' => $content,
-                        'commitMessage' => 'Editing ' . $filePath->toRelativeUrlString()
+                        'commitMessage' => 'Editing ' . $filePath->toAbsoluteUrlString()
                     )
                 );
             }
@@ -247,7 +247,7 @@ class WikiController extends BaseController
                     $user,
                     $filePath,
                     $newPath,
-                    'Renaming ' . $filePath . ' to ' . $newPath
+                    'Renaming ' . $filePath->toAbsoluteUrlString() . ' to ' . $newPath->toAbsoluteUrlString()
                 );
 
                 return $this->redirect(
@@ -275,7 +275,8 @@ class WikiController extends BaseController
         $filePath = FilePath::parse($path);
         $user = $this->getUser();
 
-        $this->getWikiService()->deleteFile($user, $filePath);
+        $commitMessage = 'Removing ' . $filePath->toAbsoluteUrlString();
+        $this->getWikiService()->deleteFile($user, $filePath, $commitMessage);
 
         $parentDirPath = $filePath->getParentPath()->toAbsoluteUrlString();
         if ($parentDirPath == "") {

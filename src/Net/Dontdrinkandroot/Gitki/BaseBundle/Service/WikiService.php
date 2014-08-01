@@ -113,6 +113,10 @@ class WikiService
 
     public function savePage(User $user, FilePath $relativeFilePath, $content, $commitMessage)
     {
+        if (empty($commitMessage)) {
+            throw new \Exception('Commit message must not be empty');
+        }
+
         $relativeLockPath = $this->getLockPath($relativeFilePath);
         $this->assertHasLock($user, $relativeLockPath);
 
@@ -139,11 +143,14 @@ class WikiService
         return $this->getLockExpiry($lockPath);
     }
 
-    public function deleteFile(User $user, FilePath $relativeFilePath)
+    public function deleteFile(User $user, FilePath $relativeFilePath, $commitMessage)
     {
+        if (empty($commitMessage)) {
+            throw new \Exception('Commit message must not be empty');
+        }
+
         $this->createLock($user, $relativeFilePath);
 
-        $commitMessage = 'Removing ' . $relativeFilePath->toRelativeUrlString();
         $this->gitRepository->removeAndCommit($this->getAuthor($user), $commitMessage, $relativeFilePath);
 
         $this->removeLock($user, $relativeFilePath);
@@ -174,6 +181,10 @@ class WikiService
     {
         if ($this->gitRepository->exists($relativeNewFilePath)) {
             throw new FileExistsException('File ' . $relativeNewFilePath->toRelativeFileString() . ' already exists');
+        }
+
+        if (empty($commitMessage)) {
+            throw new \Exception('Commit message must not be empty');
         }
 
         $oldLockPath = $this->getLockPath($relativeOldFilePath);
