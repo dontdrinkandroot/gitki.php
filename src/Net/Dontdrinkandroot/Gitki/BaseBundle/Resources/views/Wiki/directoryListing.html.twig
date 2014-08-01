@@ -24,7 +24,7 @@
             <tr>
                 <td class="icon"><span class="fa fa-folder-o"></span></td>
                 <td>
-                    <a href="{{ path('ddr_gitki_wiki_directory', {'path': path ~ dir.relativePathname ~ '/'}) }}">{{ dir.filename }}</a>
+                    <a href="{{ path('ddr_gitki_wiki_directory', {'path': path ~ dir.relativePathname ~ '/', 'action': 'index'}) }}">{{ dir.filename }}</a>
                 </td>
                 <td class="hidden-xs">{{ dir.mTime|date("Y/m/d H:i:s") }}</td>
                 <td class="actions">

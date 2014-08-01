@@ -226,9 +226,6 @@ class RepositoryAwareMarkdownParser extends MarkdownExtra implements MarkdownPar
             }
         }
 
-
-//        var_dump($this->toc);
-
         return "\n" . $this->hashBlock($heading->toHtml()) . "\n\n";
     }
 
