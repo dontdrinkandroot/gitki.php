@@ -4,73 +4,11 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Parser;
 use Michelf\MarkdownExtra;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\Path;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
 use Net\Dontdrinkandroot\Symfony\ExtensionBundle\Utils\StringUtils;
 
-class Attributes
-{
-    public $id;
-    public $classes;
-
-    public function toHtml()
-    {
-        $attr_str = "";
-        if (!empty($this->id)) {
-            $attr_str .= ' id="' . $this->id . '"';
-        }
-        if (!empty($this->classes)) {
-            $attr_str .= ' class="' . implode(" ", $this->classes) . '"';
-        }
-
-        return $attr_str;
-    }
-}
-
-class Link
-{
-
-    public $url;
-    public $title = null;
-    public $text;
-    public $targetExists = true;
-
-    public function toHtml()
-    {
-        $html = '<a href="' . $this->url . '"';
-        if (null !== $this->title) {
-            $html .= ' title="' . $this->title . '"';
-        }
-        if (!$this->targetExists) {
-            $html .= ' class="missing"';
-        }
-        $html .= '>';
-        $html .= $this->text;
-        $html .= '</a>';
-
-        return $html;
-    }
-
-}
-
-class Heading
-{
-    public $level;
-    public $text;
-    public $parent;
-    public $children = array();
-
-    /**
-     * @var Attributes
-     */
-    public $attributes;
-
-    public function toHtml()
-    {
-        return '<h' . $this->level . $this->attributes->toHtml() . '>' . $this->text . '</h' . $this->level . '>';
-    }
-}
-
-class RepositoryAwareMarkdownParser extends MarkdownExtra implements MarkdownParser
+class RepositoryAwareMarkdownParser extends \Parsedown implements MarkdownParser
 {
 
     /**
@@ -78,234 +16,168 @@ class RepositoryAwareMarkdownParser extends MarkdownExtra implements MarkdownPar
      */
     private $path = null;
 
-    protected $title;
-
-    protected $toc = array();
-
-    /**
-     * @var Heading|null
-     */
-    protected $currentHeading = null;
-
-    protected $headingIdx = 0;
-
     /**
      * @var GitRepository
      */
     private $gitRepository;
 
+    /**
+     * @var string
+     */
+    private $title;
+
+    /**
+     * @var array
+     */
+    private $toc;
+
+    /**
+     * @var Path[]
+     */
+    private $linkedPaths;
+
+    private $currentH2;
+
+    private $headingCount;
+
     public function __construct(FilePath $path, GitRepository $gitRepository)
     {
-        parent::__construct();
         $this->gitRepository = $gitRepository;
         $this->path = $path;
+        $this->linkedPaths = array();
+        $this->currentH2 = null;
+        $this->headingCount = 0;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function parse($content)
     {
         $parsed = new ParsedMarkdownDocument();
         $parsed->setSource($content);
-        $parsed->setHtml($this->transform($content));
-        $parsed->setTitle($this->title);
+        $html = parent::text($content);
+        $parsed->setHtml($html);
+        $parsed->setLinkedPaths($this->linkedPaths);
+
+        if (null !== $this->currentH2) {
+            $this->toc[] = $this->currentH2;
+        }
         $parsed->setToc($this->toc);
 
         return $parsed;
     }
 
-    protected function _doAnchors_reference_callback($matches)
+    protected function element(array $element)
     {
-        $whole_match = $matches[1];
-        $link_text = $matches[2];
-        $link_id =& $matches[3];
-
-        if ($link_id == "") {
-            # for shortcut links like [this][] or [this].
-            $link_id = $link_text;
+        switch ($element['name']) {
+            case "h1":
+                return $this->handleHeading1($element);
+            case "h2":
+                return $this->handleHeading2($element);
+            case "h3":
+                return $this->handleHeading3($element);
+            case 'a':
+                return $this->handleAnchor($element);
+            default:
+                return parent::element($element);
         }
+    }
 
-        # lower-case and turn embedded newlines into spaces
-        $link_id = strtolower($link_id);
-        $link_id = preg_replace('{[ ]?\n}', ' ', $link_id);
+    protected function handleHeading($element)
+    {
+        $this->headingCount++;
 
-        if (isset($this->urls[$link_id])) {
-
-            $link = new Link();
-
-            $url = $this->urls[$link_id];
-            $link->url = $this->encodeAttribute($url);
-            $link->targetExists = $this->targetExists($url);
-
-            if (isset($this->titles[$link_id])) {
-                $title = $this->titles[$link_id];
-                $title = $this->encodeAttribute($title);
-                $link->title = $title;
+        if (!isset($element['attributes']['id'])) {
+            if (!isset($element['attributes'])) {
+                $element['attributes'] = array();
             }
-
-            $link_text = $this->runSpanGamut($link_text);
-            $link->text = $link_text;
-
-            return $this->hashPart($link->toHtml());
-
-        } else {
-            return $whole_match;
+            $element['attributes']['id'] = 'heading' . $this->headingCount;
         }
+
+        return $element;
     }
 
-    protected function _doAnchors_inline_callback($matches)
+    protected function handleHeading1($element)
     {
-        $whole_match = $matches[1];
-        $link_text = $this->runSpanGamut($matches[2]);
-        $url = $matches[3] == '' ? $matches[4] : $matches[3];
-        $title =& $matches[7];
+        $element = $this->handleHeading($element);
 
-        $link = new Link();
-
-        $url = $this->encodeAttribute($url);
-        $link->url = $url;
-        $link->targetExists = $this->targetExists($url);
-
-        if (isset($title)) {
-            $title = $this->encodeAttribute($title);
-            $link->title = $title;
+        if (null === $this->title) {
+            $this->title = $element['text'];
+        }
+        if (null !== $this->currentH2) {
+            $this->toc[] = $this->currentH2;
+            $this->currentH2 = null;
         }
 
-        $link_text = $this->runSpanGamut($link_text);
-        $link->text = $link_text;
-
-        return $this->hashPart($link->toHtml());
+        return parent::element($element);
     }
 
-    protected function _doHeaders_callback_setext($matches)
+    protected function handleHeading2($element)
     {
-        if ($matches[3] == '-' && preg_match('{^- }', $matches[1])) {
-            return $matches[0];
+        if (null !== $this->currentH2) {
+            $this->toc[] = $this->currentH2;
         }
 
-        $heading = new Heading();
+        $element = $this->handleHeading($element);
 
-        $heading->level = $matches[3]{0} == '=' ? 1 : 2;
-        $heading->attributes = $this->doExtraAttributesAsObject('h' . $heading->level, $dummy =& $matches[2]);
-        $heading->text = $this->runSpanGamut($matches[1]);
-
-        return $this->headingToHtml($heading);
-    }
-
-    protected function _doHeaders_callback_atx($matches)
-    {
-        $heading = new Heading();
-
-        $heading->level = strlen($matches[1]);
-        $heading->attributes = $this->doExtraAttributesAsObject('h' . $heading->level, $dummy =& $matches[3]);
-        $heading->text = $this->runSpanGamut($matches[2]);
-
-        return $this->headingToHtml($heading);
-    }
-
-    private function headingToHtml(Heading $heading)
-    {
-        if (null === $this->title && $heading->level == 1) {
-            $this->title = $heading->text;
-        }
-
-        if (empty($heading->attributes->id)) {
-            $heading->attributes->id = 'heading' . $this->headingIdx;
-        }
-        $this->headingIdx++;
-
-        if ($heading->level > 1) {
-            if ($heading->level == 2) {
-                $this->currentHeading = $heading;
-                $this->toc[] = $heading;
-            } else {
-                if ($heading->level == 3) {
-                    if ($this->currentHeading !== null && $this->currentHeading->level == 2) {
-                        $this->currentHeading->children[] = $heading;
-                        $heading->parent = $this->currentHeading;
-                    }
-                }
-            }
-        }
-
-        return "\n" . $this->hashBlock($heading->toHtml()) . "\n\n";
-    }
-
-    protected function _doFencedCodeBlocks_callback($matches)
-    {
-        $classname =& $matches[2];
-        $attrs =& $matches[3];
-        $codeblock = $matches[4];
-        $codeblock = htmlspecialchars($codeblock, ENT_NOQUOTES);
-        $codeblock = preg_replace_callback(
-            '/^\n+/',
-            array(&$this, '_doFencedCodeBlocks_newlines'),
-            $codeblock
+        $this->currentH2 = array(
+            'text' => $element['text'],
+            'id' => $element['attributes']['id'],
+            'children' => array()
         );
 
-        if ($classname != "") {
-            if ($classname{0} == '.') {
-                $classname = substr($classname, 1);
-            }
-            $attr_str = ' class="' . $this->code_class_prefix . $classname . '"';
-
-            $geshi = new \GeSHi($codeblock, $classname);
-            $codeblock = $geshi->parse_code();
-
-
-        } else {
-            $attr_str = $this->doExtraAttributes($this->code_attr_on_pre ? "pre" : "code", $attrs);
-        }
-        $pre_attr_str = $this->code_attr_on_pre ? $attr_str : '';
-        $code_attr_str = $this->code_attr_on_pre ? '' : $attr_str;
-        //$codeblock = "<pre$pre_attr_str><code$code_attr_str>$codeblock</code></pre>";
-        //TODO: recinclude attrs somehow
-
-        return "\n\n" . $this->hashBlock($codeblock) . "\n\n";
+        return parent::element($element);
     }
 
-    protected function doExtraAttributesAsObject($tag_name, $attr)
+    protected function handleHeading3($element)
     {
-        $attributes = new Attributes();
+        $element = $this->handleHeading($element);
 
-        if (empty($attr)) {
-            return $attributes;
+        if (null !== $this->currentH2) {
+            $this->currentH2['children'][] = array(
+                'text' => $element['text'],
+                'id' => $element['attributes']['id'],
+            );
         }
 
-        # Split on components
-        preg_match_all('/[#.][-_:a-zA-Z0-9]+/', $attr, $matches);
-        $elements = $matches[0];
+        return parent::element($element);
+    }
 
-        # handle classes and ids (only first id taken into account)
-        $classes = array();
-        $id = false;
-        foreach ($elements as $element) {
-            if ($element{0} == '.') {
-                $attributes->classes[] = substr($element, 1);
-            } else {
-                if ($element{0} == '#') {
-                    if ($id === false) {
-                        $id = substr($element, 1);
-                        $attributes->id = $id;
-                    }
-                }
+    protected function handleAnchor($element)
+    {
+        $url = $element['attributes']['href'];
+        if ($this->isExternalUrl($url)) {
+            $element['attributes']['rel'] = 'external';
+        } else {
+            if (!$this->targetUrlExists($url)) {
+                $element['attributes']['class'] = 'missing';
             }
         }
 
-        return $attributes;
+        return parent::element($element);
     }
 
-
-    private function targetExists($url)
+    protected function isExternalUrl($url)
     {
         try {
             $urlParts = parse_url($url);
-
             if (array_key_exists('scheme', $urlParts)) {
                 return true;
             }
-
             if (array_key_exists('host', $urlParts)) {
                 return true;
             }
+        } catch (\Exception $e) {
+        }
+
+        return false;
+    }
+
+    protected function targetUrlExists($url)
+    {
+        try {
+            $urlParts = parse_url($url);
 
             $urlPath = $urlParts['path'];
             $path = null;
@@ -318,6 +190,8 @@ class RepositoryAwareMarkdownParser extends MarkdownExtra implements MarkdownPar
 
             $fileExists = $this->gitRepository->exists($path);
 
+            $this->linkedPaths[] = $path;
+
             return $fileExists;
 
         } catch (\Exception $e) {
@@ -325,6 +199,5 @@ class RepositoryAwareMarkdownParser extends MarkdownExtra implements MarkdownPar
 
         return true;
     }
-
 
 }

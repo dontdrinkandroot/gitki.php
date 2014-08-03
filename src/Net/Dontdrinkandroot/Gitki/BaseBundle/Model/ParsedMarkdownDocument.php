@@ -13,7 +13,10 @@ class ParsedMarkdownDocument
 
     private $title;
 
-    private $pageLinks;
+    /**
+     * @var Path[]
+     */
+    private $linkedPaths;
 
     private $toc;
 
@@ -37,49 +40,34 @@ class ParsedMarkdownDocument
         return $this->html;
     }
 
-    /**
-     * @param mixed $pageLinks
-     */
-    public function setPageLinks($pageLinks)
+    public function setLinkedPaths($pageLinks)
     {
-        $this->pageLinks = $pageLinks;
+        $this->linkedPaths = $pageLinks;
     }
 
     /**
-     * @return mixed
+     * @return Path[]
      */
-    public function getPageLinks()
+    public function getLinkedPaths()
     {
-        return $this->pageLinks;
+        return $this->linkedPaths;
     }
 
-    /**
-     * @param mixed $title
-     */
     public function setTitle($title)
     {
         $this->title = $title;
     }
 
-    /**
-     * @return mixed
-     */
     public function getTitle()
     {
         return $this->title;
     }
 
-    /**
-     * @param mixed $toc
-     */
     public function setToc($toc)
     {
         $this->toc = $toc;
     }
 
-    /**
-     * @return mixed
-     */
     public function getToc()
     {
         return $this->toc;

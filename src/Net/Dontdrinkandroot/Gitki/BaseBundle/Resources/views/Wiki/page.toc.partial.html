@@ -2,12 +2,12 @@
     <div class="panel-body">
         <ul class="list-unstyled">
             {% for h2 in document.toc %}
-            <li><a href="#{{ h2.attributes.id }}">{{ h2.text }}</a>
-                <!--<ul>-->
-                <!--{% for h3 in h2.children %}-->
-                <!--<li><a href="#{{ h3.attributes.id }}">{{ h3.text }}</a></li>-->
-                <!--{% endfor %}-->
-                <!--</ul>-->
+            <li><a href="#{{ h2.id }}">{{ h2.text }}</a>
+                <ul>
+                    {% for h3 in h2.children %}
+                    <li><a href="#{{ h3.id }}">{{ h3.text }}</a></li>
+                    {% endfor %}
+                </ul>
             </li>
             {% endfor %}
         </ul>
