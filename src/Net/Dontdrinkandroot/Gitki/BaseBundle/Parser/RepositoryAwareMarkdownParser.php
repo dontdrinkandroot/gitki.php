@@ -1,7 +1,6 @@
 <?php
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Parser;
 
-use Michelf\MarkdownExtra;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\Path;

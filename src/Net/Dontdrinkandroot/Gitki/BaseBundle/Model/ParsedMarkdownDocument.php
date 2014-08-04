@@ -4,6 +4,8 @@
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Model;
 
 
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\Path;
+
 class ParsedMarkdownDocument
 {
 
