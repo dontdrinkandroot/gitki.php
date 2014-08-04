@@ -12,82 +12,120 @@
     {% if path.name %}{{ path.name }}{% else %}<span class="fa fa-home"></span>{% endif %}
 {% endblock %}
 {% block content %}
-    <table class="table directory table-condensed">
-        <thead>
-        <th class="icon"></th>
-        <th>Name</th>
-        <th class="hidden-xs">Last Modified</th>
-        <th class="actions">Actions</th>
-        </thead>
-        <tbody>
-        {% for dir in directoryListing.subDirectories %}
-            <tr>
-                <td class="icon"><span class="fa fa-folder-o"></span></td>
-                <td>
-                    <a href="{{ path('ddr_gitki_wiki_directory', {'path': path ~ dir.relativePathname ~ '/', 'action': 'index'}) }}">{{ dir.filename }}</a>
-                </td>
-                <td class="hidden-xs">{{ dir.mTime|date("Y/m/d H:i:s") }}</td>
-                <td class="actions">
-                    <div class="btn-group">
-                        <a class="btn btn-default btn-xs"
-                           href="{{ path('ddr_gitki_wiki_directory', {'path': path ~ dir.relativePathname ~ '/', 'action': 'delete'}) }}"
-                           title="Delete"><span class="fa fa-fw fa-trash-o"></span></a>
-                    </div>
-                </td>
-            </tr>
-        {% endfor %}
+
+    <ul class="list-unstyled">
         {% for page in directoryListing.pages %}
-            <tr>
-                <td class="icon"><span class="fa fa-file-o"></span></td>
-                <td>
-                    <a href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname}) }}">{{ page.filename }}</a>
-                </td>
-                <td class="hidden-xs">{{ page.mTime|date("Y/m/d H:i:s") }}</td>
-                <td class="actions">
-                    <div class="btn-group">
+            <li>
+                <span class="dropdown directory-list-action">
+                    <span class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1"
+                          data-toggle="dropdown">
+                        <span class="fa fa-fw fa-file-o"></span> <span class="caret"></span>
+                    </span>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                         {% if is_granted('ROLE_COMMITER') %}
-                            <a class="btn btn-default btn-xs"
-                               href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname, 'action': 'edit'}) }}"
-                               title="Edit"><span class="fa fa-fw fa-pencil"></span></a>
-                            <a class="btn btn-default btn-xs"
-                               href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname, 'action': 'rename'}) }}"
-                               title="Rename"><span class="fa fa-fw fa-arrows-h"></span></a>
-                            <a class="btn btn-default btn-xs"
-                               href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname, 'action': 'delete'}) }}"
-                               title="Delete"><span class="fa fa-fw fa-trash-o"></span></a>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" title="Edit"
+                                   href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname, 'action': 'edit'}) }}">
+                                    <span class="fa fa-fw fa-pencil"></span> Edit
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1"
+                                   href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname, 'action': 'rename'}) }}"
+                                   title="Rename"><span class="fa fa-fw fa-arrows-h"></span> Move
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1"
+                                   href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname, 'action': 'delete'}) }}"
+                                   title="Delete"><span class="fa fa-fw fa-trash-o"></span> Delete
+                                </a>
+                            </li>
                         {% endif %}
-                        <a class="btn btn-default btn-xs"
-                           href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname, 'action': 'history'}) }}"
-                           title="History"><span class="fa fa-fw fa-history"></span></a>
-                    </div>
-                </td>
-            </tr>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1"
+                               href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname, 'action': 'history'}) }}"
+                               title="History"><span class="fa fa-fw fa-history"></span> History
+                            </a>
+                        </li>
+                    </ul>
+                </span>
+                <a href="{{ path('ddr_gitki_wiki_file', {'path': path ~ page.relativePathname}) }}">{{ page.filename }}</a>
+            </li>
         {% endfor %}
-        {% for file in directoryListing.otherFiles %}
-            <tr>
-                <td class="icon"><span class="fa fa-file-o"></span></td>
-                <td>
+    </ul>
+    {% if directoryListing.subDirectories is not empty %}
+        <hr/>
+
+        <ul class="list-unstyled">
+            {% for dir in directoryListing.subDirectories %}
+                <li>
+                <span class="dropdown directory-list-action">
+                    <span class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1"
+                          data-toggle="dropdown">
+                        <span class="fa fa-fw fa-folder-o"></span> <span class="caret"></span>
+                    </span>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                        {% if is_granted('ROLE_COMMITER') %}
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" title="Edit"
+                                   href="{{ path('ddr_gitki_wiki_directory', {'path': path ~ dir.relativePathname ~ '/', 'action': 'edit'}) }}">
+                                    <span class="fa fa-fw fa-pencil"></span> Edit
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1"
+                                   href="{{ path('ddr_gitki_wiki_directory', {'path': path ~ dir.relativePathname ~ '/', 'action': 'delete'}) }}"
+                                   title="Delete"><span class="fa fa-fw fa-trash-o"></span> Delete
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </span>
+                    <a href="{{ path('ddr_gitki_wiki_directory', {'path': path ~ dir.relativePathname ~ '/', 'action': 'index'}) }}">{{ dir.filename }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if directoryListing.otherFiles is not empty %}
+        <hr/>
+
+        <ul class="list-unstyled">
+            {% for file in directoryListing.otherFiles %}
+                <li>
+                <span class="dropdown directory-list-action">
+                    <span class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1"
+                          data-toggle="dropdown">
+                        <span class="fa fa-fw fa-file-o"></span> <span class="caret"></span>
+                    </span>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                        {% if is_granted('ROLE_COMMITER') %}
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1"
+                                   href="{{ path('ddr_gitki_wiki_file', {'path': path ~ file.relativePathname, 'action': 'rename'}) }}"
+                                   title="Rename"><span class="fa fa-fw fa-arrows-h"></span> Move
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1"
+                                   href="{{ path('ddr_gitki_wiki_file', {'path': path ~ file.relativePathname, 'action': 'delete'}) }}"
+                                   title="Delete"><span class="fa fa-fw fa-trash-o"></span> Delete
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1"
+                               href="{{ path('ddr_gitki_wiki_file', {'path': path ~ file.relativePathname, 'action': 'history'}) }}"
+                               title="History"><span class="fa fa-fw fa-history"></span> History
+                            </a>
+                        </li>
+                    </ul>
+                </span>
                     <a href="{{ path('ddr_gitki_wiki_file', {'path': path ~ file.relativePathname}) }}">{{ file.filename }}</a>
-                </td>
-                <td class="hidden-xs">{{ file.mTime|date("Y/m/d H:i:s") }}</td>
-                <td class="actions">
-                    <div class="btn-group">
-                        {% if is_granted('ROLE_COMMITER') %}
-                            <a class="btn btn-default btn-xs"
-                               href="{{ path('ddr_gitki_wiki_file', {'path': path ~ file.relativePathname, 'action': 'rename'}) }}"
-                               title="Rename"><span class="fa fa-fw fa-arrows-h"></span></a>
-                            <a class="btn btn-default btn-xs"
-                               href="{{ path('ddr_gitki_wiki_file', {'path': path ~ file.relativePathname, 'action': 'delete'}) }}"
-                               title="Delete"><span class="fa fa-fw fa-trash-o"></span></a>
-                        {% endif %}
-                        <a class="btn btn-default btn-xs"
-                           href="{{ path('ddr_gitki_wiki_file', {'path': path ~ file.relativePathname, 'action': 'history'}) }}"
-                           title="History"><span class="fa fa-fw fa-history"></span></a>
-                    </div>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
 {% endblock %}
