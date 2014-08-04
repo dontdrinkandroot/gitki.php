@@ -53,15 +53,16 @@ class RepositoryAwareMarkdownParser extends \Parsedown implements MarkdownParser
      */
     public function parse($content)
     {
-        $parsed = new ParsedMarkdownDocument();
-        $parsed->setSource($content);
         $html = parent::text($content);
-        $parsed->setHtml($html);
-        $parsed->setLinkedPaths($this->linkedPaths);
-
         if (null !== $this->currentH2) {
             $this->toc[] = $this->currentH2;
         }
+
+        $parsed = new ParsedMarkdownDocument();
+        $parsed->setTitle($this->title);
+        $parsed->setSource($content);
+        $parsed->setHtml($html);
+        $parsed->setLinkedPaths($this->linkedPaths);
         $parsed->setToc($this->toc);
 
         return $parsed;

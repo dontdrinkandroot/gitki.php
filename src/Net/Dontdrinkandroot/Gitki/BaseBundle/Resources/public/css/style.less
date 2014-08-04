@@ -1,7 +1,9 @@
 @import "../../../../../../../../vendor/twbs/bootstrap/less/bootstrap.less";
-@import url(https://fonts.googleapis.com/css?family=Titillium+Web:400,600);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Vollkorn);
 
 /* Variables */
+
+@golden-ratio: 1.618;
 
 @gray-darker: lighten(#000, 13.5%);
 // #222
@@ -20,15 +22,20 @@
 @breadcrumb-padding-vertical: 0;
 @breadcrumb-padding-horizontal: 0;
 
-@headings-font-family: 'Titillium Web', sans-serif;
-@headings-font-weight: 600;
+@font-size-base: 15px;
+@line-height-base: @golden-ratio;
 
-@font-size-h1: floor((@font-size-base * 2.15));
-@font-size-h2: ceil((@font-size-base * 1.7));
-@font-size-h3: ceil((@font-size-base * 1.25));
-@font-size-h4: @font-size-base;
-@font-size-h5: @font-size-base;
+//@font-family-base: "Vollkorn", serif;
+//@font-family-base: "Open Sans", sans-serif;
+@font-family-base: "Bitstream Charter", serif;
+@headings-font-family: "Open Sans", sans-serif;
+
 @font-size-h6: @font-size-base;
+@font-size-h5: @font-size-base;
+@font-size-h4: @font-size-base;
+@font-size-h3: ceil((@font-size-h4 * 1.25));
+@font-size-h2: ceil((@font-size-h3 * 1.25));
+@font-size-h1: floor((@font-size-h2 * 1.25));
 
 @heading-top-margin-modifier: 1;
 @heading-bottom-margin-modifier: 2/3;
@@ -36,7 +43,12 @@
 @panel-default-border: @gray-lighter;
 
 .navbar {
-  font-family: 'Titillium Web', sans-serif;
+
+  .navbar-brand {
+    font-weight: bold;
+  }
+
+  font-family: @headings-font-family;
   font-weight: 600;
 }
 
@@ -78,7 +90,7 @@ body {
   }
 
   .actions {
-    width: 117px;
+    width: 122px;
   }
 }
 
@@ -107,24 +119,42 @@ img {
     margin-top: 0;
   }
 
+  //  .h2, h2 {
+  //    margin-top: @font-size-h2 * @heading-top-margin-modifier;
+  //    margin-bottom: (@line-height-computed / 2);
+  //    padding-bottom: (@font-size-h2 * @heading-bottom-margin-modifier) - (@line-height-computed / 2);
+  //    border-bottom: solid 1px @page-header-border-color;
+  //  }
+  //
+  //  .h3, h3 {
+  //    margin-top: @font-size-h2 * @heading-bottom-margin-modifier;
+  //    margin-bottom: @font-size-h3 * @heading-bottom-margin-modifier;
+  //    line-height: @font-size-h3;
+  //  }
+  //
+  //  h4, h4 {
+  //    margin-top: @font-size-h3 * @heading-bottom-margin-modifier;
+  //    margin-bottom: @line-height-computed / 2;
+  //    line-height: @font-size-h4;
+  //  }
   .h2, h2 {
-    margin-top: @font-size-h2 * @heading-top-margin-modifier;
-    margin-bottom: (@line-height-computed / 2);
-    padding-bottom: (@font-size-h2 * @heading-bottom-margin-modifier) - (@line-height-computed / 2);
+    margin-top: @font-size-h2 * @golden-ratio;
+    margin-bottom: @line-height-computed - 9;
+    line-height: @font-size-h2;
+    padding-bottom: 10px;
     border-bottom: solid 1px @page-header-border-color;
   }
 
   .h3, h3 {
-    margin-top: @font-size-h2 * @heading-bottom-margin-modifier;
-    margin-bottom: @font-size-h3 * @heading-bottom-margin-modifier;
+    margin-top: @font-size-h3 * @golden-ratio;
+    margin-bottom: @line-height-computed;
     line-height: @font-size-h3;
   }
 
-  h4, h4 {
-    margin-top: @font-size-h3 * @heading-bottom-margin-modifier;
-    margin-bottom: @line-height-computed / 2;
+  .h4, h4 {
+    margin-top: @font-size-h4 * @golden-ratio;
+    margin-bottom: @line-height-computed;
     line-height: @font-size-h4;
-
   }
 }
 
