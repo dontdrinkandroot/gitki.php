@@ -14,6 +14,8 @@ use Net\Dontdrinkandroot\Gitki\ElasticsearchBundle\Model\MarkdownSearchResult;
 class ElasticsearchRepository
 {
 
+    const MARKDOWN_DOCUMENT_TYPE = 'markdown_document';
+
     /**
      * @var string
      */
@@ -41,14 +43,33 @@ class ElasticsearchRepository
 
     public function deleteMarkdownDocumentIndex()
     {
-        //TODO: This doesn't work with the current elasticsearch api version
-//        $params = array(
-//            'index' => $this->index,
-//            'type' => 'markdown_document',
-//        );
-//        $params['body']['query']['bool']['must']['match_all'] = '';
-//
-//        return $this->client->deleteByQuery($params);
+        /* TODO: Delete without id is not supported by current elasticsearch PHP API
+        $params = array(
+            'index' => $this->index,
+            'type' => self::MARKDOWN_DOCUMENT_TYPE,
+        );
+
+        return $this->client->delete($params);*/
+
+        $params = array(
+            'index' => $this->index,
+            'type' => self::MARKDOWN_DOCUMENT_TYPE,
+            'fields' => array('_id')
+        );
+
+        $params['body']['query']['match_all'] = array();
+        $params['body']['size'] = 10000;
+
+        $result = $this->client->search($params);
+        foreach ($result['hits']['hits'] as $hit) {
+            $params = array(
+                'id' => $hit['_id'],
+                'index' => $this->index,
+                'type' => self::MARKDOWN_DOCUMENT_TYPE,
+            );
+
+            $this->client->delete($params);
+        }
     }
 
     public function indexMarkdownDocument(FilePAth $path, ParsedMarkdownDocument $parsedMarkdownDocument)
@@ -56,10 +77,11 @@ class ElasticsearchRepository
         $params = array(
             'id' => $path->toAbsoluteUrlString(),
             'index' => $this->index,
-            'type' => 'markdown_document',
+            'type' => self::MARKDOWN_DOCUMENT_TYPE,
             'body' => array(
                 'title' => $parsedMarkdownDocument->getTitle(),
-                'content' => $parsedMarkdownDocument->getSource()
+                'content' => $parsedMarkdownDocument->getSource(),
+                'linked_paths' => $parsedMarkdownDocument->getLinkedPaths()
             )
         );
 
@@ -74,7 +96,8 @@ class ElasticsearchRepository
     {
         $params = array(
             'index' => $this->index,
-            'type' => 'markdown_document',
+            'type' => self::MARKDOWN_DOCUMENT_TYPE,
+            'fields' => array('title')
         );
 
         $searchStringParts = explode(' ', $searchString);
@@ -92,8 +115,12 @@ class ElasticsearchRepository
         foreach ($result['hits']['hits'] as $hit) {
             $searchResult = new MarkdownSearchResult();
             $searchResult->setPath(FilePath::parse($hit['_id']));
-            $searchResult->setTitle($hit['_source']['title']);
             $searchResult->setScore($hit['_score']);
+            if (isset($hit['fields'])) {
+                if (isset($hit['fields']['title'][0])) {
+                    $searchResult->setTitle($hit['fields']['title'][0]);
+                }
+            }
             $searchResults[] = $searchResult;
         }
 
@@ -110,7 +137,7 @@ class ElasticsearchRepository
         $params = array(
             'id' => $event->getPath()->toAbsoluteUrlString(),
             'index' => $this->index,
-            'type' => 'markdown_document',
+            'type' => self::MARKDOWN_DOCUMENT_TYPE,
         );
 
         return $this->client->delete($params);
