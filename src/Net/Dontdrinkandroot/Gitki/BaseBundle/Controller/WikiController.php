@@ -64,6 +64,8 @@ class WikiController extends BaseController
                 return $this->renameFileAction($request, $path);
             case 'history' :
                 return $this->fileHistoryAction($request, $path);
+            case 'preview_markdown' :
+                return $this->previewMarkdownAction($request, $path);
             default:
                 return $this->showFileAction($request, $path);
         }
@@ -121,6 +123,15 @@ class WikiController extends BaseController
         $response->setContent($renderedView);
 
         return $response;
+    }
+
+    private function previewMarkdownAction(Request $request, $path)
+    {
+        $filePath = FilePath::parse($path);
+        $markdown = $request->query->get('markdown');
+        $html = $this->getWikiService()->preview($filePath, $markdown);
+
+        return new Response($html);
     }
 
     public function serveFileAction(Request $request, $path)

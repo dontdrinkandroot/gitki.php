@@ -357,6 +357,13 @@ class WikiService
         return $this->gitRepository->getFileHistory($path, $maxCount);
     }
 
+    public function preview(FilePath $path, $markdown)
+    {
+        $markdownDocument = $this->markdownService->parse($path, $markdown);
+
+        return $markdownDocument->getHtml();
+    }
+
     protected function assertHasLock(User $user, $lockPath)
     {
         if ($this->gitRepository->exists($lockPath) && !$this->isLockExpired($lockPath)) {
@@ -411,5 +418,6 @@ class WikiService
 
         return "\"$name <$email>\"";
     }
+
 
 }

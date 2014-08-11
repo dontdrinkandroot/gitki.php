@@ -15,34 +15,35 @@
 {% endblock %}
 {% block javascript %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('js/markdown.js') }}"></script>
     <script type="text/javascript">
 
-        function Editor(input, preview) {
+        var previewUrl = "{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'preview_markdown'}) }}";
 
+        function Preview(input, preview) {
+
+            var self = this;
             this.typeTimeout = undefined;
 
             this.update = function () {
-                preview.html(function () {
-                    return markdown.toHTML(input.val());
-                });
+                $.get(previewUrl, {'markdown': input.val()})
+                        .done(function (data) {
+                            preview.html(data);
+                        })
+                        .fail(function (data) {
+                            console.error(data);
+                        });
             };
 
-            input.editor = this;
-
-            input.keypress(function () {
-                clearTimeout(input.editor.typeTimeout);
-                input.editor.typeTimeout = setTimeout(function () {
-                    preview.html(function () {
-                        return markdown.toHTML(input.val());
-                    });
-                    ;
+            input.bind('input propertychange', function () {
+                clearTimeout(self.typeTimeout);
+                self.typeTimeout = setTimeout(function () {
+                    self.update();
                 }, 200);
             });
 
             this.update();
         }
-        new Editor($("#form_content"), $("#preview"));
+        new Preview($("#form_content"), $("#preview"));
     </script>
     <script type="text/javascript">
         var holdLockUrl = "{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'holdlock'}) }}";
