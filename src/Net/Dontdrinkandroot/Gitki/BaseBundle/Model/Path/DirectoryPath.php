@@ -155,10 +155,13 @@ class DirectoryPath extends AbstractPath
         $lastPath = $this;
 
         $filePart = null;
+        $lastSlashPos = strrpos($pathString, '/');
         $directoryPart = $pathString;
+        if ($lastSlashPos === false) {
+            $directoryPart = null;
+        }
         if (!StringUtils::endsWith($pathString, '/')) {
             $filePart = $pathString;
-            $lastSlashPos = strrpos($pathString, '/');
             if (false !== $lastSlashPos) {
                 $directoryPart = substr($pathString, 0, $lastSlashPos + 1);
                 $filePart = substr($pathString, $lastSlashPos + 1);

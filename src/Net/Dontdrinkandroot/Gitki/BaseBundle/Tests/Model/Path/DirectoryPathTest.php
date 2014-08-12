@@ -202,6 +202,12 @@ class DirectoryPathTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('index', $filePath->getFileName());
         $this->assertEquals('md', $filePath->getExtension());
 
+        $filePath = $directoryPath->appendPathString('index.md');
+        $this->assertSecondLevel($filePath->getParentPath());
+        $this->assertEquals('index.md', $filePath->getName());
+        $this->assertEquals('index', $filePath->getFileName());
+        $this->assertEquals('md', $filePath->getExtension());
+
         $path = DirectoryPath::parse('/sub/bla/');
         $filePath = $path->appendPathString('./../subsub/index.md');
         $this->assertSecondLevel($filePath->getParentPath());
