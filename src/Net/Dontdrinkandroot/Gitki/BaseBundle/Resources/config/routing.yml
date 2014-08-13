@@ -19,6 +19,10 @@ login_manual:
     path:     /login/manual
     defaults: { _controller: DdrGitkiBaseBundle:Default:login }
 
+ddr_gitki_about_markdownsyntax:
+    path:     /about/markdownsyntax
+    defaults: { _controller: DdrGitkiBaseBundle:About:markdownsyntax }
+
 ddr_gitki_base_homepage:
     path:     /
     defaults: { _controller: DdrGitkiBaseBundle:Default:index }

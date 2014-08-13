@@ -1,0 +1,70 @@
+{% extends 'DdrGitkiBaseBundle::base.html.twig' %}
+{% block title %} - Markdown Syntax{% endblock %}
+{% block container %}
+    <div class="page-header">
+        <h1>Markdown Syntax</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 col-md-push-8">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <ul class="margin-bottom-none">
+                        <li><a href="#structuring">Structuring</a></li>
+                        <li><a href="#text">Text</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="markdown-html col-md-8 col-md-pull-4">
+
+            <p>This is only a summary of the most common syntax. For details see the
+                <a href="http://daringfireball.net/projects/markdown/syntax" rel="external">Original documentation</a>
+                and
+                the <a href="https://help.github.com/articles/github-flavored-markdown" rel="external">GitHub</a>
+                extensions.</p>
+
+            <section id="structuring">
+                <h2>Structuring</h2>
+
+                <h3>Title</h3>
+
+                <p>Your page should always have a title, you can write a page title like this:</p>
+<pre><code>This is a page title
+        ====================
+    </code></pre>
+                <h3>Section</h3>
+
+                <p>You can further divide your document into sections, begin a section like this:</p>
+<pre><code>This is a section title
+        -----------------------
+    </code></pre>
+                <h3>Subsections</h3>
+
+                <p>If you want to further structure you can also use subsections:</p>
+<pre><code>### This is a subsection
+
+        #### This is a subsubsection
+    </code></pre>
+            </section>
+
+            <section id="text">
+                <h2>Text</h2>
+
+                <h3>Paragraphs</h3>
+
+                <p>Paragraphs are separated by a blank line, line breaks are ignored. If you want to explicitly add a
+                    line
+                    break, you can do so by appending two spaces at the end of a line.</p>
+<pre><code>This is
+        the first paragraph.
+
+        This is the second paragraph.
+    </code></pre>
+                <h3>Bold/Italic/Strikethrough</h3>
+                <pre><code>This is **bold** text. This is _italic_ text. This is ~~strikedthrough~~ text.</code></pre>
+            </section>
+
+        </div>
+    </div>
+{% endblock %}

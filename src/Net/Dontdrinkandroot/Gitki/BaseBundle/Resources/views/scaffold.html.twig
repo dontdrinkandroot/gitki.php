@@ -17,6 +17,11 @@
 {% block javascript %}
     <script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        /* Open certain links in new tabs */
+        $('a[rel~=external]').attr('target', '_blank');
+        $('a[rel~=newtab]').attr('target', '_blank');
+    </script>
 {% endblock %}
 </body>
 </html>

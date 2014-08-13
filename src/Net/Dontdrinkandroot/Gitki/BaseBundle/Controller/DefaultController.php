@@ -39,4 +39,5 @@ class DefaultController extends BaseController
 
         return $this->redirect($this->generateUrl('ddr_gitki_wiki_file', array('path' => '/index.md')));
     }
+
 }

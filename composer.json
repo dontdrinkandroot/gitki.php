@@ -36,7 +36,7 @@
         "cpliakas/git-wrapper": "~1.0",
         "hwi/oauth-bundle": "0.3.*",
         "knplabs/github-api": "1.2.*",
-        "dontdrinkandroot/objective-markdown": "0.1.*",
+        "dontdrinkandroot/objective-markdown": "dev-master",
         "dontdrinkandroot/utils": "0.1.*",
         "elasticsearch/elasticsearch": "~1.0"
     },

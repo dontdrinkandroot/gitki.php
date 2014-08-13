@@ -32,7 +32,7 @@
 @font-size-h2: ceil(@font-size-base * 1.5);
 @font-size-h1: floor(@font-size-base * 2);
 
-@heading-top-margin-modifier: 1.2;
+@heading-top-margin-modifier: 1.66;
 
 @panel-default-border: @gray-lighter;
 
@@ -104,15 +104,33 @@ img {
   max-width: 100%;
 }
 
-.h1, h1 {
+h1, .h1 {
   font-weight: bold;
 }
 
-.markdown-page {
-  padding-top: 20px;
+h2, .h2 {
+  margin-top: @line-height-computed * 1.5;
+  margin-bottom: @line-height-computed - 9;
+  line-height: @font-size-h2;
+  padding-bottom: 10px;
+  border-bottom: solid 1px @gray-lightest;
 }
 
-.markdown-html {
+h3, .h3 {
+  margin-top: @line-height-computed * 1.25;
+  margin-bottom: @line-height-computed;
+  line-height: @font-size-h3;
+}
+
+h4, .h4 {
+  margin-top: @line-height-computed;
+  margin-bottom: @line-height-computed;
+  line-height: @font-size-h4;
+}
+
+.markdown-page {
+
+  padding-top: 20px;
 
   .h1:first-child, h1:first-child {
     margin-top: 0px;
@@ -121,33 +139,22 @@ img {
     margin-bottom: 20px;
   }
 
-  .h2:first-child, h2:first-child {
-    margin-top: 0;
+  h2:first-child, .h2:first-child {
+    margin-top: 0px;
   }
 
-  .h2, h2 {
-    margin-top: @font-size-h2 * @heading-top-margin-modifier;
-    margin-bottom: @line-height-computed - 9;
-    line-height: @font-size-h2;
-    padding-bottom: 10px;
-    border-bottom: solid 1px @gray-lightest;
-  }
-
-  .h3, h3 {
-    margin-top: @font-size-h3 * @heading-top-margin-modifier;
-    margin-bottom: @line-height-computed;
-    line-height: @font-size-h3;
-  }
-
-  .h4, h4 {
-    margin-top: @font-size-h4 * @heading-top-margin-modifier;
-    margin-bottom: @line-height-computed;
-    line-height: @font-size-h4;
-  }
 }
 
 a.missing {
   color: #bf0000;
+}
+
+.margin-top-none {
+  margin-top: 0px;
+}
+
+.margin-bottom-none {
+  margin-bottom: 0px;
 }
 
 /* Navbar from theme */

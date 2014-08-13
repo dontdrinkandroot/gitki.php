@@ -27,10 +27,10 @@
     <div class="markdown-page">
         {% if ddr_gitki_show_toc and document.toc is not empty %}
             <div class="row">
-                <div class="col-md-3 col-md-push-9">
+                <div class="col-md-4 col-md-push-8">
                     {{ include('DdrGitkiBaseBundle:Wiki:page.toc.partial.html') }}
                 </div>
-                <div class="markdown-html col-md-9 col-md-pull-3">
+                <div class="markdown-html col-md-8 col-md-pull-4">
                     {{ document.html|raw }}
                 </div>
             </div>
