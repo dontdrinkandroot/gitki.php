@@ -4,22 +4,22 @@
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Service;
 
 
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
 use Net\Dontdrinkandroot\ObjectiveMarkdown\Model\Span\Link;
 use Net\Dontdrinkandroot\ObjectiveMarkdown\Renderer\Html\Handler\LinkHandler;
-use Net\Dontdrinkandroot\Symfony\ExtensionBundle\Utils\StringUtils;
+use Net\Dontdrinkandroot\Utils\Path\FilePath;
+use Net\Dontdrinkandroot\Utils\StringUtils;
 
 class RepositoryAwareLinkHandler extends LinkHandler
 {
 
     /**
-     * @var \Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath
+     * @var FilePath
      */
     private $path;
 
     /**
-     * @var \Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository
+     * @var GitRepository
      */
     private $repository;
 

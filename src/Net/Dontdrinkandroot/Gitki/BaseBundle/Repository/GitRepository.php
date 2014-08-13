@@ -6,10 +6,10 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Repository;
 
 use GitWrapper\GitWrapper;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\CommitMetadata;
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\DirectoryPath;
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\Path;
-use Net\Dontdrinkandroot\Symfony\ExtensionBundle\Utils\StringUtils;
+use Net\Dontdrinkandroot\Utils\Path\DirectoryPath;
+use Net\Dontdrinkandroot\Utils\Path\FilePath;
+use Net\Dontdrinkandroot\Utils\Path\Path;
+use Net\Dontdrinkandroot\Utils\StringUtils;
 use Symfony\Component\Filesystem\Filesystem;
 
 class GitRepository

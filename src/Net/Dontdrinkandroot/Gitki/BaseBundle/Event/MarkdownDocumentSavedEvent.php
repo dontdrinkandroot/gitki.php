@@ -5,14 +5,14 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Event;
 
 
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
+use Net\Dontdrinkandroot\Utils\Path\FilePath;
 use Symfony\Component\EventDispatcher\Event;
 
 class MarkdownDocumentSavedEvent extends Event
 {
 
     /**
-     * @var \Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath
+     * @var FilePath
      */
     private $path;
     private $email;

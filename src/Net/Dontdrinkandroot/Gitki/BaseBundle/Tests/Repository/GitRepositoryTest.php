@@ -5,9 +5,9 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Tests\Repository;
 
 
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\CommitMetadata;
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Tests\GitRepositoryTestCase;
+use Net\Dontdrinkandroot\Utils\Path\FilePath;
 
 class GitRepositoryTest extends GitRepositoryTestCase
 {

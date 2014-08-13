@@ -41,11 +41,7 @@ assetic:
         #    jar: "%kernel.root_dir%/Resources/java/compiler.jar"
         #yui_css:
         #    jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
-    assets:
-        markdown-js:
-            inputs:
-                - "%kernel.root_dir%/../vendor/evilstreak/markdown-js/lib/markdown.js"
-            output: js/markdown.js
+#    assets:
 
 braincrafted_bootstrap:
     auto_configure:

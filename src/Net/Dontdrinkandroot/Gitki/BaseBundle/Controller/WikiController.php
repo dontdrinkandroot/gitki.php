@@ -6,9 +6,9 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Controller;
 
 use GitWrapper\GitException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\DirectoryPath;
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
-use Net\Dontdrinkandroot\Symfony\ExtensionBundle\Utils\StringUtils;
+use Net\Dontdrinkandroot\Utils\Path\DirectoryPath;
+use Net\Dontdrinkandroot\Utils\Path\FilePath;
+use Net\Dontdrinkandroot\Utils\StringUtils;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;

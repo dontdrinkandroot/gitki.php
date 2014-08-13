@@ -8,8 +8,8 @@ use Elasticsearch\Client;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentDeletedEvent;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentSavedEvent;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
 use Net\Dontdrinkandroot\Gitki\ElasticsearchBundle\Model\MarkdownSearchResult;
+use Net\Dontdrinkandroot\Utils\Path\FilePath;
 
 class ElasticsearchRepository
 {

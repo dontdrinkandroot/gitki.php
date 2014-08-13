@@ -16,6 +16,10 @@
         },
         {
             "type": "vcs",
+            "url": "https://github.com/dontdrinkandroot/utils.php"
+        },
+        {
+            "type": "vcs",
             "url": "https://github.com/philipsorst/objective-markdown.php"
         }
     ],
@@ -28,12 +32,12 @@
         "sensio/distribution-bundle": "~3.0",
         "sensio/framework-extra-bundle": "~3.0",
         "incenteev/composer-parameter-handler": "~2.0",
-        "dontdrinkandroot/symfony-extension-bundle": "dev-master",
         "braincrafted/bootstrap-bundle": "~2.0",
         "cpliakas/git-wrapper": "~1.0",
         "hwi/oauth-bundle": "0.3.*",
         "knplabs/github-api": "1.2.*",
         "dontdrinkandroot/objective-markdown": "0.1.*",
+        "dontdrinkandroot/utils": "0.1.*",
         "elasticsearch/elasticsearch": "~1.0"
     },
     "require-dev": {

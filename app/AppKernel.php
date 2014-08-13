@@ -15,7 +15,6 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new \Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
-            new \Net\Dontdrinkandroot\Symfony\ExtensionBundle\DdrSymfonyExtensionBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
             new Net\Dontdrinkandroot\Gitki\BaseBundle\DdrGitkiBaseBundle(),
             new Net\Dontdrinkandroot\Gitki\ElasticsearchBundle\DdrGitkiElasticsearchBundle(),

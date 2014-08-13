@@ -4,15 +4,15 @@
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Service;
 
 
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
 use Net\Dontdrinkandroot\ObjectiveMarkdown\Renderer\Html\HtmlRenderer;
+use Net\Dontdrinkandroot\Utils\Path\FilePath;
 
 class RepositoryAwareHtmlRenderer extends HtmlRenderer
 {
 
     /**
-     * @var \Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath
+     * @var FilePath
      */
     private $path;
 

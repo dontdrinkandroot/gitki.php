@@ -5,7 +5,7 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Service;
 
 
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
+use Net\Dontdrinkandroot\Utils\Path\FilePath;
 
 interface MarkdownService
 {

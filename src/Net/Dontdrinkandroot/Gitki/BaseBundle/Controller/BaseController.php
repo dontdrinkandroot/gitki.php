@@ -4,7 +4,6 @@
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Controller;
 
 
-use Knp\Bundle\MarkdownBundle\MarkdownParserInterface;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Service\WikiService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Kernel;

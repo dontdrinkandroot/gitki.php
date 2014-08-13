@@ -4,7 +4,7 @@
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Event;
 
 
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\Path\FilePath;
+use Net\Dontdrinkandroot\Utils\Path\FilePath;
 use Symfony\Component\EventDispatcher\Event;
 
 class MarkdownDocumentDeletedEvent extends Event
