@@ -10,6 +10,8 @@ use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\FileExistsException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockExpiredException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\DirectoryListing;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\Directory;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\PageFile;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Security\User;
@@ -283,11 +285,13 @@ class WikiService
 
     public function listDirectory(DirectoryPath $relativeDirectoryPath)
     {
-        /* @var SplFileInfo[] $pages */
+        $repositoryPath = $this->gitRepository->getRepositoryPath();
+
+        /* @var PageFile[] $pages */
         $pages = array();
-        /* @var SplFileInfo[] $subDirectories */
+        /* @var Directory[] $subDirectories */
         $subDirectories = array();
-        /* @var SplFileInfo[] $otherFiles */
+        /* @var \Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\File[] $otherFiles */
         $otherFiles = array();
 
         $finder = new Finder();
@@ -296,10 +300,20 @@ class WikiService
         foreach ($finder->files() as $file) {
             /* @var \Symfony\Component\Finder\SplFileInfo $file */
             if ($file->getExtension() == "md") {
-                $pages[] = $file;
+                $pageFile = new PageFile(
+                    $repositoryPath->toAbsoluteFileString(),
+                    $relativeDirectoryPath->toRelativeFileString(),
+                    $file->getRelativePathName()
+                );
+                $pages[] = $pageFile;
             } else {
                 if ($file->getExtension() != 'lock') {
-                    $otherFiles[] = $file;
+                    $otherFile = new \Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\File(
+                        $repositoryPath->toAbsoluteFileString(),
+                        $relativeDirectoryPath->toRelativeFileString(),
+                        $file->getRelativePathName()
+                    );
+                    $otherFiles[] = $otherFile;
                 }
             }
         }
@@ -310,25 +324,33 @@ class WikiService
         $finder->ignoreDotFiles(true);
         foreach ($finder->directories() as $directory) {
             /* @var \Symfony\Component\Finder\SplFileInfo $directory */
-            $subDirectories[] = $directory;
+            $subDirectory = new Directory(
+                $repositoryPath->toAbsoluteFileString(),
+                $relativeDirectoryPath->toRelativeFileString(),
+                $directory->getRelativePathName() . DIRECTORY_SEPARATOR
+            );
+            $subDirectories[] = $subDirectory;
         }
 
 
         usort(
             $pages,
-            function (SplFileInfo $a, SplFileInfo $b) {
+            function (PageFile $a, PageFile $b) {
                 return strcmp($a->getFilename(), $b->getFilename());
             }
         );
         usort(
             $subDirectories,
-            function (SplFileInfo $a, SplFileInfo $b) {
+            function (Directory $a, Directory $b) {
                 return strcmp($a->getFilename(), $b->getFilename());
             }
         );
         usort(
             $otherFiles,
-            function (SplFileInfo $a, SplFileInfo $b) {
+            function (
+                \Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\File $a,
+                \Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\File $b
+            ) {
                 return strcmp($a->getFilename(), $b->getFilename());
             }
         );

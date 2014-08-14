@@ -3,6 +3,11 @@ parameters:
 
 services:
 
+    ddr.gitki.twig.gitki_extension:
+        class: Net\Dontdrinkandroot\Gitki\BaseBundle\Twig\GitkiExtension
+        tags:
+            - { name: twig.extension }
+
     ddr.gitki.security.response_handler.github:
         class: Net\Dontdrinkandroot\Gitki\BaseBundle\Security\GitHubResponseHandler
         arguments:
