@@ -5,7 +5,6 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo;
 
 
 use Net\Dontdrinkandroot\Utils\Path\FilePath;
-use Net\Dontdrinkandroot\Utils\Path\Path;
 
 class File extends PathAwareFileInfo
 {
@@ -36,7 +35,7 @@ class File extends PathAwareFileInfo
     }
 
     /**
-     * @return Path
+     * @return FilePath
      */
     public function getAbsolutePath()
     {

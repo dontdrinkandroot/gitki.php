@@ -8,3 +8,7 @@ services:
         tags:
             - { name: kernel.event_listener, event: ddr.gitki.wiki.markdown_document.saved, method: onMarkdownDocumentSaved }
             - { name: kernel.event_listener, event: ddr.gitki.wiki.markdown_document.deleted, method: onMarkdownDocumentDeleted }
+
+    ddr.gitki.service.wiki:
+        class: Net\Dontdrinkandroot\Gitki\ElasticsearchBundle\Service\ElasticsearchWikiService
+        arguments: [@ddr.gitki.repository.git, @ddr.gitki.service.markdown, @event_dispatcher, @ddr.gitki.repository.elasticsearch]

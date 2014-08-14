@@ -300,12 +300,7 @@ class WikiService
         foreach ($finder->files() as $file) {
             /* @var \Symfony\Component\Finder\SplFileInfo $file */
             if ($file->getExtension() == "md") {
-                $pageFile = new PageFile(
-                    $repositoryPath->toAbsoluteFileString(),
-                    $relativeDirectoryPath->toRelativeFileString(),
-                    $file->getRelativePathName()
-                );
-                $pages[] = $pageFile;
+                $pages[] = $this->createPageFile($repositoryPath, $relativeDirectoryPath, $file);
             } else {
                 if ($file->getExtension() != 'lock') {
                     $otherFile = new \Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\File(
@@ -441,5 +436,17 @@ class WikiService
         return "\"$name <$email>\"";
     }
 
+
+    protected function createPageFile(DirectoryPath $repositoryPath, DirectoryPath $directoryPath, SplFileInfo $file)
+    {
+        $pageFile = new PageFile(
+            $repositoryPath->toAbsoluteFileString(),
+            $directoryPath->toRelativeFileString(),
+            $file->getRelativePathName()
+        );
+        $pageFile->setTitle($pageFile->getRelativePath()->getFileName());
+
+        return $pageFile;
+    }
 
 }

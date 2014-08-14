@@ -52,7 +52,7 @@
                         </li>
                     </ul>
                 </span>
-                    <a href="{{ path('ddr_gitki_wiki_file', {'path': page.absolutePath}) }}">{{ page.filename }}</a>
+                    <a href="{{ path('ddr_gitki_wiki_file', {'path': page.absolutePath}) }}">{{ page.title }}</a>
                 </li>
             {% endfor %}
         </ul>
@@ -85,7 +85,7 @@
                         {% endif %}
                     </ul>
                 </span>
-                    <a href="{{ path('ddr_gitki_wiki_directory', {'path': dir.absolutePath, 'action': 'index'}) }}">{{ dir.filename }}</a>
+                    <a href="{{ path('ddr_gitki_wiki_directory', {'path': dir.absolutePath, 'action': 'index'}) }}">{{ dir.filename|dirTitle }}</a>
                 </li>
             {% endfor %}
         </ul>

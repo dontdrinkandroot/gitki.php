@@ -72,6 +72,22 @@ class ElasticsearchRepository
         }
     }
 
+    public function getTitle(FilePath $path)
+    {
+        $params = array(
+            'index' => $this->index,
+            'type' => self::MARKDOWN_DOCUMENT_TYPE,
+            'id' => $path->toAbsoluteUrlString(),
+            '_source_include' => array('title')
+        );
+        $result = $this->client->get($params);
+        if (null === $result) {
+            return null;
+        }
+
+        return $result['_source']['title'];
+    }
+
     public function indexMarkdownDocument(FilePAth $path, ParsedMarkdownDocument $parsedMarkdownDocument)
     {
         $params = array(
@@ -143,4 +159,5 @@ class ElasticsearchRepository
         return $this->client->delete($params);
     }
 
-} 
+
+}
