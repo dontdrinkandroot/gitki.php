@@ -4,7 +4,7 @@
     {% if is_granted('ROLE_COMMITER') %}
         <div class="btn-group actions pull-right-sm">
             <a href="{{ path('ddr_gitki_wiki_directory', {'path': path, 'action': 'upload'}) }}"
-               class="btn btn-default" title="Upload File"><span class="fa fa-upload"></span></a>
+               class="btn btn-default btn-light" title="Upload File"><span class="fa fa-upload"></span></a>
         </div>
     {% endif %}
 {% endblock %}

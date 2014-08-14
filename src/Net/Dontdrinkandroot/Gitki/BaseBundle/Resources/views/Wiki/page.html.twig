@@ -3,22 +3,24 @@
 {% block actions %}
     <div class="btn-group pull-right-sm actions">
         {% if is_granted('ROLE_COMMITER') %}
-            <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'edit'}) }}" class="btn btn-default "
+            <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'edit'}) }}"
+               class="btn btn-default btn-light"
                title="Edit"><span class="fa fa-pencil"></span></a>
             <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'rename'}) }}"
-               class="btn btn-default "
+               class="btn btn-default btn-light"
                title="Rename"><span class="fa fa-arrows-h"></span></a>
             <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'delete'}) }}"
-               class="btn btn-default "
+               class="btn btn-default btn-light"
                title="Delete"><span class="fa fa-trash-o"></span></a>
             <a href="{{ path('ddr_gitki_wiki_directory', {'path': path.parentPath, 'action': 'upload'}) }}"
-               class="btn btn-default " title="Upload File to containing folder"><span
+               class="btn btn-default btn-light" title="Upload File to containing folder"><span
                         class="fa fa-upload"></span></a>
         {% endif %}
         <a href="{{ path('ddr_gitki_wiki_directory', {'path': path.parentPath, 'action': 'show'}) }}"
-           class="btn btn-default "
+           class="btn btn-default btn-light"
            title="View containing folder"><span class="fa fa-folder-o"></span></a>
-        <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'history'}) }}" class="btn btn-default "
+        <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'history'}) }}"
+           class="btn btn-default btn-light"
            title="History"><span class="fa fa-history"></span></a>
     </div>
 {% endblock %}

@@ -9,6 +9,7 @@ use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
 use Net\Dontdrinkandroot\Utils\Path\DirectoryPath;
 use Net\Dontdrinkandroot\Utils\Path\FilePath;
 use Net\Dontdrinkandroot\Utils\StringUtils;
+use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
@@ -186,10 +187,35 @@ class WikiController extends BaseController
         $form = $this->createFormBuilder()
             ->add('content', 'textarea')
             ->add('commitMessage', 'text', array('label' => 'Commit Message', 'required' => true))
-            ->add('save', 'submit')
+            ->add(
+                'actions',
+                'form_actions',
+                array(
+                    'buttons' => array(
+                        'save' => array('type' => 'submit', 'options' => array('label' => 'Save')),
+                        'cancel' => array(
+                            'type' => 'submit',
+                            'options' => array('label' => 'Cancel', 'attr' => array('type' => 'default'))
+                        ),
+                    )
+                )
+            )
             ->getForm();
 
         $form->handleRequest($request);
+
+        /** @var SubmitButton $cancelButton */
+        $cancelButton = $form->get('actions')->get('cancel');
+        if ($cancelButton->isClicked()) {
+            $this->getWikiService()->removeLock($user, $filePath);
+
+            return $this->redirect(
+                $this->generateUrl(
+                    'ddr_gitki_wiki_file',
+                    array('path' => $path)
+                )
+            );
+        }
 
         if ($form->isValid()) {
 
