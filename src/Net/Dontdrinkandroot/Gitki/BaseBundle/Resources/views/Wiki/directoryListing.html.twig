@@ -18,10 +18,11 @@
         <ul class="list-unstyled">
             {% for page in directoryListing.pages %}
                 <li>
-                <span class="dropdown directory-list-action">
-                    <span class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1"
+
+                <span class="dropdown">
+                    <span class="btn btn-default btn-light btn-xs dropdown-toggle" type="button" id="dropdownMenu1"
                           data-toggle="dropdown">
-                        <span class="fa fa-fw fa-file-o"></span> <span class="caret"></span>
+                       <span class="fa fa-fw fa-file-o"></span>
                     </span>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                         {% if is_granted('ROLE_COMMITER') %}
@@ -63,10 +64,11 @@
         <ul class="list-unstyled">
             {% for dir in directoryListing.subDirectories %}
                 <li>
-                <span class="dropdown directory-list-action">
-                    <span class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1"
+
+                <span class="dropdown">
+                    <span class="btn btn-default btn-light btn-xs dropdown-toggle" type="button" id="dropdownMenu1"
                           data-toggle="dropdown">
-                        <span class="fa fa-fw fa-folder-o"></span> <span class="caret"></span>
+                        <span class="fa fa-fw fa-folder-o"></span>
                     </span>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                         {% if is_granted('ROLE_COMMITER') %}
@@ -96,10 +98,10 @@
         <ul class="list-unstyled">
             {% for file in directoryListing.otherFiles %}
                 <li>
-                <span class="dropdown directory-list-action">
-                    <span class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1"
+                <span class="dropdown">
+                    <span class="btn btn-default btn-light btn-xs dropdown-toggle" type="button" id="dropdownMenu1"
                           data-toggle="dropdown">
-                        <span class="fa fa-fw fa-file-o"></span> <span class="caret"></span>
+                        <span class="fa fa-fw fa-file-o"></span></span>
                     </span>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                         {% if is_granted('ROLE_COMMITER') %}
