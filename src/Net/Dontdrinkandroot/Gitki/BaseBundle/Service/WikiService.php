@@ -381,6 +381,11 @@ class WikiService
         return $markdownDocument->getHtml();
     }
 
+    public function createFolder(DirectoryPath $path)
+    {
+        $this->gitRepository->createFolder($path);
+    }
+
     protected function assertHasLock(User $user, $lockPath)
     {
         if ($this->gitRepository->exists($lockPath) && !$this->isLockExpired($lockPath)) {
@@ -448,5 +453,6 @@ class WikiService
 
         return $pageFile;
     }
+
 
 }

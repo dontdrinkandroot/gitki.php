@@ -3,6 +3,14 @@
 {% block actions %}
     {% if is_granted('ROLE_COMMITER') %}
         <div class="btn-group actions pull-right-sm">
+            <a href="{{ path('ddr_gitki_wiki_directory', {'path': path, 'action': 'addpage'}) }}"
+               class="btn btn-default btn-light" title="Add Page">
+                <span class="fa fa-plus"></span> <span class="fa fa-file-o"></span>
+            </a>
+            <a href="{{ path('ddr_gitki_wiki_directory', {'path': path, 'action': 'addfolder'}) }}"
+               class="btn btn-default btn-light" title="Add Folder">
+                <span class="fa fa-plus"></span> <span class="fa fa-folder-o"></span>
+            </a>
             <a href="{{ path('ddr_gitki_wiki_directory', {'path': path, 'action': 'upload'}) }}"
                class="btn btn-default btn-light" title="Upload File"><span class="fa fa-upload"></span></a>
         </div>
@@ -18,7 +26,6 @@
         <ul class="list-unstyled">
             {% for page in directoryListing.pages %}
                 <li>
-
                 <span class="dropdown">
                     <span class="btn btn-default btn-light btn-xs dropdown-toggle" type="button" id="dropdownMenu1"
                           data-toggle="dropdown">
@@ -29,13 +36,14 @@
                             <li role="presentation">
                                 <a role="menuitem" tabindex="-1" title="Edit"
                                    href="{{ path('ddr_gitki_wiki_file', {'path': page.absolutePath, 'action': 'edit'}) }}">
-                                    <span class="fa fa-fw fa-pencil"></span> Edit
+                                <span class="fa fa-fw fa-pencil"></span> Edit
                                 </a>
                             </li>
                             <li role="presentation">
                                 <a role="menuitem" tabindex="-1"
                                    href="{{ path('ddr_gitki_wiki_file', {'path': page.absolutePath, 'action': 'rename'}) }}"
-                                   title="Rename"><span class="fa fa-fw fa-arrows-h"></span> Move
+                                   title="Rename">
+                                    <span class="fa fa-fw fa-arrows-h"></span> Move
                                 </a>
                             </li>
                             <li role="presentation">

@@ -22,11 +22,11 @@ class GitkiExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('dirTitle', array($this, 'dirTitleFilter')),
+            new \Twig_SimpleFilter('dirTitle', array($this, 'titleFilter')),
         );
     }
 
-    public function dirTitleFilter($title)
+    public function titleFilter($title)
     {
         $words = explode('_', $title);
         $transformedTitle = '';

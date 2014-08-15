@@ -44,6 +44,7 @@ class GitRepository
 
     /**
      * @param null|int $maxCount
+     *
      * @return CommitMetadata[]
      */
     public function getWorkingCopyHistory($maxCount = null)
@@ -78,6 +79,7 @@ class GitRepository
 
     /**
      * @param string $log
+     *
      * @return CommitMetadata[]
      */
     protected function parseLog($log)
@@ -214,6 +216,11 @@ class GitRepository
         unlink($this->getAbsolutePathString($relativePath));
     }
 
+    public function createFolder(DirectoryPath $path)
+    {
+        $this->getFileSystem()->mkdir($this->getAbsolutePathString($path));
+    }
+
     /**
      * @return \GitWrapper\GitWorkingCopy
      */
@@ -224,4 +231,6 @@ class GitRepository
 
         return $workingCopy;
     }
+
+
 }

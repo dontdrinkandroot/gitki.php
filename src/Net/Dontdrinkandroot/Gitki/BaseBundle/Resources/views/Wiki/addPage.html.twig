@@ -1,0 +1,26 @@
+{% extends 'DdrGitkiBaseBundle:Wiki:base.html.twig' %}
+{% block title %} - {{ path }} - Add Page{% endblock %}
+{% block heading %}
+    Add Page
+{% endblock %}
+{% block content %}
+    {{ form(form) }}
+{% endblock %}
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript">
+
+        $('#form_title').bind('input propertychange', function () {
+            var $this = $(this);
+            var parts = $this.val().split(' ');
+            var filename = '';
+            for (var i = 0; i < parts.length - 1; i++) {
+                filename += parts[i].toLowerCase();
+                filename += '_';
+            }
+            filename += parts[parts.length - 1].toLowerCase();
+            $('#form_filename').val(filename);
+        });
+
+    </script>
+{% endblock %}

@@ -24,7 +24,8 @@ class WikiController extends BaseController
 
     /**
      * @param Request $request
-     * @param string $path
+     * @param string  $path
+     *
      * @return Response
      */
     public function directoryAction(Request $request, $path)
@@ -39,6 +40,10 @@ class WikiController extends BaseController
                 return $this->directoryUploadAction($request, $path);
             case 'delete' :
                 return $this->deleteDirectoryAction($request, $path);
+            case 'addpage' :
+                return $this->addPageAction($request, $path);
+            case 'addfolder' :
+                return $this->addFolderAction($request, $path);
             default:
                 return $this->listDirectoryAction($path);
         }
@@ -46,7 +51,8 @@ class WikiController extends BaseController
 
     /**
      * @param Request $request
-     * @param string $path
+     * @param string  $path
+     *
      * @return Response
      */
     public function fileAction(Request $request, $path)
@@ -240,6 +246,15 @@ class WikiController extends BaseController
             $content = null;
             if ($this->getWikiService()->exists($filePath)) {
                 $content = $this->getWikiService()->getContent($filePath);
+            } else {
+                $title = $request->query->get('title');
+                if (!empty($title)) {
+                    $content = $title . "\n";
+                    for ($i = 0; $i < strlen($title); $i++) {
+                        $content .= '=';
+                    }
+                    $content .= "\n\n";
+                }
             }
 
             if (!$form->isSubmitted()) {
@@ -437,6 +452,102 @@ class WikiController extends BaseController
             )
         );
     }
+
+    public function addPageAction($request, $path)
+    {
+        $this->assertRole('ROLE_COMMITER');
+
+        $directoryPath = DirectoryPath::parse($path);
+        $user = $this->getUser();
+
+        $form = $this->createFormBuilder()
+            ->add('title', 'text', array('label' => 'Title', 'required' => true))
+            ->add(
+                'filename',
+                'text',
+                array(
+                    'label' => 'Filename',
+                    'required' => true,
+                    'attr' => array(
+                        'input_group' => array('append' => '.md')
+                    )
+                )
+            )
+            ->add('create', 'submit')
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+
+            if ($form->isValid()) {
+                $title = $form->get('title')->getData();
+                $filename = $form->get('filename')->getData() . '.md';
+                $filePath = $directoryPath->appendFile($filename);
+
+                return $this->redirect(
+                    $this->generateUrl(
+                        'ddr_gitki_wiki_file',
+                        array('path' => $filePath->toAbsoluteUrlString(), 'action' => 'edit', 'title' => $title)
+                    )
+                );
+            }
+
+        }
+
+        return $this->render(
+            'DdrGitkiBaseBundle:Wiki:addPage.html.twig',
+            array('form' => $form->createView(), 'path' => $directoryPath)
+        );
+    }
+
+    public function addFolderAction($request, $path)
+    {
+        $this->assertRole('ROLE_COMMITER');
+
+        $directoryPath = DirectoryPath::parse($path);
+        $user = $this->getUser();
+
+        $form = $this->createFormBuilder()
+            ->add('title', 'text', array('label' => 'Title', 'required' => true))
+            ->add(
+                'dirname',
+                'text',
+                array(
+                    'label' => 'Foldername',
+                    'required' => true,
+                )
+            )
+            ->add('create', 'submit')
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+
+            if ($form->isValid()) {
+                $title = $form->get('title')->getData();
+                $dirname = $form->get('dirname')->getData();
+                $subDirPath = $directoryPath->appendDirectory($dirname);
+
+                $this->getWikiService()->createFolder($subDirPath);
+
+                return $this->redirect(
+                    $this->generateUrl(
+                        'ddr_gitki_wiki_directory',
+                        array('path' => $subDirPath->toAbsoluteUrlString())
+                    )
+                );
+            }
+
+        }
+
+        return $this->render(
+            'DdrGitkiBaseBundle:Wiki:addFolder.html.twig',
+            array('form' => $form->createView(), 'path' => $directoryPath)
+        );
+    }
+
 
     public function historyAction()
     {
