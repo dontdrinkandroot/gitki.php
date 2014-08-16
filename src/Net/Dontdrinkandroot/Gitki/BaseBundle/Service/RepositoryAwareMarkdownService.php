@@ -12,13 +12,25 @@ use Net\Dontdrinkandroot\Utils\Path\FilePath;
 class RepositoryAwareMarkdownService implements MarkdownService
 {
 
+    /**
+     * @var GitRepository
+     */
     protected $repository;
 
+    /**
+     * @param GitRepository $repository
+     */
     public function __construct(GitRepository $repository)
     {
         $this->repository = $repository;
     }
 
+    /**
+     * @param FilePath $path
+     * @param string   $content
+     *
+     * @return ParsedMarkdownDocument
+     */
     public function parse(FilePath $path, $content)
     {
         $parser = new Parser();
@@ -27,10 +39,14 @@ class RepositoryAwareMarkdownService implements MarkdownService
         $renderer = new RepositoryAwareHtmlRenderer($path, $this->repository);
         $html = $renderer->render($markdownDocument);
 
+        $linkedPaths = $renderer->getLinkHandler()->getLinkedPaths();
+        $title = $renderer->getHeaderHandler()->getTitle();
+        $toc = $renderer->getHeaderHandler()->getToc();
+
         $result = new ParsedMarkdownDocument();
-        $result->setLinkedPaths($renderer->getLinkHandler()->getLinkedPaths());
-        $result->setTitle($renderer->getHeaderHandler()->getTitle());
-        $result->setToc($renderer->getHeaderHandler()->getToc());
+        $result->setLinkedPaths($linkedPaths);
+        $result->setTitle($title);
+        $result->setToc($toc);
         $result->setHtml($html);
 
         return $result;

@@ -34,7 +34,8 @@ class ReindexCommand extends ElasticsearchCommand
             $progress->setMessage('Indexing ' . $filePath->toAbsoluteUrlString());
             $progress->advance();
 
-            $document = $markdownService->parse($filePath, $wikiService->getContent($filePath));
+            $fileContent = $wikiService->getContent($filePath);
+            $document = $markdownService->parse($filePath, $fileContent);
             $elasticSearchRepo->indexMarkdownDocument($filePath, $document);
         }
 
