@@ -44,6 +44,7 @@ class RepositoryAwareMarkdownService implements MarkdownService
         $toc = $renderer->getHeaderHandler()->getToc();
 
         $result = new ParsedMarkdownDocument();
+        $result->setSource($content);
         $result->setLinkedPaths($linkedPaths);
         $result->setTitle($title);
         $result->setToc($toc);
