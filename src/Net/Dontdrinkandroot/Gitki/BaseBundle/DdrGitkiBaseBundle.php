@@ -15,4 +15,17 @@ class DdrGitkiBaseBundle extends Bundle
 
         $container->registerExtension(new DdrGitkiExtension());
     }
+
+    public function getContainerExtension()
+    {
+        if (null === $this->extension) {
+            $this->extension = new DdrGitkiExtension();
+        }
+
+        if ($this->extension) {
+            return $this->extension;
+        }
+
+        return false;
+    }
 }

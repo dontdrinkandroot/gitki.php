@@ -11,6 +11,9 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 class DdrGitkiExtension extends Extension implements PrependExtensionInterface
 {
 
+    /**
+     * @inheritdoc
+     */
     public function getAlias()
     {
         return "ddr_gitki";
