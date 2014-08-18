@@ -5,82 +5,37 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Security;
 
 
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Service\UserService;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 class GoogleResponseHandler implements ResponseHandler
 {
 
-    protected $adminUsers;
-    protected $commitUsers;
-    protected $watchUsers;
-
-    public function __construct($adminUsers, $commitUsers, $watchUsers)
-    {
-
-        $this->adminUsers = array();
-        $this->commitUsers = array();
-        $this->watchUsers = array();
-
-        if (null !== $adminUsers) {
-            if (is_array($adminUsers)) {
-                foreach ($adminUsers as $adminUser) {
-                    $this->adminUsers[$adminUser] = true;
-                }
-            } else {
-                $this->adminUsers[$adminUsers] = true;
-            }
-        }
-
-        if (null !== $commitUsers) {
-            if (is_array($commitUsers)) {
-                foreach ($commitUsers as $commitUser) {
-                    $this->commitUsers[$commitUser] = true;
-                }
-            } else {
-                $this->commitUsers[$commitUsers] = true;
-            }
-        }
-
-        if (null !== $watchUsers) {
-            if (is_array($watchUsers)) {
-                foreach ($watchUsers as $watchUser) {
-                    $this->watchUsers[$watchUser] = true;
-                }
-            } else {
-                $this->watchUsers[$watchUsers] = true;
-            }
-        }
-    }
-
-    public function handleResponse(UserResponseInterface $response)
+    public function handleResponse(UserResponseInterface $response, UserService $userService)
     {
         $fields = $response->getResponse();
 
-        $user = new GoogleUser();
-        $user->setId($fields['id']);
-        $user->setRealName($fields['name']);
-        $user->setEMail($fields['email']);
-        $user->setAccessToken($response->getAccessToken()); #
+        $email = $fields['email'];
+        $login = explode('@', $email)[0];
 
-        $login = explode('@', $user->getEmail())[0];
-
-        if (array_key_exists($login, $this->adminUsers)) {
-            $user->addRole('ROLE_ADMIN');
+        $user = $userService->findByGoogleLogin($login);
+        if (null === $user) {
+            throw new UsernameNotFoundException();
         }
 
-        if (array_key_exists($login, $this->commitUsers)) {
-            $user->addRole('ROLE_COMMITER');
-        }
+        $oAuthUser = new OAuthUser($user);
+        $oAuthUser->addRole('ROLE_GOOGLE_USER');
+        $oAuthUser->setAccessToken($response->getAccessToken());
+        $oAuthUser->setRealName($fields['name']);
+        $oAuthUser->setPrimaryEmailAddress($email);
+        $oAuthUser->setEmailAddresses([$email]);
 
-        if (array_key_exists($login, $this->watchUsers)) {
-            $user->addRole('ROLE_WATCHER');
-        }
-
-        return $user;
+        return $oAuthUser;
     }
 
     public function supportsClass($userClass)
     {
-        return $userClass === 'Net\\Dontdrinkandroot\\Gitki\\BaseBundle\\Security\\GoogleUser';
+        return $userClass === 'Net\\Dontdrinkandroot\\Gitki\\BaseBundle\\Security\\OAuthUser';
     }
 
     public function handlesResourceOwner($resourceOwnerName)

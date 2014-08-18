@@ -11,12 +11,14 @@ Features
 * Versioned, runs against a plain Git Repository
 * Fully integrated (GitHub Flavored-) Markdown support
 * Multi-User support
-* Login via OAuth (GitHub, Google, Facebook, ...)
+* Login via OAuth (GitHub, Google, ...)
 * Easy to install
 * Easy to use
 * No database required
 * Optional Elasticsearch integration
 * Responsive design
+* Written in PHP
+* Based on Symfony
 
 Installation
 ------------
@@ -29,16 +31,19 @@ Configuration
 ddr_gitki:
     repository_path:      ~ # Required
     name:                 GitKi
+    users:
+        id:                   ~ # Required
+        real_name:            ~
+        github_login:         ~
+        google_login:         ~
+        primary_email_address:  ~
+        roles:                []
     oauth:
         default_provider:     ~
         providers:
             client_id:            ~ # Required
             secret:               ~ # Required
-            users_admin:          []
-            users_commit:         []
-            users_watch:          []
     twig:
         show_breadcrumbs:     true
         show_toc:             true
-
 ```

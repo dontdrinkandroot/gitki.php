@@ -88,7 +88,7 @@ class WikiService
         if ($this->gitRepository->exists($relativeLockPath)) {
             $this->gitRepository->touch($relativeLockPath);
         } else {
-            $this->gitRepository->putContent($relativeLockPath, $user->getEmail());
+            $this->gitRepository->putContent($relativeLockPath, $user->getPrimaryEmailAddress());
         }
     }
 
@@ -110,7 +110,7 @@ class WikiService
         }
 
         $lockLogin = $this->getLockLogin($relativeLockPath);
-        if ($lockLogin != $user->getEmail()) {
+        if ($lockLogin != $user->getPrimaryEmailAddress()) {
             throw new \Exception('Cannot remove lock of different user');
         }
 
@@ -164,7 +164,7 @@ class WikiService
 
         $this->eventDispatcher->dispatch(
             'ddr.gitki.wiki.markdown_document.saved',
-            new MarkdownDocumentSavedEvent($relativeFilePath, $user->getEmail(), time(
+            new MarkdownDocumentSavedEvent($relativeFilePath, $user->getPrimaryEmailAddress(), time(
             ), $parsedMarkdownDocument, $commitMessage)
         );
     }
@@ -207,7 +207,8 @@ class WikiService
         if (StringUtils::endsWith($relativeFilePath->getName(), '.md')) {
             $this->eventDispatcher->dispatch(
                 'ddr.gitki.wiki.markdown_document.deleted',
-                new MarkdownDocumentDeletedEvent($relativeFilePath, $user->getEmail(), time(), $commitMessage)
+                new MarkdownDocumentDeletedEvent($relativeFilePath, $user->getPrimaryEmailAddress(), time(
+                ), $commitMessage)
             );
         }
     }
@@ -268,7 +269,7 @@ class WikiService
         if (StringUtils::endsWith($relativeOldFilePath->getName(), '.md')) {
             $this->eventDispatcher->dispatch(
                 'ddr.gitki.wiki.markdown_document.deleted',
-                new MarkdownDocumentDeletedEvent($relativeOldFilePath, $user->getName(), time(), $commitMessage)
+                new MarkdownDocumentDeletedEvent($relativeOldFilePath, $user->getRealName(), time(), $commitMessage)
             );
         }
 
@@ -277,7 +278,7 @@ class WikiService
             $parsedMarkdownDocument = $this->markdownService->parse($relativeNewFilePath, $content);
             $this->eventDispatcher->dispatch(
                 'ddr.gitki.wiki.markdown_document.saved',
-                new MarkdownDocumentSavedEvent($relativeNewFilePath, $user->getEmail(), time(
+                new MarkdownDocumentSavedEvent($relativeNewFilePath, $user->getPrimaryEmailAddress(), time(
                 ), $parsedMarkdownDocument, $commitMessage)
             );
         }
@@ -332,7 +333,7 @@ class WikiService
         }
 
         $lockLogin = $this->getLockLogin($relativeLockPath);
-        if ($lockLogin == $user->getEmail()) {
+        if ($lockLogin == $user->getPrimaryEmailAddress()) {
             return true;
         }
 
@@ -498,7 +499,7 @@ class WikiService
     {
         if ($this->gitRepository->exists($lockPath) && !$this->isLockExpired($lockPath)) {
             $lockLogin = $this->getLockLogin($lockPath);
-            if ($lockLogin == $user->getEmail($user)) {
+            if ($lockLogin == $user->getPrimaryEmailAddress($user)) {
                 return true;
             }
         }
@@ -571,8 +572,8 @@ class WikiService
      */
     protected function getAuthor(User $user)
     {
-        $name = $user->getName();
-        $email = $user->getEmail();
+        $name = $user->getRealName();
+        $email = $user->getPrimaryEmailAddress();
 
         return "\"$name <$email>\"";
     }

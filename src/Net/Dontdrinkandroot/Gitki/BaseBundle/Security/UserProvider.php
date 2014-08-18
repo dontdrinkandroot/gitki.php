@@ -6,6 +6,7 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Security;
 
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\OAuthAwareUserProviderInterface;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Service\UserService;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -18,8 +19,14 @@ class UserProvider implements OAuthAwareUserProviderInterface, UserProviderInter
      */
     protected $responseHandlers = array();
 
-    public function __construct()
+    /**
+     * @var UserService
+     */
+    protected $userService;
+
+    public function __construct(UserService $userService)
     {
+        $this->userService = $userService;
     }
 
     public function registerHandler(ResponseHandler $handler)
@@ -33,7 +40,7 @@ class UserProvider implements OAuthAwareUserProviderInterface, UserProviderInter
         $resourceOwnerName = $response->getResourceOwner()->getName();
         foreach ($this->responseHandlers as $responseHandler) {
             if ($responseHandler->handlesResourceOwner($resourceOwnerName)) {
-                return $responseHandler->handleResponse($response);
+                return $responseHandler->handleResponse($response, $this->userService);
             }
         }
 

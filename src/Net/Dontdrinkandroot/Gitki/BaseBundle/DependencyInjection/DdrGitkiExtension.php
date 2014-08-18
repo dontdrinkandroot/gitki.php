@@ -98,43 +98,12 @@ class DdrGitkiExtension extends Extension implements PrependExtensionInterface
         $container->setParameter('ddr_gitki_base.repository_path', $config['repository_path']);
         $container->setParameter('ddr_gitki_base.name', $config['name']);
 
-        if (isset($config['oauth']['providers']['github'])) {
-            $container->setParameter(
-                'ddr_gitki_base.github_users_admin',
-                $config['oauth']['providers']['github']['users_admin']
-            );
-            $container->setParameter(
-                'ddr_gitki_base.github_users_commit',
-                $config['oauth']['providers']['github']['users_commit']
-            );
-            $container->setParameter(
-                'ddr_gitki_base.github_users_watch',
-                $config['oauth']['providers']['github']['users_watch']
-            );
-        } else {
-            $container->setParameter('ddr_gitki_base.github_users_admin', array());
-            $container->setParameter('ddr_gitki_base.github_users_commit', array());
-            $container->setParameter('ddr_gitki_base.github_users_watch', array());
+        $users = [];
+        if (isset($config['users'])) {
+            $users = $config['users'];
         }
 
-        if (isset($config['oauth']['providers']['google'])) {
-            $container->setParameter(
-                'ddr_gitki_base.google_users_admin',
-                $config['oauth']['providers']['google']['users_admin']
-            );
-            $container->setParameter(
-                'ddr_gitki_base.google_users_commit',
-                $config['oauth']['providers']['google']['users_commit']
-            );
-            $container->setParameter(
-                'ddr_gitki_base.google_users_watch',
-                $config['oauth']['providers']['google']['users_watch']
-            );
-        } else {
-            $container->setParameter('ddr_gitki_base.google_users_admin', array());
-            $container->setParameter('ddr_gitki_base.google_users_commit', array());
-            $container->setParameter('ddr_gitki_base.google_users_watch', array());
-        }
+        $container->setParameter('ddr_gitki_base.users', $users);
     }
 
 }

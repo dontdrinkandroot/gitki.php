@@ -9,8 +9,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 interface User extends UserInterface
 {
 
-    public function getName();
+    public function getId();
 
-    public function getEmail();
+    public function getRealName();
+
+    public function getPrimaryEmailAddress();
 
 } 

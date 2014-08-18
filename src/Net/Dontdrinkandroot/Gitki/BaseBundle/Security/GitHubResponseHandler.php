@@ -6,70 +6,33 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Security;
 
 use Github\Client;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Service\UserService;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 class GitHubResponseHandler implements ResponseHandler
 {
 
-    protected $adminUsers;
-    protected $commitUsers;
-    protected $watchUsers;
-
-    public function __construct($adminUsers, $commitUsers, $watchUsers)
-    {
-
-        $this->adminUsers = array();
-        $this->commitUsers = array();
-        $this->watchUsers = array();
-
-        if (null !== $adminUsers) {
-            if (is_array($adminUsers)) {
-                foreach ($adminUsers as $adminUser) {
-                    $this->adminUsers[$adminUser] = true;
-                }
-            } else {
-                $this->adminUsers[$adminUsers] = true;
-            }
-        }
-
-        if (null !== $commitUsers) {
-            if (is_array($commitUsers)) {
-                foreach ($commitUsers as $commitUser) {
-                    $this->commitUsers[$commitUser] = true;
-                }
-            } else {
-                $this->commitUsers[$commitUsers] = true;
-            }
-        }
-
-        if (null !== $watchUsers) {
-            if (is_array($watchUsers)) {
-                foreach ($watchUsers as $watchUser) {
-                    $this->watchUsers[$watchUser] = true;
-                }
-            } else {
-                $this->watchUsers[$watchUsers] = true;
-            }
-        }
-    }
-
-    public function handleResponse(UserResponseInterface $response)
+    public function handleResponse(UserResponseInterface $response, UserService $userService)
     {
         $fields = $response->getResponse();
 
-        $user = new GitHubUser();
-
-        $id = $fields['id'];
-        $user->setId($id);
-
-        $login = $fields['login'];
-        $user->setLogin($login);
-
+        $gitHubLogin = $fields['login'];
         $accessToken = $response->getAccessToken();
-        $user->setAccessToken($accessToken);
+
+        $user = $userService->findByGitHubLogin($gitHubLogin);
+        if (null === $user) {
+            throw new UsernameNotFoundException();
+        }
+
+        $oAuthUser = new OAuthUser($user);
+        $oAuthUser->addRole('ROLE_GITHUB_USER');
+        $oAuthUser->setAccessToken($accessToken);
 
         if (array_key_exists('name', $fields)) {
-            $realName = $fields['name'];
-            $user->setRealName($realName);
+            $gitHubName = $fields['name'];
+            $oAuthUser->setRealName($gitHubName);
+        } else {
+            $oAuthUser->setRealName($gitHubLogin);
         }
 
         $client = new Client();
@@ -80,30 +43,45 @@ class GitHubResponseHandler implements ResponseHandler
         $emails = $currentUserApi->emails();
         $allEMails = $emails->all();
 
-        $user->setEMails($allEMails);
+        $oAuthUser->setEmailAddresses($this->getEmailAddresses($allEMails));
+        $oAuthUser->setPrimaryEmailAddress($this->getPrimaryEmailAddress($allEMails));
 
-        if (array_key_exists($login, $this->adminUsers)) {
-            $user->addRole('ROLE_ADMIN');
-        }
-
-        if (array_key_exists($login, $this->commitUsers)) {
-            $user->addRole('ROLE_COMMITER');
-        }
-
-        if (array_key_exists($login, $this->watchUsers)) {
-            $user->addRole('ROLE_WATCHER');
-        }
-
-        return $user;
+        return $oAuthUser;
     }
 
     public function supportsClass($userClass)
     {
-        return $userClass === 'Net\\Dontdrinkandroot\\Gitki\\BaseBundle\\Security\\GitHubUser';
+        return $userClass === 'Net\\Dontdrinkandroot\\Gitki\\BaseBundle\\Security\\OAuthUser';
     }
 
     public function handlesResourceOwner($resourceOwnerName)
     {
         return $resourceOwnerName === "github";
+    }
+
+    protected function getEmailAddresses($emails)
+    {
+        $addresses = [];
+        foreach ($emails as $eMail) {
+            $addresses[] = $eMail['email'];
+        }
+
+        return $addresses;
+    }
+
+    protected function getPrimaryEmailAddress($emails)
+    {
+        $primaryEmail = null;
+        foreach ($emails as $eMail) {
+            if ($eMail['primary']) {
+                $primaryEmail = $eMail['email'];
+            }
+        }
+
+        if (null === $primaryEmail) {
+            throw new \Exception('No primary eMail address found');
+        }
+
+        return $primaryEmail;
     }
 } 
