@@ -11,5 +11,6 @@
 !bin/console
 !bin/symfony_requirements
 /composer.phar
+/composer.lock
 /.idea/
 /src/Net/Dontdrinkandroot/Gitki/BaseBundle/Resources/public/css/style.css
