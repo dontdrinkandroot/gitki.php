@@ -1,7 +1,3 @@
-ddr_gitki_git_hub_issues:
-    resource: "@DdrGitkiGitHubIssuesBundle/Resources/config/routing.yml"
-    prefix:   /issues
-
 ddr_gitki_base:
     resource: "@DdrGitkiBaseBundle/Resources/config/routing.yml"
     prefix:   /

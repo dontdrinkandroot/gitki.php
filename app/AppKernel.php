@@ -17,8 +17,7 @@ class AppKernel extends Kernel
             new \Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
             new Net\Dontdrinkandroot\Gitki\BaseBundle\DdrGitkiBaseBundle(),
-            new Net\Dontdrinkandroot\Gitki\ElasticsearchBundle\DdrGitkiElasticsearchBundle(),
-            new Net\Dontdrinkandroot\Gitki\GitHubIssuesBundle\DdrGitkiGitHubIssuesBundle(),
+            new Net\Dontdrinkandroot\Gitki\ElasticsearchBundle\DdrGitkiElasticsearchBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

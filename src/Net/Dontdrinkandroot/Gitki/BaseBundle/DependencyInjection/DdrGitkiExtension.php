@@ -50,7 +50,7 @@ class DdrGitkiExtension extends Extension implements PrependExtensionInterface
                 'type' => 'github',
                 'client_id' => $googleConfig['client_id'],
                 'client_secret' => $googleConfig['secret'],
-                'scope' => 'user:email,public_repo'
+                'scope' => 'user:email'
             );
             $securityConfig['firewalls']['secured_area']['oauth']['resource_owners']['github'] = '/login/check-github';
         }

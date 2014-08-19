@@ -8,14 +8,13 @@
 {% endif %}
 {% if app.user %}
     <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ app.user.login }}<b class="caret"></b></a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ app.user.realName }} <b class="caret"></b></a>
         <ul class="dropdown-menu">
             <li><a href="{{ path('logout') }}">Logout</a></li>
         </ul>
     </li>
 {% else %}
     <li>
-        {#<a href="{{ path('hwi_oauth_service_redirect', {'service' : 'github'}) }}">Login</a>#}
         <a href="{{ path('login_manual') }}">Login</a>
     </li>
 {% endif %}
