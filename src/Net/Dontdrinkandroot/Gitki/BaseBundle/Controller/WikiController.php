@@ -357,7 +357,7 @@ class WikiController extends BaseController
             }
 
         } else {
-            $form->setData(array('newpath' => $path));
+            $form->setData(array('newpath' => $path->toAbsoluteUrlString()));
         }
 
         return $this->render(
