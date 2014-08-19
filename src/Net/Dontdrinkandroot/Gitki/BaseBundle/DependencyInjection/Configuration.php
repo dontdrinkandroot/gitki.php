@@ -52,6 +52,7 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->booleanNode('show_breadcrumbs')->defaultTrue()->end()
                         ->booleanNode('show_toc')->defaultTrue()->end()
+                        ->integerNode('toc_max_level')->defaultValue(3)->end()
                     ->end()
                 ->end()
             ->end();

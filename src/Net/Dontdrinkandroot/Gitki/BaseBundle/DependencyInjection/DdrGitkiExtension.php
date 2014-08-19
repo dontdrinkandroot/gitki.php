@@ -35,6 +35,7 @@ class DdrGitkiExtension extends Extension implements PrependExtensionInterface
 
         $twigConfig['globals']['ddr_gitki_name'] = $config['name'];
         $twigConfig['globals']['ddr_gitki_show_toc'] = $config['twig']['show_toc'];
+        $twigConfig['globals']['ddr_gitki_toc_max_level'] = $config['twig']['toc_max_level'];
         $twigConfig['globals']['ddr_gitki_show_breadcrumbs'] = $config['twig']['show_breadcrumbs'];
 
         if (isset($config['oauth']['default_provider'])) {

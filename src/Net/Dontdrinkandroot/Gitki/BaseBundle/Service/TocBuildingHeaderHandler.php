@@ -17,11 +17,12 @@ class TocBuildingHeaderHandler extends HeaderHandler
 
     private $count = 0;
 
-    private $currentH2 = null;
+    private $current = array();
 
     /**
-     * @param Header $element
+     * @param Header            $element
      * @param HtmlRenderContext $context
+     *
      * @return string
      */
     public function handle($element, HtmlRenderContext $context)
@@ -37,33 +38,32 @@ class TocBuildingHeaderHandler extends HeaderHandler
 
         if (null === $this->title && $level == 1) {
             $this->title = $text;
-        }
-
-        if ($level == 2) {
-
-            unset($this->currentH2);
-
-            $this->currentH2 = array(
-                'text' => $text,
-                'id' => $id,
-                'children' => array()
-            );
-
-            $this->toc[] = & $this->currentH2;
-        }
-
-        if ($level == 3) {
-            if (null !== $this->currentH2) {
-                $this->currentH2['children'][] = array(
-                    'text' => $text,
+        } else {
+            if ($level >= 2) {
+                for ($i = $level; $i <= 6; $i++) {
+                    unset($this->current[$i]);
+                }
+                $this->current[$level] = [
                     'id' => $id,
-                );
+                    'text' => $text,
+                    'level' => $level,
+                    'children' => []
+                ];
+                if ($level == 2) {
+                    $this->toc[] = & $this->current[$level];
+                } else {
+                    if (isset($this->current[$level - 1])) {
+                        $this->current[$level - 1]['children'][] = & $this->current[$level];
+                    }
+                }
+
             }
         }
 
-        $markup = '<h' . $level . ' id="' . $id . '">';
+        $tagName = 'h' . $level;
+        $markup = $this->renderOpeningTag($tagName, ['id' => $id]);
         $markup .= $text;
-        $markup .= '</h' . $level . '>';
+        $markup .= $this->renderClosingTag($tagName);
 
         $this->count++;
 
