@@ -35,15 +35,15 @@ class RepositoryAwareHtmlRenderer extends HtmlRenderer
     protected function getContext()
     {
         $this->context->registerHandler(
-            'Net\Dontdrinkandroot\ObjectiveMarkdown\Model\Span\Link',
+            'Net\Dontdrinkandroot\ObjectiveMarkdown\Model\Element\Inline\Link',
             $this->linkHandler
         );
         $this->context->registerHandler(
-            'Net\Dontdrinkandroot\ObjectiveMarkdown\Model\Block\Header',
+            'Net\Dontdrinkandroot\ObjectiveMarkdown\Model\Element\Block\Header',
             $this->headerHandler
         );
         $this->context->registerHandler(
-            'Net\Dontdrinkandroot\ObjectiveMarkdown\Model\Block\Table\Table',
+            'Net\Dontdrinkandroot\ObjectiveMarkdown\Model\Element\Block\Table\Table',
             new BootstrapTableHandler()
         );
 

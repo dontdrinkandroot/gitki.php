@@ -5,8 +5,8 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown\HtmlRenderer;
 
 
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
-use Net\Dontdrinkandroot\ObjectiveMarkdown\Model\General\HtmlMarkup;
-use Net\Dontdrinkandroot\ObjectiveMarkdown\Model\Span\Link;
+use Net\Dontdrinkandroot\ObjectiveMarkdown\Model\Element\Inline\HtmlMarkup;
+use Net\Dontdrinkandroot\ObjectiveMarkdown\Model\Element\Inline\Link;
 use Net\Dontdrinkandroot\ObjectiveMarkdown\Renderer\Html\Handler\LinkHandler;
 use Net\Dontdrinkandroot\ObjectiveMarkdown\Renderer\Html\HtmlRenderContext;
 use Net\Dontdrinkandroot\Utils\Path\FilePath;
