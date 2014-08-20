@@ -23,7 +23,7 @@ services:
         arguments: [%ddr_gitki_base.users%]
 
     ddr.gitki.service.markdown:
-        class: Net\Dontdrinkandroot\Gitki\BaseBundle\Service\RepositoryAwareMarkdownService
+        class: Net\Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown\RepositoryAwareMarkdownService
         arguments: [@ddr.gitki.repository.git]
 
     ddr.gitki.service.wiki:

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Service;
+namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown\HtmlRenderer;
 
 
 use Net\Dontdrinkandroot\ObjectiveMarkdown\Model\Block\Header;

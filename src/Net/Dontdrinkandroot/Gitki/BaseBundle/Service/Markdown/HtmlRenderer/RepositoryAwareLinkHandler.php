@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Service;
+namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown\HtmlRenderer;
 
 
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
@@ -54,8 +54,9 @@ class RepositoryAwareLinkHandler extends LinkHandler
     }
 
     /**
-     * @param Link $element
+     * @param Link              $element
      * @param HtmlRenderContext $context
+     *
      * @return string
      */
     protected function renderChildren($element, HtmlRenderContext $context)

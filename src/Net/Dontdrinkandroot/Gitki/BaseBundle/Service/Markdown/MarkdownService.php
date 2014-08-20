@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Service;
+namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown;
 
 
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
@@ -12,7 +12,8 @@ interface MarkdownService
 
     /**
      * @param FilePath $path
-     * @param string $content
+     * @param string   $content
+     *
      * @return ParsedMarkdownDocument
      */
     public function parse(FilePath $path, $content);

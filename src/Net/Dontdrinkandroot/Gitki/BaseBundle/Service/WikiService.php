@@ -16,6 +16,7 @@ use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\PageFile;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Security\User;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown\MarkdownService;
 use Net\Dontdrinkandroot\Utils\Path\DirectoryPath;
 use Net\Dontdrinkandroot\Utils\Path\FilePath;
 use Net\Dontdrinkandroot\Utils\Path\Path;

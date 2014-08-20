@@ -1,11 +1,12 @@
 <?php
 
 
-namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Service;
+namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown;
 
 
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown\HtmlRenderer\RepositoryAwareHtmlRenderer;
 use Net\Dontdrinkandroot\ObjectiveMarkdown\Parser\Parser;
 use Net\Dontdrinkandroot\Utils\Path\FilePath;
 

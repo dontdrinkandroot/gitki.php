@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Service;
+namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown\HtmlRenderer;
 
 
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
@@ -41,6 +41,10 @@ class RepositoryAwareHtmlRenderer extends HtmlRenderer
         $this->context->registerHandler(
             'Net\Dontdrinkandroot\ObjectiveMarkdown\Model\Block\Header',
             $this->headerHandler
+        );
+        $this->context->registerHandler(
+            'Net\Dontdrinkandroot\ObjectiveMarkdown\Model\Block\Table\Table',
+            new BootstrapTableHandler()
         );
 
         return $this->context;
