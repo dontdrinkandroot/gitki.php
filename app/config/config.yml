@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: gitki.yml }
 
 framework:
     #esi:             ~
@@ -49,6 +50,3 @@ braincrafted_bootstrap:
 
 hwi_oauth:
     firewall_name: secured_area
-
-ddr_gitki:
-    repository_path: "%repository_path%"
