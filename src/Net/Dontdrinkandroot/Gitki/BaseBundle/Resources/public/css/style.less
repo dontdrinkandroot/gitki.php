@@ -88,8 +88,8 @@ ul {
 }
 
 .breadcrumb {
-  padding-top: @padding-base-vertical + 1;
-  padding-bottom: @padding-base-vertical + 1;
+    padding-top: 0px;
+    padding-bottom: 0px;
 }
 
 .page-header {
@@ -202,7 +202,8 @@ a.missing {
   border-radius: 0;
 }
 
-/* Pulling */
+/* Media specific */
+
 .pull-left-xs {
   float: left !important;
 }
@@ -213,26 +214,33 @@ a.missing {
 
 @media (min-width: @screen-sm-min) {
 
-  .pull-left-xs, .pull-left-sm {
-    float: left !important;
-  }
+    .breadcrumb {
+        padding-top: @padding-base-vertical + 1;
+        padding-bottom: @padding-base-vertical + 1;
+    }
 
-  .pull-right-xs, .pull-right-sm {
-    float: right !important;
-  }
+    .pull-left-xs, .pull-left-sm {
+        float: left !important;
+    }
+
+    .pull-right-xs, .pull-right-sm {
+        float: right !important;
+    }
 }
 
 @media (min-width: @screen-md-min) {
-  .pull-left-xs, .pull-left-sm, .pull-left-md {
-    float: left !important;
-  }
 
-  .pull-right-xs, .pull-right-sm, .pull-right-md {
-    float: right !important;
-  }
+    .pull-left-xs, .pull-left-sm, .pull-left-md {
+        float: left !important;
+    }
+
+    .pull-right-xs, .pull-right-sm, .pull-right-md {
+        float: right !important;
+    }
 }
 
 @media (min-width: @screen-lg-min) {
+
   .pull-left-xs, .pull-left-sm, .pull-left-md, .pull-left-lg {
     float: left !important;
   }
