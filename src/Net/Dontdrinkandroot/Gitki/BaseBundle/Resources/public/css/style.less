@@ -83,13 +83,20 @@ ul {
   border-bottom: 1px solid @gray-lighter;
 }
 
-.actions, .breadcrumb {
-  margin-bottom: @line-height-computed / 2;
-}
+.wiki {
+    .actions, .breadcrumb {
+        margin-bottom: @line-height-computed / 2;
+    }
 
-.breadcrumb {
-    padding-top: 0px;
-    padding-bottom: 0px;
+    .breadcrumb {
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+
+    .actions.dropdown {
+        display: inline;
+        margin-right: @line-height-computed / 4;
+    }
 }
 
 .page-header {
@@ -214,9 +221,11 @@ a.missing {
 
 @media (min-width: @screen-sm-min) {
 
-    .breadcrumb {
-        padding-top: @padding-base-vertical + 1;
-        padding-bottom: @padding-base-vertical + 1;
+    .wiki {
+        .breadcrumb {
+            padding-top: @padding-base-vertical + 1;
+            padding-bottom: @padding-base-vertical + 1;
+        }
     }
 
     .pull-left-xs, .pull-left-sm {

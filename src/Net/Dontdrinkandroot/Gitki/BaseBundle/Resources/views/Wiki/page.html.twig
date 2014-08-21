@@ -1,5 +1,6 @@
 {% extends 'DdrGitkiBaseBundle:Wiki:base.html.twig' %}
 {% block title %} - {{ document.title }}{% endblock %}
+{% block body_class %}wiki page{% endblock %}
 {% block actions %}
     <div class="btn-group pull-right-sm actions">
         {% if is_granted('ROLE_COMMITER') %}
@@ -22,6 +23,9 @@
         <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'history'}) }}"
            class="btn btn-default btn-light"
            title="History"><span class="fa fa-history"></span></a>
+        <a href="javascript: if(window.print) window.print()"
+           class="btn btn-default btn-light"
+           title="Print"><span class="fa fa-print"></span></a>
     </div>
 {% endblock %}
 {% block pageheader %}{% endblock %}

@@ -9,9 +9,10 @@
               href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
               media="screen"/>
         <link rel="stylesheet" type="text/css" href="{{ asset('bundles/ddrgitkibase/css/style.css') }}" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/ddrgitkibase/css/print.css') }}" media="print"/>
     {% endblock %}
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
 {% block body %}
 {% endblock %}
 {% block javascript %}
