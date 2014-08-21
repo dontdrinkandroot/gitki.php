@@ -632,10 +632,21 @@ class WikiController extends BaseController
 
     /**
      * @return Response
+     * @throws \Exception
+     * @throws \GitWrapper\GitException
      */
     public function historyAction()
     {
-        $history = $this->getWikiService()->getHistory(20);
+        $history = [];
+        try {
+            $history = $this->getWikiService()->getHistory(20);
+        } catch (GitException $e) {
+            if ($e->getMessage() === "fatal: bad default revision 'HEAD'\n") {
+                /* swallow, history not there yet */
+            } else {
+                throw $e;
+            }
+        }
 
         return $this->render('DdrGitkiBaseBundle:Wiki:history.html.twig', array('history' => $history));
     }
