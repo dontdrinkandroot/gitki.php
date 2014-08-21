@@ -156,16 +156,12 @@ a.missing {
 /* Light button styles */
 
 .btn-default.btn-light {
-  border-color: @gray-lightest;
+    color: @gray-dark;
+    border-color: @gray-lighter;
 }
 
 /* Navbar from theme */
 
-//
-// Navbar
-// --------------------------------------------------
-
-// Default navbar
 .navbar-default {
   #gradient > .vertical(@start-color: lighten(@navbar-default-bg, 10%); @end-color: @navbar-default-bg);
   .reset-filter(); // Remove gradient in IE<10 to fix bug where dropdowns don't get triggered
@@ -184,7 +180,6 @@ a.missing {
   text-shadow: 0 1px 0 rgba(255, 255, 255, .25);
 }
 
-// Inverted navbar
 .navbar-inverse {
   #gradient > .vertical(@start-color: lighten(@navbar-inverse-bg, 10%); @end-color: @navbar-inverse-bg);
   .reset-filter(); // Remove gradient in IE<10 to fix bug where dropdowns don't get triggered
