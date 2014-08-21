@@ -9,20 +9,6 @@
             "SymfonyStandard": "app/"
         }
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/dontdrinkandroot/symfony-extension-bundle.php"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/dontdrinkandroot/utils.php"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/philipsorst/objective-markdown.php"
-        }
-    ],
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.5.*",
@@ -36,10 +22,10 @@
         "cpliakas/git-wrapper": "~1.0",
         "hwi/oauth-bundle": "0.3.*",
         "knplabs/github-api": "1.2.*",
-        "dontdrinkandroot/objective-markdown": "dev-master",
+        "dontdrinkandroot/objective-parsedown": "0.2.*",
         "dontdrinkandroot/utils": "0.1.*",
         "elasticsearch/elasticsearch": "~1.0",
-	"twbs/bootstrap": "3.2.*"
+        "twbs/bootstrap": "3.2.*"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",
