@@ -14,7 +14,7 @@
 !bin/update-prod
 !bin/update-design
 /composer.phar
-/composer.lock
 /.idea/
-/src/Net/Dontdrinkandroot/Gitki/BaseBundle/Resources/public/css/style.css
-/src/Net/Dontdrinkandroot/Gitki/BaseBundle/Resources/public/css/print.css
+# /composer.lock
+# /src/Net/Dontdrinkandroot/Gitki/BaseBundle/Resources/public/css/style.css
+# /src/Net/Dontdrinkandroot/Gitki/BaseBundle/Resources/public/css/print.css
