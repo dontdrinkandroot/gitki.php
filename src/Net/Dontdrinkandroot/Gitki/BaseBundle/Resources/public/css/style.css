@@ -6744,20 +6744,29 @@ div.dropdown {
     margin-bottom: 0
 }
 
-.editor textarea {
+.above_header_wrapper {
+    padding-top: 11px;
+    border-bottom: 1px solid #dedede
+}
+
+.wiki.edit-page textarea {
     font-family: monospace;
     height: 500px
 }
 
-.editor #preview {
-    margin-top: 22px;
-    height: 500px;
-    overflow-y: scroll
+.wiki.edit-page #preview .loading-indicator {
+    height: 27px;
+    text-align: center
 }
 
-.above_header_wrapper {
-    padding-top: 11px;
-    border-bottom: 1px solid #dedede
+.wiki.edit-page #preview .loading-indicator .spinner {
+    color: #bfbfbf;
+    display: none
+}
+
+.wiki.edit-page #preview .markdown-html {
+    height: 500px;
+    overflow-y: scroll
 }
 
 .wiki .actions, .wiki .breadcrumb {
