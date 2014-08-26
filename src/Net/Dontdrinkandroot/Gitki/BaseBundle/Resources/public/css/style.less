@@ -146,26 +146,41 @@ div.dropdown {
     margin-bottom: 0px;
 }
 
-.editor {
-
-    textarea {
-        font-family: monospace;
-        height: 500px;
-    }
-
-    #preview {
-        margin-top: 22px;
-        height: 500px;
-        overflow-y: scroll;
-    }
-}
-
 .above_header_wrapper {
     padding-top: @line-height-computed / 2;
     border-bottom: 1px solid @gray-lighter;
 }
 
 .wiki {
+
+    &.edit-page {
+
+        textarea {
+            font-family: monospace;
+            height: 500px;
+        }
+
+        #preview {
+
+            .loading-indicator {
+
+                height: 27px;
+
+                text-align: center;
+
+                .spinner {
+                    color: @gray-light;
+                    display: none;
+                }
+            }
+
+            .markdown-html {
+                height: 500px;
+                overflow-y: scroll;
+            }
+        }
+    }
+
     .actions, .breadcrumb {
         margin-bottom: @line-height-computed / 2;
     }
