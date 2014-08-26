@@ -1,5 +1,5 @@
-<ol class="breadcrumb pull-left-sm">
-    <li><a href="{{ path('ddr_gitki_wiki_directory', {'path': '/', 'action': 'index'}) }}"><span
+<ol class="breadcrumb pull-left">
+<li><a href="{{ path('ddr_gitki_wiki_directory', {'path': '/', 'action': 'index'}) }}"><span
                     class="fa fa-home"></span></a></li>
     {% if path.hasParentPath %}
         {% for parentPath in path.parentPath.collectPaths %}

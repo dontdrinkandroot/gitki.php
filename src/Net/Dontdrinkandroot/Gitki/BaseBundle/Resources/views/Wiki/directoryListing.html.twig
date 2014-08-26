@@ -3,17 +3,32 @@
 {% block body_class %}wiki directory-listing{% endblock %}
 {% block actions %}
     {% if is_granted('ROLE_COMMITER') %}
-        <div class="btn-group actions pull-right-sm">
-            <a href="{{ path('ddr_gitki_wiki_directory', {'path': path, 'action': 'addpage'}) }}"
-               class="btn btn-default btn-light" title="Add Page">
-                <span class="fa fa-plus"></span> <span class="fa fa-file-o"></span>
-            </a>
-            <a href="{{ path('ddr_gitki_wiki_directory', {'path': path, 'action': 'addfolder'}) }}"
-               class="btn btn-default btn-light" title="Add Folder">
-                <span class="fa fa-plus"></span> <span class="fa fa-folder-o"></span>
-            </a>
-            <a href="{{ path('ddr_gitki_wiki_directory', {'path': path, 'action': 'upload'}) }}"
-               class="btn btn-default btn-light" title="Upload File"><span class="fa fa-upload"></span></a>
+        <div class="dropdown pull-right actions">
+            <button class="btn btn-default btn-light dropdown-toggle" type="button" id="actions-dropdown"
+                    data-toggle="dropdown">
+                <span class="fa fa-cog"></span>
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="actions-dropdown">
+                <li role="presentation">
+                    <a href="{{ path('ddr_gitki_wiki_directory', {'path': path, 'action': 'addpage'}) }}"
+                       role="menuitem" tabindex="-1" title="Add Page">
+                        <span class="fa fa-fw fa-file-o"></span> Add page
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a href="{{ path('ddr_gitki_wiki_directory', {'path': path, 'action': 'addfolder'}) }}"
+                       role="menuitem" tabindex="-1" title="Add Folder">
+                        <span class="fa fa-fw fa-plus"></span> Add folder
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a href="{{ path('ddr_gitki_wiki_directory', {'path': path, 'action': 'upload'}) }}"
+                       role="menuitem" tabindex="-1" title="Upload File">
+                        <span class="fa fa-fw fa-upload"></span> Upload file
+                    </a>
+                </li>
+            </ul>
         </div>
     {% endif %}
 {% endblock %}
