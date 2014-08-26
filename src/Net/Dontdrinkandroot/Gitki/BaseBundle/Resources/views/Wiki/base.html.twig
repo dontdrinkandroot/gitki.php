@@ -5,9 +5,9 @@
     {% if ddr_gitki_show_breadcrumbs %}
         <div class="above_header_wrapper">
             <div class="container">
-                {{ include('DdrGitkiBaseBundle:Wiki:breadcrumb.partial.html.twig', {'path' : path}) }}
                 {% block actions %}
                 {% endblock %}
+                {{ include('DdrGitkiBaseBundle:Wiki:breadcrumb.partial.html.twig', {'path' : path}) }}
             </div>
         </div>
     {% endif %}

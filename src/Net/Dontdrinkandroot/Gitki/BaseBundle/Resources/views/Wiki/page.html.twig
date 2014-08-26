@@ -2,30 +2,63 @@
 {% block title %} - {{ document.title }}{% endblock %}
 {% block body_class %}wiki page{% endblock %}
 {% block actions %}
-    <div class="btn-group pull-right-sm actions">
-        {% if is_granted('ROLE_COMMITER') %}
-            <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'edit'}) }}"
-               class="btn btn-default btn-light"
-               title="Edit"><span class="fa fa-pencil"></span></a>
-            <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'rename'}) }}"
-               class="btn btn-default btn-light"
-               title="Rename"><span class="fa fa-arrows-h"></span></a>
-            <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'delete'}) }}"
-               class="btn btn-default btn-light"
-               title="Delete"><span class="fa fa-trash-o"></span></a>
-            <a href="{{ path('ddr_gitki_wiki_directory', {'path': path.parentPath, 'action': 'upload'}) }}"
-               class="btn btn-default btn-light" title="Upload File to containing folder"><span
-                        class="fa fa-upload"></span></a>
-        {% endif %}
-        <a href="{{ path('ddr_gitki_wiki_directory', {'path': path.parentPath, 'action': 'show'}) }}"
-           class="btn btn-default btn-light"
-           title="View containing folder"><span class="fa fa-folder-o"></span></a>
-        <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'history'}) }}"
-           class="btn btn-default btn-light"
-           title="History"><span class="fa fa-history"></span></a>
-        <a href="javascript: if(window.print) window.print()"
-           class="btn btn-default btn-light"
-           title="Print"><span class="fa fa-print"></span></a>
+    <div class="dropdown pull-right actions">
+        <button class="btn btn-default btn-light dropdown-toggle" type="button" id="actions-dropdown"
+                data-toggle="dropdown">
+            <span class="fa fa-cog"></span>
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="actions-dropdown">
+            <li role="presentation">
+                <a href="{{ path('ddr_gitki_wiki_directory', {'path': path.parentPath, 'action': 'show'}) }}"
+                   role="menuitem" tabindex="-1"
+                   title="Show containing folder">
+                    <span class="fa fa-fw fa-folder-o"></span> Show folder
+                </a>
+            </li>
+            <li role="presentation">
+                <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'history'}) }}"
+                   role="menuitem" tabindex="-1"
+                   title="History">
+                    <span class="fa fa-fw fa-history"></span> History
+                </a>
+            </li>
+            <li role="presentation">
+                <a href="javascript: if(window.print) window.print()" role="menuitem" tabindex="-1" title="Print">
+                    <span class="fa fa-fw fa-print"></span> Print
+                </a>
+            </li>
+            {% if is_granted('ROLE_COMMITER') %}
+                <li role="presentation" class="divider"></li>
+                <li role="presentation">
+                    <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'edit'}) }}"
+                       role="menuitem" tabindex="-1"
+                       title="Edit">
+                        <span class="fa fa-fw fa-pencil"></span> Edit
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'rename'}) }}"
+                       role="menuitem" tabindex="-1"
+                       title="Move">
+                        <span class="fa fa-fw fa-arrows-h"></span> Move
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'delete'}) }}"
+                       role="menuitem" tabindex="-1"
+                       title="Delete">
+                        <span class="fa fa-fw fa-trash-o"></span> Delete
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a href="{{ path('ddr_gitki_wiki_directory', {'path': path.parentPath, 'action': 'upload'}) }}"
+                       role="menuitem" tabindex="-1" title="Upload File to containing folder">
+                        <span class="fa fa-fw fa-upload"></span> Upload file
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
     </div>
 {% endblock %}
 {% block pageheader %}{% endblock %}
