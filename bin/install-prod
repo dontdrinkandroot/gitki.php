@@ -1,0 +1,2 @@
+#!/bin/bash
+(export SYMFONY_ENV="prod" && composer install --no-dev --optimize-autoloader && bin/console assetic:dump)

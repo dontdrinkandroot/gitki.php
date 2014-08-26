@@ -13,6 +13,7 @@
 !bin/update-dev
 !bin/update-prod
 !bin/update-design
+!bin/install-prod
 /composer.phar
 /.idea/
 # /composer.lock
