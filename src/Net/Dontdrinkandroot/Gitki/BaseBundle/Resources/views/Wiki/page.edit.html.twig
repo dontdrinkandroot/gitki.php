@@ -1,9 +1,9 @@
 {% extends 'DdrGitkiBaseBundle:Wiki:base.html.twig' %}
 {% block title %} - {{ path }} - Edit{% endblock %}
-{% block body_class %}wiki edit-page{% endblock %}
+{% block body_class %}wiki edit page{% endblock %}
 {% block actions %}
-    <div class="btn-group pull-right-sm actions">
-        <a href="{{ path('ddr_gitki_about_markdownsyntax') }}" class="btn btn-default btn-light"
+    <div class="btn-group pull-right global-actions">
+        <a href="{{ path('ddr_gitki_about_markdownsyntax') }}" class="btn btn-default btn-sm"
            title="Syntax Help" rel="newtab"><span class="fa fa-question-circle"></span></a>
     </div>
 {% endblock %}
