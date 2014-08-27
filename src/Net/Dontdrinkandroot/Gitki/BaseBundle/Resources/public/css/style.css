@@ -639,7 +639,7 @@ textarea.input-group-sm>.form-control,textarea.input-group-sm>.input-group-addon
 .navbar-inverse .navbar-link{color:#bfbfbf}.navbar-inverse .navbar-link:hover{color:#fff}
 .navbar-inverse .btn-link{color:#bfbfbf}.navbar-inverse .btn-link:hover,.navbar-inverse .btn-link:focus{color:#fff}
 .navbar-inverse .btn-link[disabled]:hover,fieldset[disabled] .navbar-inverse .btn-link:hover,.navbar-inverse .btn-link[disabled]:focus,fieldset[disabled] .navbar-inverse .btn-link:focus{color:#444}
-.breadcrumb{padding:0 0;margin-bottom:22px;list-style:none;background-color:#fff;border-radius:2px}.breadcrumb>li{display:inline-block}.breadcrumb>li+li:before{content:"/\00a0";padding:0 5px;color:#ccc}
+.breadcrumb{padding:5px 0;margin-bottom:22px;list-style:none;background-color:transparent;border-radius:2px}.breadcrumb>li{display:inline-block}.breadcrumb>li+li:before{content:"/\00a0";padding:0 5px;color:#ccc}
 .breadcrumb>.active{color:#808080}
 .pagination{display:inline-block;padding-left:0;margin:22px 0;border-radius:2px}.pagination>li{display:inline}.pagination>li>a,.pagination>li>span{position:relative;float:left;padding:6px 12px;line-height:1.618;text-decoration:none;color:#428bca;background-color:#fff;border:1px solid #ddd;margin-left:-1px}
 .pagination>li:first-child>a,.pagination>li:first-child>span{margin-left:0;border-bottom-left-radius:2px;border-top-left-radius:2px}
@@ -898,29 +898,28 @@ button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-ap
 .navbar-inverse{background-image:-webkit-linear-gradient(top, #3c3c3c 0, #222 100%);background-image:-o-linear-gradient(top, #3c3c3c 0, #222 100%);background-image:linear-gradient(to bottom, #3c3c3c 0, #222 100%);background-repeat:repeat-x;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff3c3c3c', endColorstr='#ff222222', GradientType=0);filter:progid:DXImageTransform.Microsoft.gradient(enabled = false)}.navbar-inverse .navbar-nav>.active>a{background-image:-webkit-linear-gradient(top, #222 0, #282828 100%);background-image:-o-linear-gradient(top, #222 0, #282828 100%);background-image:linear-gradient(to bottom, #222 0, #282828 100%);background-repeat:repeat-x;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff222222', endColorstr='#ff282828', GradientType=0);-webkit-box-shadow:inset 0 3px 9px rgba(0,0,0,0.25);box-shadow:inset 0 3px 9px rgba(0,0,0,0.25)}
 .navbar-inverse .navbar-brand,.navbar-inverse .navbar-nav>li>a{text-shadow:0 -1px 0 rgba(0,0,0,0.25)}
 .navbar-static-top,.navbar-fixed-top,.navbar-fixed-bottom{border-radius:0}
-body{padding-top:51px}
-.navbar{font-family:inherit;font-weight:600}.navbar .navbar-brand{font-weight:bold}
+.pull-left-xs{float:left !important}
+.pull-right-xs{float:right !important}
+@media (min-width:768px){.pull-left-xs,.pull-left-sm{float:left !important} .pull-right-xs,.pull-right-sm{float:right !important}}@media (min-width:992px){.pull-left-xs,.pull-left-sm,.pull-left-md{float:left !important} .pull-right-xs,.pull-right-sm,.pull-right-md{float:right !important}}@media (min-width:1200px){.pull-left-xs,.pull-left-sm,.pull-left-md,.pull-left-lg{float:left !important} .pull-right-xs,.pull-right-sm,.pull-right-md,.pull-right-lg{float:right !important}}.navbar{font-family:inherit;font-weight:600}.navbar .navbar-brand{font-weight:bold}
 ul{padding-left:33px}
 .page-header{margin-top:0}
 img{max-width:100%}
 h1,.h1{font-weight:bold}
-h2,.h2{margin-top:33px;margin-bottom:13px;line-height:21px;padding-bottom:10px;border-bottom:solid 1px #f0f0f0}
-h3,.h3{margin-top:27.5px;margin-bottom:22px;line-height:18px}
-h4,.h4{margin-top:22px;margin-bottom:22px;line-height:14px}
+h2,.h2{margin-top:33px;margin-bottom:13px;padding-bottom:10px;border-bottom:solid 1px #f0f0f0}
+h3,.h3{margin-top:27.5px;margin-bottom:22px}
+h4,.h4{margin-top:22px;margin-bottom:22px}
 div.dropdown{display:inline}
-#toc .panel-body>ul{margin-bottom:0}
-.editor textarea{font-family:monospace;height:500px}
-.editor #preview{margin-top:22px;height:500px;overflow-y:scroll}
-.above_header_wrapper{padding-top:11px;border-bottom:1px solid #dedede}
-.wiki .actions,.wiki .breadcrumb{margin-bottom:11px}
-.wiki .breadcrumb{padding-top:7px;padding-bottom:7px}
-.wiki .actions.dropdown{margin-right:5.5px}
-.markdown-page{padding-top:20px}.markdown-page .h1:first-child,.markdown-page h1:first-child{margin-top:0;padding-bottom:19px;border-bottom:solid 1px #dedede;margin-bottom:20px}
-.markdown-page h2:first-child,.markdown-page .h2:first-child{margin-top:0}
-a.missing{color:#bf0000}
+.breadcrumb a{color:#404040}
 .margin-top-none{margin-top:0}
 .margin-bottom-none{margin-bottom:0}
-.btn-default.btn-light{color:#404040;border-color:#dedede}
-.pull-left-xs{float:left !important}
-.pull-right-xs{float:right !important}
-@media (min-width:768px){.pull-left-xs,.pull-left-sm{float:left !important} .pull-right-xs,.pull-right-sm{float:right !important}}@media (min-width:992px){.pull-left-xs,.pull-left-sm,.pull-left-md{float:left !important} .pull-right-xs,.pull-right-sm,.pull-right-md{float:right !important}}@media (min-width:1200px){.pull-left-xs,.pull-left-sm,.pull-left-md,.pull-left-lg{float:left !important} .pull-right-xs,.pull-right-sm,.pull-right-md,.pull-right-lg{float:right !important}}
+.wiki .action-bar{border-bottom:1px solid #dedede;background-color:#f8f8f8}.wiki .action-bar .global-actions,.wiki .action-bar .breadcrumb{margin-top:5.5px;margin-bottom:5.5px}
+.wiki .action-bar .global-actions .btn{color:#404040;background-color:#f8f8f8}
+.wiki.page.show .toc .panel-body>ul{margin-bottom:0}
+.wiki.page.edit textarea{font-family:monospace;height:500px}
+.wiki.page.edit #preview .loading-indicator{height:27px;text-align:center}.wiki.page.edit #preview .loading-indicator .spinner{color:#bfbfbf;display:none}
+.wiki.page.edit #preview .markdown-html{height:500px;overflow-y:scroll}
+.wiki.directory-listing .item-actions{margin-right:5.5px}
+.wiki .markdown-page{padding-top:20px}.wiki .markdown-page .h1:first-child,.wiki .markdown-page h1:first-child{margin-top:24px;padding-bottom:19px;border-bottom:solid 1px #dedede;margin-bottom:20px}
+.wiki .markdown-page h2:first-child,.wiki .markdown-page .h2:first-child{margin-top:0}
+.wiki a.missing{color:#bf0000}
+body{padding-top:51px}

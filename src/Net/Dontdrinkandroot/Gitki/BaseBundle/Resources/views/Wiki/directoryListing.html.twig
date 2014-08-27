@@ -3,8 +3,8 @@
 {% block body_class %}wiki directory-listing{% endblock %}
 {% block actions %}
     {% if is_granted('ROLE_COMMITER') %}
-        <div class="dropdown pull-right actions">
-            <button class="btn btn-default btn-light dropdown-toggle" type="button" id="actions-dropdown"
+        <div class="dropdown pull-right global-actions">
+            <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="actions-dropdown"
                     data-toggle="dropdown">
                 <span class="fa fa-cog"></span>
                 <span class="caret"></span>
@@ -42,7 +42,7 @@
         <ul class="list-unstyled">
             {% for page in directoryListing.pages %}
                 <li>
-                    <div class="dropdown actions">
+                    <div class="dropdown item-actions">
                         <span class="btn btn-default btn-light btn-xs dropdown-toggle" type="button" id="dropdownMenu1"
                               data-toggle="dropdown">
                            <span class="fa fa-fw fa-file-o"></span>
@@ -88,7 +88,7 @@
         <ul class="list-unstyled">
             {% for dir in directoryListing.subDirectories %}
                 <li>
-                    <div class="dropdown actions">
+                    <div class="dropdown item-actions">
                         <span class="btn btn-default btn-light btn-xs dropdown-toggle" type="button" id="dropdownMenu1"
                               data-toggle="dropdown">
                             <span class="fa fa-fw fa-folder-o"></span>
@@ -121,7 +121,7 @@
         <ul class="list-unstyled">
             {% for file in directoryListing.otherFiles %}
                 <li>
-                    <div class="dropdown actions">
+                    <div class="dropdown item-actions">
                         <span class="btn btn-default btn-light btn-xs dropdown-toggle" type="button" id="dropdownMenu1"
                               data-toggle="dropdown">
                             <span class="fa fa-fw fa-file-o"></span>

@@ -1,9 +1,11 @@
 {% extends 'DdrGitkiBaseBundle:Wiki:base.html.twig' %}
 {% block title %} - {{ document.title }}{% endblock %}
-{% block body_class %}wiki page{% endblock %}
+{% block body_class %}wiki page show{% endblock %}
 {% block actions %}
-    <div class="dropdown pull-right actions">
-        <button class="btn btn-default btn-light dropdown-toggle" type="button" id="actions-dropdown"
+    <div class="dropdown pull-right global-actions">
+        <button class="btn btn-default btn-sm dropdown-toggle"
+                type="button"
+                id="actions-dropdown"
                 data-toggle="dropdown">
             <span class="fa fa-cog"></span>
             <span class="caret"></span>
