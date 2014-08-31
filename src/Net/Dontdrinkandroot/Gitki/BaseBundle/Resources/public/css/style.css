@@ -300,16 +300,16 @@ dd{margin-left:0}
 @media (min-width:768px){.dl-horizontal dt{float:left;width:160px;clear:left;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap} .dl-horizontal dd{margin-left:180px}}
 abbr[title],abbr[data-original-title]{cursor:help;border-bottom:1px dotted #bfbfbf}
 .initialism{font-size:90%;text-transform:uppercase}
-blockquote{padding:11px 22px;margin:0 0 22px;font-size:17.5px;border-left:5px solid #dedede}blockquote p:last-child,blockquote ul:last-child,blockquote ol:last-child{margin-bottom:0}
+blockquote{padding:11px 22px;margin:0 0 22px;font-size:14px;border-left:5px solid #dedede}blockquote p:last-child,blockquote ul:last-child,blockquote ol:last-child{margin-bottom:0}
 blockquote footer,blockquote small,blockquote .small{display:block;font-size:80%;line-height:1.618;color:#bfbfbf}blockquote footer:before,blockquote small:before,blockquote .small:before{content:'\2014 \00A0'}
 .blockquote-reverse,blockquote.pull-right{padding-right:15px;padding-left:0;border-right:5px solid #dedede;border-left:0;text-align:right}.blockquote-reverse footer:before,blockquote.pull-right footer:before,.blockquote-reverse small:before,blockquote.pull-right small:before,.blockquote-reverse .small:before,blockquote.pull-right .small:before{content:''}
 .blockquote-reverse footer:after,blockquote.pull-right footer:after,.blockquote-reverse small:after,blockquote.pull-right small:after,.blockquote-reverse .small:after,blockquote.pull-right .small:after{content:'\00A0 \2014'}
 blockquote:before,blockquote:after{content:""}
 address{margin-bottom:22px;font-style:normal;line-height:1.618}
 code,kbd,pre,samp{font-family:Menlo,Monaco,Consolas,"Courier New",monospace}
-code{padding:2px 4px;font-size:90%;color:#c7254e;background-color:#f9f2f4;border-radius:2px}
+code{padding:2px 4px;font-size:90%;color:#c7254e;background-color:#f8f8f8;border-radius:2px}
 kbd{padding:2px 4px;font-size:90%;color:#fff;background-color:#333;border-radius:3px;box-shadow:inset 0 -1px 0 rgba(0,0,0,0.25)}kbd kbd{padding:0;font-size:100%;box-shadow:none}
-pre{display:block;padding:10.5px;margin:0 0 11px;font-size:13px;line-height:1.618;word-break:break-all;word-wrap:break-word;color:#404040;background-color:#f5f5f5;border:1px solid #ccc;border-radius:2px}pre code{padding:0;font-size:inherit;color:inherit;white-space:pre-wrap;background-color:transparent;border-radius:0}
+pre{display:block;padding:10.5px;margin:0 0 11px;font-size:13px;line-height:1.618;word-break:break-all;word-wrap:break-word;color:#404040;background-color:#f8f8f8;border:1px solid #ccc;border-radius:2px}pre code{padding:0;font-size:inherit;color:inherit;white-space:pre-wrap;background-color:transparent;border-radius:0}
 .pre-scrollable{max-height:340px;overflow-y:scroll}
 .container{margin-right:auto;margin-left:auto;padding-left:15px;padding-right:15px}@media (min-width:768px){.container{width:750px}}@media (min-width:992px){.container{width:970px}}@media (min-width:1200px){.container{width:1170px}}
 .container-fluid{margin-right:auto;margin-left:auto;padding-left:15px;padding-right:15px}
@@ -912,6 +912,7 @@ div.dropdown{display:inline}
 .breadcrumb a{color:#404040}
 .margin-top-none{margin-top:0}
 .margin-bottom-none{margin-bottom:0}
+.hljs{background:#f8f8f8}
 .wiki .action-bar{border-bottom:1px solid #dedede;background-color:#f8f8f8}.wiki .action-bar .global-actions,.wiki .action-bar .breadcrumb{margin-top:5.5px;margin-bottom:5.5px}
 .wiki .action-bar .btn{color:#404040;background-color:#f8f8f8}
 .wiki.page.show .toc .panel-body>ul{margin-bottom:0}

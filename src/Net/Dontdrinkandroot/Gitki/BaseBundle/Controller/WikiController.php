@@ -3,7 +3,6 @@
 
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Controller;
 
-
 use GitWrapper\GitException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
 use Net\Dontdrinkandroot\Utils\Path\DirectoryPath;
@@ -155,7 +154,7 @@ class WikiController extends BaseController
      */
     public function previewMarkdownAction(Request $request, FilePath $path)
     {
-        $markdown = $request->query->get('markdown');
+        $markdown = $request->request->get('markdown');
         $html = $this->getWikiService()->preview($path, $markdown);
 
         return new Response($html);
@@ -239,7 +238,7 @@ class WikiController extends BaseController
                         'save' => array('type' => 'submit', 'options' => array('label' => 'Save')),
                         'cancel' => array(
                             'type' => 'submit',
-                            'options' => array('label' => 'Cancel', 'attr' => array('type' => 'default'))
+                            'options' => array('label' => 'Cancel', 'button_class' => 'default')
                         ),
                     )
                 )
@@ -278,7 +277,6 @@ class WikiController extends BaseController
             } catch (GitException $e) {
                 throw $e;
             }
-
         } else {
 
             $content = null;
@@ -355,7 +353,6 @@ class WikiController extends BaseController
                     )
                 );
             }
-
         } else {
             $form->setData(array('newpath' => $path->toAbsoluteUrlString()));
         }
@@ -365,7 +362,6 @@ class WikiController extends BaseController
             array('form' => $form->createView(), 'path' => $path)
         );
     }
-
 
     /**
      * @param Request  $request
@@ -569,7 +565,6 @@ class WikiController extends BaseController
                     )
                 );
             }
-
         }
 
         return $this->render(
@@ -621,7 +616,6 @@ class WikiController extends BaseController
                     )
                 );
             }
-
         }
 
         return $this->render(
@@ -637,16 +631,7 @@ class WikiController extends BaseController
      */
     public function historyAction()
     {
-        $history = [];
-        try {
-            $history = $this->getWikiService()->getHistory(20);
-        } catch (GitException $e) {
-            if ($e->getMessage() === "fatal: bad default revision 'HEAD'\n") {
-                /* swallow, history not there yet */
-            } else {
-                throw $e;
-            }
-        }
+        $history = $this->getWikiService()->getHistory(20);
 
         return $this->render('DdrGitkiBaseBundle:Wiki:history.html.twig', array('history' => $history));
     }
@@ -682,6 +667,4 @@ class WikiController extends BaseController
             throw new AccessDeniedHttpException();
         }
     }
-
-
 }

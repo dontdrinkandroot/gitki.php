@@ -40,7 +40,7 @@
 
             this.update = function () {
                 $('.loading-indicator .spinner').show();
-                $.get(previewUrl, {'markdown': input.val()})
+                $.post(previewUrl, {'markdown': input.val()})
                         .done(function (data) {
                             preview.html(data);
                             $('.loading-indicator .spinner').hide();

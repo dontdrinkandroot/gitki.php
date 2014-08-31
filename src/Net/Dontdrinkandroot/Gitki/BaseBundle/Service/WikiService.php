@@ -3,6 +3,7 @@
 
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Service;
 
+use GitWrapper\GitException;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentDeletedEvent;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentSavedEvent;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\DirectoryNotEmptyException;
@@ -409,7 +410,6 @@ class WikiService
             $subDirectories[] = $subDirectory;
         }
 
-
         usort(
             $pages,
             function (PageFile $a, PageFile $b) {
@@ -451,10 +451,21 @@ class WikiService
      * @param int $maxCount
      *
      * @return CommitMetadata[]
+     *
+     * @throws GitException
      */
     public function getHistory($maxCount)
     {
-        return $this->gitRepository->getWorkingCopyHistory($maxCount);
+        try {
+            return $this->gitRepository->getWorkingCopyHistory($maxCount);
+        } catch (GitException $e) {
+            if ($e->getMessage() === "fatal: bad default revision 'HEAD'\n") {
+                /* swallow, history not there yet */
+                return [];
+            } else {
+                throw $e;
+            }
+        }
     }
 
     /**
@@ -494,6 +505,7 @@ class WikiService
      * @param FilePath $lockPath
      *
      * @return bool
+     *
      * @throws PageLockExpiredException
      */
     protected function assertHasLock(User $user, FilePath $lockPath)
@@ -597,6 +609,4 @@ class WikiService
 
         return $pageFile;
     }
-
-
 }
