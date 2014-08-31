@@ -1,9 +1,3 @@
 parameters:
-    locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
-
-    debug_toolbar:          true
-    debug_redirects:         false
-    use_assetic_controller: true
-
     repository_path:    ~
