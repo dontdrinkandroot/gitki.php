@@ -121,4 +121,28 @@ class OAuthUser implements User
     {
         $this->user->eraseCredentials();
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getLogin()
+    {
+        return $this->user->getLogin();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getGithubLogin()
+    {
+        return $this->user->getGithubLogin();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getGoogleLogin()
+    {
+        return $this->user->getGoogleLogin();
+    }
 }

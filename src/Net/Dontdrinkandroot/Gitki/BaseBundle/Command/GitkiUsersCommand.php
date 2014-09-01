@@ -6,6 +6,7 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Command;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Service\UserService;
 use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
@@ -108,5 +109,31 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
         $user->setGoogleLogin($questionHelper->ask($input, $output, $googleLoginQuestion));
 
         return $user;
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param User[]          $users
+     */
+    protected function printUserTable(OutputInterface $output, $users)
+    {
+        $table = new Table($output);
+        $table->setHeaders(['Id', 'Real Name', 'Email', 'Roles', 'Login', 'GitHub Login', 'Google Login']);
+
+        foreach ($users as $user) {
+            $table->addRow(
+                [
+                    $user->getId(),
+                    $user->getRealName(),
+                    $user->getEmail(),
+                    implode(',', $user->getRoles()),
+                    $user->getLogin(),
+                    $user->getGithubLogin(),
+                    $user->getGoogleLogin()
+                ]
+            );
+        }
+
+        $table->render();
     }
 } 

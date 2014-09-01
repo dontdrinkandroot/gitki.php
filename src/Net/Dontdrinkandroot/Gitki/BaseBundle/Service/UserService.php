@@ -24,7 +24,7 @@ interface UserService
     public function findByGoogleLogin($login);
 
     /**
-     * @return User[]
+     * @return \Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User[]
      */
     public function listUsers();
 
@@ -42,4 +42,11 @@ interface UserService
      * @return mixed
      */
     public function saveUser(\Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User $user);
+
+    /**
+     * @param int $id
+     *
+     * @return \Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User|null
+     */
+    public function findUserById($id);
 }

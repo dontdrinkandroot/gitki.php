@@ -893,11 +893,7 @@
                     "": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-0": {
-                    "": "test/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -913,10 +909,6 @@
                 "php",
                 "utils"
             ],
-            "support": {
-                "source": "https://github.com/dontdrinkandroot/utils.php/tree/v0.1.0",
-                "issues": "https://github.com/dontdrinkandroot/utils.php/issues"
-            },
             "time": "2014-08-13 08:52:24"
         },
         {

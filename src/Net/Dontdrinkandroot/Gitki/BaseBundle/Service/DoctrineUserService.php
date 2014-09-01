@@ -125,4 +125,14 @@ class DoctrineUserService implements UserService
     {
         $this->userRepository->save($user);
     }
+
+    /**
+     * @param int $id
+     *
+     * @return User|null
+     */
+    public function findUserById($id)
+    {
+        return $this->userRepository->findOneBy(['id' => $id]);
+    }
 }

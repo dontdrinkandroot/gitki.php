@@ -10,7 +10,7 @@ class DoctrineUserRepository extends EntityRepository
 
     public function save(User $user)
     {
-        var_dump($this->getEntityManager());
         $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
     }
 }
