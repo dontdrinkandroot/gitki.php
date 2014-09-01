@@ -3,7 +3,6 @@
 
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Security;
 
-
 class OAuthUser implements User
 {
 
@@ -49,7 +48,6 @@ class OAuthUser implements User
         $this->primaryEmailAddress = $primaryEmailAddress;
     }
 
-
     /**
      * @inheritdoc
      */
@@ -74,9 +72,9 @@ class OAuthUser implements User
     /**
      * @inheritdoc
      */
-    public function getPrimaryEmailAddress()
+    public function getEmail()
     {
-        $knownPrimaryEmailAddress = $this->user->getPrimaryEmailAddress();
+        $knownPrimaryEmailAddress = $this->user->getEmail();
         if (!empty($knownPrimaryEmailAddress)) {
             return $knownPrimaryEmailAddress;
         }

@@ -3,6 +3,13 @@ parameters:
 
 services:
 
+    ddr.gitki.repository.user:
+        class:           Net\Dontdrinkandroot\Gitki\BaseBundle\DoctrineUserRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method:  getRepository
+        arguments:
+            - Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User
+
     ddr.gitki.twig.gitki_extension:
         class: Net\Dontdrinkandroot\Gitki\BaseBundle\Twig\GitkiExtension
         tags:
@@ -19,8 +26,10 @@ services:
         arguments: [%ddr_gitki_base.repository_path%]
 
     ddr.gitki.service.user:
-        class: Net\Dontdrinkandroot\Gitki\BaseBundle\Service\VolatileUserService
-        arguments: [%ddr_gitki_base.users%]
+        #class: Net\Dontdrinkandroot\Gitki\BaseBundle\Service\VolatileUserService
+        #arguments: [%ddr_gitki_base.users%]
+       class: Net\Dontdrinkandroot\Gitki\BaseBundle\Service\DoctrineUserService
+       arguments: [@ddr.gitki.repository.user, @security.encoder_factory, @security.secure_random]
 
     ddr.gitki.service.markdown:
         class: Net\Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown\RepositoryAwareMarkdownService

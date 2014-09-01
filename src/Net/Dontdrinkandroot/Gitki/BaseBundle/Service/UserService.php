@@ -22,4 +22,24 @@ interface UserService
      * @return User|null
      */
     public function findByGoogleLogin($login);
+
+    /**
+     * @return User[]
+     */
+    public function listUsers();
+
+    /**
+     * @param User   $user
+     * @param string $newPassword
+     *
+     * @return User
+     */
+    public function changePassword(\Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User $user, $newPassword);
+
+    /**
+     * @param \Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User $user
+     *
+     * @return mixed
+     */
+    public function saveUser(\Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User $user);
 }

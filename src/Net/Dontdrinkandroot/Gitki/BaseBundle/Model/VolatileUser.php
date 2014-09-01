@@ -3,7 +3,6 @@
 
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Model;
 
-
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Security\User;
 
 class VolatileUser implements User
@@ -43,7 +42,7 @@ class VolatileUser implements User
     /**
      * @inheritdoc
      */
-    public function getPrimaryEmailAddress()
+    public function getEmail()
     {
         return $this->primaryEmailAddress;
     }
@@ -118,5 +117,4 @@ class VolatileUser implements User
     {
         $this->primaryEmailAddress = $primaryEmailAddress;
     }
-
 }

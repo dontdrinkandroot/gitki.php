@@ -1,0 +1,39 @@
+Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User:
+    type: entity
+    table: "User"
+    repositoryClass: Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\DoctrineUserRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        login:
+            type: string
+            length: 255
+            nullable: true
+        realName:
+            type: string
+            length: 255
+        email:
+            type: string
+            length: 255
+        roles:
+            type: simple_array
+        githubLogin:
+            type: string
+            length: 255
+            nullable: true
+        googleLogin:
+            type: string
+            length: 255
+            nullable: true
+        password:
+            type: string
+            length: 255
+            nullable: true
+        salt:
+            type: string
+            length: 255
+    lifecycleCallbacks: {  }

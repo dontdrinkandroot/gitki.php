@@ -3,8 +3,11 @@ security:
         gitki_user_provider:
             id: ddr.gitki.security.user_provider
 
+    encoders:
+        Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User: sha512
+
     role_hierarchy:
-        ROLE_ADMIN: ROLE_COMMITER
+        ROLE_ADMIN: ROLE_COMMITTER
         ROLE_COMMITER: ROLE_WATCHER
 
     firewalls:
