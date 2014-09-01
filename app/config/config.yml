@@ -44,6 +44,17 @@ assetic:
         #    jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
 #    assets:
 
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   "pdo_sqlite"
+        charset:  UTF8
+        path:     "%kernel.root_dir%/../var/data/data.db3"
+
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_mapping: true
+
 braincrafted_bootstrap:
     auto_configure:
         assetic: false
