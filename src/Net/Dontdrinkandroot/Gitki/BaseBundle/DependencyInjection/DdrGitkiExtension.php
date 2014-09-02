@@ -68,12 +68,10 @@ class DdrGitkiExtension extends Extension implements PrependExtensionInterface
             $securityConfig['firewalls']['secured_area']['oauth']['resource_owners']['google'] = '/login/check-google';
         }
 
-
         $container->prependExtensionConfig('security', $securityConfig);
         $container->prependExtensionConfig('hwi_oauth', $hwiOauthConfig);
         $container->prependExtensionConfig('twig', $twigConfig);
     }
-
 
     /**
      * {@inheritDoc}
@@ -98,13 +96,5 @@ class DdrGitkiExtension extends Extension implements PrependExtensionInterface
 
         $container->setParameter('ddr_gitki_base.repository_path', $config['repository_path']);
         $container->setParameter('ddr_gitki_base.name', $config['name']);
-
-        $users = [];
-        if (isset($config['users'])) {
-            $users = $config['users'];
-        }
-
-        $container->setParameter('ddr_gitki_base.users', $users);
     }
-
 }

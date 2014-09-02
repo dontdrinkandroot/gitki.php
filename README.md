@@ -14,7 +14,6 @@ Features
 * Login via OAuth (GitHub, Google, ...)
 * Easy to install
 * Easy to use
-* No database required
 * Optional Elasticsearch integration
 * Responsive design
 * Written in PHP
@@ -31,13 +30,6 @@ Configuration
 ddr_gitki:
     repository_path:      ~ # Required
     name:                 GitKi
-    users:
-        id:                   ~ # Required
-        real_name:            ~
-        github_login:         ~
-        google_login:         ~
-        primary_email_address:  ~
-        roles:                []
     oauth:
         default_provider:     ~
         providers:
