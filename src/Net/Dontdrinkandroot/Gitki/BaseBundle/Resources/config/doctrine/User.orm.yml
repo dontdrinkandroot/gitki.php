@@ -36,4 +36,5 @@ Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User:
         salt:
             type: string
             length: 255
+            nullable: true
     lifecycleCallbacks: {  }

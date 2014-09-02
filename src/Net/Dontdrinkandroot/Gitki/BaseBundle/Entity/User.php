@@ -272,4 +272,13 @@ class User implements UserInterface
     {
         $this->password = null;
     }
+
+    public function __toString()
+    {
+        $s = 'id=' . $this->getId();
+        $s .= ',realName=' . $this->getRealName();
+        $s .= ',email=' . $this->getEmail();
+
+        return $s;
+    }
 }

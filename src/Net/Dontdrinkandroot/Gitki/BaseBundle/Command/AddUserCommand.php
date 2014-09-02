@@ -13,7 +13,7 @@ class AddUserCommand extends GitkiUsersCommand
     protected function configure()
     {
         $this
-            ->setName('gitki:users:add')
+            ->setName('gitki:user:add')
             ->setDescription('Add a new user');
     }
 

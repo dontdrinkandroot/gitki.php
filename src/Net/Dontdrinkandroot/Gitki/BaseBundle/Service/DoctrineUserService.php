@@ -117,11 +117,11 @@ class DoctrineUserService implements UserService
     }
 
     /**
-     * @param \Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User $user
+     * @param User $user
      *
      * @return mixed
      */
-    public function saveUser(\Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User $user)
+    public function saveUser(User $user)
     {
         $this->userRepository->save($user);
     }
@@ -134,5 +134,15 @@ class DoctrineUserService implements UserService
     public function findUserById($id)
     {
         return $this->userRepository->findOneBy(['id' => $id]);
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return mixed
+     */
+    public function deleteUser(User $user)
+    {
+        $this->userRepository->remove($user);
     }
 }

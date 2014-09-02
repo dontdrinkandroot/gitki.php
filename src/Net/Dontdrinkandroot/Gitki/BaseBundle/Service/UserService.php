@@ -3,8 +3,7 @@
 
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Service;
 
-
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Security\User;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
 
 interface UserService
 {
@@ -24,7 +23,7 @@ interface UserService
     public function findByGoogleLogin($login);
 
     /**
-     * @return \Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User[]
+     * @return User[]
      */
     public function listUsers();
 
@@ -34,19 +33,26 @@ interface UserService
      *
      * @return User
      */
-    public function changePassword(\Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User $user, $newPassword);
+    public function changePassword(User $user, $newPassword);
 
     /**
-     * @param \Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User $user
+     * @param User $user
      *
      * @return mixed
      */
-    public function saveUser(\Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User $user);
+    public function saveUser(User $user);
 
     /**
      * @param int $id
      *
-     * @return \Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User|null
+     * @return User|null
      */
     public function findUserById($id);
+
+    /**
+     * @param User $user
+     *
+     * @return mixed
+     */
+    public function deleteUser(User $user);
 }

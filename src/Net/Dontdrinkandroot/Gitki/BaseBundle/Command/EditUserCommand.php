@@ -14,7 +14,7 @@ class EditUserCommand extends GitkiUsersCommand
     protected function configure()
     {
         $this
-            ->setName('gitki:users:edit')
+            ->setName('gitki:user:edit')
             ->setDescription('Edits an existing user');
     }
 
@@ -24,28 +24,39 @@ class EditUserCommand extends GitkiUsersCommand
         $users = $userService->listUsers();
         $questionHelper = $this->getQuestionHelper();
 
-        $this->printUserTable($output, $users);
+        $user = $this->selectUser($input, $output, $users, $questionHelper);
 
-        $ids = array();
-        foreach ($users as $user) {
-            $ids[$user->getId()] = $user->getId();
-        }
-        var_dump($ids);
-        $idQuestion = new ChoiceQuestion(
-            'Id: ',
-            $ids,
-            null
+        $fields = ['Real Name', 'Email', 'Role', 'Login and Password', 'Github Login', 'Google Login', 'Done'];
+
+        $fieldQuestion = new ChoiceQuestion(
+            'Select Field: ',
+            $fields
         );
-        $id = $questionHelper->ask($input, $output, $idQuestion);
-
-        $user = $userService->findUserById($id);
-        if (null === $user) {
-            $output->writeln('User not found');
-
-            return;
-        }
-
-        $this->editUser($input, $output, $user, $questionHelper, $userService);
+        $field = 'Done';
+        do {
+            $this->printUser($user, $output);
+            $field = $questionHelper->ask($input, $output, $fieldQuestion);
+            switch ($field) {
+                case 'Real Name':
+                    $user = $this->editRealName($input, $output, $user, $questionHelper);
+                    break;
+                case 'Email':
+                    $user = $this->editEmail($input, $output, $user, $questionHelper);
+                    break;
+                case 'Role':
+                    $user = $this->editRole($input, $output, $user, $questionHelper);
+                    break;
+                case 'Login and Password':
+                    $user = $this->editLoginAndPassword($input, $output, $user, $questionHelper, $userService);
+                    break;
+                case 'Github Login':
+                    $user = $this->editGithubLogin($input, $output, $user, $questionHelper);
+                    break;
+                case 'Google Login':
+                    $user = $this->editGoogleLogin($input, $output, $user, $questionHelper);
+                    break;
+            }
+        } while ('Done' !== $field);
 
         $this->printUser($user, $output);
 

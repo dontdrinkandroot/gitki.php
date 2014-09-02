@@ -12,7 +12,7 @@ class ListUsersCommand extends GitkiUsersCommand
     protected function configure()
     {
         $this
-            ->setName('gitki:users:list')
+            ->setName('gitki:user:list')
             ->setDescription('Lists the existing users');
     }
 
