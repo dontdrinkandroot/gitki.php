@@ -38,15 +38,15 @@ class DdrGitkiExtension extends Extension implements PrependExtensionInterface
         $twigConfig['globals']['ddr_gitki_toc_max_level'] = $config['twig']['toc_max_level'];
         $twigConfig['globals']['ddr_gitki_show_breadcrumbs'] = $config['twig']['show_breadcrumbs'];
 
-        if (isset($config['oauth']['default_provider'])) {
-            $securityConfig['firewalls']['secured_area']['oauth']['login_path'] = '/connect/' . $config['oauth']['default_provider'];
+        if (isset($config['authorization']['oauth']['default_provider'])) {
+            $securityConfig['firewalls']['secured_area']['oauth']['login_path'] = '/connect/' . $config['authorization']['oauth']['default_provider'];
         } else {
             $securityConfig['firewalls']['secured_area']['oauth']['login_path'] = '/login';
         }
 
-        if (isset($config['oauth']['providers']['github'])) {
+        if (isset($config['authorization']['oauth']['providers']['github'])) {
 
-            $googleConfig = $config['oauth']['providers']['github'];
+            $googleConfig = $config['authorization']['oauth']['providers']['github'];
             $hwiOauthConfig['resource_owners']['github'] = array(
                 'type' => 'github',
                 'client_id' => $googleConfig['client_id'],
@@ -56,9 +56,9 @@ class DdrGitkiExtension extends Extension implements PrependExtensionInterface
             $securityConfig['firewalls']['secured_area']['oauth']['resource_owners']['github'] = '/login/check-github';
         }
 
-        if (isset($config['oauth']['providers']['google'])) {
+        if (isset($config['authorization']['oauth']['providers']['google'])) {
 
-            $googleConfig = $config['oauth']['providers']['google'];
+            $googleConfig = $config['authorization']['oauth']['providers']['google'];
             $hwiOauthConfig['resource_owners']['google'] = array(
                 'type' => 'google',
                 'client_id' => $googleConfig['client_id'],
