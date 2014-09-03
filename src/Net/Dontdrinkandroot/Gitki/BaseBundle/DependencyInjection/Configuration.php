@@ -22,6 +22,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('name')->defaultValue('GitKi')->end()
                 ->arrayNode('authorization')
                     ->children()
+                        ->booleanNode('form_login_enabled')->defaultTrue()->end()
                         ->arrayNode('oauth')
                             ->children()
                                 ->scalarNode('default_provider')->end()

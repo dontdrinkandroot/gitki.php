@@ -44,6 +44,12 @@ class DdrGitkiExtension extends Extension implements PrependExtensionInterface
             $securityConfig['firewalls']['secured_area']['oauth']['login_path'] = '/login';
         }
 
+        $formLoginEnabled = true;
+        if (isset($config['authorization']['form_login_enabled'])) {
+            $formLoginEnabled = $config['authorization']['form_login_enabled'];
+        }
+        $twigConfig['globals']['ddr_gitki_form_login_enabled'] = $formLoginEnabled;
+
         if (isset($config['authorization']['oauth']['providers']['github'])) {
 
             $googleConfig = $config['authorization']['oauth']['providers']['github'];
