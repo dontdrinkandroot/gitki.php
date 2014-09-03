@@ -14,8 +14,6 @@ interface User extends UserInterface
 
     public function getEmail();
 
-    public function getLogin();
-
     public function getGithubLogin();
 
     public function getGoogleLogin();

@@ -9,16 +9,13 @@ Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User:
             generator:
                 strategy: AUTO
     fields:
-        login:
-            type: string
-            length: 255
-            nullable: true
         realName:
             type: string
             length: 255
         email:
             type: string
             length: 255
+            unique: true
         roles:
             type: simple_array
         githubLogin:
@@ -31,10 +28,10 @@ Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User:
             nullable: true
         password:
             type: string
-            length: 255
+            length: 88
             nullable: true
         salt:
             type: string
-            length: 255
+            length: 32
             nullable: true
     lifecycleCallbacks: {  }

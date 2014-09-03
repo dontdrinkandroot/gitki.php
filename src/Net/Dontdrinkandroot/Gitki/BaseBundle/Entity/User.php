@@ -18,11 +18,6 @@ class User implements UserInterface
     /**
      * @var string
      */
-    private $login;
-
-    /**
-     * @var string
-     */
     private $realName;
 
     /**
@@ -63,30 +58,6 @@ class User implements UserInterface
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set login
-     *
-     * @param string $login
-     *
-     * @return User
-     */
-    public function setLogin($login)
-    {
-        $this->login = $login;
-
-        return $this;
-    }
-
-    /**
-     * Get login
-     *
-     * @return string
-     */
-    public function getLogin()
-    {
-        return $this->login;
     }
 
     /**
@@ -262,7 +233,7 @@ class User implements UserInterface
      */
     public function getUsername()
     {
-        return $this->login;
+        return $this->email;
     }
 
     /**

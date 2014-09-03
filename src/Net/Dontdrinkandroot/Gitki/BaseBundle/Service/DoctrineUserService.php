@@ -108,7 +108,7 @@ class DoctrineUserService implements UserService
     public function changePassword(User $user, $newPassword)
     {
         $encoder = $this->encoderFactory->getEncoder($user);
-        $salt = $this->secureRandom->nextBytes(16);
+        $salt = bin2hex($this->secureRandom->nextBytes(16));
         $encodedPassword = $encoder->encodePassword($newPassword, $salt);
         $user->setSalt($salt);
         $user->setPassword($encodedPassword);

@@ -22,7 +22,6 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
         $output->writeln('Real Name: ' . $user->getRealName());
         $output->writeln('Email: ' . $user->getEmail());
         $output->writeln('Roles: ' . implode(',', $user->getRoles()));
-        $output->writeln('Login: ' . $user->getLogin());
         $output->writeln('Github Login: ' . $user->getGithubLogin());
         $output->writeln('Google Login: ' . $user->getGoogleLogin());
         $output->writeln('--------------------');
@@ -47,7 +46,7 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
         $user = $this->editRealName($input, $output, $user, $questionHelper);
         $user = $this->editEmail($input, $output, $user, $questionHelper);
         $user = $this->editRole($input, $output, $user, $questionHelper);
-        $user = $this->editLoginAndPassword($input, $output, $user, $questionHelper, $userService);
+        $user = $this->editPassword($input, $output, $user, $questionHelper, $userService);
         $user = $this->editGithubLogin($input, $output, $user, $questionHelper);
         $user = $this->editGoogleLogin($input, $output, $user, $questionHelper);
 
@@ -61,7 +60,7 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
     protected function printUserTable(OutputInterface $output, $users)
     {
         $table = new Table($output);
-        $table->setHeaders(['Id', 'Real Name', 'Email', 'Roles', 'Login', 'GitHub Login', 'Google Login']);
+        $table->setHeaders(['Id', 'Real Name', 'Email', 'Roles', 'GitHub Login', 'Google Login']);
 
         foreach ($users as $user) {
             $table->addRow(
@@ -70,7 +69,6 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
                     $user->getRealName(),
                     $user->getEmail(),
                     implode(',', $user->getRoles()),
-                    $user->getLogin(),
                     $user->getGithubLogin(),
                     $user->getGoogleLogin()
                 ]
@@ -173,42 +171,26 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
      *
      * @return User
      */
-    protected function editLoginAndPassword(
-        InputInterface $input,
+    protected function editPassword(
+    InputInterface $input,
         OutputInterface $output,
         User $user,
         QuestionHelper $questionHelper,
         UserService $userService
     ) {
-        $loginQuestion = new Question('Login: ');
-        $login = $questionHelper->ask($input, $output, $loginQuestion);
-        if (null !== $login) {
-            $passwordQuestion = new Question('Password: ');
-            $passwordQuestion->setHidden(true);
-            $passwordQuestion->setHiddenFallback(false);
-            $passwordQuestion->setMaxAttempts(3);
-            $passwordQuestion->setValidator(
-                function ($answer) {
-                    if (empty($answer)) {
-                        throw new \RuntimeException("Password must not be empty");
-                    }
+        $passwordQuestion = new Question('Password (leave blank to disable form login): ');
+        $passwordQuestion->setHidden(true);
+        $passwordQuestion->setHiddenFallback(false);
+        $passwordQuestion->setMaxAttempts(3);
+        $password = $questionHelper->ask($input, $output, $passwordQuestion);
 
-                    // TODO: More password validation here.
-                    return $answer;
-                }
-            );
-            $password = $questionHelper->ask($input, $output, $passwordQuestion);
-
-            $user->setLogin($login);
+        if (null !== $password) {
             $user = $userService->changePassword($user, $password);
-
-            return $user;
         } else {
-            $user->setLogin(null);
             $user->setPassword(null);
-
-            return $user;
         }
+
+        return $user;
     }
 
     /**

@@ -11,6 +11,8 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 class EditUserCommand extends GitkiUsersCommand
 {
 
+    const FIELD_PASSWORD = 'Password';
+
     protected function configure()
     {
         $this
@@ -26,7 +28,7 @@ class EditUserCommand extends GitkiUsersCommand
 
         $user = $this->selectUser($input, $output, $users, $questionHelper);
 
-        $fields = ['Real Name', 'Email', 'Role', 'Login and Password', 'Github Login', 'Google Login', 'Done'];
+        $fields = ['Real Name', 'Email', 'Role', self::FIELD_PASSWORD, 'Github Login', 'Google Login', 'Done'];
 
         $fieldQuestion = new ChoiceQuestion(
             'Select Field: ',
@@ -46,8 +48,8 @@ class EditUserCommand extends GitkiUsersCommand
                 case 'Role':
                     $user = $this->editRole($input, $output, $user, $questionHelper);
                     break;
-                case 'Login and Password':
-                    $user = $this->editLoginAndPassword($input, $output, $user, $questionHelper, $userService);
+                case self::FIELD_PASSWORD:
+                    $user = $this->editPassword($input, $output, $user, $questionHelper, $userService);
                     break;
                 case 'Github Login':
                     $user = $this->editGithubLogin($input, $output, $user, $questionHelper);
