@@ -9,6 +9,13 @@ interface UserService
 {
 
     /**
+     * @param string $email
+     *
+     * @return User|null
+     */
+    public function findByEmail($email);
+
+    /**
      * @param string $login
      *
      * @return User|null

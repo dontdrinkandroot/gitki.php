@@ -3,7 +3,6 @@
 
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Security;
 
-
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Service\UserService;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -31,11 +30,6 @@ class GoogleResponseHandler implements ResponseHandler
         $oAuthUser->setEmailAddresses([$email]);
 
         return $oAuthUser;
-    }
-
-    public function supportsClass($userClass)
-    {
-        return $userClass === 'Net\\Dontdrinkandroot\\Gitki\\BaseBundle\\Security\\OAuthUser';
     }
 
     public function handlesResourceOwner($resourceOwnerName)

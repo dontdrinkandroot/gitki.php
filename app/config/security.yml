@@ -8,14 +8,20 @@ security:
 
     role_hierarchy:
         ROLE_ADMIN: ROLE_COMMITTER
-        ROLE_COMMITER: ROLE_WATCHER
+        ROLE_COMMITTER: ROLE_WATCHER
+        ROLE_WATCHER: ROLE_USER
 
     firewalls:
+
         secured_area:
+
             anonymous: ~
+            form_login: ~
+
             logout:
                 path:   /logout
                 target: /loggedout
+
             oauth:
                 use_forward:       false
                 failure_path:      /login

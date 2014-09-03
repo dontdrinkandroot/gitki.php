@@ -12,6 +12,9 @@ google_login:
 github_login:
     pattern: /login/check-github
 
+login_check:
+    path: /login_check
+
 logout:
     path:   /logout
 

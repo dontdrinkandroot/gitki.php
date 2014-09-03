@@ -37,6 +37,25 @@ class DoctrineUserService implements UserService
     }
 
     /**
+     * @param string $email
+     *
+     * @return User|null
+     */
+    public function findByEmail($email)
+    {
+        $users = $this->userRepository->findBy(['email' => $email]);
+        if (empty($users)) {
+            return null;
+        }
+
+        if (count($users) > 1) {
+            throw new \Exception('Found more than one user for email \"' . $email . '\"');
+        }
+
+        return $users[0];
+    }
+
+    /**
      * @param string $login
      *
      * @return User|null

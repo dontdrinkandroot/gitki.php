@@ -3,11 +3,11 @@
 
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Security;
 
-
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\OAuthAwareUserProviderInterface;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Service\UserService;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -34,7 +34,6 @@ class UserProvider implements OAuthAwareUserProviderInterface, UserProviderInter
         $this->responseHandlers[] = $handler;
     }
 
-
     public function loadUserByOAuthUserResponse(UserResponseInterface $response)
     {
         $resourceOwnerName = $response->getResourceOwner()->getName();
@@ -49,7 +48,12 @@ class UserProvider implements OAuthAwareUserProviderInterface, UserProviderInter
 
     public function loadUserByUsername($username)
     {
-        throw new \Exception('Not possible to load user by name');
+        $user = $this->userService->findByEmail($username);
+        if (null === $user) {
+            throw new UsernameNotFoundException();
+        }
+
+        return $user;
     }
 
     public function refreshUser(UserInterface $user)
@@ -63,14 +67,14 @@ class UserProvider implements OAuthAwareUserProviderInterface, UserProviderInter
 
     public function supportsClass($class)
     {
-        foreach ($this->responseHandlers as $responseHandler) {
-            if ($responseHandler->supportsClass($class)) {
-                return true;
-            }
-        }
+        return is_subclass_of($class, 'Net\Dontdrinkandroot\Gitki\BaseBundle\Security\User');
 
-        return false;
+//        foreach ($this->responseHandlers as $responseHandler) {
+//            if ($responseHandler->supportsClass($class)) {
+//                return true;
+//            }
+//        }
+//
+//        return false;
     }
-
-
 }

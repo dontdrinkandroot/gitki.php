@@ -3,7 +3,6 @@
 
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Security;
 
-
 use Github\Client;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Service\UserService;
@@ -47,11 +46,6 @@ class GitHubResponseHandler implements ResponseHandler
         $oAuthUser->setPrimaryEmailAddress($this->getPrimaryEmailAddress($allEMails));
 
         return $oAuthUser;
-    }
-
-    public function supportsClass($userClass)
-    {
-        return $userClass === 'Net\\Dontdrinkandroot\\Gitki\\BaseBundle\\Security\\OAuthUser';
     }
 
     public function handlesResourceOwner($resourceOwnerName)
