@@ -2,7 +2,7 @@
 {% block title %} - {{ path }} - Listing{% endblock %}
 {% block body_class %}wiki directory-listing{% endblock %}
 {% block actions %}
-    {% if is_granted('ROLE_COMMITER') %}
+    {% if is_granted('ROLE_COMMITTER') %}
         <div class="dropdown pull-right global-actions">
             <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="actions-dropdown"
                     data-toggle="dropdown">
@@ -48,7 +48,7 @@
                            <span class="fa fa-fw fa-file-o"></span>
                         </span>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                            {% if is_granted('ROLE_COMMITER') %}
+                            {% if is_granted('ROLE_COMMITTER') %}
                                 <li role="presentation">
                                     <a role="menuitem" tabindex="-1" title="Edit"
                                        href="{{ path('ddr_gitki_wiki_file', {'path': page.absolutePath, 'action': 'edit'}) }}">
@@ -94,7 +94,7 @@
                             <span class="fa fa-fw fa-folder-o"></span>
                         </span>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                            {% if is_granted('ROLE_COMMITER') %}
+                            {% if is_granted('ROLE_COMMITTER') %}
                                 <li role="presentation">
                                     <a role="menuitem" tabindex="-1" title="Edit"
                                        href="{{ path('ddr_gitki_wiki_directory', {'path': dir.absolutePath, 'action': 'edit'}) }}">
@@ -127,7 +127,7 @@
                             <span class="fa fa-fw fa-file-o"></span>
                         </span>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                            {% if is_granted('ROLE_COMMITER') %}
+                            {% if is_granted('ROLE_COMMITTER') %}
                                 <li role="presentation">
                                     <a role="menuitem" tabindex="-1"
                                        href="{{ path('ddr_gitki_wiki_file', {'path': file.absolutePath, 'action': 'rename'}) }}"

@@ -30,7 +30,7 @@
                     <span class="fa fa-fw fa-print"></span> Print
                 </a>
             </li>
-            {% if is_granted('ROLE_COMMITER') %}
+            {% if is_granted('ROLE_COMMITTER') %}
                 <li role="presentation" class="divider"></li>
                 <li role="presentation">
                     <a href="{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'edit'}) }}"

@@ -208,7 +208,7 @@ class WikiController extends BaseController
      */
     public function editPageAction(Request $request, FilePath $path)
     {
-        $this->assertRole('ROLE_COMMITER');
+        $this->assertRole('ROLE_COMMITTER');
 
         if (!StringUtils::endsWith($path->getName(), '.md')) {
             throw new HttpException(500, 'Only editing of markdown files is supported');
@@ -318,7 +318,7 @@ class WikiController extends BaseController
      */
     public function renameFileAction(Request $request, FilePath $path)
     {
-        $this->assertRole('ROLE_COMMITER');
+        $this->assertRole('ROLE_COMMITTER');
 
         $user = $this->getUser();
 
@@ -371,7 +371,7 @@ class WikiController extends BaseController
      */
     public function deleteFileAction(Request $request, FilePath $path)
     {
-        $this->assertRole('ROLE_COMMITER');
+        $this->assertRole('ROLE_COMMITTER');
 
         $user = $this->getUser();
 
@@ -458,7 +458,7 @@ class WikiController extends BaseController
      */
     public function directoryUploadAction(Request $request, DirectoryPath $path)
     {
-        $this->assertRole('ROLE_COMMITER');
+        $this->assertRole('ROLE_COMMITTER');
 
         $form = $this->createFormBuilder()
             ->add('uploadedFile', 'file', array('label' => 'File'))
@@ -509,7 +509,7 @@ class WikiController extends BaseController
      */
     public function deleteDirectoryAction(Request $request, DirectoryPath $directoryPath)
     {
-        $this->assertRole('ROLE_COMMITER');
+        $this->assertRole('ROLE_COMMITTER');
 
         $this->getWikiService()->deleteDirectory($directoryPath);
 
@@ -531,7 +531,7 @@ class WikiController extends BaseController
      */
     public function addPageAction(Request $request, DirectoryPath $path)
     {
-        $this->assertRole('ROLE_COMMITER');
+        $this->assertRole('ROLE_COMMITTER');
 
         $form = $this->createFormBuilder()
             ->add('title', 'text', array('label' => 'Title', 'required' => true))
@@ -581,7 +581,7 @@ class WikiController extends BaseController
      */
     public function addFolderAction(Request $request, DirectoryPath $path)
     {
-        $this->assertRole('ROLE_COMMITER');
+        $this->assertRole('ROLE_COMMITTER');
 
         $path = DirectoryPath::parse($path);
 
