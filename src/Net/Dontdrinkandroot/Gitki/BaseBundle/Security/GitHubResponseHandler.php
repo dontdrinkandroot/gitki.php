@@ -42,8 +42,7 @@ class GitHubResponseHandler implements ResponseHandler
         $emails = $currentUserApi->emails();
         $allEMails = $emails->all();
 
-        $oAuthUser->setEmailAddresses($this->getEmailAddresses($allEMails));
-        $oAuthUser->setPrimaryEmailAddress($this->getPrimaryEmailAddress($allEMails));
+        $oAuthUser->setEmail($this->getPrimaryEmailAddress($allEMails));
 
         return $oAuthUser;
     }

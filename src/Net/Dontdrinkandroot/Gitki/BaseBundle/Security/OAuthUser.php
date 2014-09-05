@@ -6,6 +6,9 @@ namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Security;
 class OAuthUser implements User
 {
 
+    /**
+     * @var User
+     */
     private $user;
 
     private $roles = ['ROLE_OAUTH_USER'];
@@ -14,9 +17,7 @@ class OAuthUser implements User
 
     private $realName;
 
-    private $emailAddresses;
-
-    private $primaryEmailAddress;
+    private $email;
 
     public function __construct(User $user)
     {
@@ -38,14 +39,9 @@ class OAuthUser implements User
         $this->realName = $realName;
     }
 
-    public function setEmailAddresses($emailAddresses)
+    public function setEmail($primaryEmailAddress)
     {
-        $this->emailAddresses = $emailAddresses;
-    }
-
-    public function setPrimaryEmailAddress($primaryEmailAddress)
-    {
-        $this->primaryEmailAddress = $primaryEmailAddress;
+        $this->email = $primaryEmailAddress;
     }
 
     /**
@@ -74,12 +70,12 @@ class OAuthUser implements User
      */
     public function getEmail()
     {
-        $knownPrimaryEmailAddress = $this->user->getEmail();
-        if (!empty($knownPrimaryEmailAddress)) {
-            return $knownPrimaryEmailAddress;
+        $knownEmail = $this->user->getEmail();
+        if (!empty($knownEmail)) {
+            return $knownEmail;
         }
 
-        return $this->primaryEmailAddress;
+        return $this->email;
     }
 
     /**
@@ -87,7 +83,9 @@ class OAuthUser implements User
      */
     public function getRoles()
     {
-        return array_merge($this->roles, $this->user->getRoles());
+        $effectiveRoles = array_merge($this->roles, $this->user->getRoles());
+
+        return $effectiveRoles;
     }
 
     /**
@@ -120,14 +118,6 @@ class OAuthUser implements User
     public function eraseCredentials()
     {
         $this->user->eraseCredentials();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getLogin()
-    {
-        return $this->user->getLogin();
     }
 
     /**

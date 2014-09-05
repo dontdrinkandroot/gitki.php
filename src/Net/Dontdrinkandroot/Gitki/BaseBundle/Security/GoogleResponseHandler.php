@@ -26,8 +26,7 @@ class GoogleResponseHandler implements ResponseHandler
         $oAuthUser->addRole('ROLE_GOOGLE_USER');
         $oAuthUser->setAccessToken($response->getAccessToken());
         $oAuthUser->setRealName($fields['name']);
-        $oAuthUser->setPrimaryEmailAddress($email);
-        $oAuthUser->setEmailAddresses([$email]);
+        $oAuthUser->setEmail($email);
 
         return $oAuthUser;
     }
