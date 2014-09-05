@@ -358,7 +358,7 @@ class WikiController extends BaseController
         }
 
         return $this->render(
-            'DdrGitkiBaseBundle:Wiki:renameFile.html.twig',
+            'DdrGitkiBaseBundle:Wiki:file.rename.html.twig',
             array('form' => $form->createView(), 'path' => $path)
         );
     }
@@ -397,7 +397,7 @@ class WikiController extends BaseController
         $history = $this->getWikiService()->getFileHistory($path);
 
         return $this->render(
-            'DdrGitkiBaseBundle:Wiki:fileHistory.html.twig',
+            'DdrGitkiBaseBundle:Wiki:file.history.html.twig',
             array(
                 'path' => $path,
                 'history' => $history
@@ -437,7 +437,7 @@ class WikiController extends BaseController
         $directoryListing = $this->getWikiService()->listDirectory($path);
 
         return $this->render(
-            'DdrGitkiBaseBundle:Wiki:directoryListing.html.twig',
+            'DdrGitkiBaseBundle:Wiki:directory.listing.html.twig',
             array(
                 'path' => $path,
                 'directoryListing' => $directoryListing
@@ -491,7 +491,7 @@ class WikiController extends BaseController
         }
 
         return $this->render(
-            'DdrGitkiBaseBundle:Wiki:directoryUpload.html.twig',
+            'DdrGitkiBaseBundle:Wiki:directory.uploadFile.html.twig',
             array('form' => $form->createView(), 'path' => $path)
         );
     }
@@ -563,7 +563,7 @@ class WikiController extends BaseController
         }
 
         return $this->render(
-            'DdrGitkiBaseBundle:Wiki:addPage.html.twig',
+            'DdrGitkiBaseBundle:Wiki:directory.addPage.html.twig',
             array('form' => $form->createView(), 'path' => $path)
         );
     }
@@ -614,7 +614,7 @@ class WikiController extends BaseController
         }
 
         return $this->render(
-            'DdrGitkiBaseBundle:Wiki:addFolder.html.twig',
+            'DdrGitkiBaseBundle:Wiki:directory.addFolder.html.twig',
             array('form' => $form->createView(), 'path' => $path)
         );
     }
