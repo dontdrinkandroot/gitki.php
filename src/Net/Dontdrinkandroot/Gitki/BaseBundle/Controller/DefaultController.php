@@ -9,7 +9,7 @@ class DefaultController extends BaseController
 {
     public function indexAction()
     {
-        return $this->redirect($this->generateUrl('ddr_gitki_wiki_file', array('path' => '/index.md')));
+        return $this->redirect($this->generateUrl('ddr_gitki_wiki_directory', ['path' => '/', 'action' => 'index']));
     }
 
     public function loggedoutAction()
@@ -39,5 +39,4 @@ class DefaultController extends BaseController
 
         return $this->redirect($this->generateUrl('ddr_gitki_wiki_file', array('path' => '/index.md')));
     }
-
 }
