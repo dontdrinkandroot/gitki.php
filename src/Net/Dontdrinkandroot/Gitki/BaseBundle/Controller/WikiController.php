@@ -349,7 +349,7 @@ class WikiController extends BaseController
                 return $this->redirect(
                     $this->generateUrl(
                         'ddr_gitki_wiki_directory',
-                        array('path' => $newPath->getParentPath() . '/')
+                        array('path' => $newPath->getParentPath()->toAbsoluteUrlString())
                     )
                 );
             }
@@ -378,15 +378,10 @@ class WikiController extends BaseController
         $commitMessage = 'Removing ' . $path->toAbsoluteUrlString();
         $this->getWikiService()->deleteFile($user, $path, $commitMessage);
 
-        $parentDirPath = $path->getParentPath()->toAbsoluteUrlString();
-        if ($parentDirPath == "") {
-            $parentDirPath = "/";
-        }
-
         return $this->redirect(
             $this->generateUrl(
                 'ddr_gitki_wiki_directory',
-                array('path' => $parentDirPath)
+                array('path' => $path->getParentPath()->toAbsoluteUrlString())
             )
         );
     }
