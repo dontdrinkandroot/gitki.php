@@ -67,11 +67,17 @@
         function Preview(input, preview) {
 
             var self = this;
+            var originalMarkdown = input.val();
             this.typeTimeout = undefined;
 
             this.update = function () {
+
+                var newMarkdown = input.val();
+                var submitDisabled = originalMarkdown == newMarkdown;
+                $("#form_actions_save").prop('disabled', submitDisabled)
+
                 $('.loading-indicator .spinner').show();
-                $.post(previewUrl, {'markdown': input.val()})
+                $.post(previewUrl, {'markdown': newMarkdown})
                         .done(function (data) {
                             preview.html(data);
                             $('.loading-indicator .spinner').hide();
