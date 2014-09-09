@@ -12,7 +12,7 @@
     <div class="markdown-page">
         <div class="row editor">
             <div class="col-md-6">
-                {{ form(form) }}
+                {{ form(form, { 'attr': {'class' : 'edit' }}) }}
             </div>
             <div class="col-md-6">
                 <div id="preview">
@@ -29,6 +29,37 @@
 {% endblock %}
 {% block javascript %}
     {{ parent() }}
+    <script type="text/javascript">
+        function HoldLock(holdLockUrl) {
+
+            var self = this;
+            var timeOut = null;
+
+            var refresh = function () {
+                $.get(holdLockUrl)
+                        .done(function (data) {
+                            timeOut = window.setTimeout(refresh, 10000);
+                        })
+                        .fail(function (data) {
+                            console.error(data);
+                            alert("We are sorry. Holding the page lock failed (saving won't work anymore), copy your data to the clipboard, go back and try to reedit the page.")
+                        });
+            };
+
+            this.cancel = function () {
+                clearTimeout(timeOut);
+            };
+
+            refresh();
+        }
+
+        var holdLock = new HoldLock("{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'holdlock'}) }}");
+    </script>
+    <script type="text/javascript">
+        $("form.edit").submit(function (event) {
+            holdLock.cancel();
+        });
+    </script>
     <script type="text/javascript">
 
         var previewUrl = "{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'preview_markdown'}) }}";
@@ -61,20 +92,5 @@
             this.update();
         }
         new Preview($("#form_content"), $("#preview .markdown-html"));
-    </script>
-    <script type="text/javascript">
-        var holdLockUrl = "{{ path('ddr_gitki_wiki_file', {'path': path, 'action': 'holdlock'}) }}";
-        var timeOut = undefined;
-        function holdLock() {
-            $.get(holdLockUrl)
-                    .done(function (data) {
-                        window.setTimeout(holdLock, 10000);
-                    })
-                    .fail(function (data) {
-                        console.error(data);
-                        alert("We are sorry. Holding the page lock failed (saving won't work anymore), copy your data to the clipboard, go back and try to reedit the page.")
-                    });
-        }
-        holdLock();
     </script>
 {% endblock %}
