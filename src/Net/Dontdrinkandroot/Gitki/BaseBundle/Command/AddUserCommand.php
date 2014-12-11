@@ -20,17 +20,18 @@ class AddUserCommand extends GitkiUsersCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $questionHelper = $this->getQuestionHelper();
-        $userService = $this->getUserService();
+        $userManager = $this->getUserManager();
 
-        $user = new User();
+        $user = $userManager->createUser();
+        $user->setEnabled(true);
 
-        $user = $this->editUser($input, $output, $user, $questionHelper, $userService);
+        $user = $this->editUser($input, $output, $user, $questionHelper, $userManager);
 
         $this->printUser($user, $output);
 
         $createQuestion = new ConfirmationQuestion('Create this user? ', false);
         if ($questionHelper->ask($input, $output, $createQuestion)) {
-            $userService->saveUser($user);
+            $userManager->updateUser($user);
         }
     }
 }

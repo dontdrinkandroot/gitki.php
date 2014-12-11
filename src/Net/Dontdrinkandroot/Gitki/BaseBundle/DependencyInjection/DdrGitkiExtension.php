@@ -53,6 +53,7 @@ class DdrGitkiExtension extends Extension implements PrependExtensionInterface
         if (isset($config['authentication']['oauth']['providers']['github'])) {
 
             $googleConfig = $config['authentication']['oauth']['providers']['github'];
+            $hwiOauthConfig['fosub']['properties']['github'] = 'githubId';
             $hwiOauthConfig['resource_owners']['github'] = array(
                 'type' => 'github',
                 'client_id' => $googleConfig['client_id'],
@@ -65,6 +66,7 @@ class DdrGitkiExtension extends Extension implements PrependExtensionInterface
         if (isset($config['authentication']['oauth']['providers']['google'])) {
 
             $googleConfig = $config['authentication']['oauth']['providers']['google'];
+            $hwiOauthConfig['fosub']['properties']['google'] = 'googleId';
             $hwiOauthConfig['resource_owners']['google'] = array(
                 'type' => 'google',
                 'client_id' => $googleConfig['client_id'],

@@ -3,7 +3,7 @@
     "license": "Apache2",
     "type": "project",
     "description": "Git backed MarkDown wiki",
-    "keywords": ["wiki","git","markdown"],
+    "keywords": ["wiki", "git", "markdown"],
     "autoload": {
         "psr-0": {
             "": "src/",
@@ -27,7 +27,8 @@
         "knplabs/github-api": "1.2.*",
         "dontdrinkandroot/objective-parsedown": "0.2.*",
         "dontdrinkandroot/utils": "0.1.*",
-        "elasticsearch/elasticsearch": "~1.0"
+        "elasticsearch/elasticsearch": "~1.0",
+        "friendsofsymfony/user-bundle": "~1.3"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",

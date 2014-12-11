@@ -1,7 +1,7 @@
 security:
     providers:
-        gitki_user_provider:
-            id: ddr.gitki.security.user_provider
+        fos_userbundle:
+            id: fos_user.user_provider.username
 
     encoders:
         Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User: sha512
@@ -25,8 +25,9 @@ security:
             oauth:
                 use_forward:       false
                 failure_path:      /login
+                provider: fos_userbundle
                 oauth_user_provider:
-                    service: ddr.gitki.security.user_provider
+                    service: hwi_oauth.user.provider.fosub_bridge
 
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
@@ -35,6 +36,6 @@ security:
         ## Only logged in users may see content
         #- { path: ^/, roles: ROLE_USER }
         ## Only watchers may see content
-        #- { path: ^/, roles: ROLE_WATCHER }
+        - { path: ^/, roles: ROLE_WATCHER }
         ## All users may see content
-        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }

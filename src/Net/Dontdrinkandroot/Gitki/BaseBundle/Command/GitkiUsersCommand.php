@@ -3,8 +3,8 @@
 
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Command;
 
+use FOS\UserBundle\Model\UserManagerInterface;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Service\UserService;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,11 +19,11 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
     {
         $output->writeln('--------------------');
         $output->writeln('Id: ' . $user->getId());
-        $output->writeln('Real Name: ' . $user->getRealName());
+        $output->writeln('User Name: ' . $user->getUsername());
         $output->writeln('Email: ' . $user->getEmail());
         $output->writeln('Roles: ' . implode(',', $user->getRoles()));
-        $output->writeln('Github Login: ' . $user->getGithubLogin());
-        $output->writeln('Google Login: ' . $user->getGoogleLogin());
+        $output->writeln('Github Login: ' . $user->getGithubId());
+        $output->writeln('Google Login: ' . $user->getGoogleId());
         $output->writeln('--------------------');
     }
 
@@ -32,7 +32,7 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
      * @param OutputInterface $output
      * @param User            $user
      * @param QuestionHelper  $questionHelper
-     * @param UserService     $userService
+     * @param UserManagerInterface $userManager
      *
      * @return mixed
      */
@@ -41,14 +41,14 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
         OutputInterface $output,
         User $user,
         QuestionHelper $questionHelper,
-        UserService $userService
+        UserManagerInterface $userManager
     ) {
         $user = $this->editRealName($input, $output, $user, $questionHelper);
         $user = $this->editEmail($input, $output, $user, $questionHelper);
         $user = $this->editRole($input, $output, $user, $questionHelper);
-        $user = $this->editPassword($input, $output, $user, $questionHelper, $userService);
-        $user = $this->editGithubLogin($input, $output, $user, $questionHelper);
-        $user = $this->editGoogleLogin($input, $output, $user, $questionHelper);
+        $user = $this->editPassword($input, $output, $user, $questionHelper, $userManager);
+        $user = $this->editGithubId($input, $output, $user, $questionHelper);
+        $user = $this->editGoogleId($input, $output, $user, $questionHelper);
 
         return $user;
     }
@@ -60,17 +60,17 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
     protected function printUserTable(OutputInterface $output, $users)
     {
         $table = new Table($output);
-        $table->setHeaders(['Id', 'Real Name', 'Email', 'Roles', 'GitHub Login', 'Google Login']);
+        $table->setHeaders(['ID', 'User Name', 'Email', 'Roles', 'GitHub ID', 'Google ID']);
 
         foreach ($users as $user) {
             $table->addRow(
                 [
                     $user->getId(),
-                    $user->getRealName(),
+                    $user->getUsername(),
                     $user->getEmail(),
                     implode(',', $user->getRoles()),
-                    $user->getGithubLogin(),
-                    $user->getGoogleLogin()
+                    $user->getGithubId(),
+                    $user->getGoogleId()
                 ]
             );
         }
@@ -103,7 +103,7 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
             }
         );
         $realNameQuestion->setMaxAttempts(2);
-        $user->setRealName($questionHelper->ask($input, $output, $realNameQuestion));
+        $user->setUsername($questionHelper->ask($input, $output, $realNameQuestion));
 
         return $user;
     }
@@ -167,7 +167,7 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
      * @param OutputInterface $output
      * @param User            $user
      * @param QuestionHelper  $questionHelper
-     * @param UserService     $userService
+     * @param UserManagerInterface $userManager
      *
      * @return User
      */
@@ -176,7 +176,7 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
         OutputInterface $output,
         User $user,
         QuestionHelper $questionHelper,
-        UserService $userService
+        UserManagerInterface $userManager
     ) {
         $passwordQuestion = new Question('Password (leave blank to disable form login): ');
         $passwordQuestion->setHidden(true);
@@ -185,7 +185,8 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
         $password = $questionHelper->ask($input, $output, $passwordQuestion);
 
         if (null !== $password) {
-            $user = $userService->changePassword($user, $password);
+            $user->setPassword($password);
+            $userManager->updatePassword($user);
         } else {
             $user->setPassword(null);
         }
@@ -201,14 +202,14 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
      *
      * @return User
      */
-    protected function editGithubLogin(
-        InputInterface $input,
+    protected function editGithubId(
+    InputInterface $input,
         OutputInterface $output,
         User $user,
         QuestionHelper $questionHelper
     ) {
-        $githubLoginQuestion = new Question('Github Login: ');
-        $user->setGithubLogin($questionHelper->ask($input, $output, $githubLoginQuestion));
+        $githubLoginQuestion = new Question('Github ID: ');
+        $user->setGithubId($questionHelper->ask($input, $output, $githubLoginQuestion));
 
         return $user;
     }
@@ -221,14 +222,14 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
      *
      * @return User
      */
-    protected function editGoogleLogin(
-        InputInterface $input,
+    protected function editGoogleId(
+    InputInterface $input,
         OutputInterface $output,
         User $user,
         QuestionHelper $questionHelper
     ) {
-        $googleLoginQuestion = new Question('Google Login: ');
-        $user->setGoogleLogin($questionHelper->ask($input, $output, $googleLoginQuestion));
+        $googleLoginQuestion = new Question('Google ID: ');
+        $user->setGoogleId($questionHelper->ask($input, $output, $googleLoginQuestion));
 
         return $user;
     }

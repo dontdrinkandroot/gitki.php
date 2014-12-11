@@ -19,8 +19,8 @@ class DeleteUserCommand extends GitkiUsersCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $userService = $this->getUserService();
-        $users = $userService->listUsers();
+        $userManager = $this->getUserManager();
+        $users = $userManager->findUsers();
         $questionHelper = $this->getQuestionHelper();
 
         $user = $this->selectUser($input, $output, $users, $questionHelper);
@@ -29,7 +29,7 @@ class DeleteUserCommand extends GitkiUsersCommand
 
         $saveQuestion = new ConfirmationQuestion('Are you sure you want to delete this user? ', false);
         if ($questionHelper->ask($input, $output, $saveQuestion)) {
-            $userService->deleteUser($user);
+            $userManager->deleteUser($user);
         }
     }
 }

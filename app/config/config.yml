@@ -61,3 +61,10 @@ braincrafted_bootstrap:
 
 hwi_oauth:
     firewall_name: secured_area
+
+fos_user:
+    db_driver: orm
+    firewall_name: secured_area
+    user_class: Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User
+    service:
+        mailer: fos_user.mailer.noop

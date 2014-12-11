@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
             new Net\Dontdrinkandroot\Gitki\BaseBundle\DdrGitkiBaseBundle(),
             //new Net\Dontdrinkandroot\Gitki\ElasticsearchBundle\DdrGitkiElasticsearchBundle()
+            new \FOS\UserBundle\FOSUserBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

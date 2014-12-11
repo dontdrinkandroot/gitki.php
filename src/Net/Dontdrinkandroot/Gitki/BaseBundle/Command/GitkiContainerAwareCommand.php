@@ -3,6 +3,7 @@
 
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Command;
 
+use FOS\UserBundle\Model\UserManagerInterface;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown\MarkdownService;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Service\UserService;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Service\WikiService;
@@ -29,11 +30,11 @@ abstract class GitkiContainerAwareCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return UserService
+     * @return UserManagerInterface
      */
-    protected function getUserService()
+    protected function getUserManager()
     {
-        return $this->getContainer()->get('ddr.gitki.service.user');
+        return $this->getContainer()->get('fos_user.user_manager');
     }
 
     /**

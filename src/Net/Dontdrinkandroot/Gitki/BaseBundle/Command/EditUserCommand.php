@@ -22,8 +22,8 @@ class EditUserCommand extends GitkiUsersCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $userService = $this->getUserService();
-        $users = $userService->listUsers();
+        $userManager = $this->getUserManager();
+        $users = $userManager->findUsers();
         $questionHelper = $this->getQuestionHelper();
 
         $user = $this->selectUser($input, $output, $users, $questionHelper);
@@ -49,13 +49,13 @@ class EditUserCommand extends GitkiUsersCommand
                     $user = $this->editRole($input, $output, $user, $questionHelper);
                     break;
                 case self::FIELD_PASSWORD:
-                    $user = $this->editPassword($input, $output, $user, $questionHelper, $userService);
+                    $user = $this->editPassword($input, $output, $user, $questionHelper, $userManager);
                     break;
                 case 'Github Login':
-                    $user = $this->editGithubLogin($input, $output, $user, $questionHelper);
+                    $user = $this->editGithubId($input, $output, $user, $questionHelper);
                     break;
                 case 'Google Login':
-                    $user = $this->editGoogleLogin($input, $output, $user, $questionHelper);
+                    $user = $this->editGoogleId($input, $output, $user, $questionHelper);
                     break;
             }
         } while ('Done' !== $field);
@@ -64,7 +64,7 @@ class EditUserCommand extends GitkiUsersCommand
 
         $saveQuestion = new ConfirmationQuestion('Save? ', false);
         if ($questionHelper->ask($input, $output, $saveQuestion)) {
-            $userService->saveUser($user);
+            $userManager->updateUser($user);
         }
     }
 }

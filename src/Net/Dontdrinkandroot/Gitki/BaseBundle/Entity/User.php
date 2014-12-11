@@ -3,251 +3,67 @@
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Security\User as UserInterface;
+use FOS\UserBundle\Entity\User as BaseUser;
 
 /**
  * User
  */
-class User implements UserInterface
+class User extends BaseUser
 {
-    /**
-     * @var integer
-     */
-    private $id;
 
     /**
-     * @var string
+     * @var int
      */
-    private $realName;
+    private $googleId;
 
     /**
-     * @var string
+     * @var int
      */
-    private $email;
+    private $githubId;
 
-    /**
-     * @var array
-     */
-    private $roles;
-
-    /**
-     * @var string
-     */
-    private $githubLogin;
-
-    /**
-     * @var string
-     */
-    private $googleLogin;
-
-    /**
-     * @var string
-     */
-    private $password;
-
-    /**
-     * @var string
-     */
-    private $salt;
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    public function __construct()
     {
-        return $this->id;
+        parent::__construct();
     }
 
     /**
-     * Set realName
-     *
-     * @param string $realName
-     *
-     * @return User
+     * @param int $githubId
      */
-    public function setRealName($realName)
+    public function setGithubId($githubId)
     {
-        $this->realName = $realName;
-
-        return $this;
+        $this->githubId = $githubId;
     }
 
     /**
-     * Get realName
-     *
-     * @return string
+     * @return int
      */
-    public function getRealName()
+    public function getGithubId()
     {
-        return $this->realName;
+        return $this->githubId;
     }
 
     /**
-     * Set email
-     *
-     * @param string $email
-     *
-     * @return User
+     * @param int $googleId
      */
-    public function setEmail($email)
+    public function setGoogleId($googleId)
     {
-        $this->email = $email;
-
-        return $this;
+        $this->googleId = $googleId;
     }
 
     /**
-     * Get email
-     *
-     * @return string
+     * @return int
      */
-    public function getEmail()
+    public function getGoogleId()
     {
-        return $this->email;
+        return $this->googleId;
     }
 
-    /**
-     * Set roles
-     *
-     * @param array $roles
-     *
-     * @return User
-     */
-    public function setRoles($roles)
-    {
-        $this->roles = $roles;
 
-        return $this;
-    }
-
-    /**
-     * Get roles
-     *
-     * @return array
-     */
-    public function getRoles()
-    {
-        return $this->roles;
-    }
-
-    /**
-     * Set githubLogin
-     *
-     * @param string $githubLogin
-     *
-     * @return User
-     */
-    public function setGithubLogin($githubLogin)
-    {
-        $this->githubLogin = $githubLogin;
-
-        return $this;
-    }
-
-    /**
-     * Get githubLogin
-     *
-     * @return string
-     */
-    public function getGithubLogin()
-    {
-        return $this->githubLogin;
-    }
-
-    /**
-     * Set googleLogin
-     *
-     * @param string $googleLogin
-     *
-     * @return User
-     */
-    public function setGoogleLogin($googleLogin)
-    {
-        $this->googleLogin = $googleLogin;
-
-        return $this;
-    }
-
-    /**
-     * Get googleLogin
-     *
-     * @return string
-     */
-    public function getGoogleLogin()
-    {
-        return $this->googleLogin;
-    }
-
-    /**
-     * Set password
-     *
-     * @param string $password
-     *
-     * @return User
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * Get password
-     *
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * Set salt
-     *
-     * @param string $salt
-     *
-     * @return User
-     */
-    public function setSalt($salt)
-    {
-        $this->salt = $salt;
-
-        return $this;
-    }
-
-    /**
-     * Get salt
-     *
-     * @return string
-     */
-    public function getSalt()
-    {
-        return $this->salt;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getUsername()
-    {
-        return $this->email;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function eraseCredentials()
-    {
-        $this->password = null;
-    }
 
     public function __toString()
     {
         $s = 'id=' . $this->getId();
-        $s .= ',realName=' . $this->getRealName();
+        $s .= ',realName=' . $this->getUsername();
         $s .= ',email=' . $this->getEmail();
 
         return $s;

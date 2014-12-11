@@ -18,8 +18,8 @@ class ListUsersCommand extends GitkiUsersCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $userService = $this->getUserService();
-        $users = $userService->listUsers();
+        $userManager = $this->getUserManager();
+        $users = $userManager->findUsers();
 
         $this->printUserTable($output, $users);
     }
