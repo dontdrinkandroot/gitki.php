@@ -113,6 +113,4 @@ class RepositoryAwareLinkHandler extends LinkHandler
 
         return true;
     }
-
-
 }

@@ -3,7 +3,6 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Exception;
 
-
 class PageLockedException extends \Exception
 {
 
@@ -28,6 +27,4 @@ class PageLockedException extends \Exception
     {
         return $this->lockedBy;
     }
-
-
-} 
+}

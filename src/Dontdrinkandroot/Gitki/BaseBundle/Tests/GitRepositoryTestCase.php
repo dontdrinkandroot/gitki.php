@@ -3,7 +3,6 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Tests;
 
-
 use GitWrapper\GitWrapper;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -27,5 +26,4 @@ class GitRepositoryTestCase extends \PHPUnit_Framework_TestCase
         $fileSystem = new Filesystem();
         $fileSystem->remove(self::TEST_PATH);
     }
-
-} 
+}

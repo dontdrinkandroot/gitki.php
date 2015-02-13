@@ -16,6 +16,7 @@
 !bin/update-design
 !bin/install-prod
 !bin/set-permissions
+!bin/run-tests
 /composer.phar
 /.idea/
 # /composer.lock

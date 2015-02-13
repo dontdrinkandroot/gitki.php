@@ -37,7 +37,7 @@ class DirectoryListing
      * @param Directory[] $subdirectories
      * @param File[] $otherFiles
      */
-    function __construct($path, $pages, $subdirectories, $otherFiles)
+    public function __construct($path, $pages, $subdirectories, $otherFiles)
     {
         $this->path = $path;
         $this->pages = $pages;
@@ -76,5 +76,4 @@ class DirectoryListing
     {
         return $this->otherFiles;
     }
-
 }

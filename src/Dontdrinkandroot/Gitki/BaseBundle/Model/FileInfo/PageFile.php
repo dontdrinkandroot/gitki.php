@@ -3,7 +3,6 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo;
 
-
 class PageFile extends File
 {
 
@@ -18,5 +17,4 @@ class PageFile extends File
     {
         $this->title = $title;
     }
-
-} 
+}

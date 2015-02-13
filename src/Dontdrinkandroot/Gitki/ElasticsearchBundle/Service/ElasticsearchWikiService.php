@@ -47,5 +47,4 @@ class ElasticsearchWikiService extends WikiService
 
         return $pageFile;
     }
-
-} 
+}

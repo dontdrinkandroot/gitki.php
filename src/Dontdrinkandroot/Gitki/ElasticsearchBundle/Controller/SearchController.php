@@ -39,5 +39,4 @@ class SearchController extends BaseController
     {
         return $this->get('ddr.gitki.repository.elasticsearch');
     }
-
-} 
+}

@@ -3,7 +3,6 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Controller;
 
-
 class AboutController extends BaseController
 {
 
@@ -11,5 +10,4 @@ class AboutController extends BaseController
     {
         return $this->render('DdrGitkiBaseBundle:About:markdownsyntax.html.twig');
     }
-
-} 
+}

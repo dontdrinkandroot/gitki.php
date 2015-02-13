@@ -64,5 +64,4 @@ class RepositoryAwareHtmlRenderer extends HtmlRenderer
     {
         return $this->headerHandler;
     }
-
-} 
+}

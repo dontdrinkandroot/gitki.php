@@ -52,5 +52,4 @@ class RepositoryAwareMarkdownService implements MarkdownService
 
         return $result;
     }
-
-} 
+}

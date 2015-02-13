@@ -3,7 +3,6 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown\HtmlRenderer;
 
-
 use Net\Dontdrinkandroot\ObjectiveMarkdown\Model\Element\Block\Header;
 use Net\Dontdrinkandroot\ObjectiveMarkdown\Renderer\Html\Handler\HeaderHandler;
 use Net\Dontdrinkandroot\ObjectiveMarkdown\Renderer\Html\HtmlRenderContext;
@@ -79,5 +78,4 @@ class TocBuildingHeaderHandler extends HeaderHandler
     {
         return $this->toc;
     }
-
-} 
+}

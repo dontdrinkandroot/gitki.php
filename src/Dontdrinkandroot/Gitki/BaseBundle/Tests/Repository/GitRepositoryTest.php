@@ -33,4 +33,4 @@ class GitRepositoryTest extends GitRepositoryTestCase
         $this->assertEquals('test@example.com', $firstEntry->getEMail());
         $this->assertEquals('Tester', $firstEntry->getCommitter());
     }
-} 
+}

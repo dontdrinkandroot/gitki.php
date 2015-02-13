@@ -40,5 +40,4 @@ class BaseController extends Controller
 
         return $kernel->getEnvironment();
     }
-
 }

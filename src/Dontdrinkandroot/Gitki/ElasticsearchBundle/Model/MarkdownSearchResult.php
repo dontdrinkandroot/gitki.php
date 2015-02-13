@@ -3,7 +3,6 @@
 
 namespace Dontdrinkandroot\Gitki\ElasticsearchBundle\Model;
 
-
 use Net\Dontdrinkandroot\Utils\Path\FilePath;
 
 class MarkdownSearchResult
@@ -71,6 +70,4 @@ class MarkdownSearchResult
     {
         return $this->title;
     }
-
-
 }

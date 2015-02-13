@@ -3,7 +3,6 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Model;
 
-
 use Net\Dontdrinkandroot\Utils\Path\Path;
 
 class ParsedMarkdownDocument
@@ -74,6 +73,4 @@ class ParsedMarkdownDocument
     {
         return $this->toc;
     }
-
-
-} 
+}

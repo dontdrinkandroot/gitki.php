@@ -3,7 +3,6 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Twig;
 
-
 class GitkiExtension extends \Twig_Extension
 {
 

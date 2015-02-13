@@ -3,7 +3,6 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo;
 
-
 use Net\Dontdrinkandroot\Utils\Path\FilePath;
 
 class File extends PathAwareFileInfo

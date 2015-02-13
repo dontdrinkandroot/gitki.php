@@ -157,6 +157,4 @@ class ElasticsearchRepository
 
         return $this->client->delete($params);
     }
-
-
 }

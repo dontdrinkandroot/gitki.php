@@ -33,7 +33,8 @@
     "require-dev": {
         "sensio/generator-bundle": "~2.3",
         "phpunit/phpunit": "~4.1",
-        "twbs/bootstrap": "~3.2"
+        "twbs/bootstrap": "~3.2",
+        "squizlabs/php_codesniffer": "~2.2"
     },
     "scripts": {
         "post-root-package-install": [

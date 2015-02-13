@@ -172,7 +172,7 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
      * @return User
      */
     protected function editPassword(
-    InputInterface $input,
+        InputInterface $input,
         OutputInterface $output,
         User $user,
         QuestionHelper $questionHelper,
@@ -203,7 +203,7 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
      * @return User
      */
     protected function editGithubId(
-    InputInterface $input,
+        InputInterface $input,
         OutputInterface $output,
         User $user,
         QuestionHelper $questionHelper
@@ -223,7 +223,7 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
      * @return User
      */
     protected function editGoogleId(
-    InputInterface $input,
+        InputInterface $input,
         OutputInterface $output,
         User $user,
         QuestionHelper $questionHelper
@@ -257,4 +257,4 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
 
         return $user;
     }
-} 
+}

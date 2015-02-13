@@ -230,6 +230,4 @@ class GitRepository
 
         return $workingCopy;
     }
-
-
 }

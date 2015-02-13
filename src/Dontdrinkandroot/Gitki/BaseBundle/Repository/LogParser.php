@@ -3,7 +3,6 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Repository;
 
-
 class LogParser
 {
 
@@ -47,5 +46,4 @@ class LogParser
 
         return $s;
     }
-
-} 
+}

@@ -16,5 +16,4 @@ interface MarkdownService
      * @return ParsedMarkdownDocument
      */
     public function parse(FilePath $path, $content);
-
-} 
+}

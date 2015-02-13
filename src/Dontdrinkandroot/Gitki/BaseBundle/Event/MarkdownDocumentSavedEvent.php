@@ -78,4 +78,4 @@ class MarkdownDocumentSavedEvent extends Event
     {
         return $this->user;
     }
-} 
+}

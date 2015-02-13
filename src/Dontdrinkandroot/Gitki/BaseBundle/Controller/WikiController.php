@@ -37,15 +37,15 @@ class WikiController extends BaseController
         $action = $request->query->get('action', 'list');
         //TODO: Refactor
         switch ($action) {
-            case 'index' :
+            case 'index':
                 return $this->directoryIndexAction($request, $directoryPath);
-            case 'upload' :
+            case 'upload':
                 return $this->directoryUploadAction($request, $directoryPath);
-            case 'delete' :
+            case 'delete':
                 return $this->deleteDirectoryAction($request, $directoryPath);
-            case 'addpage' :
+            case 'addpage':
                 return $this->addPageAction($request, $directoryPath);
-            case 'addfolder' :
+            case 'addfolder':
                 return $this->addFolderAction($request, $directoryPath);
             default:
                 return $this->listDirectoryAction($request, $directoryPath);
@@ -67,17 +67,17 @@ class WikiController extends BaseController
         $action = $request->query->get('action', 'show');
         //TODO: Refactor
         switch ($action) {
-            case 'edit' :
+            case 'edit':
                 return $this->editPageAction($request, $filePath);
-            case 'delete' :
+            case 'delete':
                 return $this->deleteFileAction($request, $filePath);
             case 'holdlock':
                 return $this->holdLockAction($request, $filePath);
-            case 'rename' :
+            case 'rename':
                 return $this->renameFileAction($request, $filePath);
-            case 'history' :
+            case 'history':
                 return $this->fileHistoryAction($request, $filePath);
-            case 'preview_markdown' :
+            case 'preview_markdown':
                 return $this->previewMarkdownAction($request, $filePath);
             default:
                 return $this->showFileAction($request, $filePath);
@@ -112,7 +112,6 @@ class WikiController extends BaseController
         try {
             $file = $this->getWikiService()->getFile($path);
         } catch (FileNotFoundException $e) {
-
             if (null === $this->getUser()) {
                 throw new NotFoundHttpException('This page does not exist');
             }
@@ -263,7 +262,6 @@ class WikiController extends BaseController
         }
 
         if ($form->isValid()) {
-
             $content = $form->get('content')->getData();
             $commitMessage = $form->get('commitMessage')->getData();
             try {
@@ -280,7 +278,6 @@ class WikiController extends BaseController
                 throw $e;
             }
         } else {
-
             $content = null;
             if ($this->getWikiService()->exists($path)) {
                 $content = $this->getWikiService()->getContent($path);
@@ -338,7 +335,6 @@ class WikiController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-
             if ($form->isValid()) {
                 $newPath = FilePath::parse($form->get('newpath')->getData());
                 $this->getWikiService()->renameFile(
@@ -466,7 +462,6 @@ class WikiController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-
             if ($form->isValid()) {
                 /* @var \Symfony\Component\HttpFoundation\File\UploadedFile $uploadedFile */
                 $uploadedFile = $form->get('uploadedFile')->getData();
@@ -549,7 +544,6 @@ class WikiController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-
             if ($form->isValid()) {
                 $title = $form->get('title')->getData();
                 $filename = $form->get('filename')->getData() . '.md';
@@ -598,7 +592,6 @@ class WikiController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-
             if ($form->isValid()) {
                 $title = $form->get('title')->getData();
                 $dirname = $form->get('dirname')->getData();

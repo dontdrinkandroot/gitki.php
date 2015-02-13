@@ -29,5 +29,4 @@ class Configuration extends BaseConfigruation
         ->end();
         // @formatter:on
     }
-
 }

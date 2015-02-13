@@ -3,7 +3,6 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Model;
 
-
 class CommitMetadata
 {
 
@@ -120,5 +119,4 @@ class CommitMetadata
     {
         return $this->timeStamp;
     }
-
-} 
+}
