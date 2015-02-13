@@ -1,5 +1,6 @@
 /web/bundles/
 /app/config/parameters.yml
+/app/config/gitki.yml
 /var/bootstrap.php.cache
 /var/cache/*
 /var/logs/*
@@ -14,6 +15,7 @@
 !bin/update-prod
 !bin/update-design
 !bin/install-prod
+!bin/set-permissions
 /composer.phar
 /.idea/
 # /composer.lock

@@ -89,7 +89,7 @@ function get_error_message(Requirement $requirement, $lineSize)
 
 function echo_title($title, $style = null)
 {
-    $style = $style ? : 'title';
+    $style = $style ?: 'title';
 
     echo PHP_EOL;
     echo_style($style, $title . PHP_EOL);
