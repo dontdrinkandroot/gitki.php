@@ -3,6 +3,7 @@
 
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Command;
 
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
@@ -20,6 +21,7 @@ class DeleteUserCommand extends GitkiUsersCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $userManager = $this->getUserManager();
+        /** @var User[] $users */
         $users = $userManager->findUsers();
         $questionHelper = $this->getQuestionHelper();
 

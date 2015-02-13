@@ -3,7 +3,7 @@
 
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Event;
 
-
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
 use Net\Dontdrinkandroot\Utils\Path\FilePath;
 use Symfony\Component\EventDispatcher\Event;
@@ -15,18 +15,22 @@ class MarkdownDocumentSavedEvent extends Event
      * @var FilePath
      */
     private $path;
-    private $email;
     private $time;
     private $document;
     private $commitMessage;
 
-    public function __construct(FilePath $path, $email, $time, ParsedMarkdownDocument $document, $commitMessage)
+    /**
+     * @var User
+     */
+    private $user;
+
+    public function __construct(FilePath $path, User $user, $time, ParsedMarkdownDocument $document, $commitMessage)
     {
         $this->path = $path;
-        $this->email = $email;
         $this->time = $time;
         $this->document = $document;
         $this->commitMessage = $commitMessage;
+        $this->user = $user;
     }
 
     public function setDocument($content)
@@ -37,16 +41,6 @@ class MarkdownDocumentSavedEvent extends Event
     public function getDocument()
     {
         return $this->document;
-    }
-
-    public function setEmail($login)
-    {
-        $this->email = $login;
-    }
-
-    public function getEmail()
-    {
-        return $this->email;
     }
 
     public function setPath($path)
@@ -75,5 +69,13 @@ class MarkdownDocumentSavedEvent extends Event
     public function getCommitMessage()
     {
         return $this->commitMessage;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 } 

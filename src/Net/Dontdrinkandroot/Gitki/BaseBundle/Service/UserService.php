@@ -35,14 +35,6 @@ interface UserService
     public function listUsers();
 
     /**
-     * @param User   $user
-     * @param string $newPassword
-     *
-     * @return User
-     */
-    public function changePassword(User $user, $newPassword);
-
-    /**
      * @param User $user
      *
      * @return mixed

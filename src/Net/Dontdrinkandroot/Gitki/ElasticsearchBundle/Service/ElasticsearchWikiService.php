@@ -6,6 +6,7 @@ namespace Net\Dontdrinkandroot\Gitki\ElasticsearchBundle\Service;
 
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\PageFile;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown\MarkdownService;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Service\WikiService;
 use Net\Dontdrinkandroot\Gitki\ElasticsearchBundle\Repository\ElasticsearchRepository;
 use Net\Dontdrinkandroot\Utils\Path\DirectoryPath;
@@ -22,7 +23,7 @@ class ElasticsearchWikiService extends WikiService
 
     public function __construct(
         GitRepository $gitRepository,
-        \Net\Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown\MarkdownService $markdownService,
+        MarkdownService $markdownService,
         EventDispatcherInterface $eventDispatcher,
         ElasticsearchRepository $elasticsearchRepository
     ) {

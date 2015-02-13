@@ -3,6 +3,7 @@
 
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Command;
 
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -19,6 +20,7 @@ class ListUsersCommand extends GitkiUsersCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $userManager = $this->getUserManager();
+        /** @var User[] $users */
         $users = $userManager->findUsers();
 
         $this->printUserTable($output, $users);

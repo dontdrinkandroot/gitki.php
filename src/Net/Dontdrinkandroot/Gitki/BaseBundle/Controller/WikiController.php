@@ -35,6 +35,7 @@ class WikiController extends BaseController
         $directoryPath = DirectoryPath::parse($path);
 
         $action = $request->query->get('action', 'list');
+        //TODO: Refactor
         switch ($action) {
             case 'index' :
                 return $this->directoryIndexAction($request, $directoryPath);
@@ -64,6 +65,7 @@ class WikiController extends BaseController
         $filePath = FilePath::parse($path);
 
         $action = $request->query->get('action', 'show');
+        //TODO: Refactor
         switch ($action) {
             case 'edit' :
                 return $this->editPageAction($request, $filePath);

@@ -4,6 +4,7 @@
 namespace Net\Dontdrinkandroot\Gitki\BaseBundle\Service;
 
 use GitWrapper\GitException;
+use Net\Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentDeletedEvent;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentSavedEvent;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Exception\DirectoryNotEmptyException;
@@ -16,7 +17,6 @@ use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\Directory;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\PageFile;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
-use Net\Dontdrinkandroot\Gitki\BaseBundle\Security\User;
 use Net\Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown\MarkdownService;
 use Net\Dontdrinkandroot\Utils\Path\DirectoryPath;
 use Net\Dontdrinkandroot\Utils\Path\FilePath;
@@ -166,8 +166,7 @@ class WikiService
 
         $this->eventDispatcher->dispatch(
             'ddr.gitki.wiki.markdown_document.saved',
-            new MarkdownDocumentSavedEvent($relativeFilePath, $user->getEmail(), time(
-            ), $parsedMarkdownDocument, $commitMessage)
+            new MarkdownDocumentSavedEvent($relativeFilePath, $user, time(), $parsedMarkdownDocument, $commitMessage)
         );
     }
 
@@ -209,7 +208,7 @@ class WikiService
         if (StringUtils::endsWith($relativeFilePath->getName(), '.md')) {
             $this->eventDispatcher->dispatch(
                 'ddr.gitki.wiki.markdown_document.deleted',
-                new MarkdownDocumentDeletedEvent($relativeFilePath, $user->getEmail(), time(), $commitMessage)
+                new MarkdownDocumentDeletedEvent($relativeFilePath, $user, time(), $commitMessage)
             );
         }
     }
@@ -270,7 +269,7 @@ class WikiService
         if (StringUtils::endsWith($relativeOldFilePath->getName(), '.md')) {
             $this->eventDispatcher->dispatch(
                 'ddr.gitki.wiki.markdown_document.deleted',
-                new MarkdownDocumentDeletedEvent($relativeOldFilePath, $user->getRealName(), time(), $commitMessage)
+                new MarkdownDocumentDeletedEvent($relativeOldFilePath, $user, time(), $commitMessage)
             );
         }
 
@@ -279,8 +278,13 @@ class WikiService
             $parsedMarkdownDocument = $this->markdownService->parse($relativeNewFilePath, $content);
             $this->eventDispatcher->dispatch(
                 'ddr.gitki.wiki.markdown_document.saved',
-                new MarkdownDocumentSavedEvent($relativeNewFilePath, $user->getEmail(), time(
-                ), $parsedMarkdownDocument, $commitMessage)
+                new MarkdownDocumentSavedEvent(
+                    $relativeNewFilePath,
+                    $user,
+                    time(),
+                    $parsedMarkdownDocument,
+                    $commitMessage
+                )
             );
         }
     }
@@ -584,7 +588,7 @@ class WikiService
      */
     protected function getAuthor(User $user)
     {
-        $name = $user->getRealName();
+        $name = $user->getUsername();
         $email = $user->getEmail();
 
         return "\"$name <$email>\"";

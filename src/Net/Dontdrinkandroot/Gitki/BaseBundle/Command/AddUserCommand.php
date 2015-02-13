@@ -22,6 +22,7 @@ class AddUserCommand extends GitkiUsersCommand
         $questionHelper = $this->getQuestionHelper();
         $userManager = $this->getUserManager();
 
+        /** @var User $user */
         $user = $userManager->createUser();
         $user->setEnabled(true);
 

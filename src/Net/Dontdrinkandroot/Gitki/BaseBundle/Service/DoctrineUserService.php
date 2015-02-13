@@ -102,40 +102,6 @@ class DoctrineUserService implements UserService
     }
 
     /**
-     * @param string $realName
-     * @param string $email
-     * @param array  $roles
-     *
-     * @return User
-     */
-    public function createUser($realName, $email, array $roles)
-    {
-        $user = new User();
-        $user->setRealName($realName);
-        $user->setEmail($email);
-        $user->setRoles($roles);
-
-        return $user;
-    }
-
-    /**
-     * @param User   $user
-     * @param string $newPassword
-     *
-     * @return User
-     */
-    public function changePassword(User $user, $newPassword)
-    {
-        $encoder = $this->encoderFactory->getEncoder($user);
-        $salt = bin2hex($this->secureRandom->nextBytes(16));
-        $encodedPassword = $encoder->encodePassword($newPassword, $salt);
-        $user->setSalt($salt);
-        $user->setPassword($encodedPassword);
-
-        return $user;
-    }
-
-    /**
      * @param User $user
      *
      * @return mixed
