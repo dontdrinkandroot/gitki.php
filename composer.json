@@ -24,7 +24,6 @@
         "braincrafted/bootstrap-bundle": "~2.0",
         "cpliakas/git-wrapper": "~1.0",
         "hwi/oauth-bundle": "0.3.*",
-        "knplabs/github-api": "1.2.*",
         "dontdrinkandroot/objective-parsedown": "0.2.*",
         "dontdrinkandroot/utils": "0.1.*",
         "elasticsearch/elasticsearch": "~1.0",
