@@ -1,0 +1,3 @@
+parameters:
+    secret: ThisTokenIsNotSoSecretChangeIt
+    repository_path: /tmp/gitkirepo/

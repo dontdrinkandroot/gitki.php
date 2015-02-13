@@ -1,0 +1,15 @@
+language: php
+
+php:
+    - 5.5
+
+before_script:
+    - git config --global user.email "gitki@dontdrinkandroot.net"
+    - git config --global user.name "GitKi"
+    - cp app/config/parameters.yml.test app/config/parameters.yml
+    - composer install --dev
+    - bin/console doctrine:schema:create
+
+script:
+    - bin/phpcs --standard=psr2 --ignore=*.js,*.css ./src
+    - bin/phpunit -c app/
