@@ -1,0 +1,22 @@
+Dontdrinkandroot\Gitki\BaseBundle\Entity\User:
+    type: entity
+    table: "User"
+    repositoryClass: Dontdrinkandroot\Gitki\BaseBundle\Repository\DoctrineUserRepository
+    id:
+        id:
+            type: bigint
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        googleId:
+            type: string
+            column: google_id
+            length: 255
+            nullable: true
+        githubId:
+            type: string
+            column: github_id
+            length: 255
+            nullable: true
+    lifecycleCallbacks: {  }

@@ -1,3 +1,3 @@
 #!/bin/bash
-lessc -x src/Net/Dontdrinkandroot/Gitki/BaseBundle/Resources/public/css/style.less > src/Net/Dontdrinkandroot/Gitki/BaseBundle/Resources/public/css/style.css
-lessc -x src/Net/Dontdrinkandroot/Gitki/BaseBundle/Resources/public/css/print.less > src/Net/Dontdrinkandroot/Gitki/BaseBundle/Resources/public/css/print.css
+lessc -x src/Dontdrinkandroot/Gitki/BaseBundle/Resources/public/css/style.less > src/Dontdrinkandroot/Gitki/BaseBundle/Resources/public/css/style.css
+lessc -x src/Dontdrinkandroot/Gitki/BaseBundle/Resources/public/css/print.less > src/Dontdrinkandroot/Gitki/BaseBundle/Resources/public/css/print.css

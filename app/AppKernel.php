@@ -15,11 +15,11 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-            new \Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
+            new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
+            new FOS\UserBundle\FOSUserBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
-            new Net\Dontdrinkandroot\Gitki\BaseBundle\DdrGitkiBaseBundle(),
-            //new Net\Dontdrinkandroot\Gitki\ElasticsearchBundle\DdrGitkiElasticsearchBundle()
-            new \FOS\UserBundle\FOSUserBundle(),
+            //new Dontdrinkandroot\Gitki\ElasticsearchBundle\DdrGitkiElasticsearchBundle()
+            new Dontdrinkandroot\Gitki\BaseBundle\DdrGitkiBaseBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

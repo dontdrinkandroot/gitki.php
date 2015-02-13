@@ -135,8 +135,7 @@ class PhpIniRequirement extends Requirement
         $testMessage = null,
         $helpHtml = null,
         $helpText = null,
-        $optional = false
-    )
+        $optional = false)
     {
         $cfgValue = ini_get($cfgName);
 
