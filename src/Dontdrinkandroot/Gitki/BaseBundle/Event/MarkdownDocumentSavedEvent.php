@@ -5,7 +5,7 @@ namespace Dontdrinkandroot\Gitki\BaseBundle\Event;
 
 use Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
 use Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
-use Net\Dontdrinkandroot\Utils\Path\FilePath;
+use Dontdrinkandroot\Path\FilePath;
 use Symfony\Component\EventDispatcher\Event;
 
 class MarkdownDocumentSavedEvent extends Event

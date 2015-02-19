@@ -70,7 +70,13 @@ class DdrGitkiExtension extends Extension implements PrependExtensionInterface
                 'type'      => 'google',
                 'client_id' => $googleConfig['client_id'],
                 'client_secret' => $googleConfig['secret'],
-                'scope'     => 'email profile'
+                'scope'     => 'email profile',
+                'options'   => [
+                    'access_type'     => 'online',
+                    'approval_prompt' => 'auto',
+                    'display'         => 'page',
+                    'login_hint'      => 'email address'
+                ]
             );
             $securityConfig['firewalls']['secured_area']['oauth']['resource_owners']['google'] = '/login/check-google';
         }

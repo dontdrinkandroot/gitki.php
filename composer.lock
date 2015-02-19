@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8c71c0d12bf69f0d1a146575247f409d",
+    "hash": "bffd9d1a51d10f98d5f1b9ef4f7ebe7a",
     "packages": [
         {
             "name": "braincrafted/bootstrap-bundle",
@@ -293,7 +293,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jonathan Wage",
+                    "name": "Jonathan H. Wage",
                     "email": "jonwage@gmail.com",
                     "homepage": "http://www.jwage.com/",
                     "role": "Creator"
@@ -390,7 +390,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "https://github.com/schmittjoh",
+                    "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -834,148 +834,32 @@
             "time": "2014-12-16 13:45:01"
         },
         {
-            "name": "dontdrinkandroot/objective-markdown-model",
-            "version": "v0.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dontdrinkandroot/objective-markdown-model.php.git",
-                "reference": "eed634771e175b25272b65fbbdcff07b97688915"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dontdrinkandroot/objective-markdown-model.php/zipball/eed634771e175b25272b65fbbdcff07b97688915",
-                "reference": "eed634771e175b25272b65fbbdcff07b97688915",
-                "shasum": ""
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Philip Washington Sorst",
-                    "email": "philip@sorst.net",
-                    "homepage": "http://sorst.net"
-                }
-            ],
-            "time": "2014-08-21 08:53:47"
-        },
-        {
-            "name": "dontdrinkandroot/objective-markdown-renderer-html",
-            "version": "v0.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dontdrinkandroot/objective-markdown-renderer-html.php.git",
-                "reference": "33f689c82572faf43a93582b67208e4647608229"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dontdrinkandroot/objective-markdown-renderer-html.php/zipball/33f689c82572faf43a93582b67208e4647608229",
-                "reference": "33f689c82572faf43a93582b67208e4647608229",
-                "shasum": ""
-            },
-            "require": {
-                "dontdrinkandroot/objective-markdown-model": "0.1.*"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Philip Washington Sorst",
-                    "email": "philip@sorst.net",
-                    "homepage": "http://sorst.net"
-                }
-            ],
-            "time": "2014-08-21 09:04:52"
-        },
-        {
-            "name": "dontdrinkandroot/objective-parsedown",
-            "version": "v0.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dontdrinkandroot/objective-parsedown.php.git",
-                "reference": "670a18180f26f7b5ced428f25701a0f8efedfe18"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dontdrinkandroot/objective-parsedown.php/zipball/670a18180f26f7b5ced428f25701a0f8efedfe18",
-                "reference": "670a18180f26f7b5ced428f25701a0f8efedfe18",
-                "shasum": ""
-            },
-            "require": {
-                "dontdrinkandroot/objective-markdown-model": "0.1.*",
-                "dontdrinkandroot/objective-markdown-renderer-html": "0.1.*"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.1.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Emanuil Rusev",
-                    "email": "hello@erusev.com",
-                    "homepage": "http://erusev.com"
-                },
-                {
-                    "name": "Philip Washington Sorst",
-                    "email": "philip@sorst.net",
-                    "homepage": "http://sorst.net"
-                }
-            ],
-            "description": "Object Oriented Parser for Markdown.",
-            "keywords": [
-                "markdown",
-                "parser"
-            ],
-            "time": "2014-08-21 10:28:48"
-        },
-        {
             "name": "dontdrinkandroot/utils",
-            "version": "v0.1.0",
+            "version": "v0.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dontdrinkandroot/utils.php.git",
-                "reference": "9ca8623bc6edcee4ca9144e21b411df788bfd734"
+                "reference": "59678deeaa031a5ede634faac1700612a6baa565"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dontdrinkandroot/utils.php/zipball/9ca8623bc6edcee4ca9144e21b411df788bfd734",
-                "reference": "9ca8623bc6edcee4ca9144e21b411df788bfd734",
+                "url": "https://api.github.com/repos/dontdrinkandroot/utils.php/zipball/59678deeaa031a5ede634faac1700612a6baa565",
+                "reference": "59678deeaa031a5ede634faac1700612a6baa565",
                 "shasum": ""
             },
+            "require": {
+                "php": ">=5.5"
+            },
             "require-dev": {
-                "phpunit/phpunit": "~4.0"
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "~2.0"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.2.x-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "": "src/"
@@ -997,7 +881,7 @@
                 "php",
                 "utils"
             ],
-            "time": "2014-08-13 08:52:24"
+            "time": "2015-02-08 22:52:07"
         },
         {
             "name": "elasticsearch/elasticsearch",
@@ -1553,6 +1437,65 @@
             "time": "2014-09-15 12:42:36"
         },
         {
+            "name": "league/commonmark",
+            "version": "0.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/commonmark.git",
+                "reference": "5f5137889b2aec36f8a1009ebe8673dac45f004e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/5f5137889b2aec36f8a1009ebe8673dac45f004e",
+                "reference": "5f5137889b2aec36f8a1009ebe8673dac45f004e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.3.3"
+            },
+            "replace": {
+                "colinodell/commonmark-php": "*"
+            },
+            "require-dev": {
+                "erusev/parsedown": "~1.0",
+                "jgm/commonmark": "0.17",
+                "michelf/php-markdown": "~1.4",
+                "phpunit/phpunit": "~4.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.7-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\CommonMark\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Colin O'Dell",
+                    "email": "colinodell@gmail.com",
+                    "homepage": "http://www.colinodell.com",
+                    "role": "Lead Developer"
+                }
+            ],
+            "description": "Markdown parser for PHP based on the CommonMark spec",
+            "homepage": "https://github.com/thephpleague/commonmark",
+            "keywords": [
+                "commonmark",
+                "markdown",
+                "parser"
+            ],
+            "time": "2015-02-16 23:59:27"
+        },
+        {
             "name": "monolog/monolog",
             "version": "1.12.0",
             "source": {
@@ -1629,12 +1572,12 @@
             "version": "v2.1.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/silexphp/Pimple.git",
+                "url": "https://github.com/fabpot/Pimple.git",
                 "reference": "ea22fb2880faf7b7b0e17c9809c6fe25b071fd76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Pimple/zipball/ea22fb2880faf7b7b0e17c9809c6fe25b071fd76",
+                "url": "https://api.github.com/repos/fabpot/Pimple/zipball/ea22fb2880faf7b7b0e17c9809c6fe25b071fd76",
                 "reference": "ea22fb2880faf7b7b0e17c9809c6fe25b071fd76",
                 "shasum": ""
             },

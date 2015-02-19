@@ -6,7 +6,7 @@ namespace Dontdrinkandroot\Gitki\BaseBundle\Model;
 use Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\Directory;
 use Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\File;
 use Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\PageFile;
-use Net\Dontdrinkandroot\Utils\Path\DirectoryPath;
+use Dontdrinkandroot\Path\DirectoryPath;
 
 class DirectoryListing
 {

@@ -5,10 +5,10 @@ namespace Dontdrinkandroot\Gitki\BaseBundle\Repository;
 
 use Dontdrinkandroot\Gitki\BaseBundle\Model\CommitMetadata;
 use GitWrapper\GitWrapper;
-use Net\Dontdrinkandroot\Utils\Path\DirectoryPath;
-use Net\Dontdrinkandroot\Utils\Path\FilePath;
-use Net\Dontdrinkandroot\Utils\Path\Path;
-use Net\Dontdrinkandroot\Utils\StringUtils;
+use Dontdrinkandroot\Path\DirectoryPath;
+use Dontdrinkandroot\Path\FilePath;
+use Dontdrinkandroot\Path\Path;
+use Dontdrinkandroot\Utils\StringUtils;
 use Symfony\Component\Filesystem\Filesystem;
 
 class GitRepository

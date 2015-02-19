@@ -3,7 +3,7 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Model;
 
-use Net\Dontdrinkandroot\Utils\Path\Path;
+use Dontdrinkandroot\Path\Path;
 
 class ParsedMarkdownDocument
 {
@@ -15,7 +15,7 @@ class ParsedMarkdownDocument
     private $title;
 
     /**
-     * @var Path[]
+     * @var \Dontdrinkandroot\Path\Path[]
      */
     private $linkedPaths;
 

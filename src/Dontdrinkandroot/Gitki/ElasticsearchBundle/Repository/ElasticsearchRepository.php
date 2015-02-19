@@ -8,7 +8,7 @@ use Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentSavedEvent;
 use Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
 use Dontdrinkandroot\Gitki\ElasticsearchBundle\Model\MarkdownSearchResult;
 use Elasticsearch\Client;
-use Net\Dontdrinkandroot\Utils\Path\FilePath;
+use Dontdrinkandroot\Path\FilePath;
 
 class ElasticsearchRepository
 {

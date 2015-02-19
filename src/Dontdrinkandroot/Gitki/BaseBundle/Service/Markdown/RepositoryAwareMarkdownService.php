@@ -5,9 +5,12 @@ namespace Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown;
 
 use Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
 use Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
-use Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown\HtmlRenderer\RepositoryAwareHtmlRenderer;
-use Net\Dontdrinkandroot\ObjectiveParsedown\Parser\Parser;
-use Net\Dontdrinkandroot\Utils\Path\FilePath;
+use Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown\Renderer\RepositoryAwareLinkRenderer;
+use Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown\Renderer\TocBuildingHeaderRenderer;
+use Dontdrinkandroot\Path\FilePath;
+use League\CommonMark\DocParser;
+use League\CommonMark\Environment;
+use League\CommonMark\HtmlRenderer;
 
 class RepositoryAwareMarkdownService implements MarkdownService
 {
@@ -33,15 +36,22 @@ class RepositoryAwareMarkdownService implements MarkdownService
      */
     public function parse(FilePath $path, $content)
     {
-        $parser = new Parser();
-        $markdownDocument = $parser->parse($content);
 
-        $renderer = new RepositoryAwareHtmlRenderer($path, $this->repository);
-        $html = $renderer->render($markdownDocument);
+        $linkRenderer = new RepositoryAwareLinkRenderer($path, $this->repository);
+        $headerRenderer = new TocBuildingHeaderRenderer();
 
-        $linkedPaths = $renderer->getLinkHandler()->getLinkedPaths();
-        $title = $renderer->getHeaderHandler()->getTitle();
-        $toc = $renderer->getHeaderHandler()->getToc();
+        $environment = Environment::createCommonMarkEnvironment();
+        $environment->addInlineRenderer('League\CommonMark\Inline\Element\Link', $linkRenderer);
+        $environment->addBlockRenderer('League\CommonMark\Block\Element\Header', $headerRenderer);
+
+        $parser = new DocParser($environment);
+        $htmlRenderer = new HtmlRenderer($environment);
+        $documentAST = $parser->parse($content);
+        $html = $htmlRenderer->renderBlock($documentAST);
+
+        $linkedPaths = $linkRenderer->getLinkedPaths();
+        $title = $headerRenderer->getTitle();
+        $toc = $headerRenderer->getToc();
 
         $result = new ParsedMarkdownDocument();
         $result->setSource($content);

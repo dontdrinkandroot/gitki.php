@@ -5,9 +5,9 @@ namespace Dontdrinkandroot\Gitki\BaseBundle\Controller;
 
 use Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
 use GitWrapper\GitException;
-use Net\Dontdrinkandroot\Utils\Path\DirectoryPath;
-use Net\Dontdrinkandroot\Utils\Path\FilePath;
-use Net\Dontdrinkandroot\Utils\StringUtils;
+use Dontdrinkandroot\Path\DirectoryPath;
+use Dontdrinkandroot\Path\FilePath;
+use Dontdrinkandroot\Utils\StringUtils;
 use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\File;

@@ -8,7 +8,7 @@ use Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
 use Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown\MarkdownService;
 use Dontdrinkandroot\Gitki\BaseBundle\Service\WikiService;
 use Dontdrinkandroot\Gitki\ElasticsearchBundle\Repository\ElasticsearchRepository;
-use Net\Dontdrinkandroot\Utils\Path\DirectoryPath;
+use Dontdrinkandroot\Path\DirectoryPath;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Finder\SplFileInfo;
 

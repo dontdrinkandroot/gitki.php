@@ -3,7 +3,7 @@
 
 namespace Dontdrinkandroot\Gitki\ElasticsearchBundle\Model;
 
-use Net\Dontdrinkandroot\Utils\Path\FilePath;
+use Dontdrinkandroot\Path\FilePath;
 
 class MarkdownSearchResult
 {
