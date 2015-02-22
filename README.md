@@ -2,6 +2,7 @@ Gitki
 =====
 
 [![Build Status](https://travis-ci.org/dontdrinkandroot/gitki.php.svg?branch=master)](https://travis-ci.org/dontdrinkandroot/gitki.php)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/dontdrinkandroot/gitki.php/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/dontdrinkandroot/gitki.php/?branch=master)
 
 Git backed Markdown wiki.
 

@@ -253,6 +253,7 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
             $userChoices,
             null
         );
+        /** @var User $user */
         $user = $questionHelper->ask($input, $output, $idQuestion);
 
         return $user;
