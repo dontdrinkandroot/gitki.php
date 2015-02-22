@@ -61,6 +61,8 @@ braincrafted_bootstrap:
 
 hwi_oauth:
     firewall_name: secured_area
+    fosub:
+        properties: ~
 
 fos_user:
     db_driver: orm

@@ -49,8 +49,10 @@
 
                             </form>
 
-                            <hr/>
+                        {% endif %}
 
+                        {% if hwi_oauth_resource_owners() and ddr_gitki_form_login_enabled %}
+                            <hr />
                         {% endif %}
 
                         <div class="row">
