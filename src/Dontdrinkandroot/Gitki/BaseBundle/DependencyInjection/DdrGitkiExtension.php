@@ -12,7 +12,7 @@ class DdrGitkiExtension extends Extension implements PrependExtensionInterface
 {
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getAlias()
     {
@@ -20,7 +20,7 @@ class DdrGitkiExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function prepend(ContainerBuilder $container)
     {
@@ -29,14 +29,28 @@ class DdrGitkiExtension extends Extension implements PrependExtensionInterface
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
 
-        $hwiOauthConfig = array('resource_owners' => array());
-        $securityConfig = ['firewalls' => ['secured_area' => array('oauth' => array('resource_owners' => array()))]];
-        $twigConfig = array('globals' => array());
+        $hwiOauthConfig = [
+            'resource_owners' => []
+        ];
 
-        $twigConfig['globals']['ddr_gitki_name'] = $config['name'];
-        $twigConfig['globals']['ddr_gitki_show_toc'] = $config['twig']['show_toc'];
-        $twigConfig['globals']['ddr_gitki_toc_max_level'] = $config['twig']['toc_max_level'];
-        $twigConfig['globals']['ddr_gitki_show_breadcrumbs'] = $config['twig']['show_breadcrumbs'];
+        $securityConfig = [
+            'firewalls' => [
+                'secured_area' => [
+                    'oauth' => [
+                        'resource_owners' => []
+                    ]
+                ]
+            ]
+        ];
+
+        $twigConfig = [
+            'globals' => [
+                'ddr_gitki_name'             => $config['name'],
+                'ddr_gitki_show_toc'         => $config['twig']['show_toc'],
+                'ddr_gitki_toc_max_level'    => $config['twig']['toc_max_level'],
+                'ddr_gitki_show_breadcrumbs' => $config['twig']['show_breadcrumbs']
+            ]
+        ];
 
         if (isset($config['authentication']['oauth']['default_provider'])) {
             $securityConfig['firewalls']['secured_area']['oauth']['login_path'] =
@@ -52,32 +66,32 @@ class DdrGitkiExtension extends Extension implements PrependExtensionInterface
         $twigConfig['globals']['ddr_gitki_form_login_enabled'] = $formLoginEnabled;
 
         if (isset($config['authentication']['oauth']['providers']['github'])) {
-            $googleConfig = $config['authentication']['oauth']['providers']['github'];
+            $githubConfig = $config['authentication']['oauth']['providers']['github'];
             $hwiOauthConfig['fosub']['properties']['github'] = 'githubId';
-            $hwiOauthConfig['resource_owners']['github'] = array(
-                'type'      => 'github',
-                'client_id' => $googleConfig['client_id'],
-                'client_secret' => $googleConfig['secret'],
-                'scope'     => 'user:email'
-            );
+            $hwiOauthConfig['resource_owners']['github'] = [
+                'type'          => 'github',
+                'client_id'     => $githubConfig['client_id'],
+                'client_secret' => $githubConfig['secret'],
+                'scope'         => 'user:email'
+            ];
             $securityConfig['firewalls']['secured_area']['oauth']['resource_owners']['github'] = '/login/check-github';
         }
 
         if (isset($config['authentication']['oauth']['providers']['google'])) {
             $googleConfig = $config['authentication']['oauth']['providers']['google'];
             $hwiOauthConfig['fosub']['properties']['google'] = 'googleId';
-            $hwiOauthConfig['resource_owners']['google'] = array(
-                'type'      => 'google',
-                'client_id' => $googleConfig['client_id'],
+            $hwiOauthConfig['resource_owners']['google'] = [
+                'type'          => 'google',
+                'client_id'     => $googleConfig['client_id'],
                 'client_secret' => $googleConfig['secret'],
-                'scope'     => 'email profile',
-                'options'   => [
+                'scope'         => 'email profile',
+                'options'       => [
                     'access_type'     => 'online',
                     'approval_prompt' => 'auto',
                     'display'         => 'page',
                     'login_hint'      => 'email address'
                 ]
-            );
+            ];
             $securityConfig['firewalls']['secured_area']['oauth']['resource_owners']['google'] = '/login/check-google';
         }
 
@@ -87,7 +101,7 @@ class DdrGitkiExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {

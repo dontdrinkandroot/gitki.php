@@ -1,7 +1,7 @@
 security:
     providers:
         fos_userbundle:
-            id: fos_user.user_provider.username
+            id: fos_user.user_provider.username_email
 
     encoders:
         Dontdrinkandroot\Gitki\BaseBundle\Entity\User: sha512
