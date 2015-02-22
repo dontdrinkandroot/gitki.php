@@ -1,6 +1,8 @@
 Gitki
 =====
 
+[![Build Status](https://travis-ci.org/dontdrinkandroot/gitki.php.svg?branch=master)](https://travis-ci.org/dontdrinkandroot/gitki.php)
+
 Git backed Markdown wiki.
 
 This software is currently in an alpha state, use it at your own risk. It is working though.
