@@ -11,5 +11,4 @@ before_script:
     - bin/console doctrine:schema:create
 
 script:
-    - bin/phpcs --standard=psr2 --ignore=*.js,*.css ./src
     - bin/phpunit -c app/
