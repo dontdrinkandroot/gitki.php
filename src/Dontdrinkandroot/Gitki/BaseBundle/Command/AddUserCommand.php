@@ -3,7 +3,6 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Command;
 
-use Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
@@ -22,11 +21,7 @@ class AddUserCommand extends GitkiUsersCommand
         $questionHelper = $this->getQuestionHelper();
         $userManager = $this->getUserManager();
 
-        /** @var User $user */
-        $user = $userManager->createUser();
-        $user->setEnabled(true);
-
-        $user = $this->editUser($input, $output, $user, $questionHelper, $userManager);
+        $user = $this->createUser($input, $output);
 
         $this->printUser($user, $output);
 

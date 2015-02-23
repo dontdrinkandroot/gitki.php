@@ -40,8 +40,9 @@ class InstallCommand extends GitkiContainerAwareCommand
 
         $this->doConfigSteps($input, $output);
 
-        var_dump($this->gitkiConfig);
-        var_dump(Yaml::dump($this->gitkiConfig, 10));
+// TODO: continue
+//        var_dump($this->gitkiConfig);
+//        var_dump(Yaml::dump($this->gitkiConfig, 10));
     }
 
     protected function doConfigSteps(InputInterface $input, OutputInterface $output)

@@ -31,18 +31,20 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
      * @param InputInterface  $input
      * @param OutputInterface $output
      * @param User            $user
-     * @param QuestionHelper  $questionHelper
-     * @param UserManagerInterface $userManager
      *
      * @return mixed
      */
-    protected function editUser(
+    protected function createUser(
         InputInterface $input,
-        OutputInterface $output,
-        User $user,
-        QuestionHelper $questionHelper,
-        UserManagerInterface $userManager
+        OutputInterface $output
     ) {
+        $userManager = $this->getUserManager();
+        $questionHelper = $this->getQuestionHelper();
+
+        /** @var User $user */
+        $user = $userManager->createUser();
+        $user->setEnabled(true);
+
         $user = $this->editRealName($input, $output, $user, $questionHelper);
         $user = $this->editEmail($input, $output, $user, $questionHelper);
         $user = $this->editRole($input, $output, $user, $questionHelper);
@@ -237,13 +239,15 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
     /**
      * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param User[]          $users
      * @param QuestionHelper  $questionHelper
      *
      * @return User
      */
-    protected function selectUser(InputInterface $input, OutputInterface $output, $users, $questionHelper)
+    protected function selectUser(InputInterface $input, OutputInterface $output)
     {
+        $questionHelper = $this->getQuestionHelper();
+        $users = $this->findUsers();
+
         $userChoices = array();
         foreach ($users as $user) {
             $userChoices[$user->getId()] = $user;
@@ -257,5 +261,17 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
         $user = $questionHelper->ask($input, $output, $idQuestion);
 
         return $user;
+    }
+
+    /**
+     * @return User[]
+     */
+    protected function findUsers()
+    {
+        $userManager = $this->getUserManager();
+
+        /** @var User[] $users */
+
+        return $userManager->findUsers();
     }
 }

@@ -3,7 +3,6 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Command;
 
-use Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
@@ -13,6 +12,7 @@ class EditUserCommand extends GitkiUsersCommand
 {
 
     const FIELD_PASSWORD = 'Password';
+    const FIELD_REAL_NAME = 'Real Name';
 
     protected function configure()
     {
@@ -24,13 +24,19 @@ class EditUserCommand extends GitkiUsersCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $userManager = $this->getUserManager();
-        /** @var User[] $users */
-        $users = $userManager->findUsers();
         $questionHelper = $this->getQuestionHelper();
 
-        $user = $this->selectUser($input, $output, $users, $questionHelper);
+        $user = $this->selectUser($input, $output);
 
-        $fields = ['Real Name', 'Email', 'Role', self::FIELD_PASSWORD, 'Github Login', 'Google Login', 'Done'];
+        $fields = [
+            self::FIELD_REAL_NAME,
+            'Email',
+            'Role',
+            self::FIELD_PASSWORD,
+            'Github Login',
+            'Google Login',
+            'Done'
+        ];
 
         $fieldQuestion = new ChoiceQuestion(
             'Select Field: ',
@@ -40,7 +46,7 @@ class EditUserCommand extends GitkiUsersCommand
             $this->printUser($user, $output);
             $field = $questionHelper->ask($input, $output, $fieldQuestion);
             switch ($field) {
-                case 'Real Name':
+                case self::FIELD_REAL_NAME:
                     $user = $this->editRealName($input, $output, $user, $questionHelper);
                     break;
                 case 'Email':
