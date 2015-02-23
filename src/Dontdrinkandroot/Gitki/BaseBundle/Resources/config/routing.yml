@@ -22,12 +22,20 @@ login_manual:
     path:     /login/manual
     defaults: { _controller: DdrGitkiBaseBundle:Default:login }
 
+fos_user_change_password:
+    resource: '@FOSUserBundle/Resources/config/routing/change_password.xml'
+    prefix: /user
+
+fos_user_profile:
+    resource: '@FOSUserBundle/Resources/config/routing/profile.xml'
+    prefix: /user/profile
+
 logout:
     path:   /user/logout
 
-ddr_gitki_user_profile:
-    path: /user/profile
-    defaults: { _controller: DdrGitkiBaseBundle:User:profile }
+#ddr_gitki_user_profile:
+#    path: /user/profile
+#    defaults: { _controller: DdrGitkiBaseBundle:User:profile }
 
 ddr_gitki_about_markdownsyntax:
     path:     /about/markdownsyntax
