@@ -4,11 +4,11 @@
 namespace Dontdrinkandroot\Gitki\BaseBundle\Repository;
 
 use Dontdrinkandroot\Gitki\BaseBundle\Model\CommitMetadata;
-use GitWrapper\GitWrapper;
 use Dontdrinkandroot\Path\DirectoryPath;
 use Dontdrinkandroot\Path\FilePath;
 use Dontdrinkandroot\Path\Path;
 use Dontdrinkandroot\Utils\StringUtils;
+use GitWrapper\GitWrapper;
 use Symfony\Component\Filesystem\Filesystem;
 
 class GitRepository
@@ -42,32 +42,35 @@ class GitRepository
     }
 
     /**
-     * @param null|int $maxCount
+     * @param int|null $maxCount
      *
      * @return CommitMetadata[]
      */
     public function getWorkingCopyHistory($maxCount = null)
     {
-        $options = array('pretty' => "format:" . LogParser::getFormatString());
-        if (null !== $maxCount) {
-            $options['max-count'] = $maxCount;
-        }
-
-        $workingCopy = $this->getWorkingCopy();
-        $workingCopy->log($options);
-        $log = $workingCopy->getOutput();
-
-        return $this->parseLog($log);
+        return $this->getHistory(null, $maxCount);
     }
 
+    /**
+     * @param FilePath $path
+     * @param int|null $maxCount
+     *
+     * @return CommitMetadata[]
+     */
     public function getFileHistory(FilePath $path, $maxCount = null)
     {
+        return $this->getHistory($path, $maxCount);
+    }
 
-        $options = array('pretty' => "format:" . LogParser::getFormatString());
+    public function getHistory(FilePath $path = null, $maxCount = null)
+    {
+        $options = array('pretty' => 'format:' . LogParser::getFormatString());
         if (null !== $maxCount) {
             $options['max-count'] = $maxCount;
         }
-        $options['p'] = $path->toRelativeFileString();
+        if (null !== $path) {
+            $options['p'] = $path->toRelativeFileString();
+        }
 
         $workingCopy = $this->getWorkingCopy();
         $workingCopy->log($options);
@@ -97,45 +100,47 @@ class GitRepository
         return $metaData;
     }
 
+    /**
+     * @param FilePath[] $paths
+     */
+    public function add(array $paths)
+    {
+        $workingCopy = $this->getWorkingCopy();
+        foreach ($paths as $path) {
+            $workingCopy->add($path->toRelativeFileString());
+        }
+    }
 
     /**
-     * @param string $author
-     * @param string $commitMessage
+     * @param FilePath[] $paths
+     */
+    public function remove(array $paths)
+    {
+        $workingCopy = $this->getWorkingCopy();
+        foreach ($paths as $path) {
+            $workingCopy->rm($path->toRelativeFileString());
+        }
+    }
+
+    /**
+     * @param string              $author
+     * @param string              $commitMessage
      * @param FilePath[]|FilePath $paths
      */
     public function addAndCommit($author, $commitMessage, $paths)
     {
-        /** @var FilePath[] $realPaths */
-        $realPaths = array();
-
-        if (!is_array($paths)) {
-            $realPaths = array($paths);
-        } else {
-            $realPaths = $paths;
-        }
-
-        $workingCopy = $this->getWorkingCopy();
-        foreach ($realPaths as $path) {
-            $workingCopy->add($path->toRelativeFileString());
-        }
+        $this->add($this->toFilePathArray($paths));
         $this->commit($author, $commitMessage);
     }
 
+    /**
+     * @param string              $author
+     * @param string              $commitMessage
+     * @param FilePath[]|FilePath $paths
+     */
     public function removeAndCommit($author, $commitMessage, $paths)
     {
-        /** @var FilePath[] $realPaths */
-        $realPaths = array();
-
-        if (!is_array($paths)) {
-            $realPaths = array($paths);
-        } else {
-            $realPaths = $paths;
-        }
-
-        $workingCopy = $this->getWorkingCopy();
-        foreach ($realPaths as $path) {
-            $workingCopy->rm($path->toRelativeFileString());
-        }
+        $this->remove($this->toFilePathArray($paths));
         $this->commit($author, $commitMessage);
     }
 
@@ -143,7 +148,7 @@ class GitRepository
     {
         $this->getWorkingCopy()->commit(
             array(
-                'm' => $commitMessage,
+                'm'      => $commitMessage,
                 'author' => $author
             )
         );
@@ -210,7 +215,7 @@ class GitRepository
         return filemtime($this->getAbsolutePathString($relativePath));
     }
 
-    public function remove($relativePath)
+    public function removeFile($relativePath)
     {
         unlink($this->getAbsolutePathString($relativePath));
     }
@@ -229,5 +234,19 @@ class GitRepository
         $workingCopy = $git->workingCopy($this->repositoryPath);
 
         return $workingCopy;
+    }
+
+    /**
+     * @param FilePath[]|FilePath $paths
+     *
+     * @return FilePath[]
+     */
+    protected function toFilePathArray($paths)
+    {
+        if (!is_array($paths)) {
+            return [$paths];
+        } else {
+            return $paths;
+        }
     }
 }
