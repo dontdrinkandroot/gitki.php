@@ -17,11 +17,11 @@ use Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\PageFile;
 use Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
 use Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
 use Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown\MarkdownService;
-use GitWrapper\GitException;
 use Dontdrinkandroot\Path\DirectoryPath;
 use Dontdrinkandroot\Path\FilePath;
 use Dontdrinkandroot\Path\Path;
 use Dontdrinkandroot\Utils\StringUtils;
+use GitWrapper\GitException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -528,7 +528,7 @@ class WikiService
      */
     protected function removeLockFile(FilePath $lockPath)
     {
-        $this->gitRepository->remove($lockPath);
+        $this->gitRepository->removeFile($lockPath);
     }
 
     /**

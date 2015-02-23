@@ -45,3 +45,51 @@ services:
         calls:
             - [registerHandler, [@ddr.gitki.security.response_handler.github]]
             - [registerHandler, [@ddr.gitki.security.response_handler.google]]
+
+    ddr.gitki.service.action_handler.directory:
+        class: Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\Directory\DirectoryActionHandlerService
+
+    # DIRECTORY HANDLERS
+
+    ddr.gitki.service.action_handler.directory.list:
+        class: Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\Directory\ListDirectoryActionHandler
+        calls:
+            - [ setContainer,[ @service_container ] ]
+        tags:
+            -  { name: ddr.gitki.action_handler.directory }
+            -  { name: ddr.gitki.action_handler.directory, action: list }
+
+    ddr.gitki.service.action_handler.directory.index:
+        class: Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\Directory\DirectoryIndexActionHandler
+        calls:
+            - [ setContainer,[ @service_container ] ]
+        tags:
+            -  { name: ddr.gitki.action_handler.directory, action: index }
+
+    ddr.gitki.service.action_handler.directory.add_folder:
+        class: Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\Directory\AddFolderDirectoryActionHandler
+        calls:
+            - [ setContainer,[ @service_container ] ]
+        tags:
+            -  { name: ddr.gitki.action_handler.directory, action: addfolder }
+
+    ddr.gitki.service.action_handler.directory.delete:
+        class: Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\Directory\DeleteDirectoryActionHandler
+        calls:
+            - [ setContainer,[ @service_container ] ]
+        tags:
+            -  { name: ddr.gitki.action_handler.directory, action: delete }
+
+    ddr.gitki.service.action_handler.directory.upload_file:
+        class: Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\Directory\UploadFileActionHandler
+        calls:
+            - [ setContainer,[ @service_container ] ]
+        tags:
+            -  { name: ddr.gitki.action_handler.directory, action: upload }
+
+    ddr.gitki.service.action_handler.directory.add_page:
+        class: Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\Directory\AddPageActionHandler
+        calls:
+            - [ setContainer,[ @service_container ] ]
+        tags:
+            -  { name: ddr.gitki.action_handler.directory, action: addpage }
