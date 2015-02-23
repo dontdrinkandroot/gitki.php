@@ -3,6 +3,7 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Controller;
 
+use Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
 use Dontdrinkandroot\Gitki\BaseBundle\Service\WikiService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Kernel;
@@ -12,13 +13,20 @@ class BaseController extends Controller
 {
 
     /**
+     * @return User|null
+     */
+    public function getUser()
+    {
+        return parent::getUser();
+    }
+
+    /**
      * @return WikiService
      */
     protected function getWikiService()
     {
         return $this->get('ddr.gitki.service.wiki');
     }
-
 
     protected function assertRole($role)
     {
@@ -31,7 +39,6 @@ class BaseController extends Controller
     {
         return $this->get('security.context')->isGranted($role);
     }
-
 
     protected function getEnvironment()
     {

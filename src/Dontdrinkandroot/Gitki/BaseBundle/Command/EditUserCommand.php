@@ -36,7 +36,6 @@ class EditUserCommand extends GitkiUsersCommand
             'Select Field: ',
             $fields
         );
-        $field = 'Done';
         do {
             $this->printUser($user, $output);
             $field = $questionHelper->ask($input, $output, $fieldQuestion);
