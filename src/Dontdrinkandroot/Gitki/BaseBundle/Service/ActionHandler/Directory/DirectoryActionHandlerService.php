@@ -19,7 +19,6 @@ class DirectoryActionHandlerService implements DirectoryActionHandlerServiceInte
      */
     public function handle(DirectoryPath $directoryPath, Request $request, User $user)
     {
-        // TODO: Implement handle() method.
         $action = $request->query->get('action', '');
         if (isset($this->handlers[$action])) {
             return $this->handlers[$action]->handle($directoryPath, $request, $user);

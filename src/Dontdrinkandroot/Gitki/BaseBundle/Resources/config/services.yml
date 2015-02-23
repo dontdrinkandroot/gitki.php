@@ -49,6 +49,9 @@ services:
     ddr.gitki.service.action_handler.directory:
         class: Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\Directory\DirectoryActionHandlerService
 
+    ddr.gitki.service.action_handler.file:
+        class: Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\File\FileActionHandlerService
+
     # DIRECTORY HANDLERS
 
     ddr.gitki.service.action_handler.directory.list:
@@ -93,3 +96,61 @@ services:
             - [ setContainer,[ @service_container ] ]
         tags:
             -  { name: ddr.gitki.action_handler.directory, action: addpage }
+
+    # FILE HANDLERS
+
+    ddr.gitki.service.action_handler.file.serve:
+        class: Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\File\ServeFileActionHandler
+        calls:
+            - [ setContainer,[ @service_container ] ]
+        tags:
+            -  { name: ddr.gitki.action_handler.file }
+
+    ddr.gitki.service.action_handler.file.delete:
+        class: Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\File\DeleteFileActionHandler
+        calls:
+            - [ setContainer,[ @service_container ] ]
+        tags:
+            -  { name: ddr.gitki.action_handler.file, action: delete }
+
+    ddr.gitki.service.action_handler.file.rename:
+        class: Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\File\RenameFileActionHandler
+        calls:
+            - [ setContainer,[ @service_container ] ]
+        tags:
+            -  { name: ddr.gitki.action_handler.file, action: rename }
+
+    ddr.gitki.service.action_handler.file.history:
+        class: Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\File\FileHistoryActionHandler
+        calls:
+            - [ setContainer,[ @service_container ] ]
+        tags:
+            -  { name: ddr.gitki.action_handler.file, action: history }
+
+    ddr.gitki.service.action_handler.file.hold_lock:
+        class: Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\File\HoldLockActionHandler
+        calls:
+            - [ setContainer,[ @service_container ] ]
+        tags:
+            -  { name: ddr.gitki.action_handler.file, action: holdlock }
+
+    ddr.gitki.service.action_handler.file.serve_markdown:
+        class: Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\File\ServeMarkdownFileActionHandler
+        calls:
+            - [ setContainer,[ @service_container ] ]
+        tags:
+            -  { name: ddr.gitki.action_handler.file, extension: md }
+
+    ddr.gitki.service.action_handler.file.edit_markdown:
+        class: Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\File\EditMarkdownFileActionHandler
+        calls:
+            - [ setContainer,[ @service_container ] ]
+        tags:
+            -  { name: ddr.gitki.action_handler.file, action: edit, extension: md }
+
+    ddr.gitki.service.action_handler.file.preview_markdown:
+        class: Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\File\PreviewMarkdownFileActionHandler
+        calls:
+            - [ setContainer,[ @service_container ] ]
+        tags:
+            -  { name: ddr.gitki.action_handler.file, action: preview, extension: md }

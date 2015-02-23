@@ -3,11 +3,11 @@
 namespace Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\Directory;
 
 use Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
-use Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\AbstractHandler;
+use Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\AbstractContainerAwareHandler;
 use Dontdrinkandroot\Path\DirectoryPath;
 use Symfony\Component\HttpFoundation\Request;
 
-class AddPageActionHandler extends AbstractHandler implements DirectoryActionHandlerInterface
+class AddPageActionHandler extends AbstractContainerAwareHandler implements DirectoryActionHandlerInterface
 {
 
     /**
