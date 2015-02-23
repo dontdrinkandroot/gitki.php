@@ -12,13 +12,13 @@ use League\CommonMark\HtmlRenderer;
 class TocBuildingHeaderRenderer extends HeaderRenderer
 {
 
-    private $toc = array();
+    private $toc = [];
 
     private $title = null;
 
     private $count = 0;
 
-    private $current = array();
+    private $current = [];
 
     /**
      * @param Header       $block
@@ -35,6 +35,7 @@ class TocBuildingHeaderRenderer extends HeaderRenderer
         $level = $block->getLevel();
         $text = $htmlElement->getContents();
 
+        $htmlElement->setAttribute('id', $id);
         if (null === $this->title && $level == 1) {
             $this->title = $text;
         } else {

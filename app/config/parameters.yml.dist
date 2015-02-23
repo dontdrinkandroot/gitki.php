@@ -1,3 +1,4 @@
 parameters:
-    secret:            ThisTokenIsNotSoSecretChangeIt
-    repository_path:   ~
+    locale:          en
+    secret:          ThisTokenIsNotSoSecretChangeIt
+    repository_path: ~

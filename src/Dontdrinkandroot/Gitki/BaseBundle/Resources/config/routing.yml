@@ -1,3 +1,6 @@
+hwi_oauth_connect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
+
 hwi_oauth_redirect:
     resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
     prefix:   /connect
@@ -15,12 +18,16 @@ github_login:
 login_check:
     path: /login_check
 
-logout:
-    path:   /logout
-
 login_manual:
     path:     /login/manual
     defaults: { _controller: DdrGitkiBaseBundle:Default:login }
+
+logout:
+    path:   /user/logout
+
+ddr_gitki_user_profile:
+    path: /user/profile
+    defaults: { _controller: DdrGitkiBaseBundle:User:profile }
 
 ddr_gitki_about_markdownsyntax:
     path:     /about/markdownsyntax
@@ -31,8 +38,8 @@ ddr_gitki_base_homepage:
     defaults: { _controller: DdrGitkiBaseBundle:Default:index }
 
 ddr_gitki_loggedout:
-    path:   /loggedout
-    defaults: { _controller: DdrGitkiBaseBundle:Default:loggedout }
+    path:   /user/loggedout
+    defaults: { _controller: DdrGitkiBaseBundle:User:loggedout }
 
 ddr_gitki_history:
     path:   /history

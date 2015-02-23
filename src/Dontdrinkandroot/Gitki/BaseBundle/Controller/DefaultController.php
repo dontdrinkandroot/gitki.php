@@ -12,11 +12,6 @@ class DefaultController extends BaseController
         return $this->redirect($this->generateUrl('ddr_gitki_wiki_directory', ['path' => '/', 'action' => 'index']));
     }
 
-    public function loggedoutAction()
-    {
-        return $this->render('DdrGitkiBaseBundle:Default:loggedout.html.twig');
-    }
-
     public function loginAction(Request $request)
     {
         if (!$this->hasRole('ROLE_USER')) {
