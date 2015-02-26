@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ServeMarkdownFileActionHandler extends AbstractContainerAwareHandler implements \Dontdrinkandroot\Gitki\BaseBundle\ActionHandler\File\FileActionHandlerInterface
+class ServeMarkdownFileActionHandler extends AbstractContainerAwareHandler implements FileActionHandlerInterface
 {
 
     /**

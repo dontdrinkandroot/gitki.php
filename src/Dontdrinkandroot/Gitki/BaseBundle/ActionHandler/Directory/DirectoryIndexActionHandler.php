@@ -18,13 +18,9 @@ class DirectoryIndexActionHandler extends AbstractContainerAwareHandler implemen
     {
         $indexFilePath = $directoryPath->appendFile('index.md');
         if ($this->getWikiService()->exists($indexFilePath)) {
-            return $this->redirect(
-                $this->generateUrl('ddr_gitki_wiki_file', ['path' => $indexFilePath->toAbsoluteUrlString()])
-            );
+            return $this->redirectToRoute('ddr_gitki_wiki_file', ['path' => $indexFilePath->toAbsoluteString()]);
         }
 
-        return $this->redirect(
-            $this->generateUrl('ddr_gitki_wiki_directory', ['path' => $directoryPath->toAbsoluteUrlString()])
-        );
+        return $this->redirectToRoute('ddr_gitki_wiki_directory', ['path' => $directoryPath->toAbsoluteString()]);
     }
 }

@@ -1,7 +1,3 @@
-ddr_gitki_markdown:
-    resource: "@DdrGitkiMarkdownBundle/Resources/config/routing.yml"
-    prefix:   /
-
 ddr_gitki_base:
     resource: "@DdrGitkiBaseBundle/Resources/config/routing.yml"
     prefix:   /

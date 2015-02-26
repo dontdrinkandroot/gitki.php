@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class EditMarkdownFileActionHandler extends AbstractContainerAwareHandler implements \Dontdrinkandroot\Gitki\BaseBundle\ActionHandler\File\FileActionHandlerInterface
+class EditMarkdownFileActionHandler extends AbstractContainerAwareHandler implements FileActionHandlerInterface
 {
 
     /**

@@ -8,7 +8,7 @@ use Dontdrinkandroot\Gitki\BaseBundle\ActionHandler\Directory\DirectoryActionHan
 use Dontdrinkandroot\Path\DirectoryPath;
 use Symfony\Component\HttpFoundation\Request;
 
-class AddPageActionHandler extends AbstractContainerAwareHandler implements \Dontdrinkandroot\Gitki\BaseBundle\ActionHandler\Directory\DirectoryActionHandlerInterface
+class AddPageActionHandler extends AbstractContainerAwareHandler implements DirectoryActionHandlerInterface
 {
 
     /**

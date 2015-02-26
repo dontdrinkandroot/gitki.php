@@ -4,6 +4,7 @@ filter:
         - 'bin/*'
         - 'var/*'
         - 'web/*'
+        - 'src/*/*/*Bundle/Tests'
 checks:
     php:
         use_self_instead_of_fqcn: true

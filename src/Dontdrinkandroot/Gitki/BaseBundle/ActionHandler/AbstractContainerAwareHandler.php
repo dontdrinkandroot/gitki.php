@@ -35,6 +35,18 @@ class AbstractContainerAwareHandler extends ContainerAware
     }
 
     /**
+     * @param string $route
+     * @param array  $params
+     * @param int    $status
+     *
+     * @return RedirectResponse
+     */
+    protected function redirectToRoute($route, array $params, $status = 302)
+    {
+        return $this->redirect($this->generateUrl($route, $params), $status);
+    }
+
+    /**
      * Generates a URL from the given parameters.
      *
      * @param string      $route         The name of the route

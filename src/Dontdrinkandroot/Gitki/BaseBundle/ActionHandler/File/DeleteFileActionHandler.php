@@ -18,14 +18,12 @@ class DeleteFileActionHandler extends AbstractContainerAwareHandler implements F
     {
         $this->assertRole('ROLE_COMMITTER');
 
-        $commitMessage = 'Removing ' . $filePath->toAbsoluteUrlString();
+        $commitMessage = 'Removing ' . $filePath->toAbsoluteString();
         $this->getWikiService()->deleteFile($user, $filePath, $commitMessage);
 
-        return $this->redirect(
-            $this->generateUrl(
-                'ddr_gitki_wiki_directory',
-                array('path' => $filePath->getParentPath()->toAbsoluteUrlString())
-            )
+        return $this->redirectToRoute(
+            'ddr_gitki_wiki_directory',
+            ['path' => $filePath->getParentPath()->toAbsoluteString()]
         );
     }
 }
