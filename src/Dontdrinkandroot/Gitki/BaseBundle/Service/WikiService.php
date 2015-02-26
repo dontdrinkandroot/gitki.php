@@ -15,7 +15,7 @@ use Dontdrinkandroot\Gitki\BaseBundle\Model\DirectoryListing;
 use Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\Directory;
 use Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\PageFile;
 use Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
-use Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
+use Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepositoryInterface;
 use Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown\MarkdownService;
 use Dontdrinkandroot\Path\DirectoryPath;
 use Dontdrinkandroot\Path\FilePath;
@@ -38,7 +38,7 @@ class WikiService
     protected $eventDispatcher;
 
     /**
-     * @var GitRepository
+     * @var GitRepositoryInterface
      */
     protected $gitRepository;
 
@@ -48,12 +48,12 @@ class WikiService
     protected $markdownService;
 
     /**
-     * @param GitRepository            $gitRepository
+     * @param GitRepositoryInterface $gitRepository
      * @param MarkdownService          $markdownService
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
-        GitRepository $gitRepository,
+        GitRepositoryInterface $gitRepository,
         MarkdownService $markdownService,
         EventDispatcherInterface $eventDispatcher
     ) {
@@ -160,7 +160,7 @@ class WikiService
 
         $this->gitRepository->putContent($relativeFilePath, $content);
 
-        $this->gitRepository->addAndCommit($this->getAuthor($user), $commitMessage, $relativeFilePath);
+        $this->gitRepository->addAndCommit($user, $commitMessage, $relativeFilePath);
 
         $parsedMarkdownDocument = $this->markdownService->parse($relativeFilePath, $content);
 
@@ -201,7 +201,7 @@ class WikiService
 
         $this->createLock($user, $relativeFilePath);
 
-        $this->gitRepository->removeAndCommit($this->getAuthor($user), $commitMessage, $relativeFilePath);
+        $this->gitRepository->removeAndCommit($user, $commitMessage, $relativeFilePath);
 
         $this->removeLock($user, $relativeFilePath);
 
@@ -222,7 +222,7 @@ class WikiService
     {
         $absoluteDirectoryPath = $this->gitRepository->getAbsolutePath($relativeDirectoryPath);
         $finder = new Finder();
-        $finder->in($this->gitRepository->getAbsolutePathString($relativeDirectoryPath));
+        $finder->in($absoluteDirectoryPath->toAbsoluteString(DIRECTORY_SEPARATOR));
         $numFiles = $finder->files()->count();
         if ($numFiles > 0) {
             throw new DirectoryNotEmptyException($relativeDirectoryPath->toRelativeFileString() . ' is not empty');
@@ -257,7 +257,7 @@ class WikiService
         $this->createLock($user, $relativeNewFilePath);
 
         $this->gitRepository->moveAndCommit(
-            $this->getAuthor($user),
+            $user,
             $commitMessage,
             $relativeOldFilePath,
             $relativeNewFilePath
@@ -315,7 +315,7 @@ class WikiService
             $relativeFilePath->getName()
         );
 
-        $this->gitRepository->addAndCommit($this->getAuthor($user), $commitMessage, $relativeFilePath);
+        $this->gitRepository->addAndCommit($user, $commitMessage, $relativeFilePath);
 
         $this->removeLock($user, $relativeFilePath);
     }
@@ -372,6 +372,7 @@ class WikiService
     public function listDirectory(DirectoryPath $relativeDirectoryPath)
     {
         $repositoryPath = $this->gitRepository->getRepositoryPath();
+        $absoluteDirectoryPath = $this->gitRepository->getAbsolutePath($relativeDirectoryPath);
 
         /* @var PageFile[] $pages */
         $pages = array();
@@ -381,7 +382,7 @@ class WikiService
         $otherFiles = array();
 
         $finder = new Finder();
-        $finder->in($this->gitRepository->getAbsolutePathString($relativeDirectoryPath));
+        $finder->in($absoluteDirectoryPath->toAbsoluteString(DIRECTORY_SEPARATOR));
         $finder->depth(0);
         foreach ($finder->files() as $file) {
             /* @var \Symfony\Component\Finder\SplFileInfo $file */
@@ -400,7 +401,7 @@ class WikiService
         }
 
         $finder = new Finder();
-        $finder->in($this->gitRepository->getAbsolutePathString($relativeDirectoryPath));
+        $finder->in($absoluteDirectoryPath->toAbsoluteString(DIRECTORY_SEPARATOR));
         $finder->depth(0);
         $finder->ignoreDotFiles(true);
         foreach ($finder->directories() as $directory) {
@@ -579,19 +580,6 @@ class WikiService
         $mTime = $this->gitRepository->getModificationTime($relativeLockPath);
 
         return $mTime + (60);
-    }
-
-    /**
-     * @param User $user
-     *
-     * @return string
-     */
-    protected function getAuthor(User $user)
-    {
-        $name = $user->getUsername();
-        $email = $user->getEmail();
-
-        return "\"$name <$email>\"";
     }
 
     /**

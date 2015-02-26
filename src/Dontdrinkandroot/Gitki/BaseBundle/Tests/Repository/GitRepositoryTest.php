@@ -7,6 +7,7 @@ use Dontdrinkandroot\Gitki\BaseBundle\Model\CommitMetadata;
 use Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
 use Dontdrinkandroot\Gitki\BaseBundle\Tests\GitRepositoryTestCase;
 use Dontdrinkandroot\Path\FilePath;
+use FOS\UserBundle\Model\User;
 
 class GitRepositoryTest extends GitRepositoryTestCase
 {
@@ -18,10 +19,14 @@ class GitRepositoryTest extends GitRepositoryTestCase
 
     public function testAddAndCommit()
     {
+        $user = new DummyUser();
+        $user->setUsername('Tester');
+        $user->setEmail('test@example.com');
+
         $gitRepository = $this->createGitRepository();
         $filePath = FilePath::parse('test.txt');
         $gitRepository->putContent($filePath, 'asdf');
-        $gitRepository->addAndCommit('"Tester <test@example.com>"', 'Added test.txt', $filePath);
+        $gitRepository->addAndCommit($user, 'Added test.txt', $filePath);
         $this->assertTrue($gitRepository->exists($filePath));
 
         $history = $gitRepository->getFileHistory($filePath);
@@ -33,4 +38,9 @@ class GitRepositoryTest extends GitRepositoryTestCase
         $this->assertEquals('test@example.com', $firstEntry->getEMail());
         $this->assertEquals('Tester', $firstEntry->getCommitter());
     }
+}
+
+class DummyUser extends User
+{
+
 }

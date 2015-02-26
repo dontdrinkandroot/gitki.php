@@ -18,20 +18,17 @@ class DirectoryActionHandlerCompilerPass implements CompilerPassInterface
             return;
         }
 
-        $definition = $container->getDefinition(
-            'ddr.gitki.service.action_handler.directory'
-        );
+        $handlerServiceDefinition = $container->getDefinition('ddr.gitki.service.action_handler.directory');
 
-        $taggedServices = $container->findTaggedServiceIds(
-            'ddr.gitki.action_handler.directory'
-        );
+        $taggedServices = $container->findTaggedServiceIds('ddr.gitki.action_handler.directory');
+
         foreach ($taggedServices as $id => $tags) {
             foreach ($tags as $attributes) {
                 $action = '';
                 if (isset($attributes['action'])) {
                     $action = $attributes['action'];
                 }
-                $definition->addMethodCall(
+                $handlerServiceDefinition->addMethodCall(
                     'registerHandler',
                     [new Reference($id), $action]
                 );

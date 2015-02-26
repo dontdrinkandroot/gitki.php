@@ -8,10 +8,11 @@ use Dontdrinkandroot\Path\DirectoryPath;
 use Dontdrinkandroot\Path\FilePath;
 use Dontdrinkandroot\Path\Path;
 use Dontdrinkandroot\Utils\StringUtils;
+use FOS\UserBundle\Model\UserInterface;
 use GitWrapper\GitWrapper;
 use Symfony\Component\Filesystem\Filesystem;
 
-class GitRepository
+class GitRepository implements GitRepositoryInterface
 {
 
     /**
@@ -36,15 +37,16 @@ class GitRepository
         $this->repositoryPath = DirectoryPath::parse($pathString);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getRepositoryPath()
     {
         return $this->repositoryPath;
     }
 
     /**
-     * @param int|null $maxCount
-     *
-     * @return CommitMetadata[]
+     * {@inheritdoc}
      */
     public function getWorkingCopyHistory($maxCount = null)
     {
@@ -52,10 +54,7 @@ class GitRepository
     }
 
     /**
-     * @param FilePath $path
-     * @param int|null $maxCount
-     *
-     * @return CommitMetadata[]
+     * {@inheritdoc}
      */
     public function getFileHistory(FilePath $path, $maxCount = null)
     {
@@ -69,7 +68,7 @@ class GitRepository
             $options['max-count'] = $maxCount;
         }
         if (null !== $path) {
-            $options['p'] = $path->toRelativeFileString();
+            $options['p'] = $path->toRelativeString(DIRECTORY_SEPARATOR);
         }
 
         $workingCopy = $this->getWorkingCopy();
@@ -107,7 +106,7 @@ class GitRepository
     {
         $workingCopy = $this->getWorkingCopy();
         foreach ($paths as $path) {
-            $workingCopy->add($path->toRelativeFileString());
+            $workingCopy->add($path->toRelativeString(DIRECTORY_SEPARATOR));
         }
     }
 
@@ -118,56 +117,64 @@ class GitRepository
     {
         $workingCopy = $this->getWorkingCopy();
         foreach ($paths as $path) {
-            $workingCopy->rm($path->toRelativeFileString());
+            $workingCopy->rm($path->toRelativeString(DIRECTORY_SEPARATOR));
         }
     }
 
     /**
-     * @param string              $author
-     * @param string              $commitMessage
-     * @param FilePath[]|FilePath $paths
+     * {@inheritdoc}
      */
-    public function addAndCommit($author, $commitMessage, $paths)
+    public function addAndCommit(UserInterface $author, $commitMessage, $paths)
     {
         $this->add($this->toFilePathArray($paths));
         $this->commit($author, $commitMessage);
     }
 
     /**
-     * @param string              $author
-     * @param string              $commitMessage
-     * @param FilePath[]|FilePath $paths
+     * {@inheritdoc}
      */
-    public function removeAndCommit($author, $commitMessage, $paths)
+    public function removeAndCommit(UserInterface $author, $commitMessage, $paths)
     {
         $this->remove($this->toFilePathArray($paths));
         $this->commit($author, $commitMessage);
     }
 
-    public function commit($author, $commitMessage)
+    public function commit(UserInterface $author, $commitMessage)
     {
         $this->getWorkingCopy()->commit(
-            array(
+            [
                 'm'      => $commitMessage,
-                'author' => $author
-            )
+                'author' => $this->getAuthorString($author)
+            ]
         );
     }
 
-    public function moveAndCommit($author, $commitMessage, FilePath $oldPath, FilePath $newPath)
+    /**
+     * {@inheritdoc}
+     */
+    public function moveAndCommit(UserInterface $author, $commitMessage, FilePath $oldPath, FilePath $newPath)
     {
         $workingCopy = $this->getWorkingCopy();
-        $workingCopy->mv($oldPath->toRelativeFileString(), $newPath->toRelativeFileString());
+        $workingCopy->mv(
+            $oldPath->toRelativeString(DIRECTORY_SEPARATOR),
+            $newPath->toRelativeString(DIRECTORY_SEPARATOR)
+        );
         $this->commit($author, $commitMessage);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function exists(Path $path)
     {
         $absolutePath = $this->getAbsolutePath($path);
 
-        return $this->getFileSystem()->exists($absolutePath->toAbsoluteFileString());
+        return $this->getFileSystem()->exists($absolutePath->toAbsoluteString(DIRECTORY_SEPARATOR));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getAbsolutePath(Path $path)
     {
         return $path->prepend($this->getRepositoryPath());
@@ -175,7 +182,7 @@ class GitRepository
 
     public function getAbsolutePathString(Path $relativePath)
     {
-        return $this->getAbsolutePath($relativePath)->toAbsoluteFileString();
+        return $this->getAbsolutePath($relativePath)->toAbsoluteString(DIRECTORY_SEPARATOR);
     }
 
     /**
@@ -190,21 +197,33 @@ class GitRepository
         return $this->fileSystem;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function mkdir(DirectoryPath $relativePath)
     {
         $this->getFileSystem()->mkdir($this->getAbsolutePathString($relativePath), 0755);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function touch(FilePath $relativePath)
     {
         $this->getFileSystem()->touch($this->getAbsolutePathString($relativePath));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function putContent(FilePath $relativePath, $content)
     {
         file_put_contents($this->getAbsolutePathString($relativePath), $content);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getContent(FilePath $relativePath)
     {
         return file_get_contents($this->getAbsolutePathString($relativePath));
@@ -215,11 +234,17 @@ class GitRepository
         return filemtime($this->getAbsolutePathString($relativePath));
     }
 
-    public function removeFile($relativePath)
+    /**
+     * {@inheritdoc}
+     */
+    public function removeFile(FilePath $relativePath)
     {
         unlink($this->getAbsolutePathString($relativePath));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function createFolder(DirectoryPath $path)
     {
         $this->getFileSystem()->mkdir($this->getAbsolutePathString($path));
@@ -248,5 +273,18 @@ class GitRepository
         } else {
             return $paths;
         }
+    }
+
+    /**
+     * @param UserInterface $user
+     *
+     * @return string
+     */
+    protected function getAuthorString(UserInterface $user)
+    {
+        $name = $user->getUsername();
+        $email = $user->getEmail();
+
+        return sprintf('"%s <%s>"', $user->getUsername(), $user->getEmail());
     }
 }

@@ -18,13 +18,10 @@ class FileActionHandlerCompilerPass implements CompilerPassInterface
             return;
         }
 
-        $definition = $container->getDefinition(
-            'ddr.gitki.service.action_handler.file'
-        );
+        $handlerServiceDefinition = $container->getDefinition('ddr.gitki.service.action_handler.file');
 
-        $taggedServices = $container->findTaggedServiceIds(
-            'ddr.gitki.action_handler.file'
-        );
+        $taggedServices = $container->findTaggedServiceIds('ddr.gitki.action_handler.file');
+
         foreach ($taggedServices as $id => $tags) {
             foreach ($tags as $attributes) {
                 $action = '';
@@ -35,7 +32,7 @@ class FileActionHandlerCompilerPass implements CompilerPassInterface
                 if (isset($attributes['extension'])) {
                     $extension = $attributes['extension'];
                 }
-                $definition->addMethodCall(
+                $handlerServiceDefinition->addMethodCall(
                     'registerHandler',
                     [new Reference($id), $action, $extension]
                 );
