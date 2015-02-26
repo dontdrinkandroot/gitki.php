@@ -3,8 +3,8 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Controller;
 
-use Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\Directory\DirectoryActionHandlerServiceInterface;
-use Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\File\FileActionHandlerServiceInterface;
+use Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\DirectoryActionHandlerServiceInterface;
+use Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\FileActionHandlerServiceInterface;
 use Dontdrinkandroot\Path\DirectoryPath;
 use Dontdrinkandroot\Path\FilePath;
 use Dontdrinkandroot\Utils\StringUtils;
@@ -71,7 +71,7 @@ class WikiController extends BaseController
     }
 
     /**
-     * @return DirectoryActionHandlerServiceInterface
+     * @return \Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\DirectoryActionHandlerServiceInterface
      */
     protected function getDirectoryActionHandlerService()
     {
@@ -79,7 +79,7 @@ class WikiController extends BaseController
     }
 
     /**
-     * @return FileActionHandlerServiceInterface
+     * @return \Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\FileActionHandlerServiceInterface
      */
     protected function getFileHandlerService()
     {

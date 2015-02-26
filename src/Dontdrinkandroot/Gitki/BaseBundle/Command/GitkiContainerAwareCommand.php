@@ -3,7 +3,7 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Command;
 
-use Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown\MarkdownService;
+use Dontdrinkandroot\Gitki\MarkdownBundle\Service\MarkdownService;
 use Dontdrinkandroot\Gitki\BaseBundle\Service\WikiService;
 use FOS\UserBundle\Model\UserManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;

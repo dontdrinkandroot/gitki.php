@@ -1,0 +1,29 @@
+services:
+
+    ddr.gitki.service.action_handler.directory.add_page:
+        class: Dontdrinkandroot\Gitki\MarkdownBundle\ActionHandler\Directory\AddPageActionHandler
+        calls:
+            - [ setContainer,[ @service_container ] ]
+        tags:
+            -  { name: ddr.gitki.action_handler.directory, action: addpage }
+
+    ddr.gitki.action_handler.file.serve_markdown:
+        class: Dontdrinkandroot\Gitki\MarkdownBundle\ActionHandler\File\ServeMarkdownFileActionHandler
+        calls:
+            - [ setContainer,[ @service_container ] ]
+        tags:
+            -  { name: ddr.gitki.action_handler.file, extension: md }
+
+    ddr.gitki.action_handler.file.edit_markdown:
+        class: Dontdrinkandroot\Gitki\MarkdownBundle\ActionHandler\File\EditMarkdownFileActionHandler
+        calls:
+            - [ setContainer,[ @service_container ] ]
+        tags:
+            -  { name: ddr.gitki.action_handler.file, action: edit, extension: md }
+
+    ddr.gitki.action_handler.file.preview_markdown:
+        class: Dontdrinkandroot\Gitki\MarkdownBundle\ActionHandler\File\PreviewMarkdownFileActionHandler
+        calls:
+            - [ setContainer,[ @service_container ] ]
+        tags:
+            -  { name: ddr.gitki.action_handler.file, action: preview, extension: md }

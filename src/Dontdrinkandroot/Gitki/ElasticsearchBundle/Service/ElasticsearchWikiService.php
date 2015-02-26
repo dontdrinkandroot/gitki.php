@@ -5,7 +5,7 @@ namespace Dontdrinkandroot\Gitki\ElasticsearchBundle\Service;
 
 use Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\PageFile;
 use Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
-use Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown\MarkdownService;
+use Dontdrinkandroot\Gitki\MarkdownBundle\Service\MarkdownService;
 use Dontdrinkandroot\Gitki\BaseBundle\Service\WikiService;
 use Dontdrinkandroot\Gitki\ElasticsearchBundle\Repository\ElasticsearchRepository;
 use Dontdrinkandroot\Path\DirectoryPath;

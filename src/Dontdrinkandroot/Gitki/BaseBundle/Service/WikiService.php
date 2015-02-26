@@ -16,7 +16,7 @@ use Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\Directory;
 use Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\PageFile;
 use Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
 use Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepositoryInterface;
-use Dontdrinkandroot\Gitki\BaseBundle\Service\Markdown\MarkdownService;
+use Dontdrinkandroot\Gitki\MarkdownBundle\Service\MarkdownService;
 use Dontdrinkandroot\Path\DirectoryPath;
 use Dontdrinkandroot\Path\FilePath;
 use Dontdrinkandroot\Path\Path;
@@ -43,13 +43,13 @@ class WikiService
     protected $gitRepository;
 
     /**
-     * @var MarkdownService
+     * @var \Dontdrinkandroot\Gitki\MarkdownBundle\Service\MarkdownService
      */
     protected $markdownService;
 
     /**
      * @param GitRepositoryInterface $gitRepository
-     * @param MarkdownService          $markdownService
+     * @param \Dontdrinkandroot\Gitki\MarkdownBundle\Service\MarkdownService $markdownService
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
