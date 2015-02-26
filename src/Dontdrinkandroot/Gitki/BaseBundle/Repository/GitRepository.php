@@ -63,7 +63,7 @@ class GitRepository implements GitRepositoryInterface
 
     public function getHistory(FilePath $path = null, $maxCount = null)
     {
-        $options = array('pretty' => 'format:' . LogParser::getFormatString());
+        $options = ['pretty' => 'format:' . LogParser::getFormatString()];
         if (null !== $maxCount) {
             $options['max-count'] = $maxCount;
         }
@@ -76,27 +76,6 @@ class GitRepository implements GitRepositoryInterface
         $log = $workingCopy->getOutput();
 
         return $this->parseLog($log);
-    }
-
-    /**
-     * @param string $log
-     *
-     * @return CommitMetadata[]
-     */
-    protected function parseLog($log)
-    {
-        preg_match_all(LogParser::getMatchString(), $log, $matches);
-        $metaData = array();
-        for ($i = 0; $i < count($matches[1]); $i++) {
-            $hash = $matches[1][$i];
-            $name = $matches[2][$i];
-            $eMail = $matches[3][$i];
-            $timeStamp = (int)$matches[4][$i];
-            $message = $matches[5][$i];
-            $metaData[] = new CommitMetadata($hash, $name, $eMail, $timeStamp, $message);
-        }
-
-        return $metaData;
     }
 
     /**
@@ -180,23 +159,6 @@ class GitRepository implements GitRepositoryInterface
         return $path->prepend($this->getRepositoryPath());
     }
 
-    public function getAbsolutePathString(Path $relativePath)
-    {
-        return $this->getAbsolutePath($relativePath)->toAbsoluteString(DIRECTORY_SEPARATOR);
-    }
-
-    /**
-     * @return Filesystem
-     */
-    protected function getFileSystem()
-    {
-        if (null === $this->fileSystem) {
-            $this->fileSystem = new Filesystem();
-        }
-
-        return $this->fileSystem;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -229,6 +191,9 @@ class GitRepository implements GitRepositoryInterface
         return file_get_contents($this->getAbsolutePathString($relativePath));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getModificationTime(Path $relativePath)
     {
         return filemtime($this->getAbsolutePathString($relativePath));
@@ -262,6 +227,16 @@ class GitRepository implements GitRepositoryInterface
     }
 
     /**
+     * @param Path $relativePath
+     *
+     * @return string
+     */
+    protected function getAbsolutePathString(Path $relativePath)
+    {
+        return $this->getAbsolutePath($relativePath)->toAbsoluteString(DIRECTORY_SEPARATOR);
+    }
+
+    /**
      * @param FilePath[]|FilePath $paths
      *
      * @return FilePath[]
@@ -286,5 +261,38 @@ class GitRepository implements GitRepositoryInterface
         $email = $user->getEmail();
 
         return sprintf('"%s <%s>"', $user->getUsername(), $user->getEmail());
+    }
+
+    /**
+     * @return Filesystem
+     */
+    protected function getFileSystem()
+    {
+        if (null === $this->fileSystem) {
+            $this->fileSystem = new Filesystem();
+        }
+
+        return $this->fileSystem;
+    }
+
+    /**
+     * @param string $log
+     *
+     * @return CommitMetadata[]
+     */
+    protected function parseLog($log)
+    {
+        preg_match_all(LogParser::getMatchString(), $log, $matches);
+        $metaData = array();
+        for ($i = 0; $i < count($matches[1]); $i++) {
+            $hash = $matches[1][$i];
+            $name = $matches[2][$i];
+            $eMail = $matches[3][$i];
+            $timeStamp = (int)$matches[4][$i];
+            $message = $matches[5][$i];
+            $metaData[] = new CommitMetadata($hash, $name, $eMail, $timeStamp, $message);
+        }
+
+        return $metaData;
     }
 }

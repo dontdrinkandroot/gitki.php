@@ -100,4 +100,11 @@ interface GitRepositoryInterface
      * @param FilePath $path
      */
     public function removeFile(FilePath $path);
+
+    /**
+     * @param Path $path
+     *
+     * @return int
+     */
+    public function getModificationTime(Path $path);
 }
