@@ -28,9 +28,17 @@ services:
         class: Dontdrinkandroot\Gitki\MarkdownBundle\Service\RepositoryAwareMarkdownService
         arguments: [@ddr.gitki.repository.git]
 
+    ddr.gitki.service.lock:
+        class: Dontdrinkandroot\Gitki\BaseBundle\Service\LockService
+        arguments: [@ddr.gitki.repository.git]
+
     ddr.gitki.service.wiki:
         class: Dontdrinkandroot\Gitki\BaseBundle\Service\EventDispatchingWikiService
-        arguments: [@ddr.gitki.repository.git, @ddr.gitki.service.markdown, @event_dispatcher]
+        arguments:
+            - @ddr.gitki.repository.git
+            - @ddr.gitki.service.lock
+            - @ddr.gitki.service.markdown
+            - @event_dispatcher
 
     ddr.gitki.service.action_handler.directory:
         class: Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\DirectoryActionHandlerService

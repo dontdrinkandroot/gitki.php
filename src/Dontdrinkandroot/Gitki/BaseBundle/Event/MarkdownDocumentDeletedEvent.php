@@ -11,6 +11,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class MarkdownDocumentDeletedEvent extends Event
 {
 
+    const NAME = 'ddr.gitki.wiki.markdown_document.deleted';
+
     /**
      * @var FilePath
      */

@@ -12,6 +12,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class MarkdownDocumentSavedEvent extends Event
 {
 
+    const NAME = 'ddr.gitki.wiki.markdown_document.saved';
+
     /**
      * @var FilePath
      */

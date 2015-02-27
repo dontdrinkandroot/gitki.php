@@ -21,11 +21,12 @@ class EventDispatchingWikiService extends WikiService
 
     public function __construct(
         GitRepositoryInterface $gitRepository,
+        LockService $lockService,
         MarkdownService $markdownService,
         EventDispatcherInterface $eventDispatcher
     ) {
 
-        parent::__construct($gitRepository, $markdownService);
+        parent::__construct($gitRepository, $lockService, $markdownService);
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -37,7 +38,7 @@ class EventDispatchingWikiService extends WikiService
         $parsedMarkdownDocument = parent::savePage($user, $relativeFilePath, $content, $commitMessage);
 
         $this->eventDispatcher->dispatch(
-            'ddr.gitki.wiki.markdown_document.saved',
+            MarkdownDocumentSavedEvent::NAME,
             new MarkdownDocumentSavedEvent($relativeFilePath, $user, time(), $parsedMarkdownDocument, $commitMessage)
         );
 
@@ -53,9 +54,11 @@ class EventDispatchingWikiService extends WikiService
         FilePath $relativeNewFilePath,
         $commitMessage
     ) {
+        parent::renameFile($user, $relativeOldFilePath, $relativeNewFilePath, $commitMessage);
+
         if (StringUtils::endsWith($relativeOldFilePath->getName(), '.md')) {
             $this->eventDispatcher->dispatch(
-                'ddr.gitki.wiki.markdown_document.deleted',
+                MarkdownDocumentDeletedEvent::NAME,
                 new MarkdownDocumentDeletedEvent($relativeOldFilePath, $user, time(), $commitMessage)
             );
         }
@@ -64,7 +67,7 @@ class EventDispatchingWikiService extends WikiService
             $content = $this->getContent($relativeNewFilePath);
             $parsedMarkdownDocument = $this->markdownService->parse($relativeNewFilePath, $content);
             $this->eventDispatcher->dispatch(
-                'ddr.gitki.wiki.markdown_document.saved',
+                MarkdownDocumentSavedEvent::NAME,
                 new MarkdownDocumentSavedEvent(
                     $relativeNewFilePath,
                     $user,
@@ -87,7 +90,7 @@ class EventDispatchingWikiService extends WikiService
     {
         if (StringUtils::endsWith($relativeFilePath->getName(), '.md')) {
             $this->eventDispatcher->dispatch(
-                'ddr.gitki.wiki.markdown_document.deleted',
+                MarkdownDocumentDeletedEvent::NAME,
                 new MarkdownDocumentDeletedEvent($relativeFilePath, $user, time(), $commitMessage)
             );
         }

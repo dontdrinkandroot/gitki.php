@@ -6,8 +6,6 @@ namespace Dontdrinkandroot\Gitki\BaseBundle\Service;
 use Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
 use Dontdrinkandroot\Gitki\BaseBundle\Exception\DirectoryNotEmptyException;
 use Dontdrinkandroot\Gitki\BaseBundle\Exception\FileExistsException;
-use Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
-use Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockExpiredException;
 use Dontdrinkandroot\Gitki\BaseBundle\Model\CommitMetadata;
 use Dontdrinkandroot\Gitki\BaseBundle\Model\DirectoryListing;
 use Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\Directory;
@@ -40,15 +38,23 @@ class WikiService
     protected $markdownService;
 
     /**
+     * @var LockService
+     */
+    private $lockService;
+
+    /**
      * @param GitRepositoryInterface $gitRepository
+     * @param LockService            $lockService
      * @param MarkdownService        $markdownService
      */
     public function __construct(
         GitRepositoryInterface $gitRepository,
+        LockService $lockService,
         MarkdownService $markdownService
     ) {
         $this->gitRepository = $gitRepository;
         $this->markdownService = $markdownService;
+        $this->lockService = $lockService;
     }
 
     /**
@@ -62,25 +68,12 @@ class WikiService
     }
 
     /**
-     * @param User     $user
+     * @param UserInterface $user
      * @param FilePath $relativeFilePath
      */
-    public function createLock(User $user, FilePath $relativeFilePath)
+    public function createLock(UserInterface $user, FilePath $relativeFilePath)
     {
-        $relativeLockPath = $this->getLockPath($relativeFilePath);
-        $relativeLockDir = $relativeLockPath->getParentPath();
-
-        $this->assertUnlocked($user, $relativeLockPath);
-
-        if (!$this->gitRepository->exists($relativeLockDir)) {
-            $this->gitRepository->mkdir($relativeLockDir);
-        }
-
-        if ($this->gitRepository->exists($relativeLockPath)) {
-            $this->gitRepository->touch($relativeLockPath);
-        } else {
-            $this->gitRepository->putContent($relativeLockPath, $user->getEmail());
-        }
+        $this->lockService->createLock($user, $relativeFilePath);
     }
 
     /**
@@ -91,21 +84,7 @@ class WikiService
      */
     public function removeLock(UserInterface $user, FilePath $relativeFilePath)
     {
-        $relativeLockPath = $this->getLockPath($relativeFilePath);
-        if (!$this->gitRepository->exists($relativeLockPath)) {
-            return;
-        }
-
-        if ($this->isLockExpired($relativeLockPath)) {
-            return;
-        }
-
-        $lockLogin = $this->getLockLogin($relativeLockPath);
-        if ($lockLogin != $user->getEmail()) {
-            throw new \Exception('Cannot remove lock of different user');
-        }
-
-        $this->removeLockFile($relativeLockPath);
+        $this->lockService->removeLock($user, $relativeFilePath);
     }
 
     /**
@@ -146,11 +125,8 @@ class WikiService
             throw new \Exception('Commit message must not be empty');
         }
 
-        $relativeLockPath = $this->getLockPath($relativeFilePath);
-        $this->assertHasLock($user, $relativeLockPath);
-
+        $this->lockService->assertUserHasLock($user, $relativeFilePath);
         $this->gitRepository->putContent($relativeFilePath, $content);
-
         $this->gitRepository->addAndCommit($user, $commitMessage, $relativeFilePath);
 
         $parsedMarkdownDocument = $this->markdownService->parse($relativeFilePath, $content);
@@ -166,12 +142,7 @@ class WikiService
      */
     public function holdLock(User $user, FilePath $relativeFilePath)
     {
-        $lockPath = $this->getLockPath($relativeFilePath);
-        $this->assertHasLock($user, $lockPath);
-
-        $this->gitRepository->touch($lockPath);
-
-        return $this->getLockExpiry($lockPath);
+        return $this->lockService->holdLockForUser($user, $relativeFilePath);
     }
 
     /**
@@ -206,9 +177,7 @@ class WikiService
         $finder->in($absoluteDirectoryPath->toAbsoluteString(DIRECTORY_SEPARATOR));
         $numFiles = $finder->files()->count();
         if ($numFiles > 0) {
-            throw new DirectoryNotEmptyException(
-                $relativeDirectoryPath->toRelativeString(DIRECTORY_SEPARATOR) . ' is not empty'
-            );
+            throw new DirectoryNotEmptyException($relativeDirectoryPath);
         }
 
         $fileSystem = new Filesystem();
@@ -240,9 +209,7 @@ class WikiService
             throw new \Exception('Commit message must not be empty');
         }
 
-        $oldLockPath = $this->getLockPath($relativeOldFilePath);
-
-        $this->assertHasLock($user, $oldLockPath);
+        $this->lockService->assertUserHasLock($user, $relativeOldFilePath);
         $this->createLock($user, $relativeNewFilePath);
 
         $this->gitRepository->moveAndCommit(
@@ -287,31 +254,6 @@ class WikiService
         $this->gitRepository->addAndCommit($user, $commitMessage, $relativeFilePath);
 
         $this->removeLock($user, $relativeFilePath);
-    }
-
-    /**
-     * @param User     $user
-     * @param FilePath $relativeLockPath
-     *
-     * @return bool
-     * @throws PageLockedException
-     */
-    protected function assertUnlocked(User $user, FilePath $relativeLockPath)
-    {
-        if (!$this->gitRepository->exists($relativeLockPath)) {
-            return true;
-        }
-
-        if ($this->isLockExpired($relativeLockPath)) {
-            return true;
-        }
-
-        $lockLogin = $this->getLockLogin($relativeLockPath);
-        if ($lockLogin == $user->getEmail()) {
-            return true;
-        }
-
-        throw new PageLockedException($lockLogin, $this->getLockExpiry($relativeLockPath));
     }
 
     /**
@@ -471,84 +413,6 @@ class WikiService
     public function createFolder(DirectoryPath $path)
     {
         $this->gitRepository->createFolder($path);
-    }
-
-    /**
-     * @param UserInterface $user
-     * @param FilePath      $lockPath
-     *
-     * @return bool
-     *
-     * @throws PageLockExpiredException
-     */
-    protected function assertHasLock(UserInterface $user, FilePath $lockPath)
-    {
-        if ($this->gitRepository->exists($lockPath) && !$this->isLockExpired($lockPath)) {
-            $lockLogin = $this->getLockLogin($lockPath);
-            if ($lockLogin == $user->getEmail($user)) {
-                return true;
-            }
-        }
-
-        throw new PageLockExpiredException();
-    }
-
-    /**
-     * @param FilePath $lockPath
-     */
-    protected function removeLockFile(FilePath $lockPath)
-    {
-        $this->gitRepository->removeFile($lockPath);
-    }
-
-    /**
-     * @param FilePath $lockPath
-     *
-     * @return string
-     */
-    protected function getLockLogin(FilePath $lockPath)
-    {
-        return $this->gitRepository->getContent($lockPath);
-    }
-
-    /**
-     * @param FilePath $relativeFilePath
-     *
-     * @return FilePath
-     */
-    protected function getLockPath(FilePath $relativeFilePath)
-    {
-        $name = $relativeFilePath->getName();
-        $relativeLockPath = $relativeFilePath->getParentPath()->appendFile($name . '.lock');
-
-        return $relativeLockPath;
-    }
-
-    /**
-     * @param FilePath $lockPath
-     *
-     * @return bool
-     */
-    protected function isLockExpired(FilePath $lockPath)
-    {
-        $expired = time() > $this->getLockExpiry($lockPath);
-        if ($expired) {
-            $this->removeLockFile($lockPath);
-        }
-
-        return $expired;
-    }
-
-    /**
-     * @param FilePath $relativeLockPath
-     *
-     * @return int
-     */
-    protected function getLockExpiry(FilePath $relativeLockPath)
-    {
-        $mTime = $this->gitRepository->getModificationTime($relativeLockPath);
-
-        return $mTime + (60);
     }
 
     /**
