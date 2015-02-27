@@ -4,8 +4,6 @@
 namespace Dontdrinkandroot\Gitki\BaseBundle\Service;
 
 use Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
-use Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentDeletedEvent;
-use Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentSavedEvent;
 use Dontdrinkandroot\Gitki\BaseBundle\Exception\DirectoryNotEmptyException;
 use Dontdrinkandroot\Gitki\BaseBundle\Exception\FileExistsException;
 use Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
@@ -20,9 +18,8 @@ use Dontdrinkandroot\Gitki\MarkdownBundle\Service\MarkdownService;
 use Dontdrinkandroot\Path\DirectoryPath;
 use Dontdrinkandroot\Path\FilePath;
 use Dontdrinkandroot\Path\Path;
-use Dontdrinkandroot\Utils\StringUtils;
+use FOS\UserBundle\Model\UserInterface;
 use GitWrapper\GitException;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -33,33 +30,25 @@ class WikiService
 {
 
     /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
      * @var GitRepositoryInterface
      */
     protected $gitRepository;
 
     /**
-     * @var \Dontdrinkandroot\Gitki\MarkdownBundle\Service\MarkdownService
+     * @var MarkdownService
      */
     protected $markdownService;
 
     /**
      * @param GitRepositoryInterface $gitRepository
-     * @param \Dontdrinkandroot\Gitki\MarkdownBundle\Service\MarkdownService $markdownService
-     * @param EventDispatcherInterface $eventDispatcher
+     * @param MarkdownService        $markdownService
      */
     public function __construct(
         GitRepositoryInterface $gitRepository,
-        MarkdownService $markdownService,
-        EventDispatcherInterface $eventDispatcher
+        MarkdownService $markdownService
     ) {
         $this->gitRepository = $gitRepository;
         $this->markdownService = $markdownService;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -95,12 +84,12 @@ class WikiService
     }
 
     /**
-     * @param User     $user
-     * @param FilePath $relativeFilePath
+     * @param UserInterface $user
+     * @param FilePath      $relativeFilePath
      *
      * @throws \Exception
      */
-    public function removeLock(User $user, FilePath $relativeFilePath)
+    public function removeLock(UserInterface $user, FilePath $relativeFilePath)
     {
         $relativeLockPath = $this->getLockPath($relativeFilePath);
         if (!$this->gitRepository->exists($relativeLockPath)) {
@@ -142,14 +131,16 @@ class WikiService
     }
 
     /**
-     * @param User     $user
-     * @param FilePath $relativeFilePath
-     * @param string   $content
-     * @param string   $commitMessage
+     * @param UserInterface $user
+     * @param FilePath      $relativeFilePath
+     * @param string        $content
+     * @param string        $commitMessage
+     *
+     * @return ParsedMarkdownDocument
      *
      * @throws \Exception
      */
-    public function savePage(User $user, FilePath $relativeFilePath, $content, $commitMessage)
+    public function savePage(UserInterface $user, FilePath $relativeFilePath, $content, $commitMessage)
     {
         if (empty($commitMessage)) {
             throw new \Exception('Commit message must not be empty');
@@ -164,10 +155,7 @@ class WikiService
 
         $parsedMarkdownDocument = $this->markdownService->parse($relativeFilePath, $content);
 
-        $this->eventDispatcher->dispatch(
-            'ddr.gitki.wiki.markdown_document.saved',
-            new MarkdownDocumentSavedEvent($relativeFilePath, $user, time(), $parsedMarkdownDocument, $commitMessage)
-        );
+        return $parsedMarkdownDocument;
     }
 
     /**
@@ -187,13 +175,13 @@ class WikiService
     }
 
     /**
-     * @param User     $user
+     * @param UserInterface $user
      * @param FilePath $relativeFilePath
      * @param string   $commitMessage
      *
      * @throws \Exception
      */
-    public function deleteFile(User $user, FilePath $relativeFilePath, $commitMessage)
+    public function deleteFile(UserInterface $user, FilePath $relativeFilePath, $commitMessage)
     {
         if (empty($commitMessage)) {
             throw new \Exception('Commit message must not be empty');
@@ -204,13 +192,6 @@ class WikiService
         $this->gitRepository->removeAndCommit($user, $commitMessage, $relativeFilePath);
 
         $this->removeLock($user, $relativeFilePath);
-
-        if (StringUtils::endsWith($relativeFilePath->getName(), '.md')) {
-            $this->eventDispatcher->dispatch(
-                'ddr.gitki.wiki.markdown_document.deleted',
-                new MarkdownDocumentDeletedEvent($relativeFilePath, $user, time(), $commitMessage)
-            );
-        }
     }
 
     /**
@@ -225,7 +206,9 @@ class WikiService
         $finder->in($absoluteDirectoryPath->toAbsoluteString(DIRECTORY_SEPARATOR));
         $numFiles = $finder->files()->count();
         if ($numFiles > 0) {
-            throw new DirectoryNotEmptyException($relativeDirectoryPath->toRelativeFileString() . ' is not empty');
+            throw new DirectoryNotEmptyException(
+                $relativeDirectoryPath->toRelativeString(DIRECTORY_SEPARATOR) . ' is not empty'
+            );
         }
 
         $fileSystem = new Filesystem();
@@ -233,18 +216,24 @@ class WikiService
     }
 
     /**
-     * @param User     $user
-     * @param FilePath $relativeOldFilePath
-     * @param FilePath $relativeNewFilePath
-     * @param string   $commitMessage
+     * @param UserInterface $user
+     * @param FilePath      $relativeOldFilePath
+     * @param FilePath      $relativeNewFilePath
+     * @param string        $commitMessage
      *
      * @throws FileExistsException
      * @throws \Exception
      */
-    public function renameFile(User $user, FilePath $relativeOldFilePath, FilePath $relativeNewFilePath, $commitMessage)
-    {
+    public function renameFile(
+        UserInterface $user,
+        FilePath $relativeOldFilePath,
+        FilePath $relativeNewFilePath,
+        $commitMessage
+    ) {
         if ($this->gitRepository->exists($relativeNewFilePath)) {
-            throw new FileExistsException('File ' . $relativeNewFilePath->toRelativeFileString() . ' already exists');
+            throw new FileExistsException(
+                'File ' . $relativeNewFilePath->toRelativeString(DIRECTORY_SEPARATOR) . ' already exists'
+            );
         }
 
         if (empty($commitMessage)) {
@@ -265,28 +254,6 @@ class WikiService
 
         $this->removeLock($user, $relativeOldFilePath);
         $this->removeLock($user, $relativeNewFilePath);
-
-        if (StringUtils::endsWith($relativeOldFilePath->getName(), '.md')) {
-            $this->eventDispatcher->dispatch(
-                'ddr.gitki.wiki.markdown_document.deleted',
-                new MarkdownDocumentDeletedEvent($relativeOldFilePath, $user, time(), $commitMessage)
-            );
-        }
-
-        if (StringUtils::endsWith($relativeNewFilePath->getName(), '.md')) {
-            $content = $this->getContent($relativeNewFilePath);
-            $parsedMarkdownDocument = $this->markdownService->parse($relativeNewFilePath, $content);
-            $this->eventDispatcher->dispatch(
-                'ddr.gitki.wiki.markdown_document.saved',
-                new MarkdownDocumentSavedEvent(
-                    $relativeNewFilePath,
-                    $user,
-                    time(),
-                    $parsedMarkdownDocument,
-                    $commitMessage
-                )
-            );
-        }
     }
 
     /**
@@ -302,7 +269,9 @@ class WikiService
         $relativeDirectoryPath = $relativeFilePath->getParentPath();
 
         if ($this->gitRepository->exists($relativeFilePath)) {
-            throw new FileExistsException('File ' . $relativeFilePath->toRelativeFileString() . ' already exists');
+            throw new FileExistsException(
+                'File ' . $relativeFilePath->toRelativeString(DIRECTORY_SEPARATOR) . ' already exists'
+            );
         }
 
         if (!$this->gitRepository->exists($relativeDirectoryPath)) {
@@ -351,7 +320,7 @@ class WikiService
     public function findAllMarkdownFiles()
     {
         $finder = new Finder();
-        $finder->in($this->gitRepository->getRepositoryPath()->toAbsoluteFileString());
+        $finder->in($this->gitRepository->getRepositoryPath()->toAbsoluteString(DIRECTORY_SEPARATOR));
         $finder->name('*.md');
 
         $filePaths = array();
@@ -391,8 +360,8 @@ class WikiService
             } else {
                 if ($file->getExtension() != 'lock') {
                     $otherFile = new \Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\File(
-                        $repositoryPath->toAbsoluteFileString(),
-                        $relativeDirectoryPath->toRelativeFileString(),
+                        $repositoryPath->toAbsoluteString(DIRECTORY_SEPARATOR),
+                        $relativeDirectoryPath->toRelativeString(DIRECTORY_SEPARATOR),
                         $file->getRelativePathName()
                     );
                     $otherFiles[] = $otherFile;
@@ -407,8 +376,8 @@ class WikiService
         foreach ($finder->directories() as $directory) {
             /* @var \Symfony\Component\Finder\SplFileInfo $directory */
             $subDirectory = new Directory(
-                $repositoryPath->toAbsoluteFileString(),
-                $relativeDirectoryPath->toRelativeFileString(),
+                $repositoryPath->toAbsoluteString(DIRECTORY_SEPARATOR),
+                $relativeDirectoryPath->toRelativeString(DIRECTORY_SEPARATOR),
                 $directory->getRelativePathName() . DIRECTORY_SEPARATOR
             );
             $subDirectories[] = $subDirectory;
@@ -448,7 +417,7 @@ class WikiService
     {
         $absolutePath = $this->gitRepository->getAbsolutePath($path);
 
-        return new File($absolutePath->toAbsoluteFileString());
+        return new File($absolutePath->toAbsoluteString(DIRECTORY_SEPARATOR));
     }
 
     /**
@@ -505,14 +474,14 @@ class WikiService
     }
 
     /**
-     * @param User     $user
-     * @param FilePath $lockPath
+     * @param UserInterface $user
+     * @param FilePath      $lockPath
      *
      * @return bool
      *
      * @throws PageLockExpiredException
      */
-    protected function assertHasLock(User $user, FilePath $lockPath)
+    protected function assertHasLock(UserInterface $user, FilePath $lockPath)
     {
         if ($this->gitRepository->exists($lockPath) && !$this->isLockExpired($lockPath)) {
             $lockLogin = $this->getLockLogin($lockPath);
@@ -592,8 +561,8 @@ class WikiService
     protected function createPageFile(DirectoryPath $repositoryPath, DirectoryPath $directoryPath, SplFileInfo $file)
     {
         $pageFile = new PageFile(
-            $repositoryPath->toAbsoluteFileString(),
-            $directoryPath->toRelativeFileString(),
+            $repositoryPath->toAbsoluteString(DIRECTORY_SEPARATOR),
+            $directoryPath->toRelativeString(DIRECTORY_SEPARATOR),
             $file->getRelativePathName()
         );
         $pageFile->setTitle($pageFile->getRelativePath()->getFileName());

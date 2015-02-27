@@ -4,7 +4,7 @@ parameters:
 services:
 
     ddr.gitki.repository.user:
-        class:           Dontdrinkandroot\Gitki\BaseBundle\DoctrineUserRepository
+        class:           Dontdrinkandroot\Gitki\BaseBundle\Repository\DoctrineUserRepository
         factory_service: doctrine.orm.entity_manager
         factory_method:  getRepository
         arguments:
@@ -14,13 +14,6 @@ services:
         class: Dontdrinkandroot\Gitki\BaseBundle\Twig\GitkiExtension
         tags:
             - { name: twig.extension }
-
-    ddr.gitki.security.response_handler.github:
-        class: Dontdrinkandroot\Gitki\BaseBundle\Security\GitHubResponseHandler
-
-    ddr.gitki.security.response_handler.google:
-        class: Dontdrinkandroot\Gitki\BaseBundle\Security\GoogleResponseHandler
-
     ddr.gitki.repository.git:
         class: Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository
         arguments: [%ddr_gitki_base.repository_path%]
@@ -36,15 +29,8 @@ services:
         arguments: [@ddr.gitki.repository.git]
 
     ddr.gitki.service.wiki:
-        class: Dontdrinkandroot\Gitki\BaseBundle\Service\WikiService
+        class: Dontdrinkandroot\Gitki\BaseBundle\Service\EventDispatchingWikiService
         arguments: [@ddr.gitki.repository.git, @ddr.gitki.service.markdown, @event_dispatcher]
-
-    ddr.gitki.security.user_provider:
-        class: Dontdrinkandroot\Gitki\BaseBundle\Security\UserProvider
-        arguments: [@ddr.gitki.service.user]
-        calls:
-            - [registerHandler, [@ddr.gitki.security.response_handler.github]]
-            - [registerHandler, [@ddr.gitki.security.response_handler.google]]
 
     ddr.gitki.service.action_handler.directory:
         class: Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\DirectoryActionHandlerService

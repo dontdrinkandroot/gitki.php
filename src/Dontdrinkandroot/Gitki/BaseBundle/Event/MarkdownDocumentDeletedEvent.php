@@ -6,6 +6,7 @@ namespace Dontdrinkandroot\Gitki\BaseBundle\Event;
 use Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
 use Dontdrinkandroot\Path\FilePath;
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class MarkdownDocumentDeletedEvent extends Event
 {
@@ -18,11 +19,11 @@ class MarkdownDocumentDeletedEvent extends Event
     private $commitMessage;
 
     /**
-     * @var User
+     * @var UserInterface
      */
     private $user;
 
-    public function __construct(FilePath $path, User $user, $time, $commitMessage)
+    public function __construct(FilePath $path, UserInterface $user, $time, $commitMessage)
     {
         $this->path = $path;
         $this->time = $time;

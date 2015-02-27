@@ -7,6 +7,7 @@ use Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
 use Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
 use Dontdrinkandroot\Path\FilePath;
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class MarkdownDocumentSavedEvent extends Event
 {
@@ -20,11 +21,17 @@ class MarkdownDocumentSavedEvent extends Event
     private $commitMessage;
 
     /**
-     * @var User
+     * @var UserInterface
      */
     private $user;
 
-    public function __construct(FilePath $path, User $user, $time, ParsedMarkdownDocument $document, $commitMessage)
+    public function __construct(
+        FilePath $path,
+        UserInterface $user,
+        $time,
+        ParsedMarkdownDocument $document,
+        $commitMessage
+    )
     {
         $this->path = $path;
         $this->time = $time;
