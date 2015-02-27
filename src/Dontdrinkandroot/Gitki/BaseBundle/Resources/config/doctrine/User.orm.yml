@@ -1,7 +1,6 @@
 Dontdrinkandroot\Gitki\BaseBundle\Entity\User:
     type: entity
     table: "User"
-    repositoryClass: Dontdrinkandroot\Gitki\BaseBundle\Repository\DoctrineUserRepository
     id:
         id:
             type: bigint

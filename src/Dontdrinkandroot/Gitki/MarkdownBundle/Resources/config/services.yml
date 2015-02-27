@@ -1,5 +1,9 @@
 services:
 
+    ddr.gitki.service.markdown:
+        class: Dontdrinkandroot\Gitki\MarkdownBundle\Service\RepositoryAwareMarkdownService
+        arguments: [@ddr.gitki.repository.git]
+
     ddr.gitki.service.action_handler.directory.add_page:
         class: Dontdrinkandroot\Gitki\MarkdownBundle\ActionHandler\Directory\AddPageActionHandler
         calls:

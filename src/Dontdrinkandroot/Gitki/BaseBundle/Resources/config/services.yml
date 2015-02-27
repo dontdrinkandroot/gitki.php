@@ -1,5 +1,4 @@
 parameters:
-#    ddr_gitki_base.example.class: Dontdrinkandroot\Gitki\BaseBundle\Example
 
 services:
 
@@ -11,10 +10,6 @@ services:
     ddr.gitki.repository.git:
         class: Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository
         arguments: [%ddr_gitki_base.repository_path%]
-
-    ddr.gitki.service.markdown:
-        class: Dontdrinkandroot\Gitki\MarkdownBundle\Service\RepositoryAwareMarkdownService
-        arguments: [@ddr.gitki.repository.git]
 
     ddr.gitki.service.lock:
         class: Dontdrinkandroot\Gitki\BaseBundle\Service\LockService
