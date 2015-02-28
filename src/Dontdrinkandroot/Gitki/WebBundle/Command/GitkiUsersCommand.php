@@ -1,10 +1,11 @@
 <?php
 
 
-namespace Dontdrinkandroot\Gitki\BaseBundle\Command;
+namespace Dontdrinkandroot\Gitki\WebBundle\Command;
 
-use Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
+use Dontdrinkandroot\Gitki\WebBundle\Entity\User;
 use FOS\UserBundle\Model\UserManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,8 +13,24 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
 
-abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
+abstract class GitkiUsersCommand extends ContainerAwareCommand
 {
+
+    /**
+     * @return UserManagerInterface
+     */
+    protected function getUserManager()
+    {
+        return $this->getContainer()->get('fos_user.user_manager');
+    }
+
+    /**
+     * @return QuestionHelper
+     */
+    protected function getQuestionHelper()
+    {
+        return $this->getHelper('question');
+    }
 
     protected function printUser(User $user, OutputInterface $output)
     {
@@ -30,7 +47,6 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
     /**
      * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param User            $user
      *
      * @return mixed
      */
@@ -239,7 +255,6 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
     /**
      * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param QuestionHelper  $questionHelper
      *
      * @return User
      */
@@ -257,7 +272,7 @@ abstract class GitkiUsersCommand extends GitkiContainerAwareCommand
             $userChoices,
             null
         );
-        /** @var User $user */
+        /** @var \User $user */
         $user = $questionHelper->ask($input, $output, $idQuestion);
 
         return $user;

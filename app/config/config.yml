@@ -68,6 +68,6 @@ hwi_oauth:
 fos_user:
     db_driver: orm
     firewall_name: secured_area
-    user_class: Dontdrinkandroot\Gitki\BaseBundle\Entity\User
+    user_class: Dontdrinkandroot\Gitki\WebBundle\Entity\User
     service:
         mailer: fos_user.mailer.noop

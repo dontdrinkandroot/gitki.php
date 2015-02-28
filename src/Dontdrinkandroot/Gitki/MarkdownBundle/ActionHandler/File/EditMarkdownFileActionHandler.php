@@ -4,8 +4,8 @@ namespace Dontdrinkandroot\Gitki\MarkdownBundle\ActionHandler\File;
 
 use Dontdrinkandroot\Gitki\BaseBundle\ActionHandler\AbstractContainerAwareHandler;
 use Dontdrinkandroot\Gitki\BaseBundle\ActionHandler\File\FileActionHandlerInterface;
-use Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
 use Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
+use Dontdrinkandroot\Gitki\WebBundle\Entity\User;
 use Dontdrinkandroot\Path\FilePath;
 use Dontdrinkandroot\Utils\StringUtils;
 use GitWrapper\GitException;

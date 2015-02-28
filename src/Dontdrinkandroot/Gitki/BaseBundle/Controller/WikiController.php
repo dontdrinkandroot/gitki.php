@@ -54,7 +54,7 @@ class WikiController extends BaseController
     {
         $history = $this->getWikiService()->getHistory(20);
 
-        return $this->render('DdrGitkiBaseBundle:Wiki:history.html.twig', array('history' => $history));
+        return $this->render('DdrGitkiBaseBundle:Wiki:history.html.twig', ['history' => $history]);
     }
 
     /**

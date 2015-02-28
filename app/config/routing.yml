@@ -1,3 +1,42 @@
+hwi_oauth_connect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
+
+hwi_oauth_redirect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
+    prefix:   /connect
+
+hwi_oauth_login:
+    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
+    prefix:   /login
+
+fos_user_change_password:
+    resource: '@FOSUserBundle/Resources/config/routing/change_password.xml'
+    prefix: /user
+
+fos_user_profile:
+    resource: '@FOSUserBundle/Resources/config/routing/profile.xml'
+    prefix: /user/profile
+
+google_login:
+    pattern: /login/check-google
+
+github_login:
+    pattern: /login/check-github
+
+login_check:
+    path: /login_check
+
+logout:
+    path:   /logout
+
+ddr_gitki_loggedout:
+    path:   /user/loggedout
+    defaults: { _controller: DdrGitkiBaseBundle:User:loggedout }
+
+ddr_gitki_web:
+    resource: "@DdrGitkiWebBundle/Resources/config/routing.yml"
+    prefix:   /
+
 ddr_gitki_base:
     resource: "@DdrGitkiBaseBundle/Resources/config/routing.yml"
     prefix:   /

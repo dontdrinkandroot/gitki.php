@@ -1,4 +1,4 @@
-Dontdrinkandroot\Gitki\BaseBundle\Entity\User:
+Dontdrinkandroot\Gitki\WebBundle\Entity\User:
     type: entity
     table: "User"
     id:

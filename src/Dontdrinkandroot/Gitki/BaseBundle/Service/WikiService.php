@@ -3,7 +3,6 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Service;
 
-use Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
 use Dontdrinkandroot\Gitki\BaseBundle\Exception\DirectoryNotEmptyException;
 use Dontdrinkandroot\Gitki\BaseBundle\Exception\FileExistsException;
 use Dontdrinkandroot\Gitki\BaseBundle\Model\CommitMetadata;
@@ -13,6 +12,7 @@ use Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\PageFile;
 use Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
 use Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepositoryInterface;
 use Dontdrinkandroot\Gitki\MarkdownBundle\Service\MarkdownService;
+use Dontdrinkandroot\Gitki\WebBundle\Entity\User;
 use Dontdrinkandroot\Path\DirectoryPath;
 use Dontdrinkandroot\Path\FilePath;
 use Dontdrinkandroot\Path\Path;

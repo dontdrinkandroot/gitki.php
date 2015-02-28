@@ -3,8 +3,8 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Controller;
 
-use Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
 use Dontdrinkandroot\Gitki\BaseBundle\Service\WikiService;
+use Dontdrinkandroot\Gitki\WebBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;

@@ -3,7 +3,7 @@
 namespace Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler;
 
 use Dontdrinkandroot\Gitki\BaseBundle\ActionHandler\Directory\DirectoryActionHandlerInterface;
-use Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
+use Dontdrinkandroot\Gitki\WebBundle\Entity\User;
 use Dontdrinkandroot\Path\DirectoryPath;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

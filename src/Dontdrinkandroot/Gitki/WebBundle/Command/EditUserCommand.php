@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Dontdrinkandroot\Gitki\BaseBundle\Command;
+namespace Dontdrinkandroot\Gitki\WebBundle\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

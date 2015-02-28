@@ -1,41 +1,6 @@
-hwi_oauth_connect:
-    resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
-
-hwi_oauth_redirect:
-    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
-    prefix:   /connect
-
-hwi_oauth_login:
-    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
-    prefix:   /login
-
-google_login:
-    pattern: /login/check-google
-
-github_login:
-    pattern: /login/check-github
-
-login_check:
-    path: /login_check
-
 login_manual:
     path:     /login/manual
     defaults: { _controller: DdrGitkiBaseBundle:Default:login }
-
-fos_user_change_password:
-    resource: '@FOSUserBundle/Resources/config/routing/change_password.xml'
-    prefix: /user
-
-fos_user_profile:
-    resource: '@FOSUserBundle/Resources/config/routing/profile.xml'
-    prefix: /user/profile
-
-logout:
-    path:   /user/logout
-
-#ddr_gitki_user_profile:
-#    path: /user/profile
-#    defaults: { _controller: DdrGitkiBaseBundle:User:profile }
 
 ddr_gitki_about_markdownsyntax:
     path:     /about/markdownsyntax
@@ -45,22 +10,18 @@ ddr_gitki_base_homepage:
     path:     /
     defaults: { _controller: DdrGitkiBaseBundle:Default:index }
 
-ddr_gitki_loggedout:
-    path:   /user/loggedout
-    defaults: { _controller: DdrGitkiBaseBundle:User:loggedout }
-
 ddr_gitki_history:
     path:   /history
     defaults: { _controller: DdrGitkiBaseBundle:Wiki:history }
 
 ddr_gitki_wiki_directory:
-    path:   /wiki{path}
+    path:   /browse{path}
     defaults: { _controller: DdrGitkiBaseBundle:Wiki:directory }
     requirements:
         path: .*/
 
 ddr_gitki_wiki_file:
-    path:   /wiki{path}
+    path:   /browse{path}
     defaults: { _controller: DdrGitkiBaseBundle:Wiki:file }
     requirements:
         path: .+

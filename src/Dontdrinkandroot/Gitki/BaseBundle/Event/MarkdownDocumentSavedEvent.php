@@ -3,8 +3,8 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Event;
 
-use Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
 use Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
+use Dontdrinkandroot\Gitki\WebBundle\Entity\User;
 use Dontdrinkandroot\Path\FilePath;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Security\Core\User\UserInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Dontdrinkandroot\Gitki\BaseBundle\Entity;
+namespace Dontdrinkandroot\Gitki\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Entity\User as BaseUser;
@@ -23,7 +23,7 @@ class User extends BaseUser
 
     public function __construct()
     {
-        parent::__construct();
+        BaseUser::__construct();
     }
 
     /**

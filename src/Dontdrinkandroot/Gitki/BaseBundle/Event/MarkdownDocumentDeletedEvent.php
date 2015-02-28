@@ -3,7 +3,7 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Event;
 
-use Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
+use Dontdrinkandroot\Gitki\WebBundle\Entity\User;
 use Dontdrinkandroot\Path\FilePath;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -65,7 +65,7 @@ class MarkdownDocumentDeletedEvent extends Event
     }
 
     /**
-     * @return User
+     * @return \Dontdrinkandroot\Gitki\WebBundle\Entity\User
      */
     public function getUser()
     {
