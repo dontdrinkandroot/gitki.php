@@ -1,10 +1,9 @@
 <?php
 
 
-namespace Dontdrinkandroot\Gitki\ElasticsearchBundle\Command;
+namespace Dontdrinkandroot\Gitki\BaseBundle\Command;
 
-use Dontdrinkandroot\Gitki\BaseBundle\Command\GitkiContainerAwareCommand;
-use Dontdrinkandroot\Gitki\ElasticsearchBundle\Repository\ElasticsearchRepository;
+use Dontdrinkandroot\Gitki\BaseBundle\Repository\ElasticsearchRepository;
 
 abstract class ElasticsearchCommand extends GitkiContainerAwareCommand
 {

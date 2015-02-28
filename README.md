@@ -12,7 +12,7 @@ Features
 --------
 
 * Versioned, runs against a plain Git Repository
-* Fully integrated (GitHub Flavored-) Markdown support
+* Fully integrated Markdown support
 * Multi-User support
 * Login via OAuth (GitHub, Google, ...)
 * Easy to install

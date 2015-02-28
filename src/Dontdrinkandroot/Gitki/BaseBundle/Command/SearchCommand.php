@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Dontdrinkandroot\Gitki\ElasticsearchBundle\Command;
+namespace Dontdrinkandroot\Gitki\BaseBundle\Command;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

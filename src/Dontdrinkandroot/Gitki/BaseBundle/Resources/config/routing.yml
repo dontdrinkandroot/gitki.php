@@ -10,6 +10,10 @@ ddr_gitki_base_homepage:
     path:     /
     defaults: { _controller: DdrGitkiBaseBundle:Default:index }
 
+ddr_gitki_elasticsearch_search:
+    path:   /search/
+    defaults: { _controller: DdrGitkiElasticsearchBundle:Search:search }
+
 ddr_gitki_history:
     path:   /history
     defaults: { _controller: DdrGitkiBaseBundle:Wiki:history }

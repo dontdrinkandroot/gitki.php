@@ -1,13 +1,12 @@
 <?php
 
 
-namespace Dontdrinkandroot\Gitki\ElasticsearchBundle\Service;
+namespace Dontdrinkandroot\Gitki\BaseBundle\Service;
 
 use Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\PageFile;
+use Dontdrinkandroot\Gitki\BaseBundle\Repository\ElasticsearchRepository;
 use Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
 use Dontdrinkandroot\Gitki\MarkdownBundle\Service\MarkdownService;
-use Dontdrinkandroot\Gitki\BaseBundle\Service\WikiService;
-use Dontdrinkandroot\Gitki\ElasticsearchBundle\Repository\ElasticsearchRepository;
 use Dontdrinkandroot\Path\DirectoryPath;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Finder\SplFileInfo;
@@ -16,7 +15,7 @@ class ElasticsearchWikiService extends WikiService
 {
 
     /**
-     * @var ElasticsearchRepository
+     * @var \Dontdrinkandroot\Gitki\BaseBundle\Repository\ElasticsearchRepository
      */
     protected $elasticsearchRepository;
 

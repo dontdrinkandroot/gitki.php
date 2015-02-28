@@ -1,14 +1,14 @@
 <?php
 
 
-namespace Dontdrinkandroot\Gitki\ElasticsearchBundle\Repository;
+namespace Dontdrinkandroot\Gitki\BaseBundle\Repository;
 
 use Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentDeletedEvent;
 use Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentSavedEvent;
+use Dontdrinkandroot\Gitki\BaseBundle\Model\MarkdownSearchResult;
 use Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
-use Dontdrinkandroot\Gitki\ElasticsearchBundle\Model\MarkdownSearchResult;
-use Elasticsearch\Client;
 use Dontdrinkandroot\Path\FilePath;
+use Elasticsearch\Client;
 
 class ElasticsearchRepository
 {
