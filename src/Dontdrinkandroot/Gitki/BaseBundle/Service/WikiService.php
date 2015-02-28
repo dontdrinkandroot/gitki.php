@@ -119,7 +119,7 @@ class WikiService
      *
      * @throws \Exception
      */
-    public function savePage(UserInterface $user, FilePath $relativeFilePath, $content, $commitMessage)
+    public function saveFile(UserInterface $user, FilePath $relativeFilePath, $content, $commitMessage)
     {
         if (empty($commitMessage)) {
             throw new \Exception('Commit message must not be empty');

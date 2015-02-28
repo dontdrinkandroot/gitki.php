@@ -2,6 +2,9 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Service;
 
+use Dontdrinkandroot\Gitki\BaseBundle\Event\FileChangedEvent;
+use Dontdrinkandroot\Gitki\BaseBundle\Event\FileDeletedEvent;
+use Dontdrinkandroot\Gitki\BaseBundle\Event\FileMovedEvent;
 use Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentDeletedEvent;
 use Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentSavedEvent;
 use Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepositoryInterface;
@@ -33,13 +36,18 @@ class EventDispatchingWikiService extends WikiService
     /**
      * {@inheritdoc}
      */
-    public function savePage(UserInterface $user, FilePath $relativeFilePath, $content, $commitMessage)
+    public function saveFile(UserInterface $user, FilePath $relativeFilePath, $content, $commitMessage)
     {
-        $parsedMarkdownDocument = parent::savePage($user, $relativeFilePath, $content, $commitMessage);
+        $parsedMarkdownDocument = parent::saveFile($user, $relativeFilePath, $content, $commitMessage);
 
         $this->eventDispatcher->dispatch(
             MarkdownDocumentSavedEvent::NAME,
             new MarkdownDocumentSavedEvent($relativeFilePath, $user, time(), $parsedMarkdownDocument, $commitMessage)
+        );
+
+        $this->eventDispatcher->dispatch(
+            FileChangedEvent::NAME,
+            new FileChangedEvent($user, $commitMessage, time(), $relativeFilePath, $content)
         );
 
         return $parsedMarkdownDocument;
@@ -55,6 +63,11 @@ class EventDispatchingWikiService extends WikiService
         $commitMessage
     ) {
         parent::renameFile($user, $relativeOldFilePath, $relativeNewFilePath, $commitMessage);
+
+        $this->eventDispatcher->dispatch(
+            FileMovedEvent::NAME,
+            new FileMovedEvent($user, $commitMessage, time(), $relativeNewFilePath, $relativeOldFilePath)
+        );
 
         if (StringUtils::endsWith($relativeOldFilePath->getName(), '.md')) {
             $this->eventDispatcher->dispatch(
@@ -88,6 +101,11 @@ class EventDispatchingWikiService extends WikiService
      */
     public function deleteFile(UserInterface $user, FilePath $relativeFilePath, $commitMessage)
     {
+        $this->eventDispatcher->dispatch(
+            FileDeletedEvent::NAME,
+            new FileDeletedEvent($user, $commitMessage, time(), $relativeFilePath)
+        );
+
         if (StringUtils::endsWith($relativeFilePath->getName(), '.md')) {
             $this->eventDispatcher->dispatch(
                 MarkdownDocumentDeletedEvent::NAME,

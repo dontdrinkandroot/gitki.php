@@ -2,10 +2,10 @@
 
 namespace Dontdrinkandroot\Gitki\MarkdownBundle\ActionHandler\File;
 
-use Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
-use Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
 use Dontdrinkandroot\Gitki\BaseBundle\ActionHandler\AbstractContainerAwareHandler;
 use Dontdrinkandroot\Gitki\BaseBundle\ActionHandler\File\FileActionHandlerInterface;
+use Dontdrinkandroot\Gitki\BaseBundle\Entity\User;
+use Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
 use Dontdrinkandroot\Path\FilePath;
 use Dontdrinkandroot\Utils\StringUtils;
 use GitWrapper\GitException;
@@ -76,7 +76,7 @@ class EditMarkdownFileActionHandler extends AbstractContainerAwareHandler implem
             $content = $form->get('content')->getData();
             $commitMessage = $form->get('commitMessage')->getData();
             try {
-                $this->getWikiService()->savePage($user, $filePath, $content, $commitMessage);
+                $this->getWikiService()->saveFile($user, $filePath, $content, $commitMessage);
                 $this->getWikiService()->removeLock($user, $filePath);
 
                 return $this->redirect(

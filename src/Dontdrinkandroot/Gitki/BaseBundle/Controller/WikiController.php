@@ -71,7 +71,7 @@ class WikiController extends BaseController
     }
 
     /**
-     * @return \Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\DirectoryActionHandlerServiceInterface
+     * @return DirectoryActionHandlerServiceInterface
      */
     protected function getDirectoryActionHandlerService()
     {
@@ -79,7 +79,7 @@ class WikiController extends BaseController
     }
 
     /**
-     * @return \Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler\FileActionHandlerServiceInterface
+     * @return FileActionHandlerServiceInterface
      */
     protected function getFileHandlerService()
     {

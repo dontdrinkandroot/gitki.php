@@ -18,8 +18,11 @@ class MarkdownDocumentSavedEvent extends Event
      * @var FilePath
      */
     private $path;
+
     private $time;
+
     private $document;
+
     private $commitMessage;
 
     /**
