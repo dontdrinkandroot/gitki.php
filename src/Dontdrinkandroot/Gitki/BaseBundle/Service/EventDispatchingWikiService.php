@@ -10,7 +10,6 @@ use Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentSavedEvent;
 use Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepositoryInterface;
 use Dontdrinkandroot\Gitki\MarkdownBundle\Service\MarkdownService;
 use Dontdrinkandroot\Path\FilePath;
-use Dontdrinkandroot\Utils\StringUtils;
 use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -41,11 +40,6 @@ class EventDispatchingWikiService extends WikiService
         $parsedMarkdownDocument = parent::saveFile($user, $relativeFilePath, $content, $commitMessage);
 
         $this->eventDispatcher->dispatch(
-            MarkdownDocumentSavedEvent::NAME,
-            new MarkdownDocumentSavedEvent($relativeFilePath, $user, time(), $parsedMarkdownDocument, $commitMessage)
-        );
-
-        $this->eventDispatcher->dispatch(
             FileChangedEvent::NAME,
             new FileChangedEvent($user, $commitMessage, time(), $relativeFilePath, $content)
         );
@@ -68,28 +62,6 @@ class EventDispatchingWikiService extends WikiService
             FileMovedEvent::NAME,
             new FileMovedEvent($user, $commitMessage, time(), $relativeNewFilePath, $relativeOldFilePath)
         );
-
-        if (StringUtils::endsWith($relativeOldFilePath->getName(), '.md')) {
-            $this->eventDispatcher->dispatch(
-                MarkdownDocumentDeletedEvent::NAME,
-                new MarkdownDocumentDeletedEvent($relativeOldFilePath, $user, time(), $commitMessage)
-            );
-        }
-
-        if (StringUtils::endsWith($relativeNewFilePath->getName(), '.md')) {
-            $content = $this->getContent($relativeNewFilePath);
-            $parsedMarkdownDocument = $this->markdownService->parse($relativeNewFilePath, $content);
-            $this->eventDispatcher->dispatch(
-                MarkdownDocumentSavedEvent::NAME,
-                new MarkdownDocumentSavedEvent(
-                    $relativeNewFilePath,
-                    $user,
-                    time(),
-                    $parsedMarkdownDocument,
-                    $commitMessage
-                )
-            );
-        }
     }
 
     /**
@@ -105,12 +77,5 @@ class EventDispatchingWikiService extends WikiService
             FileDeletedEvent::NAME,
             new FileDeletedEvent($user, $commitMessage, time(), $relativeFilePath)
         );
-
-        if (StringUtils::endsWith($relativeFilePath->getName(), '.md')) {
-            $this->eventDispatcher->dispatch(
-                MarkdownDocumentDeletedEvent::NAME,
-                new MarkdownDocumentDeletedEvent($relativeFilePath, $user, time(), $commitMessage)
-            );
-        }
     }
 }

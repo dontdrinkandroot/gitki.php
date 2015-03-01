@@ -5,7 +5,7 @@ namespace Dontdrinkandroot\Gitki\BaseBundle\Model;
 
 use Dontdrinkandroot\Path\FilePath;
 
-class MarkdownSearchResult
+class SearchResult
 {
 
     /**

@@ -107,4 +107,9 @@ interface GitRepositoryInterface
      * @return int
      */
     public function getModificationTime(Path $path);
+
+    /**
+     * @param DirectoryPath $path
+     */
+    public function removeDirectory(DirectoryPath $path);
 }

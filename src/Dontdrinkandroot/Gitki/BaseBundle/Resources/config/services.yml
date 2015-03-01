@@ -2,12 +2,12 @@ parameters:
 
 services:
 
-#    ddr.gitki.repository.elasticsearch:
-#        class:  Dontdrinkandroot\Gitki\BaseBundle\Repository\ElasticsearchRepository
-#        arguments: [%ddr_gitki_elasticsearch.host%, %ddr_gitki_elasticsearch.port%,  %ddr_gitki_elasticsearch.index_name%]
-#        tags:
-#            - { name: kernel.event_listener, event: ddr.gitki.wiki.markdown_document.saved, method: onMarkdownDocumentSaved }
-#            - { name: kernel.event_listener, event: ddr.gitki.wiki.markdown_document.deleted, method: onMarkdownDocumentDeleted }
+    ddr.gitki.repository.elasticsearch:
+        class:  Dontdrinkandroot\Gitki\BaseBundle\Repository\NoopElasticsearchRepository
+        tags:
+            - { name: kernel.event_listener, event: ddr.gitki.file.changed, method: onFileChanged }
+            - { name: kernel.event_listener, event: ddr.gitki.file.deleted, method: onFileDeleted }
+            - { name: kernel.event_listener, event: ddr.gitki.file.moved, method: onFileMoved }
 
 #    ddr.gitki.service.wiki:
 #        class: Dontdrinkandroot\Gitki\BaseBundle\Service\ElasticsearchWikiService

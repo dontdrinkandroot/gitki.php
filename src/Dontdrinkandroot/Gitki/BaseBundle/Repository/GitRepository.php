@@ -204,7 +204,15 @@ class GitRepository implements GitRepositoryInterface
      */
     public function removeFile(FilePath $relativePath)
     {
-        unlink($this->getAbsolutePathString($relativePath));
+        $this->getFileSystem()->remove($this->getAbsolutePathString($relativePath));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeDirectory(DirectoryPath $path)
+    {
+        $this->getFileSystem()->remove($this->getAbsolutePathString($path));
     }
 
     /**

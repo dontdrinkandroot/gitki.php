@@ -20,22 +20,19 @@ class ReindexCommand extends ElasticsearchCommand
     {
         $wikiService = $this->getWikiService();
         $elasticSearchRepo = $this->getElasticsearchRepository();
-        $markdownService = $this->getMarkdownService();
 
-        $elasticSearchRepo->deleteMarkdownDocumentIndex();
+        $elasticSearchRepo->clear();
 
-        $filePaths = $wikiService->findAllMarkdownFiles();
+        $filePaths = $wikiService->findAllFiles();
 
         $progress = new ProgressBar($output, count($filePaths));
         $progress->start();
 
         foreach ($filePaths as $filePath) {
-            $progress->setMessage('Indexing ' . $filePath->toAbsoluteUrlString());
+            $progress->setMessage('Indexing ' . $filePath->toAbsoluteString());
             $progress->advance();
 
-            $fileContent = $wikiService->getContent($filePath);
-            $document = $markdownService->parse($filePath, $fileContent);
-            $elasticSearchRepo->indexMarkdownDocument($filePath, $document);
+            $elasticSearchRepo->addFile($filePath);
         }
 
         $progress->finish();

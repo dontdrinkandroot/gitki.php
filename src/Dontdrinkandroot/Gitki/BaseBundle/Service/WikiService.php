@@ -18,7 +18,6 @@ use Dontdrinkandroot\Path\FilePath;
 use Dontdrinkandroot\Path\Path;
 use FOS\UserBundle\Model\UserInterface;
 use GitWrapper\GitException;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\HttpFoundation\File\File;
@@ -121,10 +120,7 @@ class WikiService
      */
     public function saveFile(UserInterface $user, FilePath $relativeFilePath, $content, $commitMessage)
     {
-        if (empty($commitMessage)) {
-            throw new \Exception('Commit message must not be empty');
-        }
-
+        $this->assertCommitMessageExists($commitMessage);
         $this->lockService->assertUserHasLock($user, $relativeFilePath);
         $this->gitRepository->putContent($relativeFilePath, $content);
         $this->gitRepository->addAndCommit($user, $commitMessage, $relativeFilePath);
@@ -135,12 +131,12 @@ class WikiService
     }
 
     /**
-     * @param User     $user
+     * @param UserInterface $user
      * @param FilePath $relativeFilePath
      *
      * @return int
      */
-    public function holdLock(User $user, FilePath $relativeFilePath)
+    public function holdLock(UserInterface $user, FilePath $relativeFilePath)
     {
         return $this->lockService->holdLockForUser($user, $relativeFilePath);
     }
@@ -154,14 +150,9 @@ class WikiService
      */
     public function deleteFile(UserInterface $user, FilePath $relativeFilePath, $commitMessage)
     {
-        if (empty($commitMessage)) {
-            throw new \Exception('Commit message must not be empty');
-        }
-
+        $this->assertCommitMessageExists($commitMessage);
         $this->createLock($user, $relativeFilePath);
-
         $this->gitRepository->removeAndCommit($user, $commitMessage, $relativeFilePath);
-
         $this->removeLock($user, $relativeFilePath);
     }
 
@@ -172,16 +163,8 @@ class WikiService
      */
     public function deleteDirectory(DirectoryPath $relativeDirectoryPath)
     {
-        $absoluteDirectoryPath = $this->gitRepository->getAbsolutePath($relativeDirectoryPath);
-        $finder = new Finder();
-        $finder->in($absoluteDirectoryPath->toAbsoluteString(DIRECTORY_SEPARATOR));
-        $numFiles = $finder->files()->count();
-        if ($numFiles > 0) {
-            throw new DirectoryNotEmptyException($relativeDirectoryPath);
-        }
-
-        $fileSystem = new Filesystem();
-        $fileSystem->remove($absoluteDirectoryPath);
+        $this->assertDirectoryIsEmpty($relativeDirectoryPath);
+        $this->gitRepository->removeDirectory($relativeDirectoryPath);
     }
 
     /**
@@ -199,15 +182,9 @@ class WikiService
         FilePath $relativeNewFilePath,
         $commitMessage
     ) {
-        if ($this->gitRepository->exists($relativeNewFilePath)) {
-            throw new FileExistsException(
-                'File ' . $relativeNewFilePath->toRelativeString(DIRECTORY_SEPARATOR) . ' already exists'
-            );
-        }
+        $this->assertFileDoesNotExist($relativeNewFilePath);
 
-        if (empty($commitMessage)) {
-            throw new \Exception('Commit message must not be empty');
-        }
+        $this->assertCommitMessageExists($commitMessage);
 
         $this->lockService->assertUserHasLock($user, $relativeOldFilePath);
         $this->createLock($user, $relativeNewFilePath);
@@ -235,11 +212,7 @@ class WikiService
     {
         $relativeDirectoryPath = $relativeFilePath->getParentPath();
 
-        if ($this->gitRepository->exists($relativeFilePath)) {
-            throw new FileExistsException(
-                'File ' . $relativeFilePath->toRelativeString(DIRECTORY_SEPARATOR) . ' already exists'
-            );
-        }
+        $this->assertFileDoesNotExist($relativeFilePath);
 
         if (!$this->gitRepository->exists($relativeDirectoryPath)) {
             $this->gitRepository->mkdir($relativeDirectoryPath);
@@ -259,13 +232,12 @@ class WikiService
     /**
      * @return FilePath[]
      */
-    public function findAllMarkdownFiles()
+    public function findAllFiles()
     {
         $finder = new Finder();
         $finder->in($this->gitRepository->getRepositoryPath()->toAbsoluteString(DIRECTORY_SEPARATOR));
-        $finder->name('*.md');
 
-        $filePaths = array();
+        $filePaths = [];
 
         foreach ($finder->files() as $file) {
             /** @var SplFileInfo $file */
@@ -432,5 +404,42 @@ class WikiService
         $pageFile->setTitle($pageFile->getRelativePath()->getFileName());
 
         return $pageFile;
+    }
+
+    protected function assertCommitMessageExists($commitMessage)
+    {
+        if (empty($commitMessage)) {
+            throw new \Exception('Commit message must not be empty');
+        }
+    }
+
+    /**
+     * @param DirectoryPath $relativeDirectoryPath
+     *
+     * @throws DirectoryNotEmptyException
+     */
+    protected function assertDirectoryIsEmpty(DirectoryPath $relativeDirectoryPath)
+    {
+        $absoluteDirectoryPath = $this->gitRepository->getAbsolutePath($relativeDirectoryPath);
+        $finder = new Finder();
+        $finder->in($absoluteDirectoryPath->toAbsoluteString(DIRECTORY_SEPARATOR));
+        $numFiles = $finder->files()->count();
+        if ($numFiles > 0) {
+            throw new DirectoryNotEmptyException($relativeDirectoryPath);
+        }
+    }
+
+    /**
+     * @param FilePath $relativeNewFilePath
+     *
+     * @throws FileExistsException
+     */
+    protected function assertFileDoesNotExist(FilePath $relativeNewFilePath)
+    {
+        if ($this->gitRepository->exists($relativeNewFilePath)) {
+            throw new FileExistsException(
+                'File ' . $relativeNewFilePath->toRelativeString(DIRECTORY_SEPARATOR) . ' already exists'
+            );
+        }
     }
 }

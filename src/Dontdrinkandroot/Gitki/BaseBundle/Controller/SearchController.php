@@ -3,7 +3,7 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Controller;
 
-use Dontdrinkandroot\Gitki\BaseBundle\Repository\ElasticsearchRepository;
+use Dontdrinkandroot\Gitki\BaseBundle\Repository\ElasticsearchRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class SearchController extends BaseController
@@ -22,7 +22,7 @@ class SearchController extends BaseController
         $searchString = null;
         if ($form->isValid()) {
             $searchString = $form->get('searchString')->getData();
-            $results = $this->getElasticsearchRepository()->searchMarkdownDocuments($searchString);
+            $results = $this->getElasticsearchRepository()->search($searchString);
         }
 
         return $this->render(
@@ -32,7 +32,7 @@ class SearchController extends BaseController
     }
 
     /**
-     * @return \Dontdrinkandroot\Gitki\BaseBundle\Repository\ElasticsearchRepository
+     * @return ElasticsearchRepositoryInterface
      */
     protected function getElasticsearchRepository()
     {

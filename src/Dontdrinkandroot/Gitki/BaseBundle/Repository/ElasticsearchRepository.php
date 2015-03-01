@@ -3,31 +3,38 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Repository;
 
+use Dontdrinkandroot\Gitki\BaseBundle\Analyzer\AnalyzerInterface;
+use Dontdrinkandroot\Gitki\BaseBundle\Event\FileChangedEvent;
+use Dontdrinkandroot\Gitki\BaseBundle\Event\FileDeletedEvent;
+use Dontdrinkandroot\Gitki\BaseBundle\Event\FileMovedEvent;
 use Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentDeletedEvent;
 use Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentSavedEvent;
-use Dontdrinkandroot\Gitki\BaseBundle\Model\MarkdownSearchResult;
-use Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
+use Dontdrinkandroot\Gitki\BaseBundle\Model\SearchResult;
 use Dontdrinkandroot\Path\FilePath;
 use Elasticsearch\Client;
 
-class ElasticsearchRepository
+class ElasticsearchRepository implements ElasticsearchRepositoryInterface
 {
 
-    const MARKDOWN_DOCUMENT_TYPE = 'markdown_document';
+    /**
+     * @var AnalyzerInterface[];
+     */
+    protected $analyzers = [];
 
     /**
      * @var string
      */
     private $host;
+
     /**
      * @var int
      */
     private $port;
+
     /**
      * @var Client
      */
     private $client;
-
 
     public function __construct($host, $port, $index)
     {
@@ -35,12 +42,15 @@ class ElasticsearchRepository
         $this->port = $port;
         $this->index = strtolower($index);
 
-        $params = array();
-        $params['hosts'] = array($host . ':' . $port);
+        $params = [];
+        $params['hosts'] = [$host . ':' . $port];
         $this->client = new Client($params);
     }
 
-    public function deleteMarkdownDocumentIndex()
+    /**
+     * {@inheritdoc}
+     */
+    public function clear()
     {
         /* TODO: Delete without id is not supported by current elasticsearch PHP API
         $params = array(
@@ -50,70 +60,36 @@ class ElasticsearchRepository
 
         return $this->client->delete($params);*/
 
-        $params = array(
+        $params = [
             'index' => $this->index,
-            'type' => self::MARKDOWN_DOCUMENT_TYPE,
             'fields' => array('_id')
-        );
+        ];
 
-        $params['body']['query']['match_all'] = array();
+        $params['body']['query']['match_all'] = [];
         $params['body']['size'] = 10000;
 
         $result = $this->client->search($params);
+
         foreach ($result['hits']['hits'] as $hit) {
             $params = array(
-                'id' => $hit['_id'],
+                'id'   => $hit['_id'],
                 'index' => $this->index,
-                'type' => self::MARKDOWN_DOCUMENT_TYPE,
+                'type' => $hit['_type']
             );
 
             $this->client->delete($params);
         }
     }
 
-    public function getTitle(FilePath $path)
-    {
-        $params = array(
-            'index' => $this->index,
-            'type' => self::MARKDOWN_DOCUMENT_TYPE,
-            'id' => $path->toAbsoluteUrlString(),
-            '_source_include' => array('title')
-        );
-        $result = $this->client->get($params);
-        if (null === $result) {
-            return null;
-        }
-
-        return $result['_source']['title'];
-    }
-
-    public function indexMarkdownDocument(FilePAth $path, ParsedMarkdownDocument $parsedMarkdownDocument)
-    {
-        $params = array(
-            'id' => $path->toAbsoluteUrlString(),
-            'index' => $this->index,
-            'type' => self::MARKDOWN_DOCUMENT_TYPE,
-            'body' => array(
-                'title' => $parsedMarkdownDocument->getTitle(),
-                'content' => $parsedMarkdownDocument->getSource(),
-                'linked_paths' => $parsedMarkdownDocument->getLinkedPaths()
-            )
-        );
-
-        return $this->client->index($params);
-    }
-
     /**
-     * @param $searchString
-     * @return MarkdownSearchResult[]
+     * {@inheritdoc}
      */
-    public function searchMarkdownDocuments($searchString)
+    public function search($searchString)
     {
-        $params = array(
-            'index' => $this->index,
-            'type' => self::MARKDOWN_DOCUMENT_TYPE,
-            'fields' => array('title')
-        );
+        $params = [
+            'index'  => $this->index,
+            'fields' => ['title']
+        ];
 
         $searchStringParts = explode(' ', $searchString);
         foreach ($searchStringParts as $searchStringPart) {
@@ -123,12 +99,12 @@ class ElasticsearchRepository
         $result = $this->client->search($params);
         $numHits = $result['hits']['total'];
         if ($numHits == 0) {
-            return array();
+            return [];
         }
 
-        $searchResults = array();
+        $searchResults = [];
         foreach ($result['hits']['hits'] as $hit) {
-            $searchResult = new MarkdownSearchResult();
+            $searchResult = new SearchResult();
             $searchResult->setPath(FilePath::parse($hit['_id']));
             $searchResult->setScore($hit['_score']);
             if (isset($hit['fields'])) {
@@ -142,19 +118,89 @@ class ElasticsearchRepository
         return $searchResults;
     }
 
-    public function onMarkdownDocumentSaved(MarkdownDocumentSavedEvent $event)
+    /**
+     * {@inheritdoc}
+     */
+    public function onFileChanged(FileChangedEvent $event)
     {
-        $this->indexMarkdownDocument($event->getPath(), $event->getDocument());
+        $this->addFile($event->getFile());
     }
 
-    public function onMarkdownDocumentDeleted(MarkdownDocumentDeletedEvent $event)
+    /**
+     * {@inheritdoc}
+     */
+    public function onFileDeleted(FileDeletedEvent $event)
     {
-        $params = array(
-            'id' => $event->getPath()->toAbsoluteUrlString(),
+        $this->deleteFile($event->getFile());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function onFileMoved(FileMovedEvent $event)
+    {
+        $this->deleteFile($event->getPreviousFile());
+        $this->addFile($event->getFile());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addFile(FilePath $path)
+    {
+        if (!isset($this->analyzers[$path->getExtension()])) {
+            return null;
+        }
+
+        $analyzer = $this->analyzers[$path->getExtension()];
+        $result = $analyzer->analyze($path);
+        $params = [
+            'id'   => $path->toAbsoluteString(),
             'index' => $this->index,
-            'type' => self::MARKDOWN_DOCUMENT_TYPE,
-        );
+            'type' => $path->getExtension(),
+            'body' => [
+                'title'        => $result->getTitle(),
+                'content'      => $result->getContent(),
+                'linked_paths' => $result->getLinkedPaths()
+            ]
+        ];
+
+        return $this->client->index($params);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteFile(FilePath $path)
+    {
+        $params = [
+            'id'    => $path->toAbsoluteString(),
+            'index' => $this->index,
+            'type'  => $path->getExtension()
+        ];
 
         return $this->client->delete($params);
+    }
+
+    public function getTitle(FilePath $path)
+    {
+        $params = array(
+            'index'           => $this->index,
+            'id'              => $path->toAbsoluteString(),
+            '_source_include' => array('title')
+        );
+        $result = $this->client->get($params);
+        if (null === $result) {
+            return null;
+        }
+
+        return $result['_source']['title'];
+    }
+
+    public function registerAnalyzer(AnalyzerInterface $analyzer)
+    {
+        foreach ($analyzer->getSupportedExtensions() as $extension) {
+            $this->analyzers[$extension] = $analyzer;
+        }
     }
 }

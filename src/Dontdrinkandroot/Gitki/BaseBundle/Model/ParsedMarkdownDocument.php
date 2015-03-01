@@ -15,7 +15,7 @@ class ParsedMarkdownDocument
     private $title;
 
     /**
-     * @var \Dontdrinkandroot\Path\Path[]
+     * @var Path[]
      */
     private $linkedPaths;
 

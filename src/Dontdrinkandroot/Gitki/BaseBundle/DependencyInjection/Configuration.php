@@ -46,14 +46,13 @@ class Configuration implements ConfigurationInterface
                         ->integerNode('toc_max_level')->defaultValue(3)->end()
                     ->end()
                 ->end()
-//                ->arrayNode('elasticsearch')
-//                    ->addDefaultsIfNotSet()
-//                    ->children()
-//                        ->scalarNode('index_name')->isRequired()->end()
-//                        ->scalarNode('host')->defaultValue('localhost')->end()
-//                        ->integerNode('port')->defaultValue(9200)->end()
-//                    ->end()
-//                ->end()
+                ->arrayNode('elasticsearch')
+                    ->children()
+                        ->scalarNode('index_name')->isRequired()->end()
+                        ->scalarNode('host')->defaultValue('localhost')->end()
+                        ->integerNode('port')->defaultValue(9200)->end()
+                    ->end()
+                ->end()
             ->end();
         // @formatter:on
 

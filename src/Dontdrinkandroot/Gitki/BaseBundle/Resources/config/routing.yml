@@ -12,7 +12,7 @@ ddr_gitki_base_homepage:
 
 ddr_gitki_elasticsearch_search:
     path:   /search/
-    defaults: { _controller: DdrGitkiElasticsearchBundle:Search:search }
+    defaults: { _controller: DdrGitkiBaseBundle:Search:search }
 
 ddr_gitki_history:
     path:   /history

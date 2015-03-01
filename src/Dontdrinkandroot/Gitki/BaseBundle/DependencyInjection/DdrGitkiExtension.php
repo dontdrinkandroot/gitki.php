@@ -45,10 +45,11 @@ class DdrGitkiExtension extends Extension implements PrependExtensionInterface
 
         $twigConfig = [
             'globals' => [
-                'ddr_gitki_name'             => $config['name'],
-                'ddr_gitki_show_toc'         => $config['twig']['show_toc'],
-                'ddr_gitki_toc_max_level'    => $config['twig']['toc_max_level'],
-                'ddr_gitki_show_breadcrumbs' => $config['twig']['show_breadcrumbs']
+                'ddr_gitki_name'                  => $config['name'],
+                'ddr_gitki_show_toc'              => $config['twig']['show_toc'],
+                'ddr_gitki_toc_max_level'         => $config['twig']['toc_max_level'],
+                'ddr_gitki_show_breadcrumbs'      => $config['twig']['show_breadcrumbs'],
+                'ddr_gitki_elasticsearch_enabled' => isset($config['elasticsearch'])
             ]
         ];
 
@@ -123,9 +124,14 @@ class DdrGitkiExtension extends Extension implements PrependExtensionInterface
 
         $container->setParameter('ddr_gitki_base.repository_path', $config['repository_path']);
         $container->setParameter('ddr_gitki_base.name', $config['name']);
-//        $container->setParameter('ddr_gitki_elasticsearch.host', $config['elasticsearch']['host']);
-//        $container->setParameter('ddr_gitki_elasticsearch.port', $config['elasticsearch']['port']);
-//        $container->setParameter('ddr_gitki_elasticsearch.index_name', $config['elasticsearch']['index_name']);
 
+        if (isset($config['elasticsearch'])) {
+            $container->setParameter('ddr_gitki.elasticsearch.enabled', true);
+            $container->setParameter('ddr_gitki.elasticsearch.host', $config['elasticsearch']['host']);
+            $container->setParameter('ddr_gitki.elasticsearch.port', $config['elasticsearch']['port']);
+            $container->setParameter('ddr_gitki.elasticsearch.index_name', $config['elasticsearch']['index_name']);
+        } else {
+            $container->setParameter('ddr_gitki.elasticsearch.enabled', false);
+        }
     }
 }

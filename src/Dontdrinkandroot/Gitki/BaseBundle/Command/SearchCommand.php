@@ -21,14 +21,14 @@ class SearchCommand extends ElasticsearchCommand
     {
         $searchString = $input->getArgument('searchstring');
         $elasticSearchRepo = $this->getElasticsearchRepository();
-        $results = $elasticSearchRepo->searchMarkdownDocuments($searchString);
+        $results = $elasticSearchRepo->search($searchString);
         if (count($results) == 0) {
             $output->writeln('No results found');
         } else {
             foreach ($results as $result) {
                 $output->writeln(
                     '[' . $result->getScore() . '] ' . $result->getTitle() . ' (' . $result->getPath(
-                    )->toAbsoluteUrlString() . ')'
+                    )->toAbsoluteString() . ')'
                 );
             }
         }
