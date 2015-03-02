@@ -3,7 +3,7 @@
 namespace Dontdrinkandroot\Gitki\BaseBundle\ActionHandler\Directory;
 
 use Dontdrinkandroot\Gitki\BaseBundle\ActionHandler\AbstractContainerAwareHandler;
-use Dontdrinkandroot\Gitki\WebBundle\Entity\User;
+use Dontdrinkandroot\Gitki\BaseBundle\Model\GitUserInterface;
 use Dontdrinkandroot\Path\DirectoryPath;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -13,7 +13,7 @@ class DirectoryIndexActionHandler extends AbstractContainerAwareHandler implemen
     /**
      * {@inheritdoc}
      */
-    public function handle(DirectoryPath $directoryPath, Request $request, User $user)
+    public function handle(DirectoryPath $directoryPath, Request $request, GitUserInterface $user)
     {
         $indexFilePath = $directoryPath->appendFile('index.md');
         if ($this->getWikiService()->exists($indexFilePath)) {

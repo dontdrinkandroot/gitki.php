@@ -3,7 +3,7 @@
 namespace Dontdrinkandroot\Gitki\BaseBundle\ActionHandler\File;
 
 use Dontdrinkandroot\Gitki\BaseBundle\ActionHandler\AbstractContainerAwareHandler;
-use Dontdrinkandroot\Gitki\WebBundle\Entity\User;
+use Dontdrinkandroot\Gitki\BaseBundle\Model\GitUserInterface;
 use Dontdrinkandroot\Path\FilePath;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -13,7 +13,7 @@ class FileHistoryActionHandler extends AbstractContainerAwareHandler implements 
     /**
      * {@inheritdoc}
      */
-    public function handle(FilePath $filePath, Request $request, User $user)
+    public function handle(FilePath $filePath, Request $request, GitUserInterface $user)
     {
         $history = $this->getWikiService()->getFileHistory($filePath);
 

@@ -4,10 +4,10 @@
 namespace Dontdrinkandroot\Gitki\BaseBundle\Repository;
 
 use Dontdrinkandroot\Gitki\BaseBundle\Model\CommitMetadata;
+use Dontdrinkandroot\Gitki\BaseBundle\Model\GitUserInterface;
 use Dontdrinkandroot\Path\DirectoryPath;
 use Dontdrinkandroot\Path\FilePath;
 use Dontdrinkandroot\Path\Path;
-use FOS\UserBundle\Model\UserInterface;
 
 interface GitRepositoryInterface
 {
@@ -43,18 +43,18 @@ interface GitRepositoryInterface
     public function getContent(FilePath $path);
 
     /**
-     * @param UserInterface       $author
+     * @param GitUserInterface $author
      * @param string              $commitMessage
      * @param FilePath[]|FilePath $paths
      */
-    public function addAndCommit(UserInterface $author, $commitMessage, $paths);
+    public function addAndCommit(GitUserInterface $author, $commitMessage, $paths);
 
     /**
-     * @param UserInterface       $author
+     * @param GitUserInterface $author
      * @param string              $commitMessage
      * @param FilePath[]|FilePath $paths
      */
-    public function removeAndCommit(UserInterface $author, $commitMessage, $paths);
+    public function removeAndCommit(GitUserInterface $author, $commitMessage, $paths);
 
     /**
      * @param Path $path
@@ -64,12 +64,12 @@ interface GitRepositoryInterface
     public function getAbsolutePath(Path $path);
 
     /**
-     * @param UserInterface $author
+     * @param GitUserInterface $author
      * @param string        $commitMessage
      * @param FilePath      $oldPath
      * @param FilePath      $newPath
      */
-    public function moveAndCommit(UserInterface $author, $commitMessage, FilePath $oldPath, FilePath $newPath);
+    public function moveAndCommit(GitUserInterface $author, $commitMessage, FilePath $oldPath, FilePath $newPath);
 
     /**
      * @return DirectoryPath

@@ -3,7 +3,7 @@
 namespace Dontdrinkandroot\Gitki\BaseBundle\Service\ActionHandler;
 
 use Dontdrinkandroot\Gitki\BaseBundle\ActionHandler\File\FileActionHandlerInterface;
-use Dontdrinkandroot\Gitki\WebBundle\Entity\User;
+use Dontdrinkandroot\Gitki\BaseBundle\Model\GitUserInterface;
 use Dontdrinkandroot\Path\FilePath;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -18,7 +18,7 @@ class FileActionHandlerService implements FileActionHandlerServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function handle(FilePath $filePath, Request $request, User $user)
+    public function handle(FilePath $filePath, Request $request, GitUserInterface $user)
     {
         $action = $request->query->get('action', '');
         $extension = $filePath->getExtension();

@@ -5,12 +5,10 @@ namespace Dontdrinkandroot\Gitki\BaseBundle\Service;
 use Dontdrinkandroot\Gitki\BaseBundle\Event\FileChangedEvent;
 use Dontdrinkandroot\Gitki\BaseBundle\Event\FileDeletedEvent;
 use Dontdrinkandroot\Gitki\BaseBundle\Event\FileMovedEvent;
-use Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentDeletedEvent;
-use Dontdrinkandroot\Gitki\BaseBundle\Event\MarkdownDocumentSavedEvent;
+use Dontdrinkandroot\Gitki\BaseBundle\Model\GitUserInterface;
 use Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepositoryInterface;
 use Dontdrinkandroot\Gitki\MarkdownBundle\Service\MarkdownService;
 use Dontdrinkandroot\Path\FilePath;
-use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class EventDispatchingWikiService extends WikiService
@@ -35,7 +33,7 @@ class EventDispatchingWikiService extends WikiService
     /**
      * {@inheritdoc}
      */
-    public function saveFile(UserInterface $user, FilePath $relativeFilePath, $content, $commitMessage)
+    public function saveFile(GitUserInterface $user, FilePath $relativeFilePath, $content, $commitMessage)
     {
         $parsedMarkdownDocument = parent::saveFile($user, $relativeFilePath, $content, $commitMessage);
 
@@ -51,7 +49,7 @@ class EventDispatchingWikiService extends WikiService
      * {@inheritdoc}
      */
     public function renameFile(
-        UserInterface $user,
+        GitUserInterface $user,
         FilePath $relativeOldFilePath,
         FilePath $relativeNewFilePath,
         $commitMessage
@@ -65,13 +63,13 @@ class EventDispatchingWikiService extends WikiService
     }
 
     /**
-     * @param UserInterface $user
+     * @param GitUserInterface $user
      * @param FilePath      $relativeFilePath
      * @param string        $commitMessage
      *
      * @throws \Exception
      */
-    public function deleteFile(UserInterface $user, FilePath $relativeFilePath, $commitMessage)
+    public function deleteFile(GitUserInterface $user, FilePath $relativeFilePath, $commitMessage)
     {
         $this->eventDispatcher->dispatch(
             FileDeletedEvent::NAME,

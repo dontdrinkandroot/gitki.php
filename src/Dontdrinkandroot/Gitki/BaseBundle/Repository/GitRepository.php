@@ -4,11 +4,11 @@
 namespace Dontdrinkandroot\Gitki\BaseBundle\Repository;
 
 use Dontdrinkandroot\Gitki\BaseBundle\Model\CommitMetadata;
+use Dontdrinkandroot\Gitki\BaseBundle\Model\GitUserInterface;
 use Dontdrinkandroot\Path\DirectoryPath;
 use Dontdrinkandroot\Path\FilePath;
 use Dontdrinkandroot\Path\Path;
 use Dontdrinkandroot\Utils\StringUtils;
-use FOS\UserBundle\Model\UserInterface;
 use GitWrapper\GitWrapper;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -103,7 +103,7 @@ class GitRepository implements GitRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function addAndCommit(UserInterface $author, $commitMessage, $paths)
+    public function addAndCommit(GitUserInterface $author, $commitMessage, $paths)
     {
         $this->add($this->toFilePathArray($paths));
         $this->commit($author, $commitMessage);
@@ -112,13 +112,13 @@ class GitRepository implements GitRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function removeAndCommit(UserInterface $author, $commitMessage, $paths)
+    public function removeAndCommit(GitUserInterface $author, $commitMessage, $paths)
     {
         $this->remove($this->toFilePathArray($paths));
         $this->commit($author, $commitMessage);
     }
 
-    public function commit(UserInterface $author, $commitMessage)
+    public function commit(GitUserInterface $author, $commitMessage)
     {
         $this->getWorkingCopy()->commit(
             [
@@ -131,7 +131,7 @@ class GitRepository implements GitRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function moveAndCommit(UserInterface $author, $commitMessage, FilePath $oldPath, FilePath $newPath)
+    public function moveAndCommit(GitUserInterface $author, $commitMessage, FilePath $oldPath, FilePath $newPath)
     {
         $workingCopy = $this->getWorkingCopy();
         $workingCopy->mv(
@@ -259,11 +259,11 @@ class GitRepository implements GitRepositoryInterface
     }
 
     /**
-     * @param UserInterface $user
+     * @param GitUserInterface $user
      *
      * @return string
      */
-    protected function getAuthorString(UserInterface $user)
+    protected function getAuthorString(GitUserInterface $user)
     {
         $name = $user->getUsername();
         $email = $user->getEmail();

@@ -2,8 +2,8 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Event;
 
+use Dontdrinkandroot\Gitki\BaseBundle\Model\GitUserInterface;
 use Dontdrinkandroot\Path\FilePath;
-use FOS\UserBundle\Model\UserInterface;
 
 class FileMovedEvent extends AbstractFileEvent
 {
@@ -15,7 +15,7 @@ class FileMovedEvent extends AbstractFileEvent
      */
     private $previousFile;
 
-    public function __construct(UserInterface $user, $commitMessage, $time, FilePath $file, FilePath $previousFile)
+    public function __construct(GitUserInterface $user, $commitMessage, $time, FilePath $file, FilePath $previousFile)
     {
         parent::__construct($user, $commitMessage, $time, $file);
         $this->previousFile = $previousFile;

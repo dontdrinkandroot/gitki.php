@@ -20,6 +20,10 @@ hwi_oauth_login:
     resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
     prefix:   /login
 
+login_manual:
+    path:     /login/manual
+    defaults: { _controller: DdrGitkiWebBundle:Default:login }
+
 google_login:
     pattern: /login/check-google
 
@@ -34,7 +38,11 @@ logout:
 
 ddr_gitki_loggedout:
     path:   /loggedout
-    defaults: { _controller: DdrGitkiBaseBundle:User:loggedout }
+    defaults: { _controller: DdrGitkiWebBundle:Default:loggedout }
+
+ddr_gitki_base_homepage:
+    path:     /
+    defaults: { _controller: DdrGitkiWebBundle:Default:index }
 
 ddr_gitki_base:
     resource: "@DdrGitkiBaseBundle/Resources/config/routing.yml"

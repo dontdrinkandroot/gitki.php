@@ -2,8 +2,8 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Event;
 
+use Dontdrinkandroot\Gitki\BaseBundle\Model\GitUserInterface;
 use Dontdrinkandroot\Path\FilePath;
-use FOS\UserBundle\Model\UserInterface;
 
 class FileChangedEvent extends AbstractFileEvent
 {
@@ -15,7 +15,7 @@ class FileChangedEvent extends AbstractFileEvent
      */
     private $content;
 
-    public function __construct(UserInterface $user, $commitMessage, $time, FilePath $file, $content)
+    public function __construct(GitUserInterface $user, $commitMessage, $time, FilePath $file, $content)
     {
         parent::__construct($user, $commitMessage, $time, $file);
         $this->content = $content;

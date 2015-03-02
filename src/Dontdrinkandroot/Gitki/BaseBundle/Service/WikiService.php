@@ -9,14 +9,13 @@ use Dontdrinkandroot\Gitki\BaseBundle\Model\CommitMetadata;
 use Dontdrinkandroot\Gitki\BaseBundle\Model\DirectoryListing;
 use Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\Directory;
 use Dontdrinkandroot\Gitki\BaseBundle\Model\FileInfo\PageFile;
+use Dontdrinkandroot\Gitki\BaseBundle\Model\GitUserInterface;
 use Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
 use Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepositoryInterface;
 use Dontdrinkandroot\Gitki\MarkdownBundle\Service\MarkdownService;
-use Dontdrinkandroot\Gitki\WebBundle\Entity\User;
 use Dontdrinkandroot\Path\DirectoryPath;
 use Dontdrinkandroot\Path\FilePath;
 use Dontdrinkandroot\Path\Path;
-use FOS\UserBundle\Model\UserInterface;
 use GitWrapper\GitException;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -67,21 +66,21 @@ class WikiService
     }
 
     /**
-     * @param UserInterface $user
+     * @param GitUserInterface $user
      * @param FilePath $relativeFilePath
      */
-    public function createLock(UserInterface $user, FilePath $relativeFilePath)
+    public function createLock(GitUserInterface $user, FilePath $relativeFilePath)
     {
         $this->lockService->createLock($user, $relativeFilePath);
     }
 
     /**
-     * @param UserInterface $user
+     * @param GitUserInterface $user
      * @param FilePath      $relativeFilePath
      *
      * @throws \Exception
      */
-    public function removeLock(UserInterface $user, FilePath $relativeFilePath)
+    public function removeLock(GitUserInterface $user, FilePath $relativeFilePath)
     {
         $this->lockService->removeLock($user, $relativeFilePath);
     }
@@ -109,7 +108,7 @@ class WikiService
     }
 
     /**
-     * @param UserInterface $user
+     * @param GitUserInterface $user
      * @param FilePath      $relativeFilePath
      * @param string        $content
      * @param string        $commitMessage
@@ -118,7 +117,7 @@ class WikiService
      *
      * @throws \Exception
      */
-    public function saveFile(UserInterface $user, FilePath $relativeFilePath, $content, $commitMessage)
+    public function saveFile(GitUserInterface $user, FilePath $relativeFilePath, $content, $commitMessage)
     {
         $this->assertCommitMessageExists($commitMessage);
         $this->lockService->assertUserHasLock($user, $relativeFilePath);
@@ -131,24 +130,24 @@ class WikiService
     }
 
     /**
-     * @param UserInterface $user
+     * @param GitUserInterface $user
      * @param FilePath $relativeFilePath
      *
      * @return int
      */
-    public function holdLock(UserInterface $user, FilePath $relativeFilePath)
+    public function holdLock(GitUserInterface $user, FilePath $relativeFilePath)
     {
         return $this->lockService->holdLockForUser($user, $relativeFilePath);
     }
 
     /**
-     * @param UserInterface $user
+     * @param GitUserInterface $user
      * @param FilePath $relativeFilePath
      * @param string   $commitMessage
      *
      * @throws \Exception
      */
-    public function deleteFile(UserInterface $user, FilePath $relativeFilePath, $commitMessage)
+    public function deleteFile(GitUserInterface $user, FilePath $relativeFilePath, $commitMessage)
     {
         $this->assertCommitMessageExists($commitMessage);
         $this->createLock($user, $relativeFilePath);
@@ -168,7 +167,7 @@ class WikiService
     }
 
     /**
-     * @param UserInterface $user
+     * @param GitUserInterface $user
      * @param FilePath      $relativeOldFilePath
      * @param FilePath      $relativeNewFilePath
      * @param string        $commitMessage
@@ -177,7 +176,7 @@ class WikiService
      * @throws \Exception
      */
     public function renameFile(
-        UserInterface $user,
+        GitUserInterface $user,
         FilePath $relativeOldFilePath,
         FilePath $relativeNewFilePath,
         $commitMessage
@@ -201,14 +200,19 @@ class WikiService
     }
 
     /**
-     * @param User         $user
+     * @param GitUserInterface $user
      * @param FilePath     $relativeFilePath
      * @param UploadedFile $uploadedFile
      * @param string       $commitMessage
      *
      * @throws FileExistsException
      */
-    public function addFile(User $user, FilePath $relativeFilePath, UploadedFile $uploadedFile, $commitMessage)
+    public function addFile(
+        GitUserInterface $user,
+        FilePath $relativeFilePath,
+        UploadedFile $uploadedFile,
+        $commitMessage
+    )
     {
         $relativeDirectoryPath = $relativeFilePath->getParentPath();
 

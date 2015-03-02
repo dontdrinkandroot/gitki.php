@@ -3,12 +3,13 @@
 namespace Dontdrinkandroot\Gitki\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Dontdrinkandroot\Gitki\BaseBundle\Model\GitUserInterface;
 use FOS\UserBundle\Entity\User as BaseUser;
 
 /**
  * User
  */
-class User extends BaseUser
+class User extends BaseUser implements GitUserInterface
 {
 
     /**

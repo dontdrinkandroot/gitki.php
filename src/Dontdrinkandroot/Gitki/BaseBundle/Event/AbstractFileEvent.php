@@ -2,15 +2,15 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Event;
 
+use Dontdrinkandroot\Gitki\BaseBundle\Model\GitUserInterface;
 use Dontdrinkandroot\Path\FilePath;
-use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 class AbstractFileEvent extends Event
 {
 
     /**
-     * @var UserInterface
+     * @var GitUserInterface
      */
     private $user;
 
@@ -29,7 +29,7 @@ class AbstractFileEvent extends Event
      */
     private $file;
 
-    public function __construct(UserInterface $user, $commitMessage, $time, FilePath $file)
+    public function __construct(GitUserInterface $user, $commitMessage, $time, FilePath $file)
     {
 
         $this->user = $user;
@@ -39,7 +39,7 @@ class AbstractFileEvent extends Event
     }
 
     /**
-     * @return UserInterface
+     * @return GitUserInterface
      */
     public function getUser()
     {

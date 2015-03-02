@@ -1,8 +1,10 @@
 <?php
 
-namespace Dontdrinkandroot\Gitki\BaseBundle\Controller;
+namespace Dontdrinkandroot\Gitki\WebBundle\Controller;
 
+use Dontdrinkandroot\Gitki\BaseBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class DefaultController extends BaseController
@@ -32,6 +34,14 @@ class DefaultController extends BaseController
             }
         }
 
-        return $this->redirect($this->generateUrl('ddr_gitki_wiki_file', array('path' => '/index.md')));
+        return $this->redirect($this->generateUrl('ddr_gitki_wiki_file', ['path' => '/index.md']));
+    }
+
+    /**
+     * @return Response
+     */
+    public function loggedoutAction()
+    {
+        return $this->render('DdrGitkiWebBundle:Default:loggedout.html.twig');
     }
 }

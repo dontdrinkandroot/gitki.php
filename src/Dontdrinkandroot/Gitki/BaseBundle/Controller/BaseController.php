@@ -3,8 +3,8 @@
 
 namespace Dontdrinkandroot\Gitki\BaseBundle\Controller;
 
+use Dontdrinkandroot\Gitki\BaseBundle\Model\GitUserInterface;
 use Dontdrinkandroot\Gitki\BaseBundle\Service\WikiService;
-use Dontdrinkandroot\Gitki\WebBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -13,7 +13,7 @@ class BaseController extends Controller
 {
 
     /**
-     * @return User|null
+     * @return GitUserInterface|null
      */
     public function getUser()
     {

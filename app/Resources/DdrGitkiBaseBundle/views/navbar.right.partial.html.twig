@@ -1,0 +1,11 @@
+{% if is_granted('ROLE_ADMIN') %}
+    {#<li class="dropdown">#}
+    {#<a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>#}
+    {#<ul class="dropdown-menu">#}
+    {#<li><a href=""></a></li>#}
+    {#</ul>#}
+    {#</li>#}
+{% endif %}
+{% if app.user %}
+    <li><p class="navbar-text">{{ app.user.username }}</p></li>
+{% endif %}

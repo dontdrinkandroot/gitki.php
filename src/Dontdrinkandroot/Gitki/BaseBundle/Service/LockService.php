@@ -4,9 +4,9 @@ namespace Dontdrinkandroot\Gitki\BaseBundle\Service;
 
 use Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockedException;
 use Dontdrinkandroot\Gitki\BaseBundle\Exception\PageLockExpiredException;
+use Dontdrinkandroot\Gitki\BaseBundle\Model\GitUserInterface;
 use Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepositoryInterface;
 use Dontdrinkandroot\Path\FilePath;
-use FOS\UserBundle\Model\UserInterface;
 
 class LockService
 {
@@ -26,12 +26,12 @@ class LockService
     }
 
     /**
-     * @param UserInterface $user
+     * @param GitUserInterface $user
      * @param FilePath      $relativeFilePath
      *
      * @throws PageLockedException
      */
-    public function createLock(UserInterface $user, FilePath $relativeFilePath)
+    public function createLock(GitUserInterface $user, FilePath $relativeFilePath)
     {
         $relativeLockPath = $this->getLockPath($relativeFilePath);
         $relativeLockDir = $relativeLockPath->getParentPath();
@@ -50,12 +50,12 @@ class LockService
     }
 
     /**
-     * @param UserInterface $user
+     * @param GitUserInterface $user
      * @param FilePath      $relativeFilePath
      *
      * @throws \Exception
      */
-    public function removeLock(UserInterface $user, FilePath $relativeFilePath)
+    public function removeLock(GitUserInterface $user, FilePath $relativeFilePath)
     {
         $relativeLockPath = $this->getLockPath($relativeFilePath);
         if (!$this->gitRepository->exists($relativeLockPath)) {
@@ -75,13 +75,13 @@ class LockService
     }
 
     /**
-     * @param UserInterface $user
+     * @param GitUserInterface $user
      * @param FilePath      $relativeFilePath
      *
      * @return bool
      * @throws PageLockExpiredException
      */
-    public function assertUserHasLock(UserInterface $user, FilePath $relativeFilePath)
+    public function assertUserHasLock(GitUserInterface $user, FilePath $relativeFilePath)
     {
         $lockPath = $this->getLockPath($relativeFilePath);
         if ($this->gitRepository->exists($lockPath) && !$this->isLockExpired($lockPath)) {
@@ -95,13 +95,13 @@ class LockService
     }
 
     /**
-     * @param UserInterface $user
+     * @param GitUserInterface $user
      * @param FilePath      $relativeFilePath
      *
      * @return int
      * @throws PageLockExpiredException
      */
-    public function holdLockForUser(UserInterface $user, FilePath $relativeFilePath)
+    public function holdLockForUser(GitUserInterface $user, FilePath $relativeFilePath)
     {
         $this->assertUserHasLock($user, $relativeFilePath);
         $lockPath = $this->getLockPath($relativeFilePath);
@@ -170,13 +170,13 @@ class LockService
     }
 
     /**
-     * @param UserInterface $user
+     * @param GitUserInterface $user
      * @param FilePath      $relativeLockPath
      *
      * @return bool
      * @throws PageLockedException
      */
-    protected function assertUnlocked(UserInterface $user, FilePath $relativeLockPath)
+    protected function assertUnlocked(GitUserInterface $user, FilePath $relativeLockPath)
     {
         if (!$this->gitRepository->exists($relativeLockPath)) {
             return true;

@@ -4,7 +4,7 @@ namespace Dontdrinkandroot\Gitki\MarkdownBundle\ActionHandler\Directory;
 
 use Dontdrinkandroot\Gitki\BaseBundle\ActionHandler\AbstractContainerAwareHandler;
 use Dontdrinkandroot\Gitki\BaseBundle\ActionHandler\Directory\DirectoryActionHandlerInterface;
-use Dontdrinkandroot\Gitki\WebBundle\Entity\User;
+use Dontdrinkandroot\Gitki\BaseBundle\Model\GitUserInterface;
 use Dontdrinkandroot\Path\DirectoryPath;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -14,7 +14,7 @@ class AddPageActionHandler extends AbstractContainerAwareHandler implements Dire
     /**
      * {@inheritdoc}
      */
-    public function handle(DirectoryPath $directoryPath, Request $request, User $user)
+    public function handle(DirectoryPath $directoryPath, Request $request, GitUserInterface $user)
     {
         $this->assertRole('ROLE_COMMITTER');
 
