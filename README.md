@@ -21,24 +21,3 @@ Features
 * Responsive design
 * Written in PHP
 * Based on Symfony
-
-Installation
-------------
-
-Configuration
--------------
-
-``` yaml
-# Default configuration for extension with alias: "ddr_gitki"
-ddr_gitki:
-    repository_path:      ~ # Required
-    name:                 GitKi
-    oauth:
-        default_provider:     ~
-        providers:
-            client_id:            ~ # Required
-            secret:               ~ # Required
-    twig:
-        show_breadcrumbs:     true
-        show_toc:             true
-```

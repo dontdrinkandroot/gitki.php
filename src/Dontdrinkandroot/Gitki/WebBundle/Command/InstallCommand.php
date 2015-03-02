@@ -1,8 +1,9 @@
 <?php
 
 
-namespace Dontdrinkandroot\Gitki\BaseBundle\Command;
+namespace Dontdrinkandroot\Gitki\WebBundle\Command;
 
+use Dontdrinkandroot\Gitki\BaseBundle\Command\GitkiContainerAwareCommand;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,19 +31,21 @@ class InstallCommand extends GitkiContainerAwareCommand
         /** @var Application $application */
         $application = $this->getApplication();
         $rootDir = $application->getKernel()->getRootDir();
-        $gitKiConfigPath = $rootDir . '/config/gitki.yml';
+        $gitKiConfigPath = $rootDir . '/config/config.yml';
         $config = Yaml::parse($gitKiConfigPath);
         if (isset($config['ddr_gitki'])) {
             $this->gitkiConfig = $config['ddr_gitki'];
         } else {
-            $this->gitkiConfig = array();
+            $this->gitkiConfig = [];
         }
 
         $this->doConfigSteps($input, $output);
 
 // TODO: continue
+        $config['ddr_gitki'] = $this->gitkiConfig;
 //        var_dump($this->gitkiConfig);
-//        var_dump(Yaml::dump($this->gitkiConfig, 10));
+//        var_dump($config);
+//        var_dump(Yaml::dump($config, 10));
     }
 
     protected function doConfigSteps(InputInterface $input, OutputInterface $output)
