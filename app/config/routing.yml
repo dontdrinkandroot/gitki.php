@@ -30,13 +30,13 @@ logout:
     path:   /logout
 
 ddr_gitki_loggedout:
-    path:   /user/loggedout
+    path:   /loggedout
     defaults: { _controller: DdrGitkiBaseBundle:User:loggedout }
-
-ddr_gitki_web:
-    resource: "@DdrGitkiWebBundle/Resources/config/routing.yml"
-    prefix:   /
 
 ddr_gitki_base:
     resource: "@DdrGitkiBaseBundle/Resources/config/routing.yml"
+    prefix:   /
+
+ddr_gitki_web:
+    resource: "@DdrGitkiWebBundle/Resources/config/routing.yml"
     prefix:   /

@@ -19,8 +19,8 @@ security:
             form_login: ~
 
             logout:
-                path:   /user/logout
-                target: /user/loggedout
+                path:   /logout
+                target: /loggedout
 
             oauth:
                 use_forward:       false
