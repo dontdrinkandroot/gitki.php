@@ -2,7 +2,9 @@ services:
 
     ddr.gitki.service.markdown:
         class: Dontdrinkandroot\Gitki\MarkdownBundle\Service\RepositoryAwareMarkdownService
-        arguments: [@ddr.gitki.repository.git]
+        arguments:
+            - @ddr.gitki.repository.git
+            - '%ddr_gitki_markdown.allow_html%'
 
     ddr.gitki.service.action_handler.directory.add_page:
         class: Dontdrinkandroot\Gitki\MarkdownBundle\ActionHandler\Directory\AddPageActionHandler

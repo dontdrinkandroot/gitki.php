@@ -15,6 +15,13 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('ddr_gitki_markdown');
 
+        // @formatter:off
+        $rootNode
+            ->children()
+                ->booleanNode('allow_html')->defaultFalse()->end()
+            ->end();
+        // @formatter:on
+
         return $treeBuilder;
     }
 }

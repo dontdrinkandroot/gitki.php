@@ -5,9 +5,10 @@ namespace Dontdrinkandroot\Gitki\MarkdownBundle\Service;
 
 use Dontdrinkandroot\Gitki\BaseBundle\Model\ParsedMarkdownDocument;
 use Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
+use Dontdrinkandroot\Gitki\MarkdownBundle\Renderer\EscapingHtmlBlockRenderer;
+use Dontdrinkandroot\Gitki\MarkdownBundle\Renderer\EscapingHtmlInlineRenderer;
 use Dontdrinkandroot\Gitki\MarkdownBundle\Renderer\RepositoryAwareLinkRenderer;
 use Dontdrinkandroot\Gitki\MarkdownBundle\Renderer\TocBuildingHeaderRenderer;
-use Dontdrinkandroot\Gitki\MarkdownBundle\Service\MarkdownService;
 use Dontdrinkandroot\Path\FilePath;
 use League\CommonMark\DocParser;
 use League\CommonMark\Environment;
@@ -22,11 +23,18 @@ class RepositoryAwareMarkdownService implements MarkdownService
     protected $repository;
 
     /**
-     * @param GitRepository $repository
+     * @var bool
      */
-    public function __construct(GitRepository $repository)
+    private $allowHtml;
+
+    /**
+     * @param GitRepository $repository
+     * @param bool          $allowHtml
+     */
+    public function __construct(GitRepository $repository, $allowHtml)
     {
         $this->repository = $repository;
+        $this->allowHtml = $allowHtml;
     }
 
     /**
@@ -44,6 +52,14 @@ class RepositoryAwareMarkdownService implements MarkdownService
         $environment = Environment::createCommonMarkEnvironment();
         $environment->addInlineRenderer('League\CommonMark\Inline\Element\Link', $linkRenderer);
         $environment->addBlockRenderer('League\CommonMark\Block\Element\Header', $headerRenderer);
+
+        if (!$this->allowHtml) {
+            $environment->addBlockRenderer(
+                'League\CommonMark\Block\Element\HtmlBlock',
+                new EscapingHtmlBlockRenderer()
+            );
+            $environment->addInlineRenderer('League\CommonMark\Inline\Element\Html', new EscapingHtmlInlineRenderer());
+        }
 
         $parser = new DocParser($environment);
         $htmlRenderer = new HtmlRenderer($environment);
