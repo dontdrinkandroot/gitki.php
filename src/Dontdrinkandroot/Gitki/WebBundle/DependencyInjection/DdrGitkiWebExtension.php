@@ -35,22 +35,22 @@ class DdrGitkiWebExtension extends Extension implements PrependExtensionInterfac
             'resource_owners' => []
         ];
 
-        $securityConfig = [
-            'firewalls' => [
-                'secured_area' => [
-                    'oauth' => [
-                        'resource_owners' => []
-                    ]
-                ]
-            ]
-        ];
+//        $securityConfig = [
+//            'firewalls' => [
+//                'secured_area' => [
+//                    'oauth' => [
+//                        'resource_owners' => []
+//                    ]
+//                ]
+//            ]
+//        ];
 
-        if (isset($config['authentication']['oauth']['default_provider'])) {
-            $securityConfig['firewalls']['secured_area']['oauth']['login_path'] =
-                '/connect/' . $config['authentication']['oauth']['default_provider'];
-        } else {
-            $securityConfig['firewalls']['secured_area']['oauth']['login_path'] = '/login';
-        }
+//        if (isset($config['authentication']['oauth']['default_provider'])) {
+//            $securityConfig['firewalls']['secured_area']['oauth']['login_path'] =
+//                '/connect/' . $config['authentication']['oauth']['default_provider'];
+//        } else {
+//            $securityConfig['firewalls']['secured_area']['oauth']['login_path'] = '/login';
+//        }
 
         $formLoginEnabled = true;
         if (isset($config['authentication']['form_login_enabled'])) {
@@ -67,7 +67,7 @@ class DdrGitkiWebExtension extends Extension implements PrependExtensionInterfac
                 'client_secret' => $githubConfig['secret'],
                 'scope'         => 'user:email'
             ];
-            $securityConfig['firewalls']['secured_area']['oauth']['resource_owners']['github'] = '/login/check-github';
+//            $securityConfig['firewalls']['secured_area']['oauth']['resource_owners']['github'] = '/login/check-github';
         }
 
         if (isset($config['authentication']['oauth']['providers']['google'])) {
@@ -85,10 +85,10 @@ class DdrGitkiWebExtension extends Extension implements PrependExtensionInterfac
                     'login_hint'      => 'email address'
                 ]
             ];
-            $securityConfig['firewalls']['secured_area']['oauth']['resource_owners']['google'] = '/login/check-google';
+//            $securityConfig['firewalls']['secured_area']['oauth']['resource_owners']['google'] = '/login/check-google';
         }
 
-        $container->prependExtensionConfig('security', $securityConfig);
+//        $container->prependExtensionConfig('security', $securityConfig);
         $container->prependExtensionConfig('hwi_oauth', $hwiOauthConfig);
         $container->prependExtensionConfig('twig', $twigConfig);
     }

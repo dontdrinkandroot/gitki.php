@@ -1,8 +1,8 @@
-{% extends 'DdrGitkiBaseBundle::scaffold.html.twig' %}
-{% block title %} - Login{% endblock %}
-{% block body %}
-    <div class="container">
+{% extends "DdrGitkiBaseBundle::scaffold.html.twig" %}
 
+{% block body %}
+
+    <div class="container">
         <div class="row">
 
             <div class="col-lg-3 col-md-2"></div>
@@ -18,13 +18,14 @@
                     <div class="panel-body">
 
                         {% if error %}
-                            <div class="alert alert-danger">{{ error }}</div>
+                            <div class="alert alert-danger">{{ error|trans({}, 'FOSUserBundle') }}</div>
                         {% endif %}
 
                         {% if ddr_gitki_form_login_enabled %}
-
-                            <form action="{{ path('login_check') }}" method="post" role="form"
+                            <form action="{{ path('fos_user_security_check') }}" method="post" role="form"
                                   class="form-horizontal">
+
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label"
@@ -32,7 +33,7 @@
 
                                     <div class="col-sm-9">
                                         <input class="form-control" type="text" id="username" name="_username"
-                                               required="required" />
+                                               value="{{ last_username }}" required="required" />
                                     </div>
                                 </div>
 
@@ -65,7 +66,6 @@
                                 </div>
 
                             </form>
-
                         {% endif %}
 
                         {% if hwi_oauth_resource_owners() and ddr_gitki_form_login_enabled %}
@@ -82,7 +82,6 @@
                                 </div>
                             {% endfor %}
                         </div>
-
                     </div>
 
                 </div>
@@ -92,6 +91,5 @@
             <div class="col-lg-3 col-md-2"></div>
 
         </div>
-
     </div>
-{% endblock %}
+{% endblock body %}
