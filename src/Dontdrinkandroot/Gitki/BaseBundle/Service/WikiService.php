@@ -67,7 +67,7 @@ class WikiService
 
     /**
      * @param GitUserInterface $user
-     * @param FilePath $relativeFilePath
+     * @param FilePath         $relativeFilePath
      */
     public function createLock(GitUserInterface $user, FilePath $relativeFilePath)
     {
@@ -76,7 +76,7 @@ class WikiService
 
     /**
      * @param GitUserInterface $user
-     * @param FilePath      $relativeFilePath
+     * @param FilePath         $relativeFilePath
      *
      * @throws \Exception
      */
@@ -109,9 +109,9 @@ class WikiService
 
     /**
      * @param GitUserInterface $user
-     * @param FilePath      $relativeFilePath
-     * @param string        $content
-     * @param string        $commitMessage
+     * @param FilePath         $relativeFilePath
+     * @param string           $content
+     * @param string           $commitMessage
      *
      * @return ParsedMarkdownDocument
      *
@@ -131,7 +131,7 @@ class WikiService
 
     /**
      * @param GitUserInterface $user
-     * @param FilePath $relativeFilePath
+     * @param FilePath         $relativeFilePath
      *
      * @return int
      */
@@ -142,8 +142,8 @@ class WikiService
 
     /**
      * @param GitUserInterface $user
-     * @param FilePath $relativeFilePath
-     * @param string   $commitMessage
+     * @param FilePath         $relativeFilePath
+     * @param string           $commitMessage
      *
      * @throws \Exception
      */
@@ -168,9 +168,9 @@ class WikiService
 
     /**
      * @param GitUserInterface $user
-     * @param FilePath      $relativeOldFilePath
-     * @param FilePath      $relativeNewFilePath
-     * @param string        $commitMessage
+     * @param FilePath         $relativeOldFilePath
+     * @param FilePath         $relativeNewFilePath
+     * @param string           $commitMessage
      *
      * @throws FileExistsException
      * @throws \Exception
@@ -201,9 +201,9 @@ class WikiService
 
     /**
      * @param GitUserInterface $user
-     * @param FilePath     $relativeFilePath
-     * @param UploadedFile $uploadedFile
-     * @param string       $commitMessage
+     * @param FilePath         $relativeFilePath
+     * @param UploadedFile     $uploadedFile
+     * @param string           $commitMessage
      *
      * @throws FileExistsException
      */

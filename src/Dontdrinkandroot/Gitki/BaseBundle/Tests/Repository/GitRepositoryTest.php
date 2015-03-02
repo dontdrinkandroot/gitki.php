@@ -4,6 +4,7 @@
 namespace Dontdrinkandroot\Gitki\BaseBundle\Tests\Repository;
 
 use Dontdrinkandroot\Gitki\BaseBundle\Model\CommitMetadata;
+use Dontdrinkandroot\Gitki\BaseBundle\Model\GitUserInterface;
 use Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
 use Dontdrinkandroot\Gitki\BaseBundle\Tests\GitRepositoryTestCase;
 use Dontdrinkandroot\Path\FilePath;
@@ -40,7 +41,7 @@ class GitRepositoryTest extends GitRepositoryTestCase
     }
 }
 
-class DummyUser extends User
+class DummyUser extends User implements GitUserInterface
 {
 
 }
