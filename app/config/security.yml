@@ -2,51 +2,40 @@ security:
     providers:
         fos_userbundle:
             id: fos_user.user_provider.username_email
-
     encoders:
         Dontdrinkandroot\Gitki\WebBundle\Entity\User: sha512
-
     role_hierarchy:
         ROLE_ADMIN: ROLE_COMMITTER
         ROLE_COMMITTER: ROLE_WATCHER
         ROLE_WATCHER: ROLE_USER
-
     firewalls:
-
         dev:
             pattern: ^/(_(profiler|wdt|error)|css|images|js)/
             security: false
-
         secured_area:
-
-            anonymous: ~
-
-            form_login: ~
-#                provider: fos_userbundle
-#                csrf_provider: form.csrf_provider
-
+            anonymous: null
+            form_login: null
             logout:
-                path:   /logout
+                path: /logout
                 target: /loggedout
-
             oauth:
                 login_path: /login/
-                use_forward:       false
-                failure_path:      /login
+                use_forward: false
+                failure_path: /login
                 provider: fos_userbundle/
                 oauth_user_provider:
                     service: hwi_oauth.user.provider.fosub_bridge
-                resource_owners:
-                    github: /login/check-github
-#                    google: /login/check-google
-
+                resource_owners: null
     access_control:
-        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/connect, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/loggedout, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        ## Only logged in users may see content
-        #- { path: ^/, roles: ROLE_USER }
-        ## Only watchers may see content
-        - { path: ^/, roles: ROLE_WATCHER }
-        ## All users may see content
-        # - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        -
+            path: ^/login
+            roles: IS_AUTHENTICATED_ANONYMOUSLY
+        -
+            path: ^/connect
+            roles: IS_AUTHENTICATED_ANONYMOUSLY
+        -
+            path: ^/loggedout
+            roles: IS_AUTHENTICATED_ANONYMOUSLY
+        -
+            path: ^/
+            roles: ROLE_WATCHER

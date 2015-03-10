@@ -9,6 +9,7 @@
 /build/
 /vendor/
 /bin/*
+!bin/admin
 !bin/console
 !bin/symfony_requirements
 !bin/update-dev
