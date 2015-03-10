@@ -7,7 +7,7 @@ use League\CommonMark\Block\Element\AbstractBlock;
 use League\CommonMark\Block\Element\Header;
 use League\CommonMark\Block\Renderer\HeaderRenderer;
 use League\CommonMark\HtmlElement;
-use League\CommonMark\HtmlRenderer;
+use League\CommonMark\HtmlRendererInterface;
 
 class TocBuildingHeaderRenderer extends HeaderRenderer
 {
@@ -21,14 +21,18 @@ class TocBuildingHeaderRenderer extends HeaderRenderer
     private $current = [];
 
     /**
-     * @param Header       $block
-     * @param HtmlRenderer $htmlRenderer
+     * @param AbstractBlock         $block
+     * @param HtmlRendererInterface $htmlRenderer
      * @param bool         $inTightList
      *
      * @return HtmlElement
      */
-    public function render(AbstractBlock $block, HtmlRenderer $htmlRenderer, $inTightList = false)
+    public function render(AbstractBlock $block, HtmlRendererInterface $htmlRenderer, $inTightList = false)
     {
+        if (!($block instanceof Header)) {
+            throw new \InvalidArgumentException('Incompatible block type: ' . get_class($block));
+        }
+
         $htmlElement = parent::render($block, $htmlRenderer, $inTightList);
 
         $id = 'heading' . $this->count;

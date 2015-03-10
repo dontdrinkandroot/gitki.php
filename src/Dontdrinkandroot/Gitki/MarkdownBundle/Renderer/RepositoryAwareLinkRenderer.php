@@ -3,13 +3,13 @@
 namespace Dontdrinkandroot\Gitki\MarkdownBundle\Renderer;
 
 use Dontdrinkandroot\Gitki\BaseBundle\Repository\GitRepository;
+use Dontdrinkandroot\Path\FilePath;
+use Dontdrinkandroot\Utils\StringUtils;
 use League\CommonMark\HtmlElement;
-use League\CommonMark\HtmlRenderer;
+use League\CommonMark\HtmlRendererInterface;
 use League\CommonMark\Inline\Element\AbstractInline;
 use League\CommonMark\Inline\Element\Link;
 use League\CommonMark\Inline\Renderer\LinkRenderer;
-use Dontdrinkandroot\Path\FilePath;
-use Dontdrinkandroot\Utils\StringUtils;
 
 class RepositoryAwareLinkRenderer extends LinkRenderer
 {
@@ -33,13 +33,17 @@ class RepositoryAwareLinkRenderer extends LinkRenderer
     }
 
     /**
-     * @param Link         $inline
-     * @param HtmlRenderer $htmlRenderer
+     * @param AbstractInline        $inline
+     * @param HtmlRendererInterface $htmlRenderer
      *
      * @return HtmlElement
      */
-    public function render(AbstractInline $inline, HtmlRenderer $htmlRenderer)
+    public function render(AbstractInline $inline, HtmlRendererInterface $htmlRenderer)
     {
+        if (!($inline instanceof Link)) {
+            throw new \InvalidArgumentException('Incompatible inline type: ' . get_class($inline));
+        }
+
         $htmlElement = parent::render($inline, $htmlRenderer);
 
         if ($externalUrl = $this->isExternalUrl($inline->getUrl())) {

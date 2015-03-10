@@ -2,7 +2,7 @@
 
 namespace Dontdrinkandroot\Gitki\MarkdownBundle\Renderer;
 
-use League\CommonMark\HtmlRenderer;
+use League\CommonMark\HtmlRendererInterface;
 use League\CommonMark\Inline\Element\AbstractInline;
 use League\CommonMark\Inline\Element\Html;
 use League\CommonMark\Inline\Renderer\InlineRendererInterface;
@@ -10,12 +10,12 @@ use League\CommonMark\Inline\Renderer\InlineRendererInterface;
 class EscapingHtmlInlineRenderer implements InlineRendererInterface
 {
     /**
-     * @param Html         $inline
-     * @param HtmlRenderer $htmlRenderer
+     * @param AbstractInline        $inline
+     * @param HtmlRendererInterface $htmlRenderer
      *
      * @return string
      */
-    public function render(AbstractInline $inline, HtmlRenderer $htmlRenderer)
+    public function render(AbstractInline $inline, HtmlRendererInterface $htmlRenderer)
     {
         if (!($inline instanceof Html)) {
             throw new \InvalidArgumentException('Incompatible inline type: ' . get_class($inline));
