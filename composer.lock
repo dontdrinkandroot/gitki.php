@@ -837,12 +837,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dontdrinkandroot/gitki-base-bundle.php.git",
-                "reference": "813760b34c0c87b5dbdb48a4b9000b5e721d0a23"
+                "reference": "66a0f878dd8dbbed6fa2984b9da5ecc11180fbc5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dontdrinkandroot/gitki-base-bundle.php/zipball/813760b34c0c87b5dbdb48a4b9000b5e721d0a23",
-                "reference": "813760b34c0c87b5dbdb48a4b9000b5e721d0a23",
+                "url": "https://api.github.com/repos/dontdrinkandroot/gitki-base-bundle.php/zipball/66a0f878dd8dbbed6fa2984b9da5ecc11180fbc5",
+                "reference": "66a0f878dd8dbbed6fa2984b9da5ecc11180fbc5",
                 "shasum": ""
             },
             "require": {
@@ -878,7 +878,7 @@
                     "homepage": "http://sorst.net"
                 }
             ],
-            "time": "2015-03-15 11:40:42"
+            "time": "2015-03-15 21:22:42"
         },
         {
             "name": "dontdrinkandroot/gitki-markdown-bundle",
