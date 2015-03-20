@@ -11,7 +11,7 @@ class DefaultController extends BaseController
 {
     public function indexAction()
     {
-        return $this->redirect($this->generateUrl('ddr_gitki_wiki_directory', ['path' => '/', 'action' => 'index']));
+        return $this->redirect($this->generateUrl('ddr_gitki_directory', ['path' => '/', 'action' => 'index']));
     }
 
     public function loginAction(Request $request)
@@ -34,7 +34,7 @@ class DefaultController extends BaseController
             }
         }
 
-        return $this->redirect($this->generateUrl('ddr_gitki_wiki_file', ['path' => '/index.md']));
+        return $this->redirect($this->generateUrl('ddr_gitki_directory', ['path' => '/', 'action' => 'index']));
     }
 
     /**
