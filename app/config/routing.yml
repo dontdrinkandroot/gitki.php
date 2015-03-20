@@ -46,7 +46,6 @@ ddr_gitki_base_homepage:
 
 ddr_gitki_base:
     resource: "@DdrGitkiBaseBundle/Resources/config/routing.yml"
-    prefix:   /
 
 ddr_gitki_web:
     resource: "@DdrGitkiWebBundle/Resources/config/routing.yml"

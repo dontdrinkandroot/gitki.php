@@ -36,6 +36,6 @@ security:
         -
             path: ^/loggedout
             roles: IS_AUTHENTICATED_ANONYMOUSLY
-        -
-            path: ^/
-            roles: ROLE_WATCHER
+#        -
+#            path: ^/
+#            roles: ROLE_WATCHER
