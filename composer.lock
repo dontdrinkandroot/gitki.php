@@ -837,12 +837,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dontdrinkandroot/gitki-base-bundle.php.git",
-                "reference": "66a0f878dd8dbbed6fa2984b9da5ecc11180fbc5"
+                "reference": "ea03985eea1c74d9c2bd068c1eea9d6f0540d717"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dontdrinkandroot/gitki-base-bundle.php/zipball/66a0f878dd8dbbed6fa2984b9da5ecc11180fbc5",
-                "reference": "66a0f878dd8dbbed6fa2984b9da5ecc11180fbc5",
+                "url": "https://api.github.com/repos/dontdrinkandroot/gitki-base-bundle.php/zipball/ea03985eea1c74d9c2bd068c1eea9d6f0540d717",
+                "reference": "ea03985eea1c74d9c2bd068c1eea9d6f0540d717",
                 "shasum": ""
             },
             "require": {
@@ -854,7 +854,8 @@
                 "symfony/symfony": "~2.6"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.1"
+                "phpunit/phpunit": "~4.1",
+                "twbs/bootstrap": "~3.2"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -878,7 +879,7 @@
                     "homepage": "http://sorst.net"
                 }
             ],
-            "time": "2015-03-15 21:22:42"
+            "time": "2015-03-21 18:27:40"
         },
         {
             "name": "dontdrinkandroot/gitki-markdown-bundle",
@@ -886,12 +887,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dontdrinkandroot/gitki-markdown-bundle.php.git",
-                "reference": "5addc49182e8508dace45c918ba9cb60bf2fc65a"
+                "reference": "cd7fef5662339ef0b65721c0da44a00f27235869"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dontdrinkandroot/gitki-markdown-bundle.php/zipball/5addc49182e8508dace45c918ba9cb60bf2fc65a",
-                "reference": "5addc49182e8508dace45c918ba9cb60bf2fc65a",
+                "url": "https://api.github.com/repos/dontdrinkandroot/gitki-markdown-bundle.php/zipball/cd7fef5662339ef0b65721c0da44a00f27235869",
+                "reference": "cd7fef5662339ef0b65721c0da44a00f27235869",
                 "shasum": ""
             },
             "require": {
@@ -924,7 +925,7 @@
                     "homepage": "http://sorst.net"
                 }
             ],
-            "time": "2015-03-15 12:09:13"
+            "time": "2015-03-20 21:09:52"
         },
         {
             "name": "dontdrinkandroot/utils",
@@ -1102,16 +1103,16 @@
         },
         {
             "name": "guzzle/guzzle",
-            "version": "v3.9.2",
+            "version": "v3.9.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle3.git",
-                "reference": "54991459675c1a2924122afbb0e5609ade581155"
+                "reference": "0645b70d953bc1c067bbc8d5bc53194706b628d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle3/zipball/54991459675c1a2924122afbb0e5609ade581155",
-                "reference": "54991459675c1a2924122afbb0e5609ade581155",
+                "url": "https://api.github.com/repos/guzzle/guzzle3/zipball/0645b70d953bc1c067bbc8d5bc53194706b628d9",
+                "reference": "0645b70d953bc1c067bbc8d5bc53194706b628d9",
                 "shasum": ""
             },
             "require": {
@@ -1152,6 +1153,9 @@
                 "zendframework/zend-cache": "2.*,<2.3",
                 "zendframework/zend-log": "2.*,<2.3"
             },
+            "suggest": {
+                "guzzlehttp/guzzle": "Guzzle 5 has moved to a new package name. The package you have installed, Guzzle 3, is deprecated."
+            },
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1179,7 +1183,7 @@
                     "homepage": "https://github.com/guzzle/guzzle/contributors"
                 }
             ],
-            "description": "Guzzle is a PHP HTTP client library and framework for building RESTful web service clients",
+            "description": "PHP HTTP client. This library is deprecated in favor of https://packagist.org/packages/guzzlehttp/guzzle",
             "homepage": "http://guzzlephp.org/",
             "keywords": [
                 "client",
@@ -1190,7 +1194,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2014-08-11 04:32:36"
+            "time": "2015-03-18 18:23:50"
         },
         {
             "name": "hwi/oauth-bundle",
@@ -1807,17 +1811,17 @@
         },
         {
             "name": "sensio/framework-extra-bundle",
-            "version": "v3.0.4",
+            "version": "v3.0.5",
             "target-dir": "Sensio/Bundle/FrameworkExtraBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "b3bc3e67c8b6b68b18d727012183520d35ee762a"
+                "reference": "a72ce75a73d86c3593eceed5650b58fd3807a0cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/b3bc3e67c8b6b68b18d727012183520d35ee762a",
-                "reference": "b3bc3e67c8b6b68b18d727012183520d35ee762a",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/a72ce75a73d86c3593eceed5650b58fd3807a0cf",
+                "reference": "a72ce75a73d86c3593eceed5650b58fd3807a0cf",
                 "shasum": ""
             },
             "require": {
@@ -1858,7 +1862,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2014-12-02 09:52:52"
+            "time": "2015-02-05 07:39:23"
         },
         {
             "name": "sensiolabs/security-checker",
@@ -2031,16 +2035,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.6.4",
+            "version": "v2.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "23b647f1e4eeb24a457d3c47f5f5046377d5a3bf"
+                "reference": "80833da9d04b004fa59fd23102e6dfad80c98106"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/23b647f1e4eeb24a457d3c47f5f5046377d5a3bf",
-                "reference": "23b647f1e4eeb24a457d3c47f5f5046377d5a3bf",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/80833da9d04b004fa59fd23102e6dfad80c98106",
+                "reference": "80833da9d04b004fa59fd23102e6dfad80c98106",
                 "shasum": ""
             },
             "require": {
@@ -2104,7 +2108,8 @@
                 "ircmaxell/password-compat": "~1.0",
                 "monolog/monolog": "~1.11",
                 "ocramius/proxy-manager": "~0.4|~1.0",
-                "propel/propel1": "~1.6"
+                "propel/propel1": "~1.6",
+                "symfony/phpunit-bridge": "~2.7"
             },
             "type": "library",
             "extra": {
@@ -2143,7 +2148,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2015-02-02 18:02:30"
+            "time": "2015-03-17 14:58:46"
         },
         {
             "name": "twig/extensions",
@@ -3162,17 +3167,17 @@
         },
         {
             "name": "sensio/generator-bundle",
-            "version": "v2.5.2",
+            "version": "v2.5.3",
             "target-dir": "Sensio/Bundle/GeneratorBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioGeneratorBundle.git",
-                "reference": "4b09746520a826a7bf34a466ba31c7d8740fef7e"
+                "reference": "e50108c2133ee5c9c484555faed50c17a61221d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioGeneratorBundle/zipball/4b09746520a826a7bf34a466ba31c7d8740fef7e",
-                "reference": "4b09746520a826a7bf34a466ba31c7d8740fef7e",
+                "url": "https://api.github.com/repos/sensiolabs/SensioGeneratorBundle/zipball/e50108c2133ee5c9c484555faed50c17a61221d3",
+                "reference": "e50108c2133ee5c9c484555faed50c17a61221d3",
                 "shasum": ""
             },
             "require": {
@@ -3206,7 +3211,7 @@
                 }
             ],
             "description": "This bundle generates code for you",
-            "time": "2015-02-11 07:21:23"
+            "time": "2015-03-17 06:36:52"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -3284,16 +3289,16 @@
         },
         {
             "name": "twbs/bootstrap",
-            "version": "v3.3.2",
+            "version": "v3.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "bcf7dd38b5ab180256e2e4fb5da0369551b3f082"
+                "reference": "a10eb60bc0b07b747fa0c4ebd8821eb7307bd07f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/bcf7dd38b5ab180256e2e4fb5da0369551b3f082",
-                "reference": "bcf7dd38b5ab180256e2e4fb5da0369551b3f082",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/a10eb60bc0b07b747fa0c4ebd8821eb7307bd07f",
+                "reference": "a10eb60bc0b07b747fa0c4ebd8821eb7307bd07f",
                 "shasum": ""
             },
             "replace": {
@@ -3331,7 +3336,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2015-01-19 17:03:09"
+            "time": "2015-03-16 15:44:41"
         }
     ],
     "aliases": [],
