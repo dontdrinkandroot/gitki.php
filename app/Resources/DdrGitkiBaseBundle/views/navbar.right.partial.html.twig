@@ -7,5 +7,16 @@
     {#</li>#}
 {% endif %}
 {% if app.user %}
-    <li><p class="navbar-text">{{ app.user.username }}</p></li>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ app.user.username }} <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li><a href="{{ path('fos_user_profile_show') }}">Profile</a></li>
+            <li class="divider"></li>
+            <li><a href="{{ path('logout') }}">Logout</a></li>
+        </ul>
+    </li>
+{% else %}
+    <li>
+        <a href="{{ path('login_manual') }}">Login</a>
+    </li>
 {% endif %}
