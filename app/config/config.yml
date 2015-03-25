@@ -57,6 +57,4 @@ fos_user:
         mailer: fos_user.mailer.noop
 ddr_gitki:
     repository_path: '%repository_path%'
-    elasticsearch:
-        index_name: gitki
 

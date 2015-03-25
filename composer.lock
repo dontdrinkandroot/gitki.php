@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e91b5b55c14c9d5532a35ea626576d00",
+    "hash": "560908e38ab8568a78fded1f34b1fb11",
     "packages": [
         {
             "name": "braincrafted/bootstrap-bundle",
@@ -293,7 +293,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jonathan H. Wage",
+                    "name": "Jonathan Wage",
                     "email": "jonwage@gmail.com",
                     "homepage": "http://www.jwage.com/",
                     "role": "Creator"
@@ -390,7 +390,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -837,12 +837,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dontdrinkandroot/gitki-bundle.php.git",
-                "reference": "2d98dfb6c326bde39c998afb04f11246a310da8b"
+                "reference": "830dacafcf3166482208be6ce4c182d507a127b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dontdrinkandroot/gitki-bundle.php/zipball/2d98dfb6c326bde39c998afb04f11246a310da8b",
-                "reference": "2d98dfb6c326bde39c998afb04f11246a310da8b",
+                "url": "https://api.github.com/repos/dontdrinkandroot/gitki-bundle.php/zipball/830dacafcf3166482208be6ce4c182d507a127b2",
+                "reference": "830dacafcf3166482208be6ce4c182d507a127b2",
                 "shasum": ""
             },
             "require": {
@@ -878,53 +878,8 @@
                     "homepage": "http://sorst.net"
                 }
             ],
-            "time": "2015-03-25 09:48:49"
-        },
-        {
-            "name": "dontdrinkandroot/gitki-markdown-bundle",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dontdrinkandroot/gitki-markdown-bundle.php.git",
-                "reference": "cc63b99a64a0d9bffa14762678a4bae33456ba6f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dontdrinkandroot/gitki-markdown-bundle.php/zipball/cc63b99a64a0d9bffa14762678a4bae33456ba6f",
-                "reference": "cc63b99a64a0d9bffa14762678a4bae33456ba6f",
-                "shasum": ""
-            },
-            "require": {
-                "dontdrinkandroot/gitki-bundle": "0.1.x-dev",
-                "league/commonmark": "0.7.*",
-                "php": ">=5.5"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.1"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Dontdrinkandroot\\Gitki\\MarkdownBundle\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Philip Washington Sorst",
-                    "email": "philip@sorst.net",
-                    "homepage": "http://sorst.net"
-                }
-            ],
-            "time": "2015-03-25 10:29:11"
+            "description": "Symfony Bundle that allows you to easily integrate a git based wiki into you project.",
+            "time": "2015-03-25 21:11:30"
         },
         {
             "name": "dontdrinkandroot/utils",
@@ -981,12 +936,12 @@
             "version": "v1.3.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/elasticsearch/elasticsearch-php.git",
+                "url": "https://github.com/elastic/elasticsearch-php.git",
                 "reference": "a273a9583e1859e02d0676faaabe577b12427ff1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elasticsearch/elasticsearch-php/zipball/a273a9583e1859e02d0676faaabe577b12427ff1",
+                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/a273a9583e1859e02d0676faaabe577b12427ff1",
                 "reference": "a273a9583e1859e02d0676faaabe577b12427ff1",
                 "shasum": ""
             },
@@ -1531,65 +1486,6 @@
                 "http client"
             ],
             "time": "2014-09-15 12:42:36"
-        },
-        {
-            "name": "league/commonmark",
-            "version": "0.7.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "7fecb7bdef265e45c80c53e1000e2056a9463401"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/7fecb7bdef265e45c80c53e1000e2056a9463401",
-                "reference": "7fecb7bdef265e45c80c53e1000e2056a9463401",
-                "shasum": ""
-            },
-            "require": {
-                "ext-mbstring": "*",
-                "php": ">=5.3.3"
-            },
-            "replace": {
-                "colinodell/commonmark-php": "*"
-            },
-            "require-dev": {
-                "erusev/parsedown": "~1.0",
-                "jgm/commonmark": "0.18",
-                "michelf/php-markdown": "~1.4",
-                "phpunit/phpunit": "~4.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.8-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "League\\CommonMark\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Colin O'Dell",
-                    "email": "colinodell@gmail.com",
-                    "homepage": "http://www.colinodell.com",
-                    "role": "Lead Developer"
-                }
-            ],
-            "description": "Markdown parser for PHP based on the CommonMark spec",
-            "homepage": "https://github.com/thephpleague/commonmark",
-            "keywords": [
-                "commonmark",
-                "markdown",
-                "parser"
-            ],
-            "time": "2015-03-08 17:48:53"
         },
         {
             "name": "monolog/monolog",
@@ -3341,8 +3237,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "dontdrinkandroot/gitki-bundle": 20,
-        "dontdrinkandroot/gitki-markdown-bundle": 20
+        "dontdrinkandroot/gitki-bundle": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

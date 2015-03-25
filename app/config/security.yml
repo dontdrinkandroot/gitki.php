@@ -5,9 +5,7 @@ security:
     encoders:
         Dontdrinkandroot\Gitki\WebBundle\Entity\User: sha512
     role_hierarchy:
-        ROLE_ADMIN: ROLE_COMMITTER
-        ROLE_COMMITTER: ROLE_WATCHER
-        ROLE_WATCHER: ROLE_USER
+        ROLE_ADMIN: ROLE_USER
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt|error)|css|images|js)/
@@ -36,6 +34,3 @@ security:
         -
             path: ^/loggedout
             roles: IS_AUTHENTICATED_ANONYMOUSLY
-#        -
-#            path: ^/
-#            roles: ROLE_WATCHER

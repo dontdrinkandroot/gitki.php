@@ -19,7 +19,6 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
             new \Dontdrinkandroot\GitkiBundle\DdrGitkiBundle(),
-            new Dontdrinkandroot\Gitki\MarkdownBundle\DdrGitkiMarkdownBundle(),
             new Dontdrinkandroot\Gitki\WebBundle\DdrGitkiWebBundle(),
         );
 
