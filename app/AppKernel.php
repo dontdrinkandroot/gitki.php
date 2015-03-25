@@ -18,7 +18,7 @@ class AppKernel extends Kernel
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
-            new Dontdrinkandroot\Gitki\BaseBundle\DdrGitkiBaseBundle(),
+            new \Dontdrinkandroot\GitkiBundle\DdrGitkiBundle(),
             new Dontdrinkandroot\Gitki\MarkdownBundle\DdrGitkiMarkdownBundle(),
             new Dontdrinkandroot\Gitki\WebBundle\DdrGitkiWebBundle(),
         );

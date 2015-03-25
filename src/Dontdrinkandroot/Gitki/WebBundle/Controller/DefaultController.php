@@ -2,7 +2,7 @@
 
 namespace Dontdrinkandroot\Gitki\WebBundle\Controller;
 
-use Dontdrinkandroot\Gitki\BaseBundle\Controller\BaseController;
+use Dontdrinkandroot\GitkiBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;

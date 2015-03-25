@@ -1,8 +1,1 @@
 services:
-    ddr.gitki.analyzer.markdown:
-        class: Dontdrinkandroot\Gitki\MarkdownBundle\Analyzer\MarkdownAnalyzer
-        arguments:
-            - '@ddr.gitki.repository.git'
-            - '@ddr.gitki.service.markdown'
-        tags:
-            -  { name: ddr.gitki.analyzer }

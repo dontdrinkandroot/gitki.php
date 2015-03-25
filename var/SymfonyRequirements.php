@@ -77,7 +77,7 @@ class Requirement
     }
 
     /**
-     * Returns the help text for resolving the problem
+     * Returns the help text for resolving the problem.
      *
      * @return string The help text
      */
@@ -135,7 +135,8 @@ class PhpIniRequirement extends Requirement
         $testMessage = null,
         $helpHtml = null,
         $helpText = null,
-        $optional = false)
+        $optional = false
+    )
     {
         $cfgValue = ini_get($cfgName);
 
@@ -171,7 +172,8 @@ class PhpIniRequirement extends Requirement
             $testMessage,
             $helpHtml,
             $helpText,
-            $optional);
+            $optional
+        );
     }
 }
 
@@ -252,7 +254,8 @@ class RequirementCollection implements IteratorAggregate
         $helpText = null
     ) {
         $this->add(
-            new PhpIniRequirement($cfgName, $evaluation, $approveCfgAbsence, $testMessage, $helpHtml, $helpText, false));
+            new PhpIniRequirement($cfgName, $evaluation, $approveCfgAbsence, $testMessage, $helpHtml, $helpText, false)
+        );
     }
 
     /**
@@ -277,7 +280,8 @@ class RequirementCollection implements IteratorAggregate
         $helpText = null
     ) {
         $this->add(
-            new PhpIniRequirement($cfgName, $evaluation, $approveCfgAbsence, $testMessage, $helpHtml, $helpText, true));
+            new PhpIniRequirement($cfgName, $evaluation, $approveCfgAbsence, $testMessage, $helpHtml, $helpText, true)
+        );
     }
 
     /**
@@ -427,7 +431,8 @@ class SymfonyRequirements extends RequirementCollection
             sprintf(
                 'Install PHP %s or newer (installed version is %s)',
                 self::REQUIRED_PHP_VERSION,
-                $installedPhpVersion)
+                $installedPhpVersion
+            )
         );
 
         $this->addRequirement(
@@ -443,7 +448,7 @@ class SymfonyRequirements extends RequirementCollection
             'Then run "<strong>php composer.phar install</strong>" to install them.'
         );
 
-        $cacheDir = is_dir(__DIR__ . '/../var/cache') ? __DIR__ . '/../var/cache' : __DIR__.'/cache';
+        $cacheDir = is_dir(__DIR__ . '/../var/cache') ? __DIR__ . '/../var/cache' : __DIR__ . '/cache';
 
         $this->addRequirement(
             is_writable($cacheDir),
@@ -451,7 +456,7 @@ class SymfonyRequirements extends RequirementCollection
             'Change the permissions of either "<strong>app/cache/</strong>" or  "<strong>var/cache/</strong>" directory so that the web server can write into it.'
         );
 
-        $logsDir = is_dir(__DIR__ . '/../var/logs') ? __DIR__ . '/../var/logs' : __DIR__.'/logs';
+        $logsDir = is_dir(__DIR__ . '/../var/logs') ? __DIR__ . '/../var/logs' : __DIR__ . '/logs';
 
         $this->addRequirement(
             is_writable($logsDir),
@@ -477,7 +482,8 @@ class SymfonyRequirements extends RequirementCollection
                 isset($timezones[@date_default_timezone_get()]),
                 sprintf(
                     'Configured default timezone "%s" must be supported by your installation of PHP',
-                    @date_default_timezone_get()),
+                    @date_default_timezone_get()
+                ),
                 'Your default timezone is not supported by PHP. Check for typos in your <strong>php.ini</strong> file and have a look at the list of deprecated timezones at <a href="http://php.net/manual/en/timezones.others.php">http://php.net/manual/en/timezones.others.php</a>.'
             );
         }
@@ -580,7 +586,8 @@ class SymfonyRequirements extends RequirementCollection
 
         $this->addRecommendation(
             file_get_contents(__FILE__) === file_get_contents(
-                __DIR__ . '/../vendor/sensio/distribution-bundle/Sensio/Bundle/DistributionBundle/Resources/skeleton/app/SymfonyRequirements.php'),
+                __DIR__ . '/../vendor/sensio/distribution-bundle/Sensio/Bundle/DistributionBundle/Resources/skeleton/app/SymfonyRequirements.php'
+            ),
             'Requirements file should be up-to-date',
             'Your requirements file is outdated. Run composer install and re-check your configuration.'
         );
@@ -746,7 +753,8 @@ class SymfonyRequirements extends RequirementCollection
                 count($drivers) > 0,
                 sprintf(
                     'PDO should have some drivers installed (currently available: %s)',
-                    count($drivers) ? implode(', ', $drivers) : 'none'),
+                    count($drivers) ? implode(', ', $drivers) : 'none'
+                ),
                 'Install <strong>PDO drivers</strong> (mandatory for Doctrine).'
             );
         }
