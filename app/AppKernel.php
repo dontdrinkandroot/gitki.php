@@ -18,14 +18,14 @@ class AppKernel extends Kernel
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
-            new \Dontdrinkandroot\GitkiBundle\DdrGitkiBundle(),
+            new Dontdrinkandroot\GitkiBundle\DdrGitkiBundle(),
             new Dontdrinkandroot\Gitki\WebBundle\DdrGitkiWebBundle(),
+            new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle(),
         );
 
-        if (in_array($this->getEnvironment(), array('dev', 'test'))) {
+        if (in_array($this->getEnvironment(), ['dev', 'test'])) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
-            $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
         }
 
         return $bundles;
