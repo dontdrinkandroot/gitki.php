@@ -4,6 +4,8 @@
     "type": "project",
     "description": "Git backed MarkDown wiki",
     "keywords": ["wiki", "git", "markdown"],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-0": {
             "": "src/",
@@ -30,7 +32,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "~4.1",
-        "twbs/bootstrap": "~3.2",
+        "twbs/bootstrap": "~3.3",
         "squizlabs/php_codesniffer": "~2.2"
     },
     "scripts": {

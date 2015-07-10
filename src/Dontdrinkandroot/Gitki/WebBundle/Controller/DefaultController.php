@@ -16,7 +16,7 @@ class DefaultController extends BaseController
 
     public function loginAction(Request $request)
     {
-        if (!$this->hasRole('ROLE_USER')) {
+        if (!$this->isGranted('ROLE_USER')) {
             if ($request->hasSession() && $request->isMethodSafe()) {
                 $referer = $request->headers->get('referer');
                 if (null !== $referer) {
