@@ -59,7 +59,21 @@ class User extends BaseUser implements GitUserInterface
         return $this->googleId;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getGitUserName()
+    {
+        return $this->getUsername();
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getGitUserEmail()
+    {
+        return $this->getEmail();
+    }
 
     public function __toString()
     {
