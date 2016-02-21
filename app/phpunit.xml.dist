@@ -18,6 +18,9 @@
         <testsuite name="Integration Tests">
             <directory>../src/*Bundle/Tests/Integration/</directory>
         </testsuite>
+        <testsuite name="Acceptance Tests">
+            <directory>../src/*Bundle/Tests/Acceptance/</directory>
+        </testsuite>
     </testsuites>
 
     <filter>

@@ -11,3 +11,12 @@ framework:
 web_profiler:
     toolbar: false
     intercept_redirects: false
+
+doctrine:
+    dbal:
+        driver:   pdo_sqlite
+        path:     '%kernel.root_dir%/../var/data/test.db3'
+        charset:  UTF8
+
+liip_functional_test:
+    cache_sqlite_db: true

@@ -5,7 +5,7 @@ php:
 
 before_script:
     - cp app/config/parameters.yml.test app/config/parameters.yml
-    - composer install --dev
+    - composer install
     - bin/console doctrine:schema:create
     - git config --global user.email "gitki@dontdrinkandroot.net"
     - git config --global user.name "GitKi"
