@@ -20,7 +20,6 @@
 !bin/install-prod
 !bin/set-permissions
 !bin/run-tests
-!bin/load-fixtures
 /composer.phar
 /.idea/
 # /composer.lock
