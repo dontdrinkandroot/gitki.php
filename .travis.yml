@@ -29,4 +29,4 @@ before_script:
     - git config --global user.name "GitKi"
 
 script:
-    - bin/phpunit -c app/
+    - (export SYMFONY_DEPRECATIONS_HELPER="weak" && bin/phpunit -c app/)
