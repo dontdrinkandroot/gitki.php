@@ -1,2 +1,2 @@
 #!/bin/bash
-git pull && composer update && bin/console assetic:dump
+git pull && composer install && bin/console assetic:dump && bin/console doctrine:cache:clear-metadata && bin/console doctrine:schema:update --dump-sql

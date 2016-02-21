@@ -4,8 +4,10 @@
 /var/bootstrap.php.cache
 /var/cache/*
 /var/logs/*
-!var/cache/.gitkeep
-!var/logs/.gitkeep
+/var/data/*
+!/var/cache/.gitkeep
+!/var/logs/.gitkeep
+!/var/data/.gitkeep
 /build/
 /vendor/
 /bin/*
