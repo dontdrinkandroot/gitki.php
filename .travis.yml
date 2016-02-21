@@ -2,10 +2,28 @@ language: php
 
 php:
     - 5.5
+    - 5.6
+
+matrix:
+  include:
+    - php: 5.5
+      env: dependencies=lowest
+    - php: 5.6
+      env: dependencies=lowest
+    - php: 5.5
+      env: dependencies=highest
+    - php: 5.6
+      env: dependencies=highest
+
+cache:
+  directories:
+    - $HOME/.composer/cache
 
 before_script:
     - cp app/config/parameters.yml.test app/config/parameters.yml
-    - composer install
+    - if [ -z "$dependencies" ]; then composer install; fi;
+    - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest -n; fi;
+    - if [ "$dependencies" = "highest" ]; then composer update -n; fi;
     - bin/console doctrine:schema:create
     - git config --global user.email "gitki@dontdrinkandroot.net"
     - git config --global user.name "GitKi"
