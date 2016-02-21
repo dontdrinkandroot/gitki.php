@@ -4,10 +4,10 @@
 /var/bootstrap.php.cache
 /var/cache/*
 /var/logs/*
-/var/data/*
+/var/data/data.db3
+/var/data/test.db3
 !/var/cache/.gitkeep
 !/var/logs/.gitkeep
-!/var/data/.gitkeep
 /build/
 /vendor/
 /bin/*
@@ -20,6 +20,7 @@
 !bin/install-prod
 !bin/set-permissions
 !bin/run-tests
+!bin/load-fixtures
 /composer.phar
 /.idea/
 # /composer.lock
