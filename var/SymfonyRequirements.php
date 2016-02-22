@@ -49,11 +49,11 @@ class Requirement
      */
     public function __construct($fulfilled, $testMessage, $helpHtml, $helpText = null, $optional = false)
     {
-        $this->fulfilled = (bool)$fulfilled;
-        $this->testMessage = (string)$testMessage;
-        $this->helpHtml = (string)$helpHtml;
-        $this->helpText = null === $helpText ? strip_tags($this->helpHtml) : (string)$helpText;
-        $this->optional = (bool)$optional;
+        $this->fulfilled = (bool) $fulfilled;
+        $this->testMessage = (string) $testMessage;
+        $this->helpHtml = (string) $helpHtml;
+        $this->helpText = null === $helpText ? strip_tags($this->helpHtml) : (string) $helpText;
+        $this->optional = (bool) $optional;
     }
 
     /**
@@ -128,15 +128,7 @@ class PhpIniRequirement extends Requirement
      * @param string|null   $helpText          The help text (when null, it will be inferred from $helpHtml, i.e. stripped from HTML tags)
      * @param bool          $optional          Whether this is only an optional recommendation not a mandatory requirement
      */
-    public function __construct(
-        $cfgName,
-        $evaluation,
-        $approveCfgAbsence = false,
-        $testMessage = null,
-        $helpHtml = null,
-        $helpText = null,
-        $optional = false
-    )
+    public function __construct($cfgName, $evaluation, $approveCfgAbsence = false, $testMessage = null, $helpHtml = null, $helpText = null, $optional = false)
     {
         $cfgValue = ini_get($cfgName);
 
@@ -148,8 +140,7 @@ class PhpIniRequirement extends Requirement
             $fulfilled = call_user_func($evaluation, $cfgValue);
         } else {
             if (null === $testMessage) {
-                $testMessage = sprintf(
-                    '%s %s be %s in php.ini',
+                $testMessage = sprintf('%s %s be %s in php.ini',
                     $cfgName,
                     $optional ? 'should' : 'must',
                     $evaluation ? 'enabled' : 'disabled'
@@ -157,8 +148,7 @@ class PhpIniRequirement extends Requirement
             }
 
             if (null === $helpHtml) {
-                $helpHtml = sprintf(
-                    'Set <strong>%s</strong> to <strong>%s</strong> in php.ini<a href="#phpini">*</a>.',
+                $helpHtml = sprintf('Set <strong>%s</strong> to <strong>%s</strong> in php.ini<a href="#phpini">*</a>.',
                     $cfgName,
                     $evaluation ? 'on' : 'off'
                 );
@@ -167,13 +157,7 @@ class PhpIniRequirement extends Requirement
             $fulfilled = $evaluation == $cfgValue;
         }
 
-        parent::__construct(
-            $fulfilled || ($approveCfgAbsence && false === $cfgValue),
-            $testMessage,
-            $helpHtml,
-            $helpText,
-            $optional
-        );
+        parent::__construct($fulfilled || ($approveCfgAbsence && false === $cfgValue), $testMessage, $helpHtml, $helpText, $optional);
     }
 }
 
@@ -245,17 +229,9 @@ class RequirementCollection implements IteratorAggregate
      * @param string        $helpHtml          The help text formatted in HTML for resolving the problem (when null and $evaluation is a boolean a default help is derived)
      * @param string|null   $helpText          The help text (when null, it will be inferred from $helpHtml, i.e. stripped from HTML tags)
      */
-    public function addPhpIniRequirement(
-        $cfgName,
-        $evaluation,
-        $approveCfgAbsence = false,
-        $testMessage = null,
-        $helpHtml = null,
-        $helpText = null
-    ) {
-        $this->add(
-            new PhpIniRequirement($cfgName, $evaluation, $approveCfgAbsence, $testMessage, $helpHtml, $helpText, false)
-        );
+    public function addPhpIniRequirement($cfgName, $evaluation, $approveCfgAbsence = false, $testMessage = null, $helpHtml = null, $helpText = null)
+    {
+        $this->add(new PhpIniRequirement($cfgName, $evaluation, $approveCfgAbsence, $testMessage, $helpHtml, $helpText, false));
     }
 
     /**
@@ -271,17 +247,9 @@ class RequirementCollection implements IteratorAggregate
      * @param string        $helpHtml          The help text formatted in HTML for resolving the problem (when null and $evaluation is a boolean a default help is derived)
      * @param string|null   $helpText          The help text (when null, it will be inferred from $helpHtml, i.e. stripped from HTML tags)
      */
-    public function addPhpIniRecommendation(
-        $cfgName,
-        $evaluation,
-        $approveCfgAbsence = false,
-        $testMessage = null,
-        $helpHtml = null,
-        $helpText = null
-    ) {
-        $this->add(
-            new PhpIniRequirement($cfgName, $evaluation, $approveCfgAbsence, $testMessage, $helpHtml, $helpText, true)
-        );
+    public function addPhpIniRecommendation($cfgName, $evaluation, $approveCfgAbsence = false, $testMessage = null, $helpHtml = null, $helpText = null)
+    {
+        $this->add(new PhpIniRequirement($cfgName, $evaluation, $approveCfgAbsence, $testMessage, $helpHtml, $helpText, true));
     }
 
     /**
@@ -422,17 +390,10 @@ class SymfonyRequirements extends RequirementCollection
         $this->addRequirement(
             version_compare($installedPhpVersion, self::REQUIRED_PHP_VERSION, '>='),
             sprintf('PHP version must be at least %s (%s installed)', self::REQUIRED_PHP_VERSION, $installedPhpVersion),
-            sprintf(
-                'You are running PHP version "<strong>%s</strong>", but Symfony needs at least PHP "<strong>%s</strong>" to run.
+            sprintf('You are running PHP version "<strong>%s</strong>", but Symfony needs at least PHP "<strong>%s</strong>" to run.
                 Before using Symfony, upgrade your PHP installation, preferably to the latest version.',
-                $installedPhpVersion,
-                self::REQUIRED_PHP_VERSION
-            ),
-            sprintf(
-                'Install PHP %s or newer (installed version is %s)',
-                self::REQUIRED_PHP_VERSION,
-                $installedPhpVersion
-            )
+                $installedPhpVersion, self::REQUIRED_PHP_VERSION),
+            sprintf('Install PHP %s or newer (installed version is %s)', self::REQUIRED_PHP_VERSION, $installedPhpVersion)
         );
 
         $this->addRequirement(
@@ -442,13 +403,13 @@ class SymfonyRequirements extends RequirementCollection
         );
 
         $this->addRequirement(
-            is_dir(__DIR__ . '/../vendor/composer'),
+            is_dir(__DIR__.'/../vendor/composer'),
             'Vendor libraries must be installed',
-            'Vendor libraries are missing. Install composer following instructions from <a href="http://getcomposer.org/">http://getcomposer.org/</a>. ' .
-            'Then run "<strong>php composer.phar install</strong>" to install them.'
+            'Vendor libraries are missing. Install composer following instructions from <a href="http://getcomposer.org/">http://getcomposer.org/</a>. '.
+                'Then run "<strong>php composer.phar install</strong>" to install them.'
         );
 
-        $cacheDir = is_dir(__DIR__ . '/../var/cache') ? __DIR__ . '/../var/cache' : __DIR__ . '/cache';
+        $cacheDir = is_dir(__DIR__.'/../var/cache') ? __DIR__.'/../var/cache' : __DIR__.'/cache';
 
         $this->addRequirement(
             is_writable($cacheDir),
@@ -456,7 +417,7 @@ class SymfonyRequirements extends RequirementCollection
             'Change the permissions of either "<strong>app/cache/</strong>" or  "<strong>var/cache/</strong>" directory so that the web server can write into it.'
         );
 
-        $logsDir = is_dir(__DIR__ . '/../var/logs') ? __DIR__ . '/../var/logs' : __DIR__ . '/logs';
+        $logsDir = is_dir(__DIR__.'/../var/logs') ? __DIR__.'/../var/logs' : __DIR__.'/logs';
 
         $this->addRequirement(
             is_writable($logsDir),
@@ -480,10 +441,7 @@ class SymfonyRequirements extends RequirementCollection
 
             $this->addRequirement(
                 isset($timezones[@date_default_timezone_get()]),
-                sprintf(
-                    'Configured default timezone "%s" must be supported by your installation of PHP',
-                    @date_default_timezone_get()
-                ),
+                sprintf('Configured default timezone "%s" must be supported by your installation of PHP', @date_default_timezone_get()),
                 'Your default timezone is not supported by PHP. Check for typos in your <strong>php.ini</strong> file and have a look at the list of deprecated timezones at <a href="http://php.net/manual/en/timezones.others.php">http://php.net/manual/en/timezones.others.php</a>.'
             );
         }
@@ -570,7 +528,7 @@ class SymfonyRequirements extends RequirementCollection
             );
         }
 
-        $pcreVersion = defined('PCRE_VERSION') ? (float)PCRE_VERSION : null;
+        $pcreVersion = defined('PCRE_VERSION') ? (float) PCRE_VERSION : null;
 
         $this->addRequirement(
             null !== $pcreVersion,
@@ -590,15 +548,13 @@ class SymfonyRequirements extends RequirementCollection
 
         /* optional recommendations follow */
 
-        if (file_exists(__DIR__ . '/../vendor/composer')) {
-            require_once __DIR__ . '/../vendor/autoload.php';
+        if (file_exists(__DIR__.'/../vendor/composer')) {
+            require_once __DIR__.'/../vendor/autoload.php';
 
             try {
                 $r = new ReflectionClass('Sensio\Bundle\DistributionBundle\SensioDistributionBundle');
 
-                $contents = file_get_contents(
-                    dirname($r->getFileName()) . '/Resources/skeleton/app/SymfonyRequirements.php'
-                );
+                $contents = file_get_contents(dirname($r->getFileName()).'/Resources/skeleton/app/SymfonyRequirements.php');
             } catch (ReflectionException $e) {
                 $contents = '';
             }
@@ -776,10 +732,7 @@ class SymfonyRequirements extends RequirementCollection
             $drivers = PDO::getAvailableDrivers();
             $this->addRecommendation(
                 count($drivers) > 0,
-                sprintf(
-                    'PDO should have some drivers installed (currently available: %s)',
-                    count($drivers) ? implode(', ', $drivers) : 'none'
-                ),
+                sprintf('PDO should have some drivers installed (currently available: %s)', count($drivers) ? implode(', ', $drivers) : 'none'),
                 'Install <strong>PDO drivers</strong> (mandatory for Doctrine).'
             );
         }

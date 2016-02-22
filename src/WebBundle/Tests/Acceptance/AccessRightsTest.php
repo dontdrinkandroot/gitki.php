@@ -30,12 +30,13 @@ class AccessRightsTest extends BaseAcceptanceTest
         $this->assertAccessRights('/browse/?action=file.create&extension=txt');
         $this->assertAccessRights('/browse/?action=file.create&extension=md');
         $this->assertAccessRights('/browse/?action=subdirectory.create');
+        $this->assertAccessRights('/browse/examples/?action=remove');
 
         $this->assertAccessRights('/browse/index.md');
         $this->assertAccessRights('/browse/index.md?action=history');
         $this->assertAccessRights('/browse/index.md?action=edit');
         $this->assertAccessRights('/browse/index.md?action=move');
-        $this->assertAccessRights('/browse/index.md?action=delete');
+        $this->assertAccessRights('/browse/index.md?action=remove');
     }
 
     public function testWatcherRights()
@@ -48,12 +49,13 @@ class AccessRightsTest extends BaseAcceptanceTest
         $this->assertAccessRights('/browse/?action=file.create&extension=txt', null, $this->getUser(Users::WATCHER));
         $this->assertAccessRights('/browse/?action=file.create&extension=md', null, $this->getUser(Users::WATCHER));
         $this->assertAccessRights('/browse/?action=subdirectory.create', null, $this->getUser(Users::WATCHER));
+        $this->assertAccessRights('/browse/examples/?action=remove', null, $this->getUser(Users::WATCHER));
 
         $this->assertAccessRights('/browse/index.md', 200, $this->getUser(Users::WATCHER));
         $this->assertAccessRights('/browse/index.md?action=history', 200, $this->getUser(Users::WATCHER));
         $this->assertAccessRights('/browse/index.md?action=edit', null, $this->getUser(Users::WATCHER));
         $this->assertAccessRights('/browse/index.md?action=move', null, $this->getUser(Users::WATCHER));
-        $this->assertAccessRights('/browse/index.md?action=delete', null, $this->getUser(Users::WATCHER));
+        $this->assertAccessRights('/browse/index.md?action=remove', null, $this->getUser(Users::WATCHER));
     }
 
     public function testCommitterRights()
@@ -66,12 +68,13 @@ class AccessRightsTest extends BaseAcceptanceTest
         $this->assertAccessRights('/browse/?action=file.create&extension=txt', 200, $this->getUser(Users::COMMITTER));
         $this->assertAccessRights('/browse/?action=file.create&extension=md', 200, $this->getUser(Users::COMMITTER));
         $this->assertAccessRights('/browse/?action=subdirectory.create', 200, $this->getUser(Users::COMMITTER));
+        $this->assertAccessRights('/browse/examples/?action=remove', 200, $this->getUser(Users::COMMITTER));
 
         $this->assertAccessRights('/browse/index.md', 200, $this->getUser(Users::COMMITTER));
         $this->assertAccessRights('/browse/index.md?action=history', 200, $this->getUser(Users::COMMITTER));
         $this->assertAccessRights('/browse/index.md?action=edit', 200, $this->getUser(Users::COMMITTER));
         $this->assertAccessRights('/browse/index.md?action=move', 200, $this->getUser(Users::COMMITTER));
-        $this->assertAccessRights('/browse/index.md?action=delete', 302, $this->getUser(Users::COMMITTER));
+        $this->assertAccessRights('/browse/index.md?action=remove', 302, $this->getUser(Users::COMMITTER));
     }
 
     public function testAdminRights()
@@ -84,12 +87,13 @@ class AccessRightsTest extends BaseAcceptanceTest
         $this->assertAccessRights('/browse/?action=file.create&extension=txt', 200, $this->getUser(Users::ADMIN));
         $this->assertAccessRights('/browse/?action=file.create&extension=md', 200, $this->getUser(Users::ADMIN));
         $this->assertAccessRights('/browse/?action=subdirectory.create', 200, $this->getUser(Users::ADMIN));
+        $this->assertAccessRights('/browse/examples/?action=remove', 200, $this->getUser(Users::ADMIN));
 
         $this->assertAccessRights('/browse/index.md', 200, $this->getUser(Users::ADMIN));
         $this->assertAccessRights('/browse/index.md?action=history', 200, $this->getUser(Users::ADMIN));
         $this->assertAccessRights('/browse/index.md?action=edit', 200, $this->getUser(Users::ADMIN));
         $this->assertAccessRights('/browse/index.md?action=move', 200, $this->getUser(Users::ADMIN));
-        $this->assertAccessRights('/browse/index.md?action=delete', 302, $this->getUser(Users::ADMIN));
+        $this->assertAccessRights('/browse/index.md?action=remove', 302, $this->getUser(Users::ADMIN));
     }
 
     /**

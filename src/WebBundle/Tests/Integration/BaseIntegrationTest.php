@@ -5,12 +5,13 @@ namespace Dontdrinkandroot\Gitki\WebBundle\Tests\Integration;
 
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
-use GitWrapper\GitWrapper;
+use Dontdrinkandroot\GitkiBundle\Tests\GitRepositoryTestTrait;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Symfony\Component\Filesystem\Filesystem;
 
 abstract class BaseIntegrationTest extends WebTestCase
 {
+
+    use GitRepositoryTestTrait;
 
     const GIT_REPOSITORY_PATH = '/tmp/gitkirepo/';
 
@@ -43,31 +44,19 @@ abstract class BaseIntegrationTest extends WebTestCase
     }
 
     /**
-     * Init the git repository used for the tests.
+     * {@inheritdoc}
      */
-    protected function setUpRepo()
+    protected function getRepositoryDataPath()
     {
-        $testRepoPath = realPath(__DIR__ . '/../../../../vendor/dontdrinkandroot/gitki-bundle/Tests/Data/repo/');
-
-        $fileSystem = new Filesystem();
-        $fileSystem->remove(self::GIT_REPOSITORY_PATH);
-
-        $fileSystem->mkdir(self::GIT_REPOSITORY_PATH);
-        $fileSystem->mirror($testRepoPath, self::GIT_REPOSITORY_PATH);
-
-        $git = new GitWrapper();
-        $workingCopy = $git->init(self::GIT_REPOSITORY_PATH);
-        $workingCopy->add('', ['A' => '']);
-        $workingCopy->commit('Initial commit');
+        return realPath(__DIR__ . '/../../../../vendor/dontdrinkandroot/gitki-bundle/Tests/Data/repo/');
     }
 
     /**
-     * Tear down the git repository used for the tests.
+     * {@inheritdoc}
      */
-    protected function tearDownRepo()
+    protected function getRepositoryTargetPath()
     {
-        $fileSystem = new Filesystem();
-        $fileSystem->remove(self::GIT_REPOSITORY_PATH);
+        return self::GIT_REPOSITORY_PATH;
     }
 
     /**

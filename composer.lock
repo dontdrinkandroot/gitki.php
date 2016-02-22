@@ -895,12 +895,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dontdrinkandroot/gitki-bundle.php.git",
-                "reference": "002f4039b2e8a08d46d56c4c59717f71f731a9ff"
+                "reference": "28f02b10c1909afe2d08456b6902017b3da524ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dontdrinkandroot/gitki-bundle.php/zipball/002f4039b2e8a08d46d56c4c59717f71f731a9ff",
-                "reference": "002f4039b2e8a08d46d56c4c59717f71f731a9ff",
+                "url": "https://api.github.com/repos/dontdrinkandroot/gitki-bundle.php/zipball/28f02b10c1909afe2d08456b6902017b3da524ca",
+                "reference": "28f02b10c1909afe2d08456b6902017b3da524ca",
                 "shasum": ""
             },
             "require": {
@@ -953,7 +953,7 @@
                 "symfony",
                 "wiki"
             ],
-            "time": "2016-02-22 15:11:37"
+            "time": "2016-02-22 22:33:48"
         },
         {
             "name": "dontdrinkandroot/utils",

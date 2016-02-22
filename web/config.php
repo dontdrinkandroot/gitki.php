@@ -188,8 +188,7 @@ $minorProblems = $symfonyRequirements->getFailedRecommendations();
                         <?php endif; ?>
 
                         <?php if (!count($majorProblems) && !count($minorProblems)): ?>
-                            <p class="ok">All checks passed successfully. Your system is ready to run Symfony
-                                applications.</p>
+                            <p class="ok">All checks passed successfully. Your system is ready to run Symfony applications.</p>
                         <?php endif; ?>
 
                         <ul class="symfony-install-continue">

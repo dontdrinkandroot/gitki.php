@@ -51,6 +51,8 @@ class LoadFixturesCommand extends ContainerAwareCommand
 
         $git = new GitWrapper();
         $workingCopy = $git->init($repositoryPath);
+        $workingCopy->config('user.email', 'gitki@example.com');
+        $workingCopy->config('user.name', 'Gitki');
         $workingCopy->add('', ['A' => '']);
         $workingCopy->commit('Initial commit');
     }
