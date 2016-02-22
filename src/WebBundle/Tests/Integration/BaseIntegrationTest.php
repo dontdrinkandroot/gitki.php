@@ -47,7 +47,7 @@ abstract class BaseIntegrationTest extends WebTestCase
      */
     protected function setUpRepo()
     {
-        $testRepoPath = realPath(__DIR__ . '/../../../../var/data/test/repo/');
+        $testRepoPath = realPath(__DIR__ . '/../../../../vendor/dontdrinkandroot/gitki-bundle/Tests/Data/repo/');
 
         $fileSystem = new Filesystem();
         $fileSystem->remove(self::GIT_REPOSITORY_PATH);
