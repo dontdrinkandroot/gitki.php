@@ -895,24 +895,24 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dontdrinkandroot/gitki-bundle.php.git",
-                "reference": "bcaecc6ed1b6f11fa2e55d483f2446b7b9f8261b"
+                "reference": "68439c1bbc66f369699dfe2df6c3fb127536aa27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dontdrinkandroot/gitki-bundle.php/zipball/bcaecc6ed1b6f11fa2e55d483f2446b7b9f8261b",
-                "reference": "bcaecc6ed1b6f11fa2e55d483f2446b7b9f8261b",
+                "url": "https://api.github.com/repos/dontdrinkandroot/gitki-bundle.php/zipball/68439c1bbc66f369699dfe2df6c3fb127536aa27",
+                "reference": "68439c1bbc66f369699dfe2df6c3fb127536aa27",
                 "shasum": ""
             },
             "require": {
                 "cpliakas/git-wrapper": "~1.0",
                 "dontdrinkandroot/utils": "0.4.*",
-                "league/commonmark": "0.9.0",
+                "league/commonmark": "0.13.0",
                 "php": ">=5.5",
                 "symfony/finder": "~2.6",
                 "symfony/form": "~2.6",
                 "symfony/framework-bundle": "~2.6",
                 "symfony/twig-bundle": "~2.6",
-                "webuni/commonmark-table-extension": "0.1.0"
+                "webuni/commonmark-table-extension": "0.4.3"
             },
             "require-dev": {
                 "elasticsearch/elasticsearch": "~1.3",
@@ -942,10 +942,10 @@
                 {
                     "name": "Philip Washington Sorst",
                     "email": "philip@sorst.net",
-                    "homepage": "http://sorst.net"
+                    "homepage": "https://sorst.net"
                 }
             ],
-            "description": "Symfony Bundle that allows you to easily integrate a git based wiki into you project",
+            "description": "Symfony Bundle that allows you to easily integrate a git based wiki into your project",
             "keywords": [
                 "bundle",
                 "git",
@@ -953,7 +953,7 @@
                 "symfony",
                 "wiki"
             ],
-            "time": "2015-12-06 20:34:34"
+            "time": "2016-02-22 11:53:48"
         },
         {
             "name": "dontdrinkandroot/utils",
@@ -1617,16 +1617,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "0.9.0",
+            "version": "0.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "8b681a57233f00578195573d7d251c2f143c1a5d"
+                "reference": "a4e93bc4fd1a8ff8f534040c4a07371ea5f4b484"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/8b681a57233f00578195573d7d251c2f143c1a5d",
-                "reference": "8b681a57233f00578195573d7d251c2f143c1a5d",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/a4e93bc4fd1a8ff8f534040c4a07371ea5f4b484",
+                "reference": "a4e93bc4fd1a8ff8f534040c4a07371ea5f4b484",
                 "shasum": ""
             },
             "require": {
@@ -1638,16 +1638,23 @@
             },
             "require-dev": {
                 "erusev/parsedown": "~1.0",
-                "jgm/commonmark": "0.20",
+                "jgm/commonmark": "0.24",
                 "michelf/php-markdown": "~1.4",
-                "phpunit/phpunit": "~4.3",
-                "phpunit/phpunit-mock-objects": "2.3.0",
+                "mikehaertl/php-shellcommand": "~1.1.0",
+                "phpunit/phpunit": "~4.3|~5.0",
+                "scrutinizer/ocular": "^1.1",
                 "symfony/finder": "~2.3"
             },
+            "suggest": {
+                "league/commonmark-extras": "Library of useful extensions including smart punctuation"
+            },
+            "bin": [
+                "bin/commonmark"
+            ],
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.9-dev"
+                    "dev-master": "0.14-dev"
                 }
             },
             "autoload": {
@@ -1674,7 +1681,7 @@
                 "markdown",
                 "parser"
             ],
-            "time": "2015-06-19 00:39:51"
+            "time": "2016-01-14 04:29:54"
         },
         {
             "name": "monolog/monolog",
@@ -2869,30 +2876,31 @@
         },
         {
             "name": "webuni/commonmark-table-extension",
-            "version": "0.1.0",
+            "version": "0.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webuni/commonmark-table-extension.git",
-                "reference": "34d17b90b4aa0d7ca48a761da13dc8bcc53a1350"
+                "reference": "c4e70a3705f562cc08e0b6f80803dcfd0fa57173"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webuni/commonmark-table-extension/zipball/34d17b90b4aa0d7ca48a761da13dc8bcc53a1350",
-                "reference": "34d17b90b4aa0d7ca48a761da13dc8bcc53a1350",
+                "url": "https://api.github.com/repos/webuni/commonmark-table-extension/zipball/c4e70a3705f562cc08e0b6f80803dcfd0fa57173",
+                "reference": "c4e70a3705f562cc08e0b6f80803dcfd0fa57173",
                 "shasum": ""
             },
             "require": {
-                "league/commonmark": ">=0.9",
+                "league/commonmark": "^0.11|^0.12|^0.13",
                 "php": ">=5.4"
             },
             "require-dev": {
                 "fabpot/php-cs-fixer": "^1.9",
-                "phpunit/phpunit": "^4.3"
+                "phpunit/phpunit": "^4.3",
+                "symfony/var-dumper": "^2.7"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.1-dev"
+                    "dev-master": "0.4-dev"
                 }
             },
             "autoload": {
@@ -2918,7 +2926,7 @@
                 "markdown",
                 "table"
             ],
-            "time": "2015-06-24 10:08:37"
+            "time": "2016-01-14 22:54:18"
         }
     ],
     "packages-dev": [

@@ -25,7 +25,7 @@ class DirectoryListingTest extends BaseAcceptanceTest
         $this->assertEquals('Directories', $panels->eq(0)->filter('.panel-title')->text());
         $this->assertCount(1, $panels->eq(0)->filter('.table tr'));
         $this->assertEquals(
-            'Subdirectory',
+            'Examples',
             $panels->eq(0)->filter('.table tr')->eq(0)->filter('td')->eq(1)->filter('a')->text()
         );
 
