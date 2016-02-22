@@ -18,4 +18,9 @@ Dontdrinkandroot\Gitki\WebBundle\Entity\User:
             column: github_id
             length: 255
             nullable: true
+        facebookId:
+            type: string
+            column: facebook_id
+            length: 255
+            nullable: true
     lifecycleCallbacks: {  }

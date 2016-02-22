@@ -22,6 +22,11 @@ class User extends BaseUser implements GitUserInterface
      */
     private $githubId;
 
+    /**
+     * @var int
+     */
+    private $facebookId;
+
     public function __construct()
     {
         BaseUser::__construct();
@@ -73,6 +78,22 @@ class User extends BaseUser implements GitUserInterface
     public function getGitUserEmail()
     {
         return $this->getEmail();
+    }
+
+    /**
+     * @return int
+     */
+    public function getFacebookId()
+    {
+        return $this->facebookId;
+    }
+
+    /**
+     * @param int $facebookId
+     */
+    public function setFacebookId($facebookId)
+    {
+        $this->facebookId = $facebookId;
     }
 
     public function __toString()
