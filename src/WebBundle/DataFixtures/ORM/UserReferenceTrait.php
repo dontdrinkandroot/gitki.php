@@ -8,6 +8,8 @@ use Dontdrinkandroot\Gitki\WebBundle\Entity\User;
 trait UserReferenceTrait
 {
 
+    use ReferenceTrait;
+
     /**
      * @param string $name
      *

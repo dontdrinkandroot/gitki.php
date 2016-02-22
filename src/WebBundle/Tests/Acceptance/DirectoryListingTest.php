@@ -3,19 +3,26 @@
 
 namespace Dontdrinkandroot\Gitki\WebBundle\Tests\Acceptance;
 
+use Dontdrinkandroot\Gitki\WebBundle\DataFixtures\ORM\UserReferenceTrait;
+use Dontdrinkandroot\Gitki\WebBundle\DataFixtures\ORM\Users;
+
 class DirectoryListingTest extends BaseAcceptanceTest
 {
+
+    use UserReferenceTrait;
 
     /**
      * {@inheritdoc}
      */
     protected function getFixtureClasses()
     {
-        return [];
+        return [Users::class];
     }
 
     public function testDirectoryIndex()
     {
+        $this->login($this->getUser(Users::COMMITTER));
+
         $crawler = $this->client->request('GET', '/browse/?action=list');
         $this->assertStatusCode(200, $this->client);
 

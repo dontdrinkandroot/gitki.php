@@ -3,19 +3,25 @@
 
 namespace Dontdrinkandroot\Gitki\WebBundle\Tests\Acceptance;
 
+use Dontdrinkandroot\Gitki\WebBundle\DataFixtures\ORM\UserReferenceTrait;
+use Dontdrinkandroot\Gitki\WebBundle\DataFixtures\ORM\Users;
+
 class IndexFileTest extends BaseAcceptanceTest
 {
+    use UserReferenceTrait;
 
     /**
      * {@inheritdoc}
      */
     protected function getFixtureClasses()
     {
-        return [];
+        return [Users::class];
     }
 
     public function testIndexFileShown()
     {
+        $this->login($this->getUser(Users::COMMITTER));
+
         $crawler = $this->client->request('GET', '/');
         $this->assertStatusCode(302, $this->client);
 
