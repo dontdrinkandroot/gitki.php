@@ -20,3 +20,10 @@ doctrine:
 
 liip_functional_test:
     cache_sqlite_db: true
+
+ddr_gitki:
+    repository_path: '/tmp/gitkirepo/'
+    roles:
+        watcher: ROLE_WATCHER
+        committer: ROLE_COMMITTER
+        admin: ROLE_ADMIN

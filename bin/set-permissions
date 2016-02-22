@@ -13,3 +13,7 @@ sudo chown :www-data var/
 setAcl var/logs/
 setAcl var/cache/
 setAcl var/data/
+if [ -z "$1" ];
+    sudo chown :www-data $1
+    then setAcl $1
+fi

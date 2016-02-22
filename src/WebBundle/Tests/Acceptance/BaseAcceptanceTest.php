@@ -34,7 +34,7 @@ abstract class BaseAcceptanceTest extends BaseIntegrationTest
     {
         $session = $this->client->getContainer()->get('session');
 
-        $firewall = 'main';
+        $firewall = 'secured_area';
         $token = new UsernamePasswordToken($user, null, $firewall, $user->getRoles());
         $session->set('_security_' . $firewall, serialize($token));
         $session->save();
