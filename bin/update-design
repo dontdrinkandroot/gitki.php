@@ -1,0 +1,3 @@
+#/bin/sh
+lessc vendor/dontdrinkandroot/gitki-bundle/Resources/public/css/gitki_print.less vendor/dontdrinkandroot/gitki-bundle/Resources/public/css/gitki_print.css
+lessc vendor/dontdrinkandroot/gitki-bundle/Resources/public/css/gitki_screen.less vendor/dontdrinkandroot/gitki-bundle/Resources/public/css/gitki_screen.css

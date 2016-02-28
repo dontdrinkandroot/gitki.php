@@ -29,7 +29,7 @@ class DirectoryListingTest extends BaseAcceptanceTest
         $panels = $crawler->filter('.panel');
         $this->assertCount(2, $panels);
 
-        $this->assertEquals('Directories', $panels->eq(0)->filter('.panel-title')->text());
+        $this->assertEquals('Folders', $panels->eq(0)->filter('.panel-title')->text());
         $this->assertCount(1, $panels->eq(0)->filter('.table tr'));
         $this->assertEquals(
             'Examples',

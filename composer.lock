@@ -895,12 +895,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dontdrinkandroot/gitki-bundle.php.git",
-                "reference": "28f02b10c1909afe2d08456b6902017b3da524ca"
+                "reference": "966f8269ba7c3b128557df60603a95bf5e6f2f58"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dontdrinkandroot/gitki-bundle.php/zipball/28f02b10c1909afe2d08456b6902017b3da524ca",
-                "reference": "28f02b10c1909afe2d08456b6902017b3da524ca",
+                "url": "https://api.github.com/repos/dontdrinkandroot/gitki-bundle.php/zipball/966f8269ba7c3b128557df60603a95bf5e6f2f58",
+                "reference": "966f8269ba7c3b128557df60603a95bf5e6f2f58",
                 "shasum": ""
             },
             "require": {
@@ -953,7 +953,7 @@
                 "symfony",
                 "wiki"
             ],
-            "time": "2016-02-22 22:33:48"
+            "time": "2016-02-28 18:12:00"
         },
         {
             "name": "dontdrinkandroot/utils",
@@ -1946,25 +1946,32 @@
         },
         {
             "name": "sensio/framework-extra-bundle",
-            "version": "v3.0.12",
+            "version": "v3.0.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "3e8936fe13aa4086644977d334d8fcd275f50357"
+                "reference": "bf6be511f4f66d368baeb2cab617203d73cccf4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/3e8936fe13aa4086644977d334d8fcd275f50357",
-                "reference": "3e8936fe13aa4086644977d334d8fcd275f50357",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/bf6be511f4f66d368baeb2cab617203d73cccf4e",
+                "reference": "bf6be511f4f66d368baeb2cab617203d73cccf4e",
                 "shasum": ""
             },
             "require": {
                 "doctrine/common": "~2.2",
+                "symfony/dependency-injection": "~2.3|~3.0",
                 "symfony/framework-bundle": "~2.3|~3.0"
             },
             "require-dev": {
+                "symfony/browser-kit": "~2.3|~3.0",
+                "symfony/dom-crawler": "~2.3|~3.0",
                 "symfony/expression-language": "~2.4|~3.0",
-                "symfony/security-bundle": "~2.4|~3.0"
+                "symfony/finder": "~2.3|~3.0",
+                "symfony/phpunit-bridge": "~2.7|~3.0",
+                "symfony/security-bundle": "~2.4|~3.0",
+                "symfony/twig-bundle": "~2.3|~3.0",
+                "twig/twig": "~1.11|~2.0"
             },
             "suggest": {
                 "symfony/expression-language": "",
@@ -1997,7 +2004,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2015-12-18 17:39:27"
+            "time": "2016-02-12 08:17:23"
         },
         {
             "name": "sensiolabs/security-checker",
@@ -3046,16 +3053,16 @@
         },
         {
             "name": "liip/functional-test-bundle",
-            "version": "1.4.1",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipFunctionalTestBundle.git",
-                "reference": "633cb540c509e5c40b1139813214b29371e6988a"
+                "reference": "7c6558640d63b4e18ec0bc244f69e34b193d755d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipFunctionalTestBundle/zipball/633cb540c509e5c40b1139813214b29371e6988a",
-                "reference": "633cb540c509e5c40b1139813214b29371e6988a",
+                "url": "https://api.github.com/repos/liip/LiipFunctionalTestBundle/zipball/7c6558640d63b4e18ec0bc244f69e34b193d755d",
+                "reference": "7c6558640d63b4e18ec0bc244f69e34b193d755d",
                 "shasum": ""
             },
             "require": {
@@ -3069,9 +3076,10 @@
                 "doctrine/orm": "^2.4.8",
                 "doctrine/phpcr-bundle": "~1.3",
                 "doctrine/phpcr-odm": "~1.3",
+                "hautelook/alice-bundle": "~0.2|~1.2",
                 "jackalope/jackalope-doctrine-dbal": "1.1.*|1.2.*",
                 "nelmio/alice": "~1.7|~2.0",
-                "phpunit/phpunit": "4.8.*|5.1.*",
+                "phpunit/phpunit": "4.8.*|~5.2",
                 "symfony/assetic-bundle": "~2.3",
                 "symfony/monolog-bundle": "~2.4",
                 "symfony/symfony": "~2.3.1|~2.7|~3.0",
@@ -3081,13 +3089,14 @@
                 "doctrine/dbal": "Required when using the fixture loading functionality with an ORM and SQLite",
                 "doctrine/doctrine-fixtures-bundle": "Required when using the fixture loading functionality",
                 "doctrine/orm": "Required when using the fixture loading functionality with an ORM and SQLite",
+                "hautelook/alice-bundle": "Required when using loadFixtureFiles functionality with custom providers",
                 "nelmio/alice": "Required when using loadFixtureFiles functionality",
                 "symfony/framework-bundle": "To use assertStatusCode and assertValidationErrors ~2.5"
             },
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4.x-dev"
+                    "dev-master": "1.5.x-dev"
                 }
             },
             "autoload": {
@@ -3113,7 +3122,7 @@
             "keywords": [
                 "Symfony2"
             ],
-            "time": "2016-02-08 10:14:11"
+            "time": "2016-02-24 09:03:40"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -3712,16 +3721,16 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "1.3.3",
+            "version": "1.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "6e7133793a8e5a5714a551a8324337374be209df"
+                "reference": "dc7a29032cf72b54f36dac15a1ca5b3a1b6029bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/6e7133793a8e5a5714a551a8324337374be209df",
-                "reference": "6e7133793a8e5a5714a551a8324337374be209df",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/dc7a29032cf72b54f36dac15a1ca5b3a1b6029bf",
+                "reference": "dc7a29032cf72b54f36dac15a1ca5b3a1b6029bf",
                 "shasum": ""
             },
             "require": {
@@ -3758,7 +3767,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2015-12-02 08:37:27"
+            "time": "2016-02-26 18:40:46"
         },
         {
             "name": "sebastian/exporter",
@@ -3967,16 +3976,16 @@
         },
         {
             "name": "sensio/generator-bundle",
-            "version": "v3.0.5",
+            "version": "v3.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioGeneratorBundle.git",
-                "reference": "5274eafa251359087230bade2ff35dd6cec2e530"
+                "reference": "ac91535054d025937d897d78ebb5fc2da5e955a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioGeneratorBundle/zipball/5274eafa251359087230bade2ff35dd6cec2e530",
-                "reference": "5274eafa251359087230bade2ff35dd6cec2e530",
+                "url": "https://api.github.com/repos/sensiolabs/SensioGeneratorBundle/zipball/ac91535054d025937d897d78ebb5fc2da5e955a4",
+                "reference": "ac91535054d025937d897d78ebb5fc2da5e955a4",
                 "shasum": ""
             },
             "require": {
@@ -4015,7 +4024,7 @@
                 }
             ],
             "description": "This bundle generates code for you",
-            "time": "2016-01-05 16:30:36"
+            "time": "2016-02-26 04:36:01"
         },
         {
             "name": "squizlabs/php_codesniffer",
