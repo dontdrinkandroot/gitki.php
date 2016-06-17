@@ -21,7 +21,7 @@ class DirectoryListingTest extends BaseAcceptanceTest
 
     public function testDirectoryIndex()
     {
-        $this->login($this->getUser(Users::COMMITTER));
+        $this->logIn($this->getUser(Users::COMMITTER));
 
         $crawler = $this->client->request('GET', '/browse/?action=list');
         $this->assertStatusCode(200, $this->client);

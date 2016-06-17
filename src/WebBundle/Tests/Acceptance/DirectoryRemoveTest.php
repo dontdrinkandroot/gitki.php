@@ -59,7 +59,7 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
             $exampleDirectory->prepend($fileSystemService->getBasePath())->toAbsoluteFileSystemString()
         );
 
-        $this->login($this->getUser(Users::COMMITTER));
+        $this->logIn($this->getUser(Users::COMMITTER));
         $crawler = $this->client->request('GET', '/browse/examples/?action=remove');
         $this->assertStatusCode(200, $this->client);
         $submitButton = $crawler->selectButton('Remove all files');
@@ -99,7 +99,7 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
             $exampleDirectory->prepend($fileSystemService->getBasePath())->toAbsoluteFileSystemString()
         );
 
-        $this->login($this->getUser(Users::COMMITTER));
+        $this->logIn($this->getUser(Users::COMMITTER));
         $crawler = $this->client->request('GET', '/browse/examples/?action=remove');
         $this->assertStatusCode(200, $this->client);
         $submitButton = $crawler->selectButton('Remove all files');

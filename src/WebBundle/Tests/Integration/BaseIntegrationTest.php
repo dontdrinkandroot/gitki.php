@@ -48,7 +48,7 @@ abstract class BaseIntegrationTest extends WebTestCase
      */
     protected function getRepositoryDataPath()
     {
-        return realPath(__DIR__ . '/../../../../vendor/dontdrinkandroot/gitki-bundle/Tests/Data/repo/');
+        return realpath(__DIR__ . '/../../../../vendor/dontdrinkandroot/gitki-bundle/Tests/Data/repo/');
     }
 
     /**
