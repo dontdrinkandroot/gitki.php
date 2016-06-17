@@ -1,4 +1,5 @@
 parameters:
     locale: en
+    name: TestGitki
     secret: ThisTokenIsNotSoSecretChangeIt
     repository_path: /tmp/gitkirepo/

@@ -56,4 +56,5 @@ fos_user:
     service:
         mailer: fos_user.mailer.noop
 ddr_gitki:
+    name: '%name%'
     repository_path: '%repository_path%'
