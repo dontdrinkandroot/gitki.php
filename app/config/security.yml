@@ -16,11 +16,13 @@ security:
             logout:
                 path: /logout
                 target: /loggedout
+            remember_me:
+                secret: '%secret%'
             oauth:
                 login_path: /login/
                 use_forward: false
                 failure_path: /login
-                provider: fos_userbundle/
+                provider: fos_userbundle
                 oauth_user_provider:
                     service: hwi_oauth.user.provider.fosub_bridge
                 resource_owners: null
