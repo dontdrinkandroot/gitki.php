@@ -22,13 +22,14 @@ hwi_oauth_login:
 
 login_manual:
     path:     /login/manual
+    methods:  [GET]
     defaults: { _controller: DdrGitkiWebBundle:Default:login }
 
 google_login:
-    pattern: /login/check-google
+    path: /login/check-google
 
 github_login:
-    pattern: /login/check-github
+    path: /login/check-github
 
 login_check:
     path: /login_check
@@ -38,10 +39,12 @@ logout:
 
 ddr_gitki_loggedout:
     path:   /loggedout
+    methods:  [GET]
     defaults: { _controller: DdrGitkiWebBundle:Default:loggedout }
 
 ddr_gitki_base_homepage:
     path:     /
+    methods:  [GET]
     defaults: { _controller: DdrGitkiWebBundle:Default:index }
 
 ddr_gitki_base:
