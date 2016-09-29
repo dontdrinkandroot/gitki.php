@@ -6,23 +6,11 @@ php:
     - 5.6
     - 7.0
 
-#matrix:
-#  include:
-#    - php: 5.5
-#      env: dependencies=lowest
-#    - php: 5.6
-#      env: dependencies=lowest
-#    - php: 5.5
-#      env: dependencies=highest
-#    - php: 5.6
-#      env: dependencies=highest
-
 cache:
   directories:
     - $HOME/.composer/cache
 
 before_script:
-    - composer self-update -q
     - if [ -n "$GH_TOKEN" ]; then composer config github-oauth.github.com ${GH_TOKEN}; fi;
     - cp app/config/parameters.yml.test app/config/parameters.yml
     - if [ -z "$dependencies" ]; then composer install; fi;

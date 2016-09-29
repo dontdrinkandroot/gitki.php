@@ -21,7 +21,6 @@
 !bin/set-permissions
 !bin/run-tests
 /composer.phar
-/.idea/
 # /composer.lock
 # /src/Net/Dontdrinkandroot/Gitki/BaseBundle/Resources/public/css/style.css
 # /src/Net/Dontdrinkandroot/Gitki/BaseBundle/Resources/public/css/print.css
