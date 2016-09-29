@@ -44,8 +44,6 @@ class LoadFixturesCommand extends ContainerAwareCommand
         $fileSystem = new Filesystem();
         $fileSystem->remove($repositoryPath);
 
-        $fileSystem->remove($repositoryPath);
-
         $fileSystem->mkdir($repositoryPath);
         $fileSystem->mirror($testRepoPath, $repositoryPath);
 
