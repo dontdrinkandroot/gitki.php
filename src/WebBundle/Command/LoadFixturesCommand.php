@@ -39,7 +39,7 @@ class LoadFixturesCommand extends ContainerAwareCommand
 
         $repositoryPath = $this->getContainer()->getParameter('repository_path');
         $rootDir = $this->getContainer()->getParameter('kernel.root_dir');
-        $testRepoPath = realpath($rootDir . '/../vendor//dontdrinkandroot/gitki-bundle/Tests/Data/repo/');
+        $testRepoPath = realpath($rootDir . '/../vendor/dontdrinkandroot/gitki-bundle/Tests/Data/repo/');
 
         $fileSystem = new Filesystem();
         $fileSystem->remove($repositoryPath);

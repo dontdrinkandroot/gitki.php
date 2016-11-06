@@ -8,7 +8,6 @@ use Symfony\Component\Console\Helper\QuestionHelper;
 
 abstract class AbstractConfigCommand extends Command
 {
-
     /**
      * @return QuestionHelper
      */
