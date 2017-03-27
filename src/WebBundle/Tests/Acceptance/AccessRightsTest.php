@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Dontdrinkandroot\Gitki\WebBundle\Tests\Acceptance;
 
 use Dontdrinkandroot\Gitki\WebBundle\DataFixtures\ORM\UserReferenceTrait;
@@ -9,7 +8,6 @@ use Dontdrinkandroot\Gitki\WebBundle\Entity\User;
 
 class AccessRightsTest extends BaseAcceptanceTest
 {
-
     use UserReferenceTrait;
 
     /**
@@ -109,9 +107,15 @@ class AccessRightsTest extends BaseAcceptanceTest
         }
         $this->client->request('GET', $url);
         $response = $this->client->getResponse();
+        $statusCode = $response->getStatusCode();
+
+        if (500 === $statusCode) {
+            echo $this->client->getResponse()->getContent();
+            $this->fail(sprintf('Status code was 500 for %s', $url));
+        }
 
         if (null === $expectedStatus) {
-            $this->assertEquals(302, $response->getStatusCode(), sprintf('%s: Login expected', $url));
+            $this->assertEquals(302, $statusCode, sprintf('%s: Login expected', $url));
             $this->assertEquals('http://localhost/login/', $response->headers->get('Location'));
 
             return;
@@ -119,7 +123,7 @@ class AccessRightsTest extends BaseAcceptanceTest
 
         $this->assertEquals(
             $expectedStatus,
-            $response->getStatusCode(),
+            $statusCode,
             sprintf('%s [%s]', $url, $user !== null ? $user->getUsername() : null)
         );
     }

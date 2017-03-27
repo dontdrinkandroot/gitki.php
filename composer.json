@@ -2,7 +2,11 @@
     "name": "dontdrinkandroot/gitki",
     "type": "project",
     "description": "Git backed MarkDown wiki",
-    "keywords": ["wiki", "git", "markdown"],
+    "keywords": [
+        "wiki",
+        "git",
+        "markdown"
+    ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "license": "Apache-2.0",
@@ -23,33 +27,36 @@
         ]
     },
     "require": {
-        "php": ">=5.6",
-        "symfony/symfony": "2.8.*",
-        "doctrine/orm": "^2.4.8",
-        "doctrine/doctrine-bundle": "~1.4",
-        "symfony/monolog-bundle": "~2.4",
-        "sensio/distribution-bundle": "~5.0",
+        "php": ">=7.1",
+        "doctrine/doctrine-bundle": "^1.6",
+        "doctrine/orm": "^2.5",
+        "incenteev/composer-parameter-handler": "^2.0",
+        "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^3.0.2",
-        "incenteev/composer-parameter-handler": "~2.0",
+        "symfony/monolog-bundle": "^3.0.2",
+        "symfony/polyfill-apcu": "^1.0",
+        "symfony/swiftmailer-bundle": "^2.3.10",
+        "symfony/symfony": "3.2.*",
+        "twig/twig": "^1.0||^2.0",
         "twig/extensions": "~1.0",
         "symfony/assetic-bundle": "~2.3",
         "braincrafted/bootstrap-bundle": "~2.0",
-        "friendsofsymfony/user-bundle": "~1.3",
-        "hwi/oauth-bundle": "0.3.*",
-        "dontdrinkandroot/gitki-bundle": "0.1.x-dev",
-        "elasticsearch/elasticsearch": "~1.3"
+        "friendsofsymfony/user-bundle": "^2.0",
+        "hwi/oauth-bundle": "0.5.*",
+        "elasticsearch/elasticsearch": "^1.3",
+        "dontdrinkandroot/gitki-bundle": "0.2.x-dev"
     },
     "require-dev": {
-        "sensio/generator-bundle": "~3.0",
-        "symfony/phpunit-bridge": "~2.7",
-        "phpunit/phpunit": "~4.1",
-        "twbs/bootstrap": "~3.3",
+        "sensio/generator-bundle": "^3.0",
+        "symfony/phpunit-bridge": "^3.0",
+        "phpunit/phpunit": "^5.0",
+        "twbs/bootstrap": "^3.3",
         "squizlabs/php_codesniffer": "~2.2",
         "liip/functional-test-bundle": "^1.4",
         "doctrine/doctrine-fixtures-bundle": "^2.3"
     },
     "scripts": {
-        "post-install-cmd": [
+        "symfony-scripts": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
@@ -57,13 +64,11 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
         ],
+        "post-install-cmd": [
+            "@symfony-scripts"
+        ],
         "post-update-cmd": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
+            "@symfony-scripts"
         ]
     },
     "config": {

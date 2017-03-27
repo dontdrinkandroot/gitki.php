@@ -45,7 +45,7 @@ braincrafted_bootstrap:
     auto_configure:
         assetic: false
 hwi_oauth:
-    firewall_name: secured_area
+    firewall_names: [secured_area]
     fosub:
         properties: null
     connect: null
