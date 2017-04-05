@@ -1,38 +1,40 @@
 imports:
-    -
-        resource: parameters.yml
-    -
-        resource: security.yml
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+
 framework:
     translator:
         fallback: '%locale%'
     secret: '%secret%'
     router:
         resource: '%kernel.root_dir%/config/routing.yml'
-        strict_requirements: null
-    form: null
-    csrf_protection: null
+        strict_requirements: ~
+    form: ~
+    csrf_protection: ~
     validation:
         enable_annotations: true
     templating:
         engines:
             - twig
     default_locale: en
-    trusted_hosts: null
-    trusted_proxies: null
+    trusted_hosts: ~
+    trusted_proxies: ~
     session:
-        handler_id: null
-    fragments: null
+        handler_id: ~
+    fragments: ~
     http_method_override: true
+
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+
 assetic:
     debug: '%kernel.debug%'
     use_controller: false
     bundles: {  }
     filters:
-        cssrewrite: null
+        cssrewrite: ~
+
 doctrine:
     dbal:
         driver: pdo_sqlite
@@ -41,20 +43,28 @@ doctrine:
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
         auto_mapping: true
+
 braincrafted_bootstrap:
     auto_configure:
         assetic: false
+
 hwi_oauth:
     firewall_names: [secured_area]
     fosub:
-        properties: null
-    connect: null
+        properties: ~
+    connect: ~
+
 fos_user:
     db_driver: orm
     firewall_name: secured_area
     user_class: Dontdrinkandroot\Gitki\WebBundle\Entity\User
+    # Mailer is disabled
+    from_email:
+        address: 'gitki@example.com'
+        sender_name: 'GitKi'
     service:
         mailer: fos_user.mailer.noop
+
 ddr_gitki:
     name: '%name%'
     repository_path: '%repository_path%'

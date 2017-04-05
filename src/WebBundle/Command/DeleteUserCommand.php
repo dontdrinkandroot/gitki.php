@@ -9,7 +9,6 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class DeleteUserCommand extends GitkiUsersCommand
 {
-
     protected function configure()
     {
         $this

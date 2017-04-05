@@ -15,7 +15,6 @@ use Symfony\Component\Console\Question\Question;
 
 abstract class GitkiUsersCommand extends ContainerAwareCommand
 {
-
     /**
      * @return UserManagerInterface
      */

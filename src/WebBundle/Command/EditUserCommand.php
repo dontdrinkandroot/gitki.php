@@ -10,7 +10,6 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class EditUserCommand extends GitkiUsersCommand
 {
-
     const FIELD_PASSWORD = 'Password';
     const FIELD_REAL_NAME = 'Real Name';
 

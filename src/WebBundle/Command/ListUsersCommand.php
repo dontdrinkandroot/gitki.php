@@ -8,7 +8,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ListUsersCommand extends GitkiUsersCommand
 {
-
     protected function configure()
     {
         $this

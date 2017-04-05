@@ -9,7 +9,6 @@ use Symfony\Component\Yaml\Yaml;
 
 class CheckConfigCommand extends AbstractConfigCommand
 {
-
     /**
      * @var array
      */
