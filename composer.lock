@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "371f6ad95609402b08dc3e7ce9aa5c76",
-    "content-hash": "ea459dc180baaff6d0a63036b761f401",
+    "hash": "fb2871feb44e31668ce0a18edb8da4ab",
+    "content-hash": "5ef80f9dca68c72abafa2e79d1b6ba64",
     "packages": [
         {
             "name": "braincrafted/bootstrap-bundle",
@@ -957,33 +957,37 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dontdrinkandroot/gitki-bundle.php.git",
-                "reference": "105d5510208a2f9da7052e2cc491342d45b39af9"
+                "reference": "ac9d931d48ec275e62d9bdbb42f76717142fa3c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dontdrinkandroot/gitki-bundle.php/zipball/105d5510208a2f9da7052e2cc491342d45b39af9",
-                "reference": "105d5510208a2f9da7052e2cc491342d45b39af9",
+                "url": "https://api.github.com/repos/dontdrinkandroot/gitki-bundle.php/zipball/ac9d931d48ec275e62d9bdbb42f76717142fa3c7",
+                "reference": "ac9d931d48ec275e62d9bdbb42f76717142fa3c7",
                 "shasum": ""
             },
             "require": {
                 "cpliakas/git-wrapper": "^1.2",
                 "dontdrinkandroot/utils": "0.4.*,>=0.4.3",
-                "league/commonmark": "0.13.4",
+                "league/commonmark": "^0.15",
                 "php": ">7.1",
                 "symfony/asset": "^3.0",
                 "symfony/finder": "^3.0",
                 "symfony/form": "^3.0",
                 "symfony/framework-bundle": "^3.0",
                 "symfony/templating": "^3.0",
+                "symfony/translation": "^3.0",
                 "symfony/twig-bundle": "^3.0",
-                "webuni/commonmark-table-extension": "0.4.3"
+                "symfony/validator": "^3.0",
+                "webuni/commonmark-table-extension": "^0.6"
             },
             "require-dev": {
-                "elasticsearch/elasticsearch": "^1.3",
+                "elasticsearch/elasticsearch": "^2.0",
                 "liip/functional-test-bundle": "^1.7",
                 "phpunit/phpunit": "^5.0",
                 "scrutinizer/ocular": "^1.1",
                 "symfony/console": "^3.0",
+                "symfony/css-selector": "^3.0",
+                "symfony/dom-crawler": "^3.0",
                 "symfony/security-bundle": "^3.0",
                 "twbs/bootstrap": "^3.3"
             },
@@ -1020,7 +1024,7 @@
                 "symfony",
                 "wiki"
             ],
-            "time": "2017-03-27 13:08:45"
+            "time": "2017-04-05 16:47:53"
         },
         {
             "name": "dontdrinkandroot/utils",
@@ -1083,35 +1087,34 @@
         },
         {
             "name": "elasticsearch/elasticsearch",
-            "version": "v1.4.1",
+            "version": "v2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/elastic/elasticsearch-php.git",
-                "reference": "3a5573cf3223d5646a76a5f8ce938048ca340680"
+                "reference": "12a400656e4cf4c231d83cb56af3f50a27dcde93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/3a5573cf3223d5646a76a5f8ce938048ca340680",
-                "reference": "3a5573cf3223d5646a76a5f8ce938048ca340680",
+                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/12a400656e4cf4c231d83cb56af3f50a27dcde93",
+                "reference": "12a400656e4cf4c231d83cb56af3f50a27dcde93",
                 "shasum": ""
             },
             "require": {
-                "ext-curl": "*",
-                "guzzle/guzzle": "~3.0",
-                "monolog/monolog": "~1.11",
-                "php": ">=5.3.9",
-                "pimple/pimple": "~3.0",
+                "guzzlehttp/ringphp": "~1.0",
+                "php": ">=5.4",
                 "psr/log": "~1.0"
             },
             "require-dev": {
-                "athletic/athletic": "~0.1",
                 "cpliakas/git-wrapper": "~1.0",
-                "mikey179/vfsstream": "~1.2",
                 "mockery/mockery": "0.9.4",
-                "phpunit/phpunit": "3.7.*",
-                "satooshi/php-coveralls": "dev-master",
+                "phpunit/phpunit": "~4.7",
+                "sami/sami": "~3.2",
                 "symfony/yaml": "2.4.3 as 2.4.2",
                 "twig/twig": "1.*"
+            },
+            "suggest": {
+                "ext-curl": "*",
+                "monolog/monolog": "Allows for client-level logging and tracing"
             },
             "type": "library",
             "autoload": {
@@ -1121,7 +1124,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "Apache 2"
+                "Apache-2.0"
             ],
             "authors": [
                 {
@@ -1134,7 +1137,7 @@
                 "elasticsearch",
                 "search"
             ],
-            "time": "2015-09-17 22:01:44"
+            "time": "2016-11-30 17:15:05"
         },
         {
             "name": "friendsofsymfony/user-bundle",
@@ -1214,67 +1217,40 @@
             "time": "2017-03-29 13:21:34"
         },
         {
-            "name": "guzzle/guzzle",
-            "version": "v3.8.1",
+            "name": "guzzlehttp/ringphp",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "4de0618a01b34aa1c8c33a3f13f396dcd3882eba"
+                "url": "https://github.com/guzzle/RingPHP.git",
+                "reference": "dbbb91d7f6c191e5e405e900e3102ac7f261bc0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/4de0618a01b34aa1c8c33a3f13f396dcd3882eba",
-                "reference": "4de0618a01b34aa1c8c33a3f13f396dcd3882eba",
+                "url": "https://api.github.com/repos/guzzle/RingPHP/zipball/dbbb91d7f6c191e5e405e900e3102ac7f261bc0b",
+                "reference": "dbbb91d7f6c191e5e405e900e3102ac7f261bc0b",
                 "shasum": ""
             },
             "require": {
-                "ext-curl": "*",
-                "php": ">=5.3.3",
-                "symfony/event-dispatcher": ">=2.1"
-            },
-            "replace": {
-                "guzzle/batch": "self.version",
-                "guzzle/cache": "self.version",
-                "guzzle/common": "self.version",
-                "guzzle/http": "self.version",
-                "guzzle/inflection": "self.version",
-                "guzzle/iterator": "self.version",
-                "guzzle/log": "self.version",
-                "guzzle/parser": "self.version",
-                "guzzle/plugin": "self.version",
-                "guzzle/plugin-async": "self.version",
-                "guzzle/plugin-backoff": "self.version",
-                "guzzle/plugin-cache": "self.version",
-                "guzzle/plugin-cookie": "self.version",
-                "guzzle/plugin-curlauth": "self.version",
-                "guzzle/plugin-error-response": "self.version",
-                "guzzle/plugin-history": "self.version",
-                "guzzle/plugin-log": "self.version",
-                "guzzle/plugin-md5": "self.version",
-                "guzzle/plugin-mock": "self.version",
-                "guzzle/plugin-oauth": "self.version",
-                "guzzle/service": "self.version",
-                "guzzle/stream": "self.version"
+                "guzzlehttp/streams": "~3.0",
+                "php": ">=5.4.0",
+                "react/promise": "~2.0"
             },
             "require-dev": {
-                "doctrine/cache": "*",
-                "monolog/monolog": "1.*",
-                "phpunit/phpunit": "3.7.*",
-                "psr/log": "1.0.*",
-                "symfony/class-loader": "*",
-                "zendframework/zend-cache": "<2.3",
-                "zendframework/zend-log": "<2.3"
+                "ext-curl": "*",
+                "phpunit/phpunit": "~4.0"
+            },
+            "suggest": {
+                "ext-curl": "Guzzle will use specific adapters if cURL is present"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.8-dev"
+                    "dev-master": "1.1-dev"
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Guzzle": "src/",
-                    "Guzzle\\Tests": "tests/"
+                "psr-4": {
+                    "GuzzleHttp\\Ring\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1286,25 +1262,60 @@
                     "name": "Michael Dowling",
                     "email": "mtdowling@gmail.com",
                     "homepage": "https://github.com/mtdowling"
-                },
-                {
-                    "name": "Guzzle Community",
-                    "homepage": "https://github.com/guzzle/guzzle/contributors"
                 }
             ],
-            "description": "Guzzle is a PHP HTTP client library and framework for building RESTful web service clients",
+            "description": "Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function.",
+            "time": "2015-05-20 03:37:09"
+        },
+        {
+            "name": "guzzlehttp/streams",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/streams.git",
+                "reference": "47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/streams/zipball/47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5",
+                "reference": "47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GuzzleHttp\\Stream\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                }
+            ],
+            "description": "Provides a simple abstraction over streams of data",
             "homepage": "http://guzzlephp.org/",
             "keywords": [
-                "client",
-                "curl",
-                "framework",
-                "http",
-                "http client",
-                "rest",
-                "web service"
+                "Guzzle",
+                "stream"
             ],
-            "abandoned": "guzzlehttp/guzzle",
-            "time": "2014-01-28 22:29:15"
+            "time": "2014-10-12 19:18:40"
         },
         {
             "name": "hwi/oauth-bundle",
@@ -1684,16 +1695,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "0.13.4",
+            "version": "0.15.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "83f8210427fb01f671e272bb8d44b4ed3a94d459"
+                "reference": "c8b43ee5821362216f8e9ac684f0f59de164edcc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/83f8210427fb01f671e272bb8d44b4ed3a94d459",
-                "reference": "83f8210427fb01f671e272bb8d44b4ed3a94d459",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/c8b43ee5821362216f8e9ac684f0f59de164edcc",
+                "reference": "c8b43ee5821362216f8e9ac684f0f59de164edcc",
                 "shasum": ""
             },
             "require": {
@@ -1706,7 +1717,7 @@
             "require-dev": {
                 "cebe/markdown": "~1.0",
                 "erusev/parsedown": "~1.0",
-                "jgm/commonmark": "0.25",
+                "jgm/commonmark": "0.27",
                 "michelf/php-markdown": "~1.4",
                 "mikehaertl/php-shellcommand": "~1.2.0",
                 "phpunit/phpunit": "~4.3|~5.0",
@@ -1722,7 +1733,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.14-dev"
+                    "dev-master": "0.16-dev"
                 }
             },
             "autoload": {
@@ -1749,7 +1760,7 @@
                 "markdown",
                 "parser"
             ],
-            "time": "2016-06-14 14:49:29"
+            "time": "2016-12-19 00:11:43"
         },
         {
             "name": "monolog/monolog",
@@ -1878,52 +1889,6 @@
             "time": "2017-03-13 16:27:32"
         },
         {
-            "name": "pimple/pimple",
-            "version": "v3.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/silexphp/Pimple.git",
-                "reference": "a30f7d6e57565a2e1a316e1baf2a483f788b258a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Pimple/zipball/a30f7d6e57565a2e1a316e1baf2a483f788b258a",
-                "reference": "a30f7d6e57565a2e1a316e1baf2a483f788b258a",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Pimple": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                }
-            ],
-            "description": "Pimple, a simple Dependency Injection Container",
-            "homepage": "http://pimple.sensiolabs.org",
-            "keywords": [
-                "container",
-                "dependency injection"
-            ],
-            "time": "2015-09-11 15:10:35"
-        },
-        {
             "name": "psr/cache",
             "version": "1.0.1",
             "source": {
@@ -2015,6 +1980,52 @@
                 "psr-3"
             ],
             "time": "2016-10-10 12:19:37"
+        },
+        {
+            "name": "react/promise",
+            "version": "v2.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/reactphp/promise.git",
+                "reference": "62785ae604c8d69725d693eb370e1d67e94c4053"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/reactphp/promise/zipball/62785ae604c8d69725d693eb370e1d67e94c4053",
+                "reference": "62785ae604c8d69725d693eb370e1d67e94c4053",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "React\\Promise\\": "src/"
+                },
+                "files": [
+                    "src/functions_include.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jan Sorgalla",
+                    "email": "jsorgalla@gmail.com"
+                }
+            ],
+            "description": "A lightweight implementation of CommonJS Promises/A for PHP",
+            "keywords": [
+                "promise",
+                "promises"
+            ],
+            "time": "2017-03-25 12:08:31"
         },
         {
             "name": "sensio/distribution-bundle",
@@ -2765,16 +2776,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v3.2.6",
+            "version": "v3.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "b0f8a7fa4b8baadf9db299cb6ac87c96a8977dbe"
+                "reference": "1631040ea8fc5e0e405c00d35cbf2c0b7b555f64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/b0f8a7fa4b8baadf9db299cb6ac87c96a8977dbe",
-                "reference": "b0f8a7fa4b8baadf9db299cb6ac87c96a8977dbe",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/1631040ea8fc5e0e405c00d35cbf2c0b7b555f64",
+                "reference": "1631040ea8fc5e0e405c00d35cbf2c0b7b555f64",
                 "shasum": ""
             },
             "require": {
@@ -2905,7 +2916,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-03-10 18:35:48"
+            "time": "2017-04-05 12:52:29"
         },
         {
             "name": "twig/extensions",
@@ -3024,31 +3035,32 @@
         },
         {
             "name": "webuni/commonmark-table-extension",
-            "version": "0.4.3",
+            "version": "0.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webuni/commonmark-table-extension.git",
-                "reference": "c4e70a3705f562cc08e0b6f80803dcfd0fa57173"
+                "reference": "ebbd69b63436283ec726658835b213ec634485e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webuni/commonmark-table-extension/zipball/c4e70a3705f562cc08e0b6f80803dcfd0fa57173",
-                "reference": "c4e70a3705f562cc08e0b6f80803dcfd0fa57173",
+                "url": "https://api.github.com/repos/webuni/commonmark-table-extension/zipball/ebbd69b63436283ec726658835b213ec634485e8",
+                "reference": "ebbd69b63436283ec726658835b213ec634485e8",
                 "shasum": ""
             },
             "require": {
-                "league/commonmark": "^0.11|^0.12|^0.13",
-                "php": ">=5.4"
+                "league/commonmark": "^0.14|^0.15",
+                "php": "^5.5|^7.0"
             },
             "require-dev": {
-                "fabpot/php-cs-fixer": "^1.9",
-                "phpunit/phpunit": "^4.3",
-                "symfony/var-dumper": "^2.7"
+                "friendsofphp/php-cs-fixer": "^1.9",
+                "phpunit/phpunit": "^4.3|^5.0",
+                "sllh/php-cs-fixer-styleci-bridge": "^2.0",
+                "symfony/var-dumper": "^2.7|^3.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.4-dev"
+                    "dev-master": "0.7-dev"
                 }
             },
             "autoload": {
@@ -3065,6 +3077,10 @@
                     "name": "Martin Hasoň",
                     "email": "martin.hason@gmail.com",
                     "role": "Lead Developer"
+                },
+                {
+                    "name": "Webuni s.r.o.",
+                    "homepage": "https://www.webuni.cz"
                 }
             ],
             "description": "The table extension for CommonMark PHP implementation",
@@ -3074,7 +3090,7 @@
                 "markdown",
                 "table"
             ],
-            "time": "2016-01-14 22:54:18"
+            "time": "2017-01-11 14:52:17"
         }
     ],
     "packages-dev": [
@@ -4560,7 +4576,7 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v3.2.6",
+            "version": "v3.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
