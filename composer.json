@@ -44,7 +44,9 @@
         "friendsofsymfony/user-bundle": "^2.0",
         "hwi/oauth-bundle": "0.5.*",
         "elasticsearch/elasticsearch": "^2.0",
-        "dontdrinkandroot/gitki-bundle": "0.2.x-dev"
+        "dontdrinkandroot/gitki-bundle": "0.2.x-dev",
+        "twbs/bootstrap": "^3.3",
+        "oyejorge/less.php": "^1.7"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
