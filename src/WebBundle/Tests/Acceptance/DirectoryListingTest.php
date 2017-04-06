@@ -29,18 +29,22 @@ class DirectoryListingTest extends BaseAcceptanceTest
         $panels = $crawler->filter('.panel');
         $this->assertCount(2, $panels);
 
-        $this->assertEquals('Folders', $panels->eq(0)->filter('.panel-title')->text());
-        $this->assertCount(1, $panels->eq(0)->filter('.table tr'));
+        $firstPanel = $panels->eq(0);
+        $this->assertEquals('Folders', $firstPanel->filter('.panel-title')->text());
+        $listGroupItems = $firstPanel->filter('.list-group-item');
+        $this->assertCount(1, $listGroupItems);
         $this->assertEquals(
             'Examples',
-            $panels->eq(0)->filter('.table tr')->eq(0)->filter('td')->eq(1)->filter('a')->text()
+            $listGroupItems->eq(0)->filter('.ddr-gitki-name a')->text()
         );
 
-        $this->assertEquals('Files', $panels->eq(1)->filter('.panel-title')->text());
-        $this->assertCount(1, $panels->eq(1)->filter('.table tr'));
+        $secondPanel = $panels->eq(1);
+        $this->assertEquals('Files', $secondPanel->filter('.panel-title')->text());
+        $listGroupItems = $secondPanel->filter('.list-group-item');
+        $this->assertCount(1, $secondPanel->filter('.list-group-item'));
         $this->assertEquals(
             'index.md',
-            trim($panels->eq(1)->filter('.table tr')->eq(0)->filter('td')->eq(1)->filter('a')->text())
+            trim($listGroupItems->eq(0)->filter('.ddr-gitki-name a')->text())
         );
     }
 }
