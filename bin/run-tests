@@ -1,3 +1,3 @@
 #!/bin/sh
 bin/phpcs --standard=psr2 --ignore=*.js,*.css ./src
-bin/phpunit -c app/
+bin/phpunit
