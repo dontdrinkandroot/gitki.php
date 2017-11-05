@@ -20,6 +20,11 @@ class AccessRightsTest extends BaseAcceptanceTest
 
     public function testAnonymousRights()
     {
+        $this->assertAccessRights('/login/', 200);
+        $this->assertAccessRights('/loggedout', 200);
+        $this->assertAccessRights('/user/profile/');
+        $this->assertAccessRights('/user/profile/edit');
+
         $this->assertAccessRights('/history');
 
         $this->assertAccessRights('/browse/');
@@ -39,6 +44,9 @@ class AccessRightsTest extends BaseAcceptanceTest
 
     public function testWatcherRights()
     {
+        $this->assertAccessRights('/user/profile/', 200, $this->getUser(Users::WATCHER));
+        $this->assertAccessRights('/user/profile/edit', 200, $this->getUser(Users::WATCHER));
+
         $this->assertAccessRights('/history', 200, $this->getUser(Users::WATCHER));
 
         $this->assertAccessRights('/browse/', 302, $this->getUser(Users::WATCHER));

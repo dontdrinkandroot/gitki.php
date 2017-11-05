@@ -15,13 +15,12 @@
                       method="POST" class="fos_user_registration_register">
                     {{ form_widget(form) }}
                     <div>
-                        <button type="submit"
-                                class="btn btn-primary">{{ 'connect.confirm.submit' | trans({}, 'HWIOAuthBundle') }}</button>
-                        <a href="{{ path('hwi_oauth_connect') }}"
-                           class="btn btn-link">{{ 'connect.confirm.cancel' | trans({}, 'HWIOAuthBundle') }}</a>
+                        <button type="submit" class="btn btn-primary">{{ 'connect.confirm.submit' | trans({}, 'HWIOAuthBundle') }}</button>
+                        <a href="{{ path('hwi_oauth_connect') }}" class="btn btn-link">{{ 'connect.confirm.cancel' | trans({}, 'HWIOAuthBundle') }}</a>
                     </div>
                 </form>
             </div>
+
             <div class="col-md-6 text-center">
                 {% if userInformation.profilePicture is defined and userInformation.profilePicture is not empty %}
                     <img src="{{ userInformation.profilePicture }}" class="img-responsive" />
