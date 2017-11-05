@@ -47,9 +47,9 @@ ddr_gitki_base_homepage:
     methods:  [GET]
     defaults: { _controller: DdrGitkiWebBundle:Default:index }
 
-ddr_gitki_base:
-    resource: "@DdrGitkiBundle/Resources/config/routing.yml"
-
 ddr_gitki_web:
     resource: "@DdrGitkiWebBundle/Resources/config/routing.yml"
     prefix:   /
+
+ddr_gitki_base:
+    resource: "@DdrGitkiBundle/Resources/config/routing.yml"

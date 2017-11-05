@@ -8,6 +8,11 @@ Dontdrinkandroot\Gitki\WebBundle\Entity\User:
             generator:
                 strategy: AUTO
     fields:
+        realName:
+            type: string
+            column: real_name
+            length: 255
+            nullable: false
         googleId:
             type: string
             column: google_id

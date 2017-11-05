@@ -20,6 +20,8 @@ class AccessRightsTest extends BaseAcceptanceTest
 
     public function testAnonymousRights()
     {
+        $user = $this->getReference(Users::COMMITTER);
+
         $this->assertAccessRights('/login/', 200);
         $this->assertAccessRights('/loggedout', 200);
         $this->assertAccessRights('/user/profile/');
@@ -40,10 +42,16 @@ class AccessRightsTest extends BaseAcceptanceTest
         $this->assertAccessRights('/browse/index.md?action=edit');
         $this->assertAccessRights('/browse/index.md?action=move');
         $this->assertAccessRights('/browse/index.md?action=remove');
+
+        $this->assertAccessRights('/users/');
+        $this->assertAccessRights('/users/' . $user->getId() . '/edit');
+        $this->assertAccessRights('/users/' . $user->getId() . '/delete');
     }
 
     public function testWatcherRights()
     {
+        $user = $this->getReference(Users::COMMITTER);
+
         $this->assertAccessRights('/user/profile/', 200, $this->getUser(Users::WATCHER));
         $this->assertAccessRights('/user/profile/edit', 200, $this->getUser(Users::WATCHER));
 
@@ -62,10 +70,16 @@ class AccessRightsTest extends BaseAcceptanceTest
         $this->assertAccessRights('/browse/index.md?action=edit', null, $this->getUser(Users::WATCHER));
         $this->assertAccessRights('/browse/index.md?action=move', null, $this->getUser(Users::WATCHER));
         $this->assertAccessRights('/browse/index.md?action=remove', null, $this->getUser(Users::WATCHER));
+
+        $this->assertAccessRights('/users/', null, $this->getUser(Users::WATCHER));
+        $this->assertAccessRights('/users/' . $user->getId() . '/edit', null, $this->getUser(Users::WATCHER));
+        $this->assertAccessRights('/users/' . $user->getId() . '/delete', null, $this->getUser(Users::WATCHER));
     }
 
     public function testCommitterRights()
     {
+        $user = $this->getReference(Users::COMMITTER);
+
         $this->assertAccessRights('/history', 200, $this->getUser(Users::COMMITTER));
 
         $this->assertAccessRights('/browse/', 302, $this->getUser(Users::COMMITTER));
@@ -81,10 +95,16 @@ class AccessRightsTest extends BaseAcceptanceTest
         $this->assertAccessRights('/browse/index.md?action=edit', 200, $this->getUser(Users::COMMITTER));
         $this->assertAccessRights('/browse/index.md?action=move', 200, $this->getUser(Users::COMMITTER));
         $this->assertAccessRights('/browse/index.md?action=remove', 302, $this->getUser(Users::COMMITTER));
+
+        $this->assertAccessRights('/users/', null, $this->getUser(Users::COMMITTER));
+        $this->assertAccessRights('/users/' . $user->getId() . '/edit', null, $this->getUser(Users::COMMITTER));
+        $this->assertAccessRights('/users/' . $user->getId() . '/delete', null, $this->getUser(Users::COMMITTER));
     }
 
     public function testAdminRights()
     {
+        $user = $this->getReference(Users::COMMITTER);
+
         $this->assertAccessRights('/history', 200, $this->getUser(Users::ADMIN));
 
         $this->assertAccessRights('/browse/', 302, $this->getUser(Users::ADMIN));
@@ -100,6 +120,10 @@ class AccessRightsTest extends BaseAcceptanceTest
         $this->assertAccessRights('/browse/index.md?action=edit', 200, $this->getUser(Users::ADMIN));
         $this->assertAccessRights('/browse/index.md?action=move', 200, $this->getUser(Users::ADMIN));
         $this->assertAccessRights('/browse/index.md?action=remove', 302, $this->getUser(Users::ADMIN));
+
+        $this->assertAccessRights('/users/', 200, $this->getUser(Users::ADMIN));
+        $this->assertAccessRights('/users/' . $user->getId() . '/edit', 200, $this->getUser(Users::ADMIN));
+        $this->assertAccessRights('/users/' . $user->getId() . '/delete', 302, $this->getUser(Users::ADMIN));
     }
 
     /**

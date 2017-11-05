@@ -10,6 +10,10 @@ use FOS\UserBundle\Model\User as BaseUser;
  */
 class User extends BaseUser implements GitUserInterface
 {
+    /**
+     * @var string
+     */
+    private $realName;
 
     /**
      * @var int
@@ -68,7 +72,7 @@ class User extends BaseUser implements GitUserInterface
      */
     public function getGitUserName()
     {
-        return $this->getUsername();
+        return $this->getRealName();
     }
 
     /**
@@ -95,10 +99,26 @@ class User extends BaseUser implements GitUserInterface
         $this->facebookId = $facebookId;
     }
 
+    /**
+     * @return string
+     */
+    public function getRealName()
+    {
+        return $this->realName;
+    }
+
+    /**
+     * @param string $realName
+     */
+    public function setRealName($realName)
+    {
+        $this->realName = $realName;
+    }
+
     public function __toString()
     {
         $s = 'id=' . $this->getId();
-        $s .= ',realName=' . $this->getUsername();
+        $s .= ',realName=' . $this->getRealName();
         $s .= ',email=' . $this->getEmail();
 
         return $s;
