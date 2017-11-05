@@ -60,6 +60,7 @@ abstract class GitkiUsersCommand extends ContainerAwareCommand
         $user = $userManager->createUser();
         $user->setEnabled(true);
 
+        $user = $this->editUsername($input, $output, $user, $questionHelper);
         $user = $this->editRealName($input, $output, $user, $questionHelper);
         $user = $this->editEmail($input, $output, $user, $questionHelper);
         $user = $this->editRole($input, $output, $user, $questionHelper);
@@ -103,6 +104,36 @@ abstract class GitkiUsersCommand extends ContainerAwareCommand
      *
      * @return User
      */
+    protected function editUsername(
+        InputInterface $input,
+        OutputInterface $output,
+        User $user,
+        QuestionHelper $questionHelper
+    ) {
+        $realNameQuestion = new Question('Username [required]: ');
+        $realNameQuestion->setValidator(
+            function ($answer) {
+                if (empty($answer)) {
+                    throw new \RuntimeException('Username must not be empty');
+                }
+
+                return $answer;
+            }
+        );
+        $realNameQuestion->setMaxAttempts(2);
+        $user->setUsername($questionHelper->ask($input, $output, $realNameQuestion));
+
+        return $user;
+    }
+
+    /**
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     * @param User            $user
+     * @param QuestionHelper  $questionHelper
+     *
+     * @return User
+     */
     protected function editRealName(
         InputInterface $input,
         OutputInterface $output,
@@ -120,7 +151,7 @@ abstract class GitkiUsersCommand extends ContainerAwareCommand
             }
         );
         $realNameQuestion->setMaxAttempts(2);
-        $user->setUsername($questionHelper->ask($input, $output, $realNameQuestion));
+        $user->setRealName($questionHelper->ask($input, $output, $realNameQuestion));
 
         return $user;
     }
@@ -257,7 +288,7 @@ abstract class GitkiUsersCommand extends ContainerAwareCommand
      *
      * @return User
      */
-    protected function selectUser(InputInterface $input, OutputInterface $output)
+    protected function selectUser(InputInterface $input, OutputInterface $output): User
     {
         $questionHelper = $this->getQuestionHelper();
         $users = $this->findUsers();
