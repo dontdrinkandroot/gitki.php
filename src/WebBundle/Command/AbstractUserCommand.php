@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Dontdrinkandroot\Gitki\WebBundle\Command;
 
 use Dontdrinkandroot\Gitki\WebBundle\Entity\User;
@@ -13,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
 
-abstract class GitkiUsersCommand extends ContainerAwareCommand
+abstract class AbstractUserCommand extends ContainerAwareCommand
 {
     /**
      * @return UserManagerInterface
@@ -35,11 +34,13 @@ abstract class GitkiUsersCommand extends ContainerAwareCommand
     {
         $output->writeln('--------------------');
         $output->writeln('Id: ' . $user->getId());
-        $output->writeln('User Name: ' . $user->getUsername());
+        $output->writeln('Username: ' . $user->getUsername());
+        $output->writeln('Real Name: ' . $user->getRealName());
         $output->writeln('Email: ' . $user->getEmail());
         $output->writeln('Roles: ' . implode(',', $user->getRoles()));
         $output->writeln('Github Login: ' . $user->getGithubId());
         $output->writeln('Google Login: ' . $user->getGoogleId());
+        $output->writeln('Facebook Login:' . $user->getFacebookId());
         $output->writeln('--------------------');
     }
 
@@ -211,10 +212,10 @@ abstract class GitkiUsersCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     * @param User            $user
-     * @param QuestionHelper  $questionHelper
+     * @param InputInterface       $input
+     * @param OutputInterface      $output
+     * @param User                 $user
+     * @param QuestionHelper       $questionHelper
      * @param UserManagerInterface $userManager
      *
      * @return User

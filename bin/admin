@@ -3,11 +3,11 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use Dontdrinkandroot\Gitki\WebBundle\Command\ChangeConfigCommand;
-use Dontdrinkandroot\Gitki\WebBundle\Command\CheckConfigCommand;
+use Dontdrinkandroot\Gitki\WebBundle\Command\ConfigChangeCommand;
+use Dontdrinkandroot\Gitki\WebBundle\Command\ConfigCheckCommand;
 use Symfony\Component\Console\Application;
 
 $application = new Application();
-$application->add(new CheckConfigCommand());
-$application->add(new ChangeConfigCommand());
+$application->add(new ConfigCheckCommand());
+$application->add(new ConfigChangeCommand());
 $application->run();

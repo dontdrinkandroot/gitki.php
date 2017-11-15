@@ -6,9 +6,8 @@ namespace Dontdrinkandroot\Gitki\WebBundle\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ChangeConfigCommand extends AbstractConfigCommand
+class ConfigChangeCommand extends AbstractConfigCommand
 {
-
     /**
      * @var array
      */

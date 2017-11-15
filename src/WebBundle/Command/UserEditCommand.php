@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-class EditUserCommand extends GitkiUsersCommand
+class UserEditCommand extends AbstractUserCommand
 {
     const FIELD_PASSWORD = 'Password';
     const FIELD_REAL_NAME = 'Real Name';

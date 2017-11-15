@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-class AddUserCommand extends GitkiUsersCommand
+class UserAddCommand extends AbstractUserCommand
 {
     protected function configure()
     {
