@@ -8,11 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-#
-
 abstract class BaseAcceptanceTest extends BaseIntegrationTest
 {
-
     /**
      * @var Client
      */

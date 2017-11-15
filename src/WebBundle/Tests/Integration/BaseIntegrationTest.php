@@ -10,7 +10,6 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 abstract class BaseIntegrationTest extends WebTestCase
 {
-
     use GitRepositoryTestTrait;
 
     const GIT_REPOSITORY_PATH = '/tmp/gitkirepo/';
@@ -46,7 +45,7 @@ abstract class BaseIntegrationTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getRepositoryDataPath()
+    protected function getRepositoryTemplatePath()
     {
         return realpath(__DIR__ . '/../../../../vendor/dontdrinkandroot/gitki-bundle/Tests/Data/repo/');
     }
