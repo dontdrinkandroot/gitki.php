@@ -5,6 +5,7 @@ namespace Dontdrinkandroot\Gitki\WebBundle\Controller;
 use Dontdrinkandroot\Gitki\WebBundle\Entity\User;
 use Dontdrinkandroot\Gitki\WebBundle\Form\UserEditType;
 use Dontdrinkandroot\GitkiBundle\Controller\BaseController;
+use Dontdrinkandroot\GitkiBundle\Service\Security\SecurityService;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -12,9 +13,18 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class UserController extends BaseController
 {
+    /**
+     * UserController constructor.
+     */
+    public function __construct(SecurityService $securityService)
+    {
+        parent::__construct($securityService);
+    }
+
     public function listAction()
     {
         $this->assertAdmin();
+
         $users = $this->get('fos_user.user_manager')->findUsers();
 
         return $this->render('@DdrGitkiWeb/User/list.html.twig', ['users' => $users]);

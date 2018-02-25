@@ -26,9 +26,11 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
     {
         $directoryPath = DirectoryPath::parse('/testdirectory/');
         /** @var FileSystemService $fileSystemService */
-        $fileSystemService = $this->getContainer()->get('ddr.gitki.service.file_system');
+        $fileSystemService = $this->getContainer()->get(
+            'test.Dontdrinkandroot\GitkiBundle\Service\FileSystem\FileSystemService'
+        );
         /** @var WikiService $wikiService */
-        $wikiService = $this->getContainer()->get('ddr.gitki.service.wiki');
+        $wikiService = $this->getContainer()->get('test.Dontdrinkandroot\GitkiBundle\Service\Wiki\WikiService');
         $wikiService->createFolder($directoryPath);
         $this->assertFileExists(
             $directoryPath->prepend($fileSystemService->getBasePath())->toAbsoluteFileSystemString()
@@ -47,7 +49,9 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
     public function testRemoveNonEmptyDirectoryTest()
     {
         /** @var FileSystemService $fileSystemService */
-        $fileSystemService = $this->getContainer()->get('ddr.gitki.service.file_system');
+        $fileSystemService = $this->getContainer()->get(
+            'test.Dontdrinkandroot\GitkiBundle\Service\FileSystem\FileSystemService'
+        );
 
         $exampleFile = FilePath::parse('/examples/toc-example.md');
         $exampleDirectory = DirectoryPath::parse('/examples/');
@@ -87,9 +91,11 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
         $exampleDirectory = DirectoryPath::parse('/examples/');
 
         /** @var FileSystemService $fileSystemService */
-        $fileSystemService = $this->getContainer()->get('ddr.gitki.service.file_system');
+        $fileSystemService = $this->getContainer()->get(
+            'test.Dontdrinkandroot\GitkiBundle\Service\FileSystem\FileSystemService'
+        );
         /** @var WikiService $wikiService */
-        $wikiService = $this->getContainer()->get('ddr.gitki.service.wiki');
+        $wikiService = $this->getContainer()->get('test.Dontdrinkandroot\GitkiBundle\Service\Wiki\WikiService');
         $wikiService->createLock($this->getUser(Users::ADMIN), $exampleFile);
 
         $this->assertFileExists(
