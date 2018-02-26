@@ -1,5 +1,8 @@
 services:
 
+    _defaults:
+        public: true
+
     test.Dontdrinkandroot\GitkiBundle\Service\FileSystem\FileSystemService: '@Dontdrinkandroot\GitkiBundle\Service\FileSystem\FileSystemService'
 
     test.Dontdrinkandroot\GitkiBundle\Service\Wiki\WikiService: '@Dontdrinkandroot\GitkiBundle\Service\Wiki\WikiService'
