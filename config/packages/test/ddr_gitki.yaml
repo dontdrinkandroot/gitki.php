@@ -1,0 +1,7 @@
+ddr_gitki:
+    display_name: 'TestGitki'
+    repository_path: '/tmp/gitkirepo/'
+    roles:
+        watcher: ROLE_WATCHER
+        committer: ROLE_COMMITTER
+        admin: ROLE_ADMIN

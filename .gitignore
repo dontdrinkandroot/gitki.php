@@ -1,19 +1,27 @@
-/web/bundles/
-/app/config/parameters.yml
-/app/config/gitki.yml
-/var/bootstrap.php.cache
+###> symfony/framework-bundle ###
+.env
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
 
-/var/cache/*
-!/var/cache/.gitkeep
+###> symfony/webpack-encore-pack ###
+/node_modules/
+/public/build/
+###< symfony/webpack-encore-pack ###
 
-/var/logs/*
-!/var/logs/.gitkeep
+###> symfony/phpunit-bridge ###
+.phpunit
+/phpunit.xml
+###< symfony/phpunit-bridge ###
 
-/var/data/*
+###> symfony/web-server-bundle ###
+.web-server-pid
+###< symfony/web-server-bundle ###
+
 !/var/data/.gitkeep
 
 /build/
-/vendor/
 /bin/*
 !bin/admin
 !bin/console
@@ -24,7 +32,3 @@
 !bin/install-prod
 !bin/set-permissions
 !bin/run-tests
-/composer.phar
-# /composer.lock
-# /src/Net/Dontdrinkandroot/Gitki/BaseBundle/Resources/public/css/style.css
-# /src/Net/Dontdrinkandroot/Gitki/BaseBundle/Resources/public/css/print.css

@@ -58,18 +58,3 @@ hwi_oauth:
     fosub:
         properties: ~
     connect: ~
-
-fos_user:
-    db_driver: orm
-    firewall_name: secured_area
-    user_class: Dontdrinkandroot\Gitki\WebBundle\Entity\User
-    # Mailer is disabled
-    from_email:
-        address: 'gitki@example.com'
-        sender_name: 'GitKi'
-    service:
-        mailer: fos_user.mailer.noop
-
-ddr_gitki:
-    display_name: '%name%'
-    repository_path: '%repository_path%'

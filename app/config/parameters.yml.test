@@ -1,5 +1,0 @@
-parameters:
-    locale: en
-    name: TestGitki
-    secret: aksdfjhasoifuhwpiufhspdiufhsdpaokjashkfjahdklfjhasdkfjhawf
-    repository_path: /tmp/gitkirepo/

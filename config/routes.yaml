@@ -1,0 +1,30 @@
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+ddr_gitki_loggedout:
+    path:   /loggedout
+    methods:  [GET]
+    defaults: { _controller: App\Controller\DefaultController:Default:loggedoutAction }
+
+ddr_gitki_base_homepage:
+    path:     /
+    methods:  [GET]
+    defaults: { _controller: App\Controller\DefaultController:indexAction }
+
+ddr_gitki.user.list:
+    path: /users/
+    defaults:
+        _controller: DdrGitkiWebBundle:User:list
+
+ddr_gitki.user.edit:
+    path: /users/{id}/edit
+    defaults:
+        _controller: DdrGitkiWebBundle:User:edit
+
+ddr_gitki.user.delete:
+    path: /users/{id}/delete
+    defaults:
+        _controller: DdrGitkiWebBundle:User:delete
+
+ddr_gitki_base:
+    resource: "@DdrGitkiBundle/Resources/config/routing.yml"

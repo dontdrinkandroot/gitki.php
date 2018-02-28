@@ -1,0 +1,38 @@
+security:
+
+    providers:
+        fos_userbundle:
+            id: fos_user.user_provider.username_email
+
+    encoders:
+        App\Entity\User: bcrypt
+
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+
+    firewalls:
+
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            pattern: ^/
+            anonymous: true
+            form_login:
+                provider: fos_userbundle
+                csrf_token_generator: security.csrf.token_manager
+            remember_me:
+                secret: '%kernel.secret%'
+            logout: true
+
+    access_control:
+        -
+            path: ^/login
+            roles: IS_AUTHENTICATED_ANONYMOUSLY
+        -
+            path: ^/connect
+            roles: IS_AUTHENTICATED_ANONYMOUSLY
+        -
+            path: ^/loggedout
+            roles: IS_AUTHENTICATED_ANONYMOUSLY

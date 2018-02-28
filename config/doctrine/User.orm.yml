@@ -1,0 +1,31 @@
+App\Entity\User:
+    type: entity
+    table: "User"
+    id:
+        id:
+            type: bigint
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        realName:
+            type: string
+            column: real_name
+            length: 255
+            nullable: false
+        googleId:
+            type: string
+            column: google_id
+            length: 255
+            nullable: true
+        githubId:
+            type: string
+            column: github_id
+            length: 255
+            nullable: true
+        facebookId:
+            type: string
+            column: facebook_id
+            length: 255
+            nullable: true
+    lifecycleCallbacks: {  }
