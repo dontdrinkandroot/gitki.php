@@ -43,8 +43,8 @@
         "braincrafted/bootstrap-bundle": "~2.0",
         "friendsofsymfony/user-bundle": "^2.0",
         "hwi/oauth-bundle": "0.5.*",
-        "elasticsearch/elasticsearch": "^6.0",
-        "dontdrinkandroot/gitki-bundle": "0.2.x-dev",
+        "elasticsearch/elasticsearch": "^5.0",
+        "dontdrinkandroot/gitki-bundle": "^0.2",
         "twbs/bootstrap": "^3.3",
         "oyejorge/less.php": "^1.7"
     },
