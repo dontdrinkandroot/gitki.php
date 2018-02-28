@@ -1,6 +1,6 @@
 {
     "name": "dontdrinkandroot/gitki",
-    "license": "Apache2",
+    "license": "Apache-2.0",
     "type": "project",
     "description": "Git backed MarkDown wiki",
     "autoload": {
