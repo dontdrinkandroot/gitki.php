@@ -22,7 +22,7 @@ class AccessRightsTest extends BaseAcceptanceTest
     {
         $user = $this->getReference(Users::COMMITTER);
 
-        $this->assertAccessRights('/login/', 200);
+        $this->assertAccessRights('/login', 200);
         $this->assertAccessRights('/loggedout', 200);
         $this->assertAccessRights('/user/profile/');
         $this->assertAccessRights('/user/profile/edit');
@@ -148,7 +148,7 @@ class AccessRightsTest extends BaseAcceptanceTest
 
         if (null === $expectedStatus) {
             $this->assertEquals(302, $statusCode, sprintf('%s: Login expected', $url));
-            $this->assertEquals('http://localhost/login/', $response->headers->get('Location'));
+            $this->assertEquals('http://localhost/login', $response->headers->get('Location'));
 
             return;
         }

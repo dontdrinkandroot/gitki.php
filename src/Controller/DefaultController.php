@@ -17,16 +17,21 @@ class DefaultController extends BaseController
     public function loginAction(Request $request)
     {
         if (!$this->isGranted('ROLE_USER')) {
-            if ($request->hasSession() && $request->isMethodSafe()) {
+
+            /* Save targetpath if user was not logged in yet before redirecting to login page */
+            if ($request->hasSession() && $request->isMethodSafe(false)) {
                 $referer = $request->headers->get('referer');
                 if (null !== $referer) {
                     $request->getSession()->set('ddr.gitki.manuallogin.targetpath', $referer);
                 }
             }
+
             throw new AuthenticationException();
         }
 
-        if ($request->hasSession() && $request->isMethodSafe()) {
+        if ($request->hasSession() && $request->isMethodSafe(false)) {
+
+            /* Restore target path after login */
             $targetPath = $request->getSession()->get('ddr.gitki.manuallogin.targetpath');
             $request->getSession()->remove('ddr.gitki.manuallogin.targetpath');
             if (null !== $targetPath) {
@@ -42,6 +47,6 @@ class DefaultController extends BaseController
      */
     public function loggedoutAction()
     {
-        return $this->render('DdrGitkiWebBundle:Default:loggedout.html.twig');
+        return $this->render('Default/loggedout.html.twig');
     }
 }

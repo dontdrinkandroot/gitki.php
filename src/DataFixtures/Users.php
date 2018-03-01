@@ -3,29 +3,27 @@
 namespace App\DataFixtures;
 
 use App\Entity\User;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Model\UserManagerInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class Users extends AbstractFixture implements ContainerAwareInterface
+class Users extends Fixture
 {
     const WATCHER = 'user_watcher';
     const COMMITTER = 'user_committer';
     const ADMIN = 'user_admin';
 
     /**
-     * @var ContainerInterface
+     * @var UserManagerInterface
      */
-    private $container;
+    private $userManager;
 
     /**
-     * {@inheritdoc}
+     * Users constructor.
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function __construct(UserManagerInterface $userManager)
     {
-        $this->container = $container;
+        $this->userManager = $userManager;
     }
 
     /**
@@ -33,11 +31,8 @@ class Users extends AbstractFixture implements ContainerAwareInterface
      */
     public function load(ObjectManager $manager)
     {
-        /** @var UserManagerInterface $userManager */
-        $userManager = $this->container->get('fos_user.user_manager');
-
         /** @var User $user */
-        $user = $userManager->createUser();
+        $user = $this->userManager->createUser();
         $user->setUsername('watcher');
         $user->setRealName('Watcher User');
         $user->setEmail('watcher@example.com');
@@ -45,10 +40,10 @@ class Users extends AbstractFixture implements ContainerAwareInterface
         $user->addRole('ROLE_WATCHER');
         $user->setEnabled(true);
 
-        $userManager->updateUser($user);
+        $this->userManager->updateUser($user);
         $this->addReference(self::WATCHER, $user);
 
-        $user = $userManager->createUser();
+        $user = $this->userManager->createUser();
         $user->setUsername('committer');
         $user->setRealName('Committer User');
         $user->setEmail('committer@example.com');
@@ -57,10 +52,10 @@ class Users extends AbstractFixture implements ContainerAwareInterface
         $user->addRole('ROLE_COMMITTER');
         $user->setEnabled(true);
 
-        $userManager->updateUser($user);
+        $this->userManager->updateUser($user);
         $this->addReference(self::COMMITTER, $user);
 
-        $user = $userManager->createUser();
+        $user = $this->userManager->createUser();
         $user->setUsername('admin');
         $user->setRealName('Admin User');
         $user->setEmail('admin@example.com');
@@ -70,7 +65,7 @@ class Users extends AbstractFixture implements ContainerAwareInterface
         $user->addRole('ROLE_ADMIN');
         $user->setEnabled(true);
 
-        $userManager->updateUser($user);
+        $this->userManager->updateUser($user);
         $this->addReference(self::ADMIN, $user);
     }
 }

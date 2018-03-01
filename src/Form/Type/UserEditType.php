@@ -1,8 +1,8 @@
 <?php
 
-namespace Dontdrinkandroot\Gitki\WebBundle\Form;
+namespace App\Form\Type;
 
-use Dontdrinkandroot\Gitki\WebBundle\Entity\User;
+use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

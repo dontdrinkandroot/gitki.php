@@ -2,10 +2,12 @@
 
 namespace App\Tests\Acceptance;
 
+use App\DataFixtures\ProxiedLoader;
 use App\Entity\User;
 use App\Tests\Integration\BaseIntegrationTest;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 abstract class BaseAcceptanceTest extends BaseIntegrationTest
@@ -31,7 +33,7 @@ abstract class BaseAcceptanceTest extends BaseIntegrationTest
     {
         $session = $this->client->getContainer()->get('session');
 
-        $firewall = 'secured_area';
+        $firewall = 'main';
         $token = new UsernamePasswordToken($user, null, $firewall, $user->getRoles());
         $session->set('_security_' . $firewall, serialize($token));
         $session->save();
@@ -47,5 +49,16 @@ abstract class BaseAcceptanceTest extends BaseIntegrationTest
         $session->save();
 
         $this->client->getCookieJar()->clear();
+    }
+
+    protected function getFixtureLoader(ContainerInterface $container, array $classNames)
+    {
+        $container = $this->getContainer();
+        $loader = new ProxiedLoader($container->get('test.doctrine.fixtures.loader'));
+        foreach ($classNames as $fixtureClass) {
+            $loader->addByClass($fixtureClass);
+        }
+
+        return $loader;
     }
 }

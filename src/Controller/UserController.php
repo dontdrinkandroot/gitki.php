@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use Dontdrinkandroot\Gitki\WebBundle\Form\UserEditType;
+use App\Form\Type\UserEditType;
 use Dontdrinkandroot\GitkiBundle\Controller\BaseController;
 use Dontdrinkandroot\GitkiBundle\Service\Security\SecurityService;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +27,7 @@ class UserController extends BaseController
 
         $users = $this->get('fos_user.user_manager')->findUsers();
 
-        return $this->render('@DdrGitkiWeb/User/list.html.twig', ['users' => $users]);
+        return $this->render('User/list.html.twig', ['users' => $users]);
     }
 
     public function editAction(Request $request, $id)
@@ -58,7 +58,7 @@ class UserController extends BaseController
             }
         }
 
-        return $this->render('@DdrGitkiWeb/User/edit.html.twig', ['form' => $form->createView()]);
+        return $this->render('User/edit.html.twig', ['form' => $form->createView()]);
     }
 
     public function deleteAction($id)
