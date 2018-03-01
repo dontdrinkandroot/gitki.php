@@ -32,3 +32,4 @@
 !bin/install-prod
 !bin/set-permissions
 !bin/run-tests
+!bin/phpunit
