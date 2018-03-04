@@ -1,8 +1,8 @@
 <?php
 
-namespace Dontdrinkandroot\Gitki\WebBundle\Command;
+namespace App\Command;
 
-use Dontdrinkandroot\Gitki\WebBundle\Entity\User;
+use App\Entity\User;
 use FOS\UserBundle\Model\UserManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -50,10 +50,8 @@ abstract class AbstractUserCommand extends ContainerAwareCommand
      *
      * @return mixed
      */
-    protected function createUser(
-        InputInterface $input,
-        OutputInterface $output
-    ) {
+    protected function createUser(InputInterface $input, OutputInterface $output)
+    {
         $userManager = $this->getUserManager();
         $questionHelper = $this->getQuestionHelper();
 

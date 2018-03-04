@@ -18,6 +18,6 @@ abstract class AbstractConfigCommand extends Command
 
     protected function getRootDir()
     {
-        return realpath(__DIR__ . '/../../../../../');
+        return realpath(__DIR__ . '/../../../../github/');
     }
 }

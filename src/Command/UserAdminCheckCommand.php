@@ -1,8 +1,8 @@
 <?php
 
-namespace Dontdrinkandroot\Gitki\WebBundle\Command;
+namespace App\Command;
 
-use Dontdrinkandroot\Gitki\WebBundle\Entity\User;
+use App\Entity\User;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
