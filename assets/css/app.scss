@@ -1,4 +1,7 @@
 $font-family-sans-serif: 'Open Sans', sans-serif;
+$breadcrumb-bg: transparent;
+$breadcrumb-padding-x: 0;
+$enable-rounded: false;
 
 @import '~bootstrap/scss/bootstrap.scss';
 @import '~font-awesome/scss/font-awesome.scss';
@@ -10,4 +13,28 @@ html {
 
 body {
     padding-top: 49px;
+}
+
+.ddr-gitki-header {
+
+    border-bottom: solid 1px $border-color;
+    margin-bottom: 1rem;
+
+    .container {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+
+        .ddr-gitki-breadcrumb {
+            flex: 1;
+        }
+        .ddr-gitki-global-actions {
+            margin-top: 0.25rem;
+            margin-bottom: 0.25rem;
+        }
+    }
+}
+
+.breadcrumb {
+    margin-bottom: 0;
 }

@@ -14,7 +14,6 @@ Features
 * Versioned, runs against a plain Git Repository
 * Fully integrated Markdown support
 * Multi-User support
-* Login via OAuth (GitHub, Google, ...)
 * Easy to install
 * Easy to use
 * Optional Elasticsearch integration
