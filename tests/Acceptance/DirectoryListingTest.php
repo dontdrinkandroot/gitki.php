@@ -7,7 +7,6 @@ use App\DataFixtures\Users;
 
 class DirectoryListingTest extends BaseAcceptanceTest
 {
-
     use UserReferenceTrait;
 
     /**
@@ -25,25 +24,25 @@ class DirectoryListingTest extends BaseAcceptanceTest
         $crawler = $this->client->request('GET', '/browse/?action=list');
         $this->assertStatusCode(200, $this->client);
 
-        $panels = $crawler->filter('.panel');
-        $this->assertCount(2, $panels);
+        $cards = $crawler->filter('.card');
+        $this->assertCount(2, $cards);
 
-        $firstPanel = $panels->eq(0);
-        $this->assertEquals('Folders', $firstPanel->filter('.panel-title')->text());
-        $listGroupItems = $firstPanel->filter('.list-group-item');
+        $firstCard = $cards->eq(0);
+        $this->assertEquals('Folders', $firstCard->filter('.card-header')->text());
+        $listGroupItems = $firstCard->filter('.list-group-item');
         $this->assertCount(1, $listGroupItems);
         $this->assertEquals(
             'Examples',
-            $listGroupItems->eq(0)->filter('.ddr-gitki-name a')->text()
+            $listGroupItems->eq(0)->filter('.ddr-gitki-item-name a')->text()
         );
 
-        $secondPanel = $panels->eq(1);
-        $this->assertEquals('Files', $secondPanel->filter('.panel-title')->text());
-        $listGroupItems = $secondPanel->filter('.list-group-item');
-        $this->assertCount(1, $secondPanel->filter('.list-group-item'));
+        $secondCard = $cards->eq(1);
+        $this->assertEquals('Files', $secondCard->filter('.card-header')->text());
+        $listGroupItems = $secondCard->filter('.list-group-item');
+        $this->assertCount(1, $secondCard->filter('.list-group-item'));
         $this->assertEquals(
             'index.md',
-            trim($listGroupItems->eq(0)->filter('.ddr-gitki-name a')->text())
+            trim($listGroupItems->eq(0)->filter('.ddr-gitki-item-name a')->text())
         );
     }
 }

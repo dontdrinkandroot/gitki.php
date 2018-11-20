@@ -1,2 +1,7 @@
 #!/bin/bash
-git pull && composer install && bin/console assetic:dump && bin/console doctrine:cache:clear-metadata && bin/console doctrine:schema:update --dump-sql
+git pull && \
+composer install && \
+yarn install && \
+yarn encore dev && \
+bin/console assets:install && \
+bin/console doctrine:schema:update --dump-sql

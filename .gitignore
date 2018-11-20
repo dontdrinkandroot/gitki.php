@@ -19,13 +19,10 @@
 .web-server-pid
 ###< symfony/web-server-bundle ###
 
-!/var/data/.gitkeep
-
 /build/
 /bin/*
 !bin/admin
 !bin/console
-!bin/symfony_requirements
 !bin/update-dev
 !bin/update-prod
 !bin/update-design

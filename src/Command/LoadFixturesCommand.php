@@ -1,7 +1,6 @@
 <?php
 
-
-namespace Dontdrinkandroot\Gitki\WebBundle\Command;
+namespace App\Command;
 
 use GitWrapper\GitWrapper;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -37,9 +36,10 @@ class LoadFixturesCommand extends ContainerAwareCommand
             return;
         }
 
-        $repositoryPath = $this->getContainer()->getParameter('repository_path');
+        $repositoryPath = $this->getContainer()->getParameter('ddr_gitki.repository_path');
         $rootDir = $this->getContainer()->getParameter('kernel.root_dir');
         $testRepoPath = realpath($rootDir . '/../vendor/dontdrinkandroot/gitki-bundle/Tests/Data/repo/');
+        dump($testRepoPath);
 
         $fileSystem = new Filesystem();
         $fileSystem->remove($repositoryPath);
