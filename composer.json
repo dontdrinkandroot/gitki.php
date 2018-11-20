@@ -42,7 +42,7 @@
         "symfony/yaml": "4.1.*",
         "symfony/webpack-encore-pack": "*",
         "elasticsearch/elasticsearch": "^6.0",
-        "ocramius/proxy-manager": "~2.1"
+        "ocramius/proxy-manager": "2.1.*"
     },
     "require-dev": {
         "symfony/debug-pack": "*",
