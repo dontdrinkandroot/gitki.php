@@ -19,21 +19,27 @@ class IndexFileTest extends BaseAcceptanceTest
 
     public function testIndexFileShown()
     {
-        $this->login($this->getUser(Users::COMMITTER));
+        $referenceRepository = $this->loadFixtures([Users::class])->getReferenceRepository();
+        $client = $this->makeBrowser();
 
-        $crawler = $this->client->request('GET', '/');
-        $this->assertStatusCode(302, $this->client);
+        $this->login($client, $this->getUser(Users::COMMITTER, $referenceRepository));
 
-        $location = $this->client->getResponse()->headers->get('Location');
+        $crawler = $client->request('GET', '/');
+//        $this->assertStatusCode(302, $client);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+
+        $location = $client->getResponse()->headers->get('Location');
         $this->assertEquals('/browse/?action=index', $location);
-        $crawler = $this->client->request('GET', $location);
-        $this->assertStatusCode(302, $this->client);
+        $crawler = $client->request('GET', $location);
+//        $this->assertStatusCode(302, $client);
 
-        $location = $this->client->getResponse()->headers->get('Location');
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $location = $client->getResponse()->headers->get('Location');
         $this->assertEquals('/browse/index.md', $location);
-        $crawler = $this->client->request('GET', $location);
-        $this->assertStatusCode(200, $this->client);
+        $crawler = $client->request('GET', $location);
+//        $this->assertStatusCode(200, $client);
 
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertEquals('Welcome', $crawler->filter('h1')->text());
     }
 }

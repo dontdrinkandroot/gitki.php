@@ -2,10 +2,9 @@
 
 namespace App\Tests\Integration;
 
-use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
-use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Dontdrinkandroot\GitkiBundle\Tests\GitRepositoryTestTrait;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Symfony\Component\BrowserKit\AbstractBrowser;
 
 abstract class BaseIntegrationTest extends WebTestCase
 {
@@ -13,40 +12,20 @@ abstract class BaseIntegrationTest extends WebTestCase
 
     const GIT_REPOSITORY_PATH = '/tmp/gitkirepo/';
 
-    /**
-     * @var ReferenceRepository
-     */
-    protected $referenceRepository;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected static function getKernelClass()
-    {
-        return getenv('KERNEL_CLASS');
-    }
-
     protected function setUp()
     {
-        /** @var ORMExecutor $executor */
-        $executor = $this->loadFixtures($this->getFixtureClasses());
-        $this->referenceRepository = $executor->getReferenceRepository();
         $this->setUpRepo();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->tearDownRepo();
     }
 
-    /**
-     * @param string $name
-     *
-     * @return object
-     */
-    protected function getReference($name)
+    // TODO: Remove, replaces Liip Make Client until fixed for Symfony 4.3
+    protected function makeBrowser($authentication = false, array $params = []): AbstractBrowser
     {
-        return $this->referenceRepository->getReference($name);
+        return static::createClient(['environment' => $this->environment], $params);
     }
 
     /**
@@ -64,9 +43,4 @@ abstract class BaseIntegrationTest extends WebTestCase
     {
         return self::GIT_REPOSITORY_PATH;
     }
-
-    /**
-     * @return string[]
-     */
-    abstract protected function getFixtureClasses();
 }

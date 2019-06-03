@@ -13,16 +13,11 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
 {
     use UserReferenceTrait;
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getFixtureClasses()
-    {
-        return [Users::class];
-    }
-
     public function testRemoveEmptyDirectoryTest()
     {
+        $referenceRepository = $this->loadFixtures([Users::class])->getReferenceRepository();
+        $client = $this->makeBrowser();
+        
         $directoryPath = DirectoryPath::parse('/testdirectory/');
         /** @var FileSystemService $fileSystemService */
         $fileSystemService = $this->getContainer()->get(
@@ -35,10 +30,11 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
             $directoryPath->prepend($fileSystemService->getBasePath())->toAbsoluteFileSystemString()
         );
 
-        $this->login($this->getUser(Users::COMMITTER));
-        $this->client->request('GET', '/browse/testdirectory/?action=remove');
-        $this->assertStatusCode(302, $this->client);
-        $this->assertEquals('/browse/', $this->client->getResponse()->headers->get('Location'));
+        $this->login($client, $this->getUser(Users::COMMITTER, $referenceRepository));
+        $client->request('GET', '/browse/testdirectory/?action=remove');
+//        $this->assertStatusCode(302, $client);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $this->assertEquals('/browse/', $client->getResponse()->headers->get('Location'));
 
         $this->assertFileNotExists(
             $directoryPath->prepend($fileSystemService->getBasePath())->toAbsoluteFileSystemString()
@@ -47,6 +43,9 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
 
     public function testRemoveNonEmptyDirectoryTest()
     {
+        $referenceRepository = $this->loadFixtures([Users::class])->getReferenceRepository();
+        $client = $this->makeBrowser();
+        
         /** @var FileSystemService $fileSystemService */
         $fileSystemService = $this->getContainer()->get(
             'test.Dontdrinkandroot\GitkiBundle\Service\FileSystem\FileSystemService'
@@ -62,19 +61,21 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
             $exampleDirectory->prepend($fileSystemService->getBasePath())->toAbsoluteFileSystemString()
         );
 
-        $this->logIn($this->getUser(Users::COMMITTER));
-        $crawler = $this->client->request('GET', '/browse/examples/?action=remove');
-        $this->assertStatusCode(200, $this->client);
+        $this->logIn($client, $this->getUser(Users::COMMITTER, $referenceRepository));
+        $crawler = $client->request('GET', '/browse/examples/?action=remove');
+//        $this->assertStatusCode(200, $client);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $submitButton = $crawler->selectButton('Remove all files');
         $form = $submitButton->form();
-        $this->client->submit(
+        $client->submit(
             $form,
             [
                 'form[commitMessage]' => 'A test commit message'
             ]
         );
-        $this->assertStatusCode(302, $this->client);
-        $this->assertEquals('/browse/', $this->client->getResponse()->headers->get('Location'));
+//        $this->assertStatusCode(302, $client);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $this->assertEquals('/browse/', $client->getResponse()->headers->get('Location'));
 
         $this->assertFileNotExists(
             $exampleFile->prepend($fileSystemService->getBasePath())->toAbsoluteFileSystemString()
@@ -86,6 +87,9 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
 
     public function testRemoveNonEmptyDirectoryWithLockTest()
     {
+        $referenceRepository = $this->loadFixtures([Users::class])->getReferenceRepository();
+        $client = $this->makeBrowser();
+
         $exampleFile = FilePath::parse('/examples/toc-example.md');
         $exampleDirectory = DirectoryPath::parse('/examples/');
 
@@ -95,7 +99,7 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
         );
         /** @var WikiService $wikiService */
         $wikiService = $this->getContainer()->get('test.Dontdrinkandroot\GitkiBundle\Service\Wiki\WikiService');
-        $wikiService->createLock($this->getUser(Users::ADMIN), $exampleFile);
+        $wikiService->createLock($this->getUser(Users::ADMIN, $referenceRepository), $exampleFile);
 
         $this->assertFileExists(
             $exampleFile->prepend($fileSystemService->getBasePath())->toAbsoluteFileSystemString()
@@ -104,17 +108,19 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
             $exampleDirectory->prepend($fileSystemService->getBasePath())->toAbsoluteFileSystemString()
         );
 
-        $this->logIn($this->getUser(Users::COMMITTER));
-        $crawler = $this->client->request('GET', '/browse/examples/?action=remove');
-        $this->assertStatusCode(200, $this->client);
+        $this->logIn($client, $this->getUser(Users::COMMITTER, $referenceRepository));
+        $crawler = $client->request('GET', '/browse/examples/?action=remove');
+//        $this->assertStatusCode(200, $client);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $submitButton = $crawler->selectButton('Remove all files');
         $form = $submitButton->form();
-        $this->client->submit(
+        $client->submit(
             $form,
             [
                 'form[commitMessage]' => 'A test commit message'
             ]
         );
-        $this->assertStatusCode(500, $this->client);
+//        $this->assertStatusCode(500, $client);
+        $this->assertEquals(500, $client->getResponse()->getStatusCode());
     }
 }
