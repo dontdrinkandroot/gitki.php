@@ -8,6 +8,7 @@ php:
 cache:
   directories:
     - $HOME/.composer/cache
+    - $HOME/.cache/yarn
 
 before_script:
     - if [ -n "$GH_TOKEN" ]; then composer config github-oauth.github.com ${GH_TOKEN}; fi;
@@ -15,6 +16,7 @@ before_script:
     - git config --global user.email "gitki@dontdrinkandroot.net"
     - git config --global user.name "GitKi"
     - yarn install
+    - yarn encore dev
 
 script:
     - SYMFONY_DEPRECATIONS_HELPER="weak" bin/phpunit
