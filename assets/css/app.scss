@@ -21,7 +21,6 @@ body {
 .ddr-gitki-header {
 
     border-bottom: solid 1px $border-color;
-    margin-bottom: 1rem;
 
     .container {
 
@@ -54,3 +53,29 @@ body {
 .ddr-gitki-history-entry {
     margin-bottom: 1rem;
 }
+
+.card {
+    margin-bottom: 1rem;
+}
+
+h2.card-header, .h2.card-header {
+    font-size: 1rem;
+}
+
+.ddr-gitki-directory-files, .ddr-gitki-directory-subdirectories {
+    .list-group-item {
+        display: flex;
+        flex-direction: row;
+
+        .ddr-gitki-item-actions {
+            margin-right: 1rem;
+        }
+
+        .ddr-gitki-item-name {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+    }
+}
+
