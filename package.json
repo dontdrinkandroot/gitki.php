@@ -1,11 +1,4 @@
 {
-    "devDependencies": {
-        "@symfony/webpack-encore": "^0.27.0",
-        "core-js": "^3.0.0",
-        "node-sass": "^4.12",
-        "sass-loader": "^7.0",
-        "webpack-notifier": "^1.6.0"
-    },
     "license": "Apache-2.0",
     "private": true,
     "scripts": {
@@ -14,7 +7,12 @@
         "watch": "encore dev --watch",
         "build": "encore production --progress"
     },
-    "dependencies": {
+    "devDependencies": {
+        "@symfony/webpack-encore": "^0.27.0",
+        "core-js": "^3.0.0",
+        "node-sass": "^4.12",
+        "sass-loader": "^7.0",
+        "webpack-notifier": "^1.6.0",
         "bootstrap": "^4.3",
         "font-awesome": "^4.7.0",
         "jquery": "1.9.1 - 3",
