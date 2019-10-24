@@ -119,6 +119,9 @@
     "league/commonmark": {
         "version": "0.17.0"
     },
+    "liip/test-fixtures-bundle": {
+        "version": "1.3.2"
+    },
     "monolog/monolog": {
         "version": "1.23.0"
     },

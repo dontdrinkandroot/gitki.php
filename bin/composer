@@ -1,0 +1,4 @@
+#!/bin/bash
+composer config platform.php 7.2 && \
+composer "$@" && \
+composer config --unset platform
