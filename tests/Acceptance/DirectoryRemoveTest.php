@@ -15,26 +15,23 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
 
     public function testRemoveEmptyDirectoryTest()
     {
-        $referenceRepository = $this->loadFixtures([Users::class])->getReferenceRepository();
-        $client = $this->makeBrowser();
-        
+        $referenceRepository = $this->loadClientAndFixtures([Users::class]);
+
         $directoryPath = DirectoryPath::parse('/testdirectory/');
         /** @var FileSystemService $fileSystemService */
-        $fileSystemService = $this->getContainer()->get(
-            'test.Dontdrinkandroot\GitkiBundle\Service\FileSystem\FileSystemService'
-        );
+        $fileSystemService = $this->getContainer()->get(FileSystemService::class);
         /** @var WikiService $wikiService */
-        $wikiService = $this->getContainer()->get('test.Dontdrinkandroot\GitkiBundle\Service\Wiki\WikiService');
+        $wikiService = $this->getContainer()->get(WikiService::class);
         $wikiService->createFolder($directoryPath);
         $this->assertFileExists(
             $directoryPath->prepend($fileSystemService->getBasePath())->toAbsoluteFileSystemString()
         );
 
-        $this->login($client, $this->getUser(Users::COMMITTER, $referenceRepository));
-        $client->request('GET', '/browse/testdirectory/?action=remove');
+        $this->login($this->getUser(Users::COMMITTER, $referenceRepository));
+        $this->client->request('GET', '/browse/testdirectory/?action=remove');
 //        $this->assertStatusCode(302, $client);
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertEquals('/browse/', $client->getResponse()->headers->get('Location'));
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+        $this->assertEquals('/browse/', $this->client->getResponse()->headers->get('Location'));
 
         $this->assertFileNotExists(
             $directoryPath->prepend($fileSystemService->getBasePath())->toAbsoluteFileSystemString()
@@ -43,13 +40,10 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
 
     public function testRemoveNonEmptyDirectoryTest()
     {
-        $referenceRepository = $this->loadFixtures([Users::class])->getReferenceRepository();
-        $client = $this->makeBrowser();
-        
+        $referenceRepository = $this->loadClientAndFixtures([Users::class]);
+
         /** @var FileSystemService $fileSystemService */
-        $fileSystemService = $this->getContainer()->get(
-            'test.Dontdrinkandroot\GitkiBundle\Service\FileSystem\FileSystemService'
-        );
+        $fileSystemService = $this->getContainer()->get(FileSystemService::class);
 
         $exampleFile = FilePath::parse('/examples/toc-example.md');
         $exampleDirectory = DirectoryPath::parse('/examples/');
@@ -61,21 +55,21 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
             $exampleDirectory->prepend($fileSystemService->getBasePath())->toAbsoluteFileSystemString()
         );
 
-        $this->logIn($client, $this->getUser(Users::COMMITTER, $referenceRepository));
-        $crawler = $client->request('GET', '/browse/examples/?action=remove');
+        $this->logIn($this->getUser(Users::COMMITTER, $referenceRepository));
+        $crawler = $this->client->request('GET', '/browse/examples/?action=remove');
 //        $this->assertStatusCode(200, $client);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $submitButton = $crawler->selectButton('Remove all files');
         $form = $submitButton->form();
-        $client->submit(
+        $this->client->submit(
             $form,
             [
                 'form[commitMessage]' => 'A test commit message'
             ]
         );
 //        $this->assertStatusCode(302, $client);
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertEquals('/browse/', $client->getResponse()->headers->get('Location'));
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+        $this->assertEquals('/browse/', $this->client->getResponse()->headers->get('Location'));
 
         $this->assertFileNotExists(
             $exampleFile->prepend($fileSystemService->getBasePath())->toAbsoluteFileSystemString()
@@ -87,18 +81,15 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
 
     public function testRemoveNonEmptyDirectoryWithLockTest()
     {
-        $referenceRepository = $this->loadFixtures([Users::class])->getReferenceRepository();
-        $client = $this->makeBrowser();
+        $referenceRepository = $this->loadClientAndFixtures([Users::class]);
 
         $exampleFile = FilePath::parse('/examples/toc-example.md');
         $exampleDirectory = DirectoryPath::parse('/examples/');
 
         /** @var FileSystemService $fileSystemService */
-        $fileSystemService = $this->getContainer()->get(
-            'test.Dontdrinkandroot\GitkiBundle\Service\FileSystem\FileSystemService'
-        );
+        $fileSystemService = $this->getContainer()->get(FileSystemService::class);
         /** @var WikiService $wikiService */
-        $wikiService = $this->getContainer()->get('test.Dontdrinkandroot\GitkiBundle\Service\Wiki\WikiService');
+        $wikiService = $this->getContainer()->get(WikiService::class);
         $wikiService->createLock($this->getUser(Users::ADMIN, $referenceRepository), $exampleFile);
 
         $this->assertFileExists(
@@ -108,19 +99,19 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
             $exampleDirectory->prepend($fileSystemService->getBasePath())->toAbsoluteFileSystemString()
         );
 
-        $this->logIn($client, $this->getUser(Users::COMMITTER, $referenceRepository));
-        $crawler = $client->request('GET', '/browse/examples/?action=remove');
+        $this->logIn($this->getUser(Users::COMMITTER, $referenceRepository));
+        $crawler = $this->client->request('GET', '/browse/examples/?action=remove');
 //        $this->assertStatusCode(200, $client);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $submitButton = $crawler->selectButton('Remove all files');
         $form = $submitButton->form();
-        $client->submit(
+        $this->client->submit(
             $form,
             [
                 'form[commitMessage]' => 'A test commit message'
             ]
         );
 //        $this->assertStatusCode(500, $client);
-        $this->assertEquals(500, $client->getResponse()->getStatusCode());
+        $this->assertEquals(500, $this->client->getResponse()->getStatusCode());
     }
 }

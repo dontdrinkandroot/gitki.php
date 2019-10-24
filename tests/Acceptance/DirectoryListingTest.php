@@ -9,18 +9,15 @@ class DirectoryListingTest extends BaseAcceptanceTest
 {
     use UserReferenceTrait;
 
-
-
     public function testDirectoryIndex()
     {
-        $referenceRepository = $this->loadFixtures([Users::class])->getReferenceRepository();
-        $client = $this->makeBrowser();
+        $referenceRepository = $this->loadClientAndFixtures([Users::class]);
 
-        $this->logIn($client, $this->getUser(Users::COMMITTER, $referenceRepository));
+        $this->logIn($this->getUser(Users::COMMITTER, $referenceRepository));
 
-        $crawler = $client->request('GET', '/browse/?action=list');
+        $crawler = $this->client->request('GET', '/browse/?action=list');
         //$this->assertStatusCode(200, $client);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
         $cards = $crawler->filter('.card');
         $this->assertCount(2, $cards);

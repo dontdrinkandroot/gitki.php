@@ -13,14 +13,9 @@ class Users extends Fixture
     const COMMITTER = 'user_committer';
     const ADMIN = 'user_admin';
 
-    /**
-     * @var UserManagerInterface
-     */
+    /** @var UserManagerInterface */
     private $userManager;
 
-    /**
-     * Users constructor.
-     */
     public function __construct(UserManagerInterface $userManager)
     {
         $this->userManager = $userManager;

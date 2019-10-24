@@ -2,13 +2,15 @@
 
 namespace App\Tests\Integration;
 
+use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Dontdrinkandroot\GitkiBundle\Tests\GitRepositoryTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Symfony\Component\BrowserKit\AbstractBrowser;
+use Liip\TestFixturesBundle\Test\FixturesTrait;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 abstract class BaseIntegrationTest extends WebTestCase
 {
     use GitRepositoryTestTrait;
+    use FixturesTrait;
 
     const GIT_REPOSITORY_PATH = '/tmp/gitkirepo/';
 
@@ -22,10 +24,12 @@ abstract class BaseIntegrationTest extends WebTestCase
         $this->tearDownRepo();
     }
 
-    // TODO: Remove, replaces Liip Make Client until fixed for Symfony 4.3
-    protected function makeBrowser($authentication = false, array $params = []): AbstractBrowser
+    protected function loadKernelAndFixtures(array $classNames = []): ReferenceRepository
     {
-        return static::createClient(['environment' => $this->environment], $params);
+        self::bootKernel();
+        $referenceRepository = $this->loadFixtures($classNames)->getReferenceRepository();
+
+        return $referenceRepository;
     }
 
     /**

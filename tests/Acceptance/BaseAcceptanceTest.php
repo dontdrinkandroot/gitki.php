@@ -4,18 +4,31 @@ namespace App\Tests\Acceptance;
 
 use App\Entity\User;
 use App\Tests\Integration\BaseIntegrationTest;
-use Symfony\Component\BrowserKit\AbstractBrowser;
+use Doctrine\Common\DataFixtures\ReferenceRepository;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 abstract class BaseAcceptanceTest extends BaseIntegrationTest
 {
-    /**
-     * @param User $user
-     */
-    protected function logIn(AbstractBrowser $client, User $user)
+    /** @var KernelBrowser */
+    protected $client;
+
+    /** @var ReferenceRepository; */
+    protected $referenceRepository;
+
+    protected function loadClientAndFixtures(array $classNames = [], bool $catchExceptions = true): ReferenceRepository
     {
-        $session = $client->getContainer()->get('session');
+        $this->client = self::createClient();
+        $this->client->catchExceptions($catchExceptions);
+        $this->referenceRepository = $this->loadFixtures($classNames)->getReferenceRepository();
+
+        return $this->referenceRepository;
+    }
+
+    protected function logIn(User $user)
+    {
+        $session = $this->client->getContainer()->get('session');
 
         $firewall = 'main';
         $token = new UsernamePasswordToken($user, null, $firewall, $user->getRoles());
@@ -23,15 +36,15 @@ abstract class BaseAcceptanceTest extends BaseIntegrationTest
         $session->save();
 
         $cookie = new Cookie($session->getName(), $session->getId());
-        $client->getCookieJar()->set($cookie);
+        $this->client->getCookieJar()->set($cookie);
     }
 
-    protected function logOut(AbstractBrowser $client)
+    protected function logOut()
     {
-        $session = $client->getContainer()->get('session');
+        $session = $this->client->getContainer()->get('session');
         $session->clear();
         $session->save();
 
-        $client->getCookieJar()->clear();
+        $this->client->getCookieJar()->clear();
     }
 }

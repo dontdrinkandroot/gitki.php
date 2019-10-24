@@ -83,6 +83,9 @@
     "dontdrinkandroot/gitki-bundle": {
         "version": "0.3.x-dev"
     },
+    "dontdrinkandroot/path": {
+        "version": "v0.1"
+    },
     "dontdrinkandroot/utils": {
         "version": "v0.4.3"
     },
@@ -97,9 +100,6 @@
     },
     "elasticsearch/elasticsearch": {
         "version": "v6.0.1"
-    },
-    "facebook/webdriver": {
-        "version": "1.6.0"
     },
     "fig/link-util": {
         "version": "1.0.0"
@@ -118,9 +118,6 @@
     },
     "league/commonmark": {
         "version": "0.17.0"
-    },
-    "liip/functional-test-bundle": {
-        "version": "1.9.3"
     },
     "monolog/monolog": {
         "version": "1.23.0"
@@ -190,9 +187,6 @@
             "version": "3.3",
             "ref": "c646e4b71af082e94b5014daca36ef6812bad076"
         }
-    },
-    "symfony/contracts": {
-        "version": "v1.1.0"
     },
     "symfony/css-selector": {
         "version": "v4.0.4"
@@ -307,9 +301,6 @@
     },
     "symfony/orm-pack": {
         "version": "v1.0.5"
-    },
-    "symfony/panther": {
-        "version": "v0.2.0"
     },
     "symfony/phpunit-bridge": {
         "version": "3.3",
