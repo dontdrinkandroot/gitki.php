@@ -98,9 +98,6 @@
     "elasticsearch/elasticsearch": {
         "version": "v6.0.1"
     },
-    "fig/link-util": {
-        "version": "1.0.0"
-    },
     "friendsofsymfony/user-bundle": {
         "version": "v2.1.1"
     },
@@ -220,6 +217,9 @@
     },
     "symfony/dotenv": {
         "version": "v4.0.4"
+    },
+    "symfony/error-handler": {
+        "version": "v4.4.0"
     },
     "symfony/event-dispatcher": {
         "version": "v4.0.4"
@@ -413,6 +413,9 @@
             "ref": "f75ac166398e107796ca94cc57fa1edaa06ec47f"
         }
     },
+    "symfony/twig-pack": {
+        "version": "v1.0.0"
+    },
     "symfony/validator": {
         "version": "v4.0.4"
     },
@@ -454,6 +457,9 @@
     },
     "symfony/yaml": {
         "version": "v4.0.4"
+    },
+    "twig/extra-bundle": {
+        "version": "v3.0.0"
     },
     "twig/twig": {
         "version": "v2.4.4"

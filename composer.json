@@ -24,25 +24,25 @@
         "sensio/framework-extra-bundle": "^5.1",
         "dontdrinkandroot/gitki-bundle": "0.3.x-dev",
         "friendsofsymfony/user-bundle": "^2.1",
-        "symfony/asset": "^4.3",
-        "symfony/console": "^4.3",
-        "symfony/dotenv": "^4.3",
-        "symfony/expression-language": "^4.3",
+        "symfony/asset": "^4.4",
+        "symfony/console": "^4.4",
+        "symfony/dotenv": "^4.4",
+        "symfony/expression-language": "^4.4",
         "symfony/flex": "^1.1",
-        "symfony/form": "^4.3",
-        "symfony/framework-bundle": "^4.3",
-        "symfony/http-client": "^4.3",
-        "symfony/intl": "^4.3",
+        "symfony/form": "^4.4",
+        "symfony/framework-bundle": "^4.4",
+        "symfony/http-client": "^4.4",
+        "symfony/intl": "^4.4",
         "symfony/monolog-bundle": "^3.1",
         "symfony/orm-pack": "*",
-        "symfony/process": "^4.3",
-        "symfony/security-bundle": "^4.3",
+        "symfony/process": "^4.4",
+        "symfony/security-bundle": "^4.4",
         "symfony/serializer-pack": "*",
-        "symfony/translation": "^4.3",
-        "symfony/twig-bundle": "^4.3",
-        "symfony/validator": "^4.3",
-        "symfony/web-link": "^4.3",
-        "symfony/yaml": "^4.3",
+        "symfony/translation": "^4.4",
+        "symfony/twig-pack": "*",
+        "symfony/validator": "^4.4",
+        "symfony/web-link": "^4.4",
+        "symfony/yaml": "^4.4",
         "symfony/webpack-encore-bundle": "^1.6",
         "elasticsearch/elasticsearch": "^6.0"
     },
@@ -53,7 +53,7 @@
         "symfony/maker-bundle": "^1.0",
         "symfony/profiler-pack": "*",
         "symfony/test-pack": "*",
-        "symfony/web-server-bundle": "^4.3"
+        "symfony/web-server-bundle": "^4.4"
     },
     "config": {
         "preferred-install": {
@@ -97,7 +97,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "4.3.*"
+            "require": "4.4.*"
         },
         "branch-alias": {
             "dev-master": "0.3.x-dev"
