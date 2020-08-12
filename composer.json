@@ -44,7 +44,7 @@
         "symfony/web-link": "^4.4",
         "symfony/yaml": "^4.4",
         "symfony/webpack-encore-bundle": "^1.6",
-        "elasticsearch/elasticsearch": "^6.0"
+        "elasticsearch/elasticsearch": "^7.0"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.0",

@@ -14,11 +14,17 @@ abstract class BaseIntegrationTest extends WebTestCase
 
     const GIT_REPOSITORY_PATH = '/tmp/gitkirepo/';
 
-    protected function setUp()
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
     {
         $this->setUpRepo();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function tearDown(): void
     {
         $this->tearDownRepo();
@@ -27,9 +33,7 @@ abstract class BaseIntegrationTest extends WebTestCase
     protected function loadKernelAndFixtures(array $classNames = []): ReferenceRepository
     {
         self::bootKernel();
-        $referenceRepository = $this->loadFixtures($classNames)->getReferenceRepository();
-
-        return $referenceRepository;
+        return $this->loadFixtures($classNames)->getReferenceRepository();
     }
 
     /**

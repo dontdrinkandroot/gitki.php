@@ -14,6 +14,7 @@ use const PHP_VERSION_ID;
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
+
     private const CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
     public function registerBundles(): iterable
@@ -33,11 +34,8 @@ class Kernel extends BaseKernel
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
-        $container->addResource(new FileResource($this->getProjectDir().'/config/bundles.php'));
-        $container->setParameter(
-            'container.dumper.inline_class_loader',
-            PHP_VERSION_ID < 70400 || !ini_get('opcache.preload')
-        );
+        $container->addResource(new FileResource($this->getProjectDir() . '/config/bundles.php'));
+        $container->setParameter('container.dumper.inline_class_loader', PHP_VERSION_ID < 70400 || $this->debug);
         $container->setParameter('container.dumper.inline_factories', true);
         $confDir = $this->getProjectDir().'/config';
 

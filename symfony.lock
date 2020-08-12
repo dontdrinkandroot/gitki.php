@@ -77,38 +77,29 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
+    "doctrine/sql-formatter": {
+        "version": "1.1.1"
+    },
     "dontdrinkandroot/gitki-bundle": {
         "version": "0.3.x-dev"
     },
     "dontdrinkandroot/path": {
         "version": "v0.1"
     },
-    "dontdrinkandroot/utils": {
-        "version": "v0.4.3"
-    },
-    "easycorp/easy-log-handler": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "70062abc2cd58794d2a90274502f81b55cd9951b"
-        }
-    },
     "elasticsearch/elasticsearch": {
         "version": "v6.0.1"
+    },
+    "ezimuel/guzzlestreams": {
+        "version": "3.0.1"
+    },
+    "ezimuel/ringphp": {
+        "version": "1.1.2"
     },
     "friendsofsymfony/user-bundle": {
         "version": "v2.1.1"
     },
-    "guzzlehttp/ringphp": {
-        "version": "1.1.0"
-    },
-    "guzzlehttp/streams": {
-        "version": "3.0.0"
-    },
-    "jdorn/sql-formatter": {
-        "version": "v1.2.17"
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.0.4"
     },
     "league/commonmark": {
         "version": "0.17.0"
@@ -130,6 +121,9 @@
     },
     "ocramius/proxy-manager": {
         "version": "2.1.1"
+    },
+    "php": {
+        "version": "7.2"
     },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"
@@ -320,6 +314,9 @@
     "symfony/polyfill-intl-idn": {
         "version": "v1.11.0"
     },
+    "symfony/polyfill-intl-normalizer": {
+        "version": "v1.18.1"
+    },
     "symfony/polyfill-mbstring": {
         "version": "v1.7.0"
     },
@@ -328,6 +325,9 @@
     },
     "symfony/polyfill-php73": {
         "version": "v1.11.0"
+    },
+    "symfony/polyfill-php80": {
+        "version": "v1.18.1"
     },
     "symfony/process": {
         "version": "v4.0.4"
