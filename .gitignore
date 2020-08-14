@@ -36,3 +36,4 @@ yarn-error.log
 !bin/set-permissions
 !bin/run-tests
 !bin/phpunit
+/config.yaml
