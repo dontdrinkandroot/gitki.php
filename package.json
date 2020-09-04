@@ -13,7 +13,7 @@
         "core-js": "^3.0.0",
         "font-awesome": "^4.7.0",
         "jquery": "^3.4.0",
-        "node-sass": "^4.12",
+        "node-sass": "^4.13",
         "popper.js": "^1.15",
         "sass-loader": "^7.0",
         "webpack-notifier": "^1.6.0"
