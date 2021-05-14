@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\DependencyInjection\DdrGitkiAppExtension;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
@@ -38,7 +37,7 @@ class Kernel extends BaseKernel
      */
     protected function prepareContainer(ContainerBuilder $container)
     {
-        $container->registerExtension(new DdrGitkiAppExtension());
+//        $container->registerExtension(new DdrGitkiAppExtension());
         parent::prepareContainer($container);
     }
 
@@ -54,11 +53,11 @@ class Kernel extends BaseKernel
         $loader->load($confDir . '/{services}' . self::CONFIG_EXTS, 'glob');
         $loader->load($confDir . '/{services}_' . $this->environment . self::CONFIG_EXTS, 'glob');
 
-        $loader->load($this->getProjectDir() . '/config.dist.yaml');
-        $localGitkiAppConfigFile = $this->getProjectDir() . '/config.yaml';
-        if (file_exists($localGitkiAppConfigFile)) {
-            $loader->load($localGitkiAppConfigFile);
-        }
+//        $loader->load($this->getProjectDir() . '/config.dist.yaml');
+//        $localGitkiAppConfigFile = $this->getProjectDir() . '/config.yaml';
+//        if (file_exists($localGitkiAppConfigFile)) {
+//            $loader->load($localGitkiAppConfigFile);
+//        }
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
