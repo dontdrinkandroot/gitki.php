@@ -3,21 +3,24 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\Type\UserEditType;
+use App\Form\Type\UserType;
+use App\Repository\UserRepository;
+use Dontdrinkandroot\Common\Asserted;
 use Dontdrinkandroot\GitkiBundle\Controller\BaseController;
 use Dontdrinkandroot\GitkiBundle\Service\Security\SecurityService;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-/**
- * @author Philip Washington Sorst <philip@sorst.net>
- */
 class UserController extends BaseController
 {
     /**
      * UserController constructor.
      */
-    public function __construct(SecurityService $securityService)
-    {
+    public function __construct(
+        SecurityService $securityService,
+        private UserRepository $userRepository,
+        private UserPasswordHasherInterface $passwordHasher
+    ) {
         parent::__construct($securityService);
     }
 
@@ -25,7 +28,7 @@ class UserController extends BaseController
     {
         $this->assertAdmin();
 
-        $users = $this->get('fos_user.user_manager')->findUsers();
+        $users = $this->userRepository->findBy([], ['email' => 'ASC']);
 
         return $this->render('User/list.html.twig', ['users' => $users]);
     }
@@ -34,28 +37,32 @@ class UserController extends BaseController
     {
         $this->assertAdmin();
 
-        $userManager = $this->get('fos_user.user_manager');
-        $newUser = false;
-        if ('new' === $id) {
-            $newUser = true;
-            $user = $userManager->createUser();
-        } else {
-            $userRepository = $this->get('doctrine')->getRepository(User::class);
-            $user = $userRepository->find($id);
+        $newUser = 'new' === $id;
+        $user = null;
+        if (!$newUser) {
+            $user = $this->userRepository->find($id);
             if (null === $user) {
                 throw $this->createNotFoundException();
             }
+            $newUser = false;
         }
 
-        $form = $this->createForm(UserEditType::class, $user);
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $userManager->updateUser($form->getData());
+            $user = Asserted::instanceOf($form->getData(), User::class);
+            $plainPassword = $form->get('plainPassword')->getData();
+            if (null !== $plainPassword) {
+                $user->password = $this->passwordHasher->hashPassword($user, $plainPassword);
+            }
 
             if ($newUser) {
-                return $this->redirectToRoute('ddr_gitki.user.edit', ['id' => $user->getId()]);
+                $this->userRepository->create($user);
+                return $this->redirectToRoute('ddr_gitki.user.edit', ['id' => $user->id]);
             }
+
+            $this->userRepository->flush();
         }
 
         return $this->render('User/edit.html.twig', ['form' => $form->createView()]);
@@ -65,15 +72,12 @@ class UserController extends BaseController
     {
         $this->assertAdmin();
 
-        $userRepository = $this->get('doctrine')->getRepository(User::class);
-        /** @var User $user */
-        $user = $userRepository->find($id);
+        $user = $this->userRepository->find($id);
         if (null === $user) {
             throw $this->createNotFoundException();
         }
 
-        $userManager = $this->get('fos_user.user_manager');
-        $userManager->deleteUser($user);
+        $this->userRepository->remove($user);
 
         return $this->redirectToRoute('ddr_gitki.user.list');
     }

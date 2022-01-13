@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Dontdrinkandroot\GitkiBundle\Model\GitUserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[Orm\Entity(repositoryClass: UserRepository::class)]
 #[Orm\Table("`User`")]
@@ -19,8 +20,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, GitUser
     public int $id;
 
     public function __construct(
-        #[ORM\Column(type: Types::STRING, nullable: false)]
+        #[Assert\Email]
+        #[Assert\NotBlank]
+        #[ORM\Column(type: Types::STRING, nullable: false, unique: true)]
         public string $email,
+        #[Assert\NotBlank]
         #[ORM\Column(type: Types::STRING, nullable: false)]
         public string $realName,
         #[ORM\Column(type: Types::ARRAY, nullable: false)]

@@ -23,7 +23,7 @@ class UserWatcher extends Fixture
             realName: 'Watcher User',
             roles: ['ROLE_WATCHER']
         );
-        $this->passwordHasher->hashPassword($user, 'watcher');
+        $user->password = $this->passwordHasher->hashPassword($user, 'watcher');
 
         $manager->persist($user);
         $manager->flush();

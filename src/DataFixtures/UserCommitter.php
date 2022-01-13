@@ -23,7 +23,7 @@ class UserCommitter extends Fixture
             realName: 'Committer User',
             roles: ['ROLE_WATCHER', 'ROLE_COMMITTER']
         );
-        $this->passwordHasher->hashPassword($user, 'committer');
+        $user->password = $this->passwordHasher->hashPassword($user, 'committer');
 
         $manager->persist($user);
         $manager->flush();

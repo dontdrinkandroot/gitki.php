@@ -23,7 +23,7 @@ class UserAdmin extends Fixture
             realName: 'Admin User',
             roles: ['ROLE_WATCHER', 'ROLE_COMMITTER', 'ROLE_ADMIN']
         );
-        $this->passwordHasher->hashPassword($user, 'admin');
+        $user->password = $this->passwordHasher->hashPassword($user, 'admin');
 
         $manager->persist($user);
         $manager->flush();

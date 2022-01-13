@@ -25,20 +25,3 @@ yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
 /.idea/
-/build/
-/bin/*
-!bin/admin
-!bin/console
-!bin/update-dev
-!bin/update-prod
-!bin/update-design
-!bin/install-prod
-!bin/set-permissions
-!bin/run-tests
-!bin/phpunit
-/config.yaml
-
-###> phpunit/phpunit ###
-/phpunit.xml
-.phpunit.result.cache
-###< phpunit/phpunit ###

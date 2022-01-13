@@ -18,9 +18,9 @@ ddr_gitki_loggedout:
     methods:  [GET]
     defaults: { _controller: App\Controller\DefaultController:loggedoutAction }
 
-ddr_gitki_base_homepage:
-    path:     /
-    methods:  [GET]
+app.index:
+    path: /
+    methods: [ GET ]
     defaults: { _controller: App\Controller\DefaultController:indexAction }
 
 ddr_gitki.user.list:

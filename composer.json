@@ -23,6 +23,7 @@
         "ext-iconv": "*",
         "doctrine/doctrine-bundle": "^2.5",
         "doctrine/orm": "^2.11",
+        "dontdrinkandroot/common": "dev-master",
         "dontdrinkandroot/gitki-bundle": "0.3.x-dev",
         "elasticsearch/elasticsearch": "^7.0",
         "sensio/framework-extra-bundle": "^6.2",
