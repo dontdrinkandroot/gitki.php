@@ -8,14 +8,14 @@
         "build": "encore production --progress"
     },
     "devDependencies": {
-        "@symfony/webpack-encore": "^0.27.0",
-        "bootstrap": "^4.3",
+        "@symfony/webpack-encore": "^1.7.0",
         "core-js": "^3.0.0",
+        "regenerator-runtime": "^0.13.2",
+        "bootstrap": "^4.3",
         "font-awesome": "^4.7.0",
         "jquery": "^3.4.0",
         "node-sass": "^4.12",
         "popper.js": "^1.15",
-        "sass-loader": "^7.0",
-        "webpack-notifier": "^1.6.0"
+        "sass-loader": "^7.0"
     }
 }
