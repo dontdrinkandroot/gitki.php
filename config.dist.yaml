@@ -1,9 +1,0 @@
-ddr_gitki_app:
-    display_name: Gitki
-    repository_path: '%env(resolve:%kernel.project_dir%/var/repo/)%'
-    database_url: 'sqlite:///%kernel.project_dir%/var/data.db'
-    elasticsearch:
-        enabled: false
-        index_name: gitki
-        host: localhost
-        port: 9200

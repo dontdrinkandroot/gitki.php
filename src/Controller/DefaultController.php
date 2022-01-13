@@ -9,17 +9,16 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class DefaultController extends BaseController
 {
-    public function indexAction()
+    public function indexAction(): Response
     {
         return $this->redirect($this->generateUrl('ddr_gitki_directory', ['path' => '/', 'action' => 'index']));
     }
 
-    public function loginAction(Request $request)
+    public function loginAction(Request $request): Response
     {
         if (!$this->isGranted('ROLE_USER')) {
-
             /* Save targetpath if user was not logged in yet before redirecting to login page */
-            if ($request->hasSession() && $request->isMethodSafe(false)) {
+            if ($request->hasSession() && $request->isMethodSafe()) {
                 $referer = $request->headers->get('referer');
                 if (null !== $referer) {
                     $request->getSession()->set('ddr.gitki.manuallogin.targetpath', $referer);
@@ -29,8 +28,7 @@ class DefaultController extends BaseController
             throw new AuthenticationException();
         }
 
-        if ($request->hasSession() && $request->isMethodSafe(false)) {
-
+        if ($request->hasSession() && $request->isMethodSafe()) {
             /* Restore target path after login */
             $targetPath = $request->getSession()->get('ddr.gitki.manuallogin.targetpath');
             $request->getSession()->remove('ddr.gitki.manuallogin.targetpath');
@@ -42,10 +40,7 @@ class DefaultController extends BaseController
         return $this->redirect($this->generateUrl('ddr_gitki_directory', ['path' => '/', 'action' => 'index']));
     }
 
-    /**
-     * @return Response
-     */
-    public function loggedoutAction()
+    public function loggedoutAction(): Response
     {
         return $this->render('Default/loggedout.html.twig');
     }
