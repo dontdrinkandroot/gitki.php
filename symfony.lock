@@ -168,9 +168,6 @@
     "phpspec/prophecy": {
         "version": "v1.15.0"
     },
-    "phpstan/phpdoc-parser": {
-        "version": "1.2.0"
-    },
     "phpunit/php-code-coverage": {
         "version": "9.2.10"
     },
@@ -207,9 +204,6 @@
         "version": "1.0.0"
     },
     "psr/event-dispatcher": {
-        "version": "1.0.0"
-    },
-    "psr/link": {
         "version": "1.0.0"
     },
     "psr/log": {
@@ -347,9 +341,6 @@
     "symfony/event-dispatcher-contracts": {
         "version": "v1.1.1"
     },
-    "symfony/expression-language": {
-        "version": "v4.0.4"
-    },
     "symfony/filesystem": {
         "version": "v4.0.4"
     },
@@ -390,12 +381,6 @@
             "src/Kernel.php"
         ]
     },
-    "symfony/http-client": {
-        "version": "v4.3.0"
-    },
-    "symfony/http-client-contracts": {
-        "version": "v1.1.1"
-    },
     "symfony/http-foundation": {
         "version": "v4.0.4"
     },
@@ -403,9 +388,6 @@
         "version": "v4.0.4"
     },
     "symfony/inflector": {
-        "version": "v4.0.4"
-    },
-    "symfony/intl": {
         "version": "v4.0.4"
     },
     "symfony/maker-bundle": {
@@ -538,9 +520,6 @@
     "symfony/security-http": {
         "version": "v4.3.0"
     },
-    "symfony/serializer": {
-        "version": "v4.0.4"
-    },
     "symfony/service-contracts": {
         "version": "v1.1.2"
     },
@@ -603,9 +582,6 @@
     },
     "symfony/var-exporter": {
         "version": "v4.3.0"
-    },
-    "symfony/web-link": {
-        "version": "v4.0.4"
     },
     "symfony/web-profiler-bundle": {
         "version": "3.3",
