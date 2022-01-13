@@ -1,0 +1,74 @@
+name: "Continuous Integration"
+
+on: push
+
+jobs:
+    phpunit:
+        name: "PHPUnit"
+        runs-on: ubuntu-latest
+        env:
+            APP_ENV: "test"
+            APP_DEBUG: false
+            SYMFONY_DEPRECATIONS_HELPER: "max[direct]=0"
+        steps:
+            -   name: "Checkout"
+                uses: "actions/checkout@v2"
+            -   name: "Install PHP"
+                uses: "shivammathur/setup-php@v2"
+                with:
+                    php-version: "8.1"
+                    coverage: "pcov"
+                    ini-values: "zend.assertions=1"
+            -   name: "Install dependencies with Composer"
+                uses: "ramsey/composer-install@v1"
+            -   name: "Run PHPUnit"
+                run: "bin/phpunit --coverage-clover=coverage.clover.xml --log-junit log.junit.xml"
+            -   name: "Upload coverage"
+                uses: "actions/upload-artifact@v2"
+                with:
+                    name: "coverage"
+                    path: |
+                        coverage.clover.xml
+                        log.junit.xml
+
+    psalm:
+        name: Psalm
+        runs-on: ubuntu-latest
+        steps:
+            -   name: "Checkout code"
+                uses: "actions/checkout@v2"
+            -   name: "Install PHP"
+                uses: "shivammathur/setup-php@v2"
+                with:
+                    php-version: "8.1"
+            -   name: "Install dependencies with Composer"
+                uses: "ramsey/composer-install@v1"
+            -   name: "Install psalm"
+                run: |
+                    wget https://github.com/vimeo/psalm/releases/latest/download/psalm.phar -O /usr/local/bin/psalm \
+                    && chmod +x /usr/local/bin/psalm
+            -   name: "Run psalm"
+                run: "psalm"
+
+    sonarcloud:
+        name: "SonarCloud"
+        runs-on: ubuntu-latest
+        needs: phpunit
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v2
+                with:
+                    fetch-depth: 0
+            -   name: Download coverage
+                uses: actions/download-artifact@v2
+                with:
+                    name: coverage
+            -   name: Fix code coverage paths
+                run: |
+                    sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace@g' coverage.clover.xml
+                    sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace@g' log.junit.xml
+            -   name: SonarCloud Scan
+                uses: sonarsource/sonarcloud-github-action@v1.6
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
