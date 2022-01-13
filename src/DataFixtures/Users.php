@@ -2,65 +2,36 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
-use FOS\UserBundle\Model\UserManagerInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
 
-class Users extends Fixture
+class Users extends Fixture implements DependentFixtureInterface
 {
-    const WATCHER = 'user_watcher';
-    const COMMITTER = 'user_committer';
-    const ADMIN = 'user_admin';
+    /** @deprecated */
+    public const WATCHER = 'user_watcher';
+    /** @deprecated */
+    public const COMMITTER = 'user_committer';
+    /** @deprecated */
+    public const ADMIN = 'user_admin';
 
-    /** @var UserManagerInterface */
-    private $userManager;
-
-    public function __construct(UserManagerInterface $userManager)
+    /**
+     * {@inheritdoc}
+     */
+    public function load(ObjectManager $manager): void
     {
-        $this->userManager = $userManager;
+        /* Noop */
     }
 
     /**
      * {@inheritdoc}
      */
-    public function load(ObjectManager $manager)
+    public function getDependencies(): array
     {
-        /** @var User $user */
-        $user = $this->userManager->createUser();
-        $user->setUsername('watcher');
-        $user->setRealName('Watcher User');
-        $user->setEmail('watcher@example.com');
-        $user->setPlainPassword('watcher');
-        $user->addRole('ROLE_WATCHER');
-        $user->setEnabled(true);
-
-        $this->userManager->updateUser($user);
-        $this->addReference(self::WATCHER, $user);
-
-        $user = $this->userManager->createUser();
-        $user->setUsername('committer');
-        $user->setRealName('Committer User');
-        $user->setEmail('committer@example.com');
-        $user->setPlainPassword('committer');
-        $user->addRole('ROLE_WATCHER');
-        $user->addRole('ROLE_COMMITTER');
-        $user->setEnabled(true);
-
-        $this->userManager->updateUser($user);
-        $this->addReference(self::COMMITTER, $user);
-
-        $user = $this->userManager->createUser();
-        $user->setUsername('admin');
-        $user->setRealName('Admin User');
-        $user->setEmail('admin@example.com');
-        $user->setPlainPassword('admin');
-        $user->addRole('ROLE_WATCHER');
-        $user->addRole('ROLE_COMMITTER');
-        $user->addRole('ROLE_ADMIN');
-        $user->setEnabled(true);
-
-        $this->userManager->updateUser($user);
-        $this->addReference(self::ADMIN, $user);
+        return [
+            UserWatcher::class,
+            UserCommitter::class,
+            UserAdmin::class
+        ];
     }
 }

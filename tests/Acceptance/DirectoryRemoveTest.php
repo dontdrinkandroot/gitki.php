@@ -13,13 +13,13 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
 {
     use UserReferenceTrait;
 
-    public function testRemoveEmptyDirectoryTest()
+    public function testRemoveEmptyDirectoryTest(): void
     {
         $referenceRepository = $this->loadClientAndFixtures([Users::class]);
 
         $directoryPath = DirectoryPath::parse('/testdirectory/');
         /** @var FileSystemService $fileSystemService */
-        $fileSystemService = $this->getContainer()->get(FileSystemService::class);
+        $fileSystemService = self::getContainer()->get(FileSystemService::class);
         /** @var WikiService $wikiService */
         $wikiService = $this->getContainer()->get(WikiService::class);
         $wikiService->createFolder($directoryPath);
@@ -33,7 +33,7 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
         $this->assertEquals('/browse/', $this->client->getResponse()->headers->get('Location'));
 
-        $this->assertFileNotExists(
+        $this->assertFileDoesNotExist(
             $directoryPath->prepend($fileSystemService->getBasePath())->toAbsoluteFileSystemString()
         );
     }

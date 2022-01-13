@@ -2,121 +2,79 @@
 
 namespace App\Entity;
 
+use App\Repository\UserRepository;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 use Dontdrinkandroot\GitkiBundle\Model\GitUserInterface;
-use FOS\UserBundle\Model\User as BaseUser;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-class User extends BaseUser implements GitUserInterface
+#[Orm\Entity(repositoryClass: UserRepository::class)]
+#[Orm\Table("`User`")]
+class User implements UserInterface, PasswordAuthenticatedUserInterface, GitUserInterface
 {
-    /**
-     * @var string
-     */
-    private $realName;
+    #[ORM\Id]
+    #[ORM\Column(type: Types::BIGINT, nullable: false)]
+    #[ORM\GeneratedValue]
+    public int $id;
 
-    /**
-     * @var int
-     */
-    private $googleId;
-
-    /**
-     * @var int
-     */
-    private $githubId;
-
-    /**
-     * @var int
-     */
-    private $facebookId;
-
-    public function __construct()
-    {
-        BaseUser::__construct();
+    public function __construct(
+        #[ORM\Column(type: Types::STRING, nullable: false)]
+        public string $email,
+        #[ORM\Column(type: Types::STRING, nullable: false)]
+        public string $realName,
+        #[ORM\Column(type: Types::ARRAY, nullable: false)]
+        public array $roles = ['ROLE_USER'],
+        #[ORM\Column(type: Types::STRING, nullable: false)]
+        public string $password = ''
+    ) {
     }
 
-    /**
-     * @param int $githubId
-     */
-    public function setGithubId($githubId)
-    {
-        $this->githubId = $githubId;
-    }
-
-    /**
-     * @return int
-     */
-    public function getGithubId()
-    {
-        return $this->githubId;
-    }
-
-    /**
-     * @param int $googleId
-     */
-    public function setGoogleId($googleId)
-    {
-        $this->googleId = $googleId;
-    }
-
-    /**
-     * @return int
-     */
-    public function getGoogleId()
-    {
-        return $this->googleId;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getGitUserName()
-    {
-        return $this->getRealName();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getGitUserEmail()
-    {
-        return $this->getEmail();
-    }
-
-    /**
-     * @return int
-     */
-    public function getFacebookId()
-    {
-        return $this->facebookId;
-    }
-
-    /**
-     * @param int $facebookId
-     */
-    public function setFacebookId($facebookId)
-    {
-        $this->facebookId = $facebookId;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRealName()
     {
         return $this->realName;
     }
 
-    /**
-     * @param string $realName
-     */
-    public function setRealName($realName)
+    public function getGitUserEmail()
     {
-        $this->realName = $realName;
+        return $this->email;
+    }
+
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function getSalt()
+    {
+        return null;
+    }
+
+    public function eraseCredentials()
+    {
+        /* Noop */
+    }
+
+    public function getUsername()
+    {
+        return $this->getUserIdentifier();
+    }
+
+    public function getUserIdentifier()
+    {
+        return $this->email;
     }
 
     public function __toString()
     {
-        $s = 'id=' . $this->getId();
-        $s .= ',realName=' . $this->getRealName();
-        $s .= ',email=' . $this->getEmail();
+        $s = 'id=' . $this->id;
+        $s .= ',realName=' . $this->realName;
+        $s .= ',email=' . $this->email;
 
         return $s;
     }

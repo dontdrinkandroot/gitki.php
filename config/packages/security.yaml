@@ -1,11 +1,15 @@
 security:
 
+    enable_authenticator_manager: true
+
     providers:
-        fos_userbundle:
-            id: fos_user.user_provider.username_email
+        users:
+            entity:
+                class: 'App\Entity\User'
+                property: 'email'
 
     encoders:
-        App\Entity\User: bcrypt
+        App\Entity\User: auto
 
     role_hierarchy:
         ROLE_ADMIN: ROLE_USER
@@ -18,21 +22,23 @@ security:
 
         main:
             pattern: ^/
-            anonymous: true
+            provider: users
             form_login:
-                provider: fos_userbundle
-                csrf_token_generator: security.csrf.token_manager
+                enable_csrf: true
+                default_target_path: app.index
+                login_path: app.login
+                check_path: app.login
             remember_me:
                 secret: '%kernel.secret%'
-            logout: true
+                lifetime: 604800 # 1 week in seconds
+                path: /
+            logout:
+                path: app.logout
 
     access_control:
-        -
-            path: ^/login
-            roles: IS_AUTHENTICATED_ANONYMOUSLY
-        -
-            path: ^/connect
-            roles: IS_AUTHENTICATED_ANONYMOUSLY
-        -
-            path: ^/loggedout
-            roles: IS_AUTHENTICATED_ANONYMOUSLY
+        -   path: ^/login
+            roles: PUBLIC_ACCESS
+        -   path: ^/connect
+            roles: PUBLIC_ACCESS
+        -   path: ^/loggedout
+            roles: PUBLIC_ACCESS

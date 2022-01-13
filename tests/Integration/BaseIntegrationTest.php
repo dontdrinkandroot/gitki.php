@@ -4,13 +4,12 @@ namespace App\Tests\Integration;
 
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Dontdrinkandroot\GitkiBundle\Tests\GitRepositoryTestTrait;
-use Liip\TestFixturesBundle\Test\FixturesTrait;
+use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 abstract class BaseIntegrationTest extends WebTestCase
 {
     use GitRepositoryTestTrait;
-    use FixturesTrait;
 
     const GIT_REPOSITORY_PATH = '/tmp/gitkirepo/';
 
@@ -32,8 +31,10 @@ abstract class BaseIntegrationTest extends WebTestCase
 
     protected function loadKernelAndFixtures(array $classNames = []): ReferenceRepository
     {
-        self::bootKernel();
-        return $this->loadFixtures($classNames)->getReferenceRepository();
+        return self::getContainer()
+            ->get(DatabaseToolCollection::class)->get()
+            ->loadFixtures($classNames)
+            ->getReferenceRepository();
     }
 
     /**

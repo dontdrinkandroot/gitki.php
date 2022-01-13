@@ -1,0 +1,48 @@
+{% extends '@DdrGitki/base.html.twig' %}
+
+{% block ddr_gitki_title %}Login{% endblock ddr_gitki_title %}
+
+{% block ddr_gitki_main_content %}
+    <div class="card mt-4 mx-auto" style="max-width: 400px">
+        <h1 class="h4 card-header text-center">
+            Login
+        </h1>
+        <form action="{{ path('app.login') }}" method="post">
+            <div class="card-body pb-0">
+                {% if error %}
+                    <div class="alert alert-danger">
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    </div>
+                {% endif %}
+
+                <div class="mb-3">
+                    <label for="username" class="form-label">Email</label>
+                    <input type="text"
+                           id="username"
+                           name="_username"
+                           value="{{ last_username }}"
+                           class="form-control"
+                           required="required" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Passwort</label>
+                    <input type="password" id="password" name="_password" class="form-control" required="required" />
+                </div>
+
+                <div class="form-check mb-3">
+                    <input type="checkbox" id="remember_me" name="_remember_me" checked class="form-check-input" />
+                    <label class="form-check-label" for="remember_me">
+                        Auf diesem Gerät angemeldet bleiben
+                    </label>
+                </div>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Anmelden</button>
+                <a class="btn btn-link">Passwort vergessen</a>
+            </div>
+        </form>
+    </div>
+{% endblock ddr_gitki_main_content %}

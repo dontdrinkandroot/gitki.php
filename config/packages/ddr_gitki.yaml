@@ -1,3 +1,5 @@
 ddr_gitki:
     display_name: '%env(resolve:DDR_GITKI_NAME)%'
     repository_path: '%env(resolve:DDR_GITKI_REPOSITORY_PATH)%'
+#    elasticsearch:
+#        index_name: ddr_gitki

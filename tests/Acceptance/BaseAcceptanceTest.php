@@ -5,23 +5,25 @@ namespace App\Tests\Acceptance;
 use App\Entity\User;
 use App\Tests\Integration\BaseIntegrationTest;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
+use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 abstract class BaseAcceptanceTest extends BaseIntegrationTest
 {
-    /** @var KernelBrowser */
-    protected $client;
+    protected KernelBrowser $client;
 
-    /** @var ReferenceRepository; */
-    protected $referenceRepository;
+    protected ReferenceRepository $referenceRepository;
 
     protected function loadClientAndFixtures(array $classNames = [], bool $catchExceptions = true): ReferenceRepository
     {
+        self::ensureKernelShutdown();
         $this->client = self::createClient();
         $this->client->catchExceptions($catchExceptions);
-        $this->referenceRepository = $this->loadFixtures($classNames)->getReferenceRepository();
+        $this->referenceRepository = self::getContainer()
+            ->get(DatabaseToolCollection::class)->get()
+            ->loadFixtures($classNames)->getReferenceRepository();
 
         return $this->referenceRepository;
     }
