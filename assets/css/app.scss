@@ -1,3 +1,5 @@
+$fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
+
 $font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 $breadcrumb-bg: transparent;
 $breadcrumb-padding-x: 0;
@@ -8,7 +10,10 @@ $border-radius: .125rem;
 $border-radius-lg: .25rem;
 
 @import '~bootstrap/scss/bootstrap.scss';
-@import '~font-awesome/scss/font-awesome.scss';
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/brands';
 
 html {
     font-size: 14px;
@@ -24,12 +29,15 @@ body {
 
     .container {
 
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
+        @extend .d-flex;
+        @extend .align-items-center;
 
         .ddr-gitki-breadcrumb {
-            flex: 1;
+            @extend .flex-grow-1;
+
+            a {
+                color: inherit;
+            }
         }
 
         .ddr-gitki-global-actions {

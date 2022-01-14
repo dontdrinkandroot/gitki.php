@@ -2,13 +2,13 @@
 
 {% block ddr_gitki_title %} - Users{% endblock ddr_gitki_title %}
 {% block ddr_gitki_main_content %}
-    <div class="page-header">
-        <div class="pull-right">
+    <div class="page-header d-flex">
+        <h1 class="flex-grow-1">Users</h1>
+        <div class="align-items-center">
             <a class="btn btn-lg btn-primary" href="{{ path('ddr_gitki.user.edit', {'id': 'new'}) }}">
-                <span class="fa fa-fw fa-plus"></span>
+                <span class="fas fa-fw fa-plus"></span>
             </a>
         </div>
-        <h1>Users</h1>
     </div>
 
     <table class="table">

@@ -8,14 +8,14 @@
         "build": "encore production --progress"
     },
     "devDependencies": {
+        "@fortawesome/fontawesome-free": "^5.15.4",
+        "@popperjs/core": "^2.10.2",
         "@symfony/webpack-encore": "^1.7.0",
+        "bootstrap": "^5.1",
         "core-js": "^3.0.0",
-        "regenerator-runtime": "^0.13.2",
-        "bootstrap": "^4.3",
-        "font-awesome": "^4.7.0",
         "jquery": "^3.4.0",
-        "node-sass": "^4.12",
-        "popper.js": "^1.15",
-        "sass-loader": "^7.0"
+        "regenerator-runtime": "^0.13.2",
+        "sass": "^1.48.0",
+        "sass-loader": "^12.0.0"
     }
 }
