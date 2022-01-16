@@ -1326,12 +1326,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dontdrinkandroot/common.php.git",
-                "reference": "8f332640d692c88bfbb28246811d82a1e9bb2f2d"
+                "reference": "bf7b95539be08bd8217899e7cf2a5ba0eefa457a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dontdrinkandroot/common.php/zipball/8f332640d692c88bfbb28246811d82a1e9bb2f2d",
-                "reference": "8f332640d692c88bfbb28246811d82a1e9bb2f2d",
+                "url": "https://api.github.com/repos/dontdrinkandroot/common.php/zipball/bf7b95539be08bd8217899e7cf2a5ba0eefa457a",
+                "reference": "bf7b95539be08bd8217899e7cf2a5ba0eefa457a",
                 "shasum": ""
             },
             "require": {
@@ -1364,7 +1364,7 @@
                 "issues": "https://github.com/dontdrinkandroot/common.php/issues",
                 "source": "https://github.com/dontdrinkandroot/common.php/tree/master"
             },
-            "time": "2021-12-22T13:43:04+00:00"
+            "time": "2022-01-15T21:07:58+00:00"
         },
         {
             "name": "dontdrinkandroot/gitki-bundle",
@@ -1372,15 +1372,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dontdrinkandroot/gitki-bundle.php.git",
-                "reference": "a57eb043a40ee306f7e70b5d7acc322baae2d926"
+                "reference": "0d8df279c015bc685ce2ddf380dd80d2b486b173"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dontdrinkandroot/gitki-bundle.php/zipball/a57eb043a40ee306f7e70b5d7acc322baae2d926",
-                "reference": "a57eb043a40ee306f7e70b5d7acc322baae2d926",
+                "url": "https://api.github.com/repos/dontdrinkandroot/gitki-bundle.php/zipball/0d8df279c015bc685ce2ddf380dd80d2b486b173",
+                "reference": "0d8df279c015bc685ce2ddf380dd80d2b486b173",
                 "shasum": ""
             },
             "require": {
+                "dontdrinkandroot/common": "dev-master",
                 "dontdrinkandroot/path": "^0.1.0",
                 "league/commonmark": "^2.1",
                 "php": "^8.1",
@@ -1447,7 +1448,7 @@
                 "issues": "https://github.com/dontdrinkandroot/gitki-bundle.php/issues",
                 "source": "https://github.com/dontdrinkandroot/gitki-bundle.php/tree/master"
             },
-            "time": "2022-01-13T13:04:17+00:00"
+            "time": "2022-01-16T10:48:14+00:00"
         },
         {
             "name": "dontdrinkandroot/path",
