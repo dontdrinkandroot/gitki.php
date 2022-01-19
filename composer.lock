@@ -1372,12 +1372,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dontdrinkandroot/gitki-bundle.php.git",
-                "reference": "534d6b3d6faf94a3653024af944a591242db1845"
+                "reference": "04858d75faa56741e457695be8d0fa38fbc818be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dontdrinkandroot/gitki-bundle.php/zipball/534d6b3d6faf94a3653024af944a591242db1845",
-                "reference": "534d6b3d6faf94a3653024af944a591242db1845",
+                "url": "https://api.github.com/repos/dontdrinkandroot/gitki-bundle.php/zipball/04858d75faa56741e457695be8d0fa38fbc818be",
+                "reference": "04858d75faa56741e457695be8d0fa38fbc818be",
                 "shasum": ""
             },
             "require": {
@@ -1385,9 +1385,11 @@
                 "dontdrinkandroot/path": "^0.1.0",
                 "league/commonmark": "^2.1",
                 "php": "^8.1",
+                "sensio/framework-extra-bundle": "^6.2",
                 "symfony/asset": "^5.4",
                 "symfony/config": "^5.4",
                 "symfony/finder": "^5.4",
+                "symfony/flex": "^2.0",
                 "symfony/form": "^5.4",
                 "symfony/framework-bundle": "^5.4",
                 "symfony/mime": "^5.4",
@@ -1449,7 +1451,7 @@
                 "issues": "https://github.com/dontdrinkandroot/gitki-bundle.php/issues",
                 "source": "https://github.com/dontdrinkandroot/gitki-bundle.php/tree/master"
             },
-            "time": "2022-01-16T17:26:45+00:00"
+            "time": "2022-01-17T22:12:25+00:00"
         },
         {
             "name": "dontdrinkandroot/path",

@@ -16,7 +16,7 @@ class UserWatcher extends Fixture
     /**
      * {@inheritdoc}
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $user = new User(
             email: 'watcher@example.com',

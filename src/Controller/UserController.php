@@ -9,13 +9,11 @@ use Dontdrinkandroot\Common\Asserted;
 use Dontdrinkandroot\GitkiBundle\Controller\BaseController;
 use Dontdrinkandroot\GitkiBundle\Service\Security\SecurityService;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends BaseController
 {
-    /**
-     * UserController constructor.
-     */
     public function __construct(
         SecurityService $securityService,
         private UserRepository $userRepository,
@@ -24,18 +22,18 @@ class UserController extends BaseController
         parent::__construct($securityService);
     }
 
-    public function listAction()
+    public function listAction(): Response
     {
-        $this->assertAdmin();
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $users = $this->userRepository->findBy([], ['email' => 'ASC']);
 
         return $this->render('User/list.html.twig', ['users' => $users]);
     }
 
-    public function editAction(Request $request, $id)
+    public function editAction(Request $request, $id): Response
     {
-        $this->assertAdmin();
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $newUser = 'new' === $id;
         $user = null;
@@ -68,9 +66,9 @@ class UserController extends BaseController
         return $this->render('User/edit.html.twig', ['form' => $form->createView()]);
     }
 
-    public function deleteAction($id)
+    public function deleteAction($id): Response
     {
-        $this->assertAdmin();
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $user = $this->userRepository->find($id);
         if (null === $user) {

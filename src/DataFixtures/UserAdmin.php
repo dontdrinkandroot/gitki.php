@@ -21,7 +21,7 @@ class UserAdmin extends Fixture
         $user = new User(
             email: 'admin@example.com',
             realName: 'Admin User',
-            roles: ['ROLE_WATCHER', 'ROLE_COMMITTER', 'ROLE_ADMIN']
+            roles: ['ROLE_ADMIN']
         );
         $user->password = $this->passwordHasher->hashPassword($user, 'admin');
 

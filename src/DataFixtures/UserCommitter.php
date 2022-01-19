@@ -21,7 +21,7 @@ class UserCommitter extends Fixture
         $user = new User(
             email: 'committer@example.com',
             realName: 'Committer User',
-            roles: ['ROLE_WATCHER', 'ROLE_COMMITTER']
+            roles: ['ROLE_COMMITTER']
         );
         $user->password = $this->passwordHasher->hashPassword($user, 'committer');
 

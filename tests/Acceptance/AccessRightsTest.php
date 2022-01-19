@@ -3,288 +3,138 @@
 namespace App\Tests\Acceptance;
 
 use App\DataFixtures\UserAdmin;
+use App\DataFixtures\UserCommitter;
 use App\DataFixtures\UserReferenceTrait;
 use App\DataFixtures\Users;
+use App\DataFixtures\UserWatcher;
 use App\Entity\User;
 
 class AccessRightsTest extends BaseAcceptanceTest
 {
     use UserReferenceTrait;
 
+    const LOGIN_URL = 'http://localhost/login';
+
     public function testAnonymousRights(): void
     {
-        $referenceRepository = $this->loadClientAndFixtures([Users::class]);
+        $referenceRepository = $this->loadClientAndFixtures([UserWatcher::class]);
 
-        $user = $this->getUser(Users::COMMITTER, $referenceRepository);
+        $user = $this->getUser(UserWatcher::class, $referenceRepository);
 
         $this->assertAccessRights('/login', 200);
         $this->assertAccessRights('/loggedout', 200);
-//        $this->assertAccessRights('/user/profile/');
-//        $this->assertAccessRights('/user/profile/edit');
 
-        $this->assertAccessRights('/history');
+        $this->assertAccessRights('/history', 200);
 
-        $this->assertAccessRights('/browse/');
-        $this->assertAccessRights('/browse/?action=list');
+        /* Redirect to index.md */
+        $this->client->followRedirects(true);
+        $this->assertAccessRights('/browse/', 200);
+        $this->client->followRedirects(false);
+
+        $this->assertAccessRights('/browse/?action=list', 200);
         $this->assertAccessRights('/browse/?action=file.upload');
         $this->assertAccessRights('/browse/?action=file.create&extension=txt');
         $this->assertAccessRights('/browse/?action=file.create&extension=md');
         $this->assertAccessRights('/browse/?action=subdirectory.create');
         $this->assertAccessRights('/browse/examples/?action=remove');
 
-        $this->assertAccessRights('/browse/index.md');
-        $this->assertAccessRights('/browse/index.md?action=history');
+        $this->assertAccessRights('/browse/index.md', 200);
+        $this->assertAccessRights('/browse/index.md?action=history', 200);
         $this->assertAccessRights('/browse/index.md?action=edit');
         $this->assertAccessRights('/browse/index.md?action=move');
         $this->assertAccessRights('/browse/index.md?action=remove');
 
         $this->assertAccessRights('/users/');
-        $this->assertAccessRights('/users/' . $user->id . '/edit');
-        $this->assertAccessRights('/users/' . $user->id . '/delete');
+        $this->assertAccessRights(sprintf("/users/%s/edit", $user->id));
+        $this->assertAccessRights(sprintf("/users/%s/delete", $user->id));
     }
 
     public function testWatcherRights(): void
     {
-        $referenceRepository = $this->loadClientAndFixtures([Users::class]);
+        $referenceRepository = $this->loadClientAndFixtures([UserWatcher::class]);
 
-        $user = $this->getUser(Users::COMMITTER, $referenceRepository);
+        $user = $this->getUser(UserWatcher::class, $referenceRepository);
 
-//        $this->assertAccessRights('/user/profile/', 200, $this->getUser(Users::WATCHER, $referenceRepository));
-//        $this->assertAccessRights(
-//            '/user/profile/edit',
-//            200,
-//            $this->getUser(Users::WATCHER, $referenceRepository)
-//        );
+        $this->assertAccessRights('/history', 200, $user);
 
-        $this->assertAccessRights('/history', 200, $this->getUser(Users::WATCHER, $referenceRepository));
+        $this->assertAccessRights('/browse/', 302, $user);
+        $this->assertAccessRights('/browse/?action=list', 200, $user);
+        $this->assertAccessRights('/browse/?action=file.upload', 403, $user);
+        $this->assertAccessRights('/browse/?action=file.create&extension=txt', 403, $user);
+        $this->assertAccessRights('/browse/?action=file.create&extension=md', 403, $user);
+        $this->assertAccessRights('/browse/?action=subdirectory.create', 403, $user);
+        $this->assertAccessRights('/browse/examples/?action=remove', 403, $user);
 
-        $this->assertAccessRights('/browse/', 302, $this->getUser(Users::WATCHER, $referenceRepository));
-        $this->assertAccessRights(
-            '/browse/?action=list',
-            200,
-            $this->getUser(Users::WATCHER, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/?action=file.upload',
-            null,
-            $this->getUser(Users::WATCHER, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/?action=file.create&extension=txt',
-            null,
-            $this->getUser(Users::WATCHER, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/?action=file.create&extension=md',
-            null,
-            $this->getUser(Users::WATCHER, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/?action=subdirectory.create',
-            null,
-            $this->getUser(Users::WATCHER, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/examples/?action=remove',
-            null,
-            $this->getUser(Users::WATCHER, $referenceRepository)
-        );
+        $this->assertAccessRights('/browse/index.md', 200, $user);
+        $this->assertAccessRights('/browse/index.md?action=history', 200, $user);
+        $this->assertAccessRights('/browse/index.md?action=edit', 403, $user);
+        $this->assertAccessRights('/browse/index.md?action=move', 403, $user);
+        $this->assertAccessRights('/browse/index.md?action=remove', 403, $user);
 
-        $this->assertAccessRights(
-            '/browse/index.md',
-            200,
-            $this->getUser(Users::WATCHER, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/index.md?action=history',
-            200,
-            $this->getUser(Users::WATCHER, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/index.md?action=edit',
-            null,
-            $this->getUser(Users::WATCHER, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/index.md?action=move',
-            null,
-            $this->getUser(Users::WATCHER, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/index.md?action=remove',
-            null,
-            $this->getUser(Users::WATCHER, $referenceRepository)
-        );
-
-        $this->assertAccessRights('/users/', null, $this->getUser(Users::WATCHER, $referenceRepository));
-        $this->assertAccessRights(
-            '/users/' . $user->id . '/edit',
-            null,
-            $this->getUser(Users::WATCHER, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/users/' . $user->id . '/delete',
-            null,
-            $this->getUser(Users::WATCHER, $referenceRepository)
-        );
+        $this->assertAccessRights('/users/', 403, $user);
+        $this->assertAccessRights(sprintf("/users/%s/edit", $user->id), 403, $user);
+        $this->assertAccessRights(sprintf("/users/%s/delete", $user->id), 403, $user);
     }
 
     public function testCommitterRights(): void
     {
-        $referenceRepository = $this->loadClientAndFixtures([Users::class]);
+        $referenceRepository = $this->loadClientAndFixtures([UserCommitter::class]);
 
-        $user = $this->getUser(Users::COMMITTER, $referenceRepository);
+        $user = $this->getUser(UserCommitter::class, $referenceRepository);
 
-        $this->assertAccessRights('/history', 200, $this->getUser(Users::COMMITTER, $referenceRepository));
+        $this->assertAccessRights('/history', 200, $user);
 
-        $this->assertAccessRights('/browse/', 302, $this->getUser(Users::COMMITTER, $referenceRepository));
-        $this->assertAccessRights(
-            '/browse/?action=list',
-            200,
-            $this->getUser(Users::COMMITTER, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/?action=file.upload',
-            200,
-            $this->getUser(Users::COMMITTER, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/?action=file.create&extension=txt',
-            200,
-            $this->getUser(Users::COMMITTER, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/?action=file.create&extension=md',
-            200,
-            $this->getUser(Users::COMMITTER, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/?action=subdirectory.create',
-            200,
-            $this->getUser(Users::COMMITTER, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/examples/?action=remove',
-            200,
-            $this->getUser(Users::COMMITTER, $referenceRepository)
-        );
+        $this->assertAccessRights('/browse/', 302, $user);
+        $this->assertAccessRights('/browse/?action=list', 200, $user);
+        $this->assertAccessRights('/browse/?action=file.upload', 200, $user);
+        $this->assertAccessRights('/browse/?action=file.create&extension=txt', 200, $user);
+        $this->assertAccessRights('/browse/?action=file.create&extension=md', 200, $user);
+        $this->assertAccessRights('/browse/?action=subdirectory.create', 200, $user);
+        $this->assertAccessRights('/browse/examples/?action=remove', 200, $user);
 
-        $this->assertAccessRights(
-            '/browse/index.md',
-            200,
-            $this->getUser(Users::COMMITTER, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/index.md?action=history',
-            200,
-            $this->getUser(Users::COMMITTER, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/index.md?action=edit',
-            200,
-            $this->getUser(Users::COMMITTER, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/index.md?action=move',
-            200,
-            $this->getUser(Users::COMMITTER, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/index.md?action=remove',
-            302,
-            $this->getUser(Users::COMMITTER, $referenceRepository)
-        );
+        $this->assertAccessRights('/browse/index.md', 200, $user);
+        $this->assertAccessRights('/browse/index.md?action=history', 200, $user);
+        $this->assertAccessRights('/browse/index.md?action=edit', 200, $user);
+        $this->assertAccessRights('/browse/index.md?action=move', 200, $user);
+        $this->assertAccessRights('/browse/index.md?action=remove', 302, $user);
 
-        $this->assertAccessRights('/users/', null, $this->getUser(Users::COMMITTER, $referenceRepository));
-        $this->assertAccessRights(
-            '/users/' . $user->id . '/edit',
-            null,
-            $this->getUser(Users::COMMITTER, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/users/' . $user->id . '/delete',
-            null,
-            $this->getUser(Users::COMMITTER, $referenceRepository)
-        );
+        $this->assertAccessRights('/users/', 403, $user);
+        $this->assertAccessRights(sprintf("/users/%s/edit", $user->id), 403, $user);
+        $this->assertAccessRights(sprintf("/users/%s/delete", $user->id), 403, $user);
     }
 
     public function testAdminRights(): void
     {
         $referenceRepository = $this->loadClientAndFixtures([Users::class]);
 
-        $user = $this->getUser(Users::COMMITTER, $referenceRepository);
+        $user = $this->getUser(UserAdmin::class, $referenceRepository);
 
-        $this->assertAccessRights('/history', 200, $this->getUser(Users::ADMIN, $referenceRepository));
+        $this->assertAccessRights('/history', 200, $user);
 
-        $this->assertAccessRights('/browse/', 302, $this->getUser(Users::ADMIN, $referenceRepository));
-        $this->assertAccessRights(
-            '/browse/?action=list',
-            200,
-            $this->getUser(Users::ADMIN, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/?action=file.upload',
-            200,
-            $this->getUser(Users::ADMIN, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/?action=file.create&extension=txt',
-            200,
-            $this->getUser(Users::ADMIN, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/?action=file.create&extension=md',
-            200,
-            $this->getUser(Users::ADMIN, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/?action=subdirectory.create',
-            200,
-            $this->getUser(Users::ADMIN, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/examples/?action=remove',
-            200,
-            $this->getUser(Users::ADMIN, $referenceRepository)
-        );
+        $this->assertAccessRights('/browse/', 302, $user);
+        $this->assertAccessRights('/browse/?action=list', 200, $user);
+        $this->assertAccessRights('/browse/?action=file.upload', 200, $user);
+        $this->assertAccessRights('/browse/?action=file.create&extension=txt', 200, $user);
+        $this->assertAccessRights('/browse/?action=file.create&extension=md', 200, $user);
+        $this->assertAccessRights('/browse/?action=subdirectory.create', 200, $user);
+        $this->assertAccessRights('/browse/examples/?action=remove', 200, $user);
 
-        $this->assertAccessRights('/browse/index.md', 200, $this->getUser(Users::ADMIN, $referenceRepository));
-        $this->assertAccessRights(
-            '/browse/index.md?action=history',
-            200,
-            $this->getUser(Users::ADMIN, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/index.md?action=edit',
-            200,
-            $this->getUser(Users::ADMIN, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/index.md?action=move',
-            200,
-            $this->getUser(Users::ADMIN, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/browse/index.md?action=remove',
-            302,
-            $this->getUser(Users::ADMIN, $referenceRepository)
-        );
+        $this->assertAccessRights('/browse/index.md', 200, $user);
+        $this->assertAccessRights('/browse/index.md?action=history', 200, $user);
+        $this->assertAccessRights('/browse/index.md?action=edit', 200, $user);
+        $this->assertAccessRights('/browse/index.md?action=move', 200, $user);
+        $this->assertAccessRights('/browse/index.md?action=remove', 302, $user);
 
         $this->assertAccessRights('/users/', 200, $this->getUser(UserAdmin::class, $referenceRepository));
-        $this->assertAccessRights(
-            '/users/' . $user->id . '/edit',
-            200,
-            $this->getUser(Users::ADMIN, $referenceRepository)
-        );
-        $this->assertAccessRights(
-            '/users/' . $user->id . '/delete',
-            302,
-            $this->getUser(Users::ADMIN, $referenceRepository)
-        );
+        $this->assertAccessRights(sprintf("/users/%s/edit", $user->id), 200, $user);
+        $this->assertAccessRights(sprintf("/users/%s/delete", $user->id), 302, $user);
     }
 
-    protected function assertAccessRights(string $url, ?int $expectedStatus = null, ?User $user = null): void
-    {
+    protected function assertAccessRights(
+        string $url,
+        ?int $expectedStatus = null,
+        ?User $user = null,
+    ): void {
         $this->logOut();
         if (null !== $user) {
             $this->logIn($user);
@@ -299,8 +149,8 @@ class AccessRightsTest extends BaseAcceptanceTest
         }
 
         if (null === $expectedStatus) {
-            $this->assertEquals(302, $statusCode, sprintf('%s: Login expected', $url));
-            $this->assertEquals('http://localhost/login', $response->headers->get('Location'));
+            $this->assertEquals(302, $statusCode);
+            $this->assertEquals(self::LOGIN_URL, $response->headers->get('Location'));
 
             return;
         }
