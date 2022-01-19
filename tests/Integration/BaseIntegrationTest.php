@@ -11,7 +11,7 @@ abstract class BaseIntegrationTest extends WebTestCase
 {
     use GitRepositoryTestTrait;
 
-    const GIT_REPOSITORY_PATH = '/tmp/gitkirepo/';
+    public const GIT_REPOSITORY_PATH = '/tmp/gitkirepo/';
 
     /**
      * {@inheritdoc}
@@ -40,15 +40,18 @@ abstract class BaseIntegrationTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getRepositoryTemplatePath()
+    protected function getRepositoryTemplatePath(): string
     {
-        return realpath(__DIR__ . '/../../vendor/dontdrinkandroot/gitki-bundle/Tests/Data/repo/');
+        $repoPath = realpath(__DIR__ . '/../../vendor/dontdrinkandroot/gitki-bundle/Tests/Data/repo/');
+        assert(is_string($repoPath));
+
+        return $repoPath;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getRepositoryTargetPath()
+    protected function getRepositoryTargetPath(): string
     {
         return self::GIT_REPOSITORY_PATH;
     }

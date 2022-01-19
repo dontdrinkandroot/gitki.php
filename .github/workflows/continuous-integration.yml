@@ -8,7 +8,7 @@ jobs:
         runs-on: ubuntu-latest
         env:
             APP_ENV: "test"
-            APP_DEBUG: false
+            APP_DEBUG: true
             SYMFONY_DEPRECATIONS_HELPER: "max[direct]=0"
         steps:
             -   name: "Checkout"
