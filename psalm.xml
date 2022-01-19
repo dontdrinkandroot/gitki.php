@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <psalm
-        errorLevel="4"
+        errorLevel="2"
         resolveFromConfigFile="true"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="https://getpsalm.org/schema/config"
@@ -12,4 +12,17 @@
             <directory name="vendor" />
         </ignoreFiles>
     </projectFiles>
+
+    <issueHandlers>
+        <PropertyNotSetInConstructor>
+            <errorLevel type="suppress">
+                <file name="src/Controller/DefaultController.php" />
+                <file name="src/Controller/UserController.php" />
+                <file name="src/Entity/User.php" />
+                <file name="src/DataFixtures/UserAdmin.php" />
+                <file name="src/DataFixtures/UserWatcher.php" />
+                <file name="src/DataFixtures/UserCommitter.php" />
+            </errorLevel>
+        </PropertyNotSetInConstructor>
+    </issueHandlers>
 </psalm>

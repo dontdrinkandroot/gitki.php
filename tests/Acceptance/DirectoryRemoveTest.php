@@ -2,6 +2,8 @@
 
 namespace App\Tests\Acceptance;
 
+use App\DataFixtures\UserAdmin;
+use App\DataFixtures\UserCommitter;
 use App\DataFixtures\UserReferenceTrait;
 use App\DataFixtures\Users;
 use Dontdrinkandroot\GitkiBundle\Service\FileSystem\FileSystemService;
@@ -21,13 +23,13 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
         /** @var FileSystemService $fileSystemService */
         $fileSystemService = self::getContainer()->get(FileSystemService::class);
         /** @var WikiService $wikiService */
-        $wikiService = $this->getContainer()->get(WikiService::class);
+        $wikiService = self::getContainer()->get(WikiService::class);
         $wikiService->createFolder($directoryPath);
         $this->assertFileExists(
             $directoryPath->prepend($fileSystemService->getBasePath())->toAbsoluteFileSystemString()
         );
 
-        $this->login($this->getUser(Users::COMMITTER, $referenceRepository));
+        $this->login($this->getUser(UserCommitter::class, $referenceRepository));
         $this->client->request('GET', '/browse/testdirectory/?action=remove');
 //        $this->assertStatusCode(302, $client);
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
@@ -55,7 +57,7 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
             $exampleDirectory->prepend($fileSystemService->getBasePath())->toAbsoluteFileSystemString()
         );
 
-        $this->logIn($this->getUser(Users::COMMITTER, $referenceRepository));
+        $this->logIn($this->getUser(UserCommitter::class, $referenceRepository));
         $crawler = $this->client->request('GET', '/browse/examples/?action=remove');
 //        $this->assertStatusCode(200, $client);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
@@ -71,15 +73,15 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
         $this->assertEquals('/browse/', $this->client->getResponse()->headers->get('Location'));
 
-        $this->assertFileNotExists(
+        $this->assertFileDoesNotExist(
             $exampleFile->prepend($fileSystemService->getBasePath())->toAbsoluteFileSystemString()
         );
-        $this->assertFileNotExists(
+        $this->assertFileDoesNotExist(
             $exampleDirectory->prepend($fileSystemService->getBasePath())->toAbsoluteFileSystemString()
         );
     }
 
-    public function testRemoveNonEmptyDirectoryWithLockTest()
+    public function testRemoveNonEmptyDirectoryWithLockTest(): void
     {
         $referenceRepository = $this->loadClientAndFixtures([Users::class]);
 
@@ -87,10 +89,10 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
         $exampleDirectory = DirectoryPath::parse('/examples/');
 
         /** @var FileSystemService $fileSystemService */
-        $fileSystemService = $this->getContainer()->get(FileSystemService::class);
+        $fileSystemService = self::getContainer()->get(FileSystemService::class);
         /** @var WikiService $wikiService */
-        $wikiService = $this->getContainer()->get(WikiService::class);
-        $wikiService->createLock($this->getUser(Users::ADMIN, $referenceRepository), $exampleFile);
+        $wikiService = self::getContainer()->get(WikiService::class);
+        $wikiService->createLock($this->getUser(UserAdmin::class, $referenceRepository), $exampleFile);
 
         $this->assertFileExists(
             $exampleFile->prepend($fileSystemService->getBasePath())->toAbsoluteFileSystemString()
@@ -99,7 +101,7 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
             $exampleDirectory->prepend($fileSystemService->getBasePath())->toAbsoluteFileSystemString()
         );
 
-        $this->logIn($this->getUser(Users::COMMITTER, $referenceRepository));
+        $this->logIn($this->getUser(UserCommitter::class, $referenceRepository));
         $crawler = $this->client->request('GET', '/browse/examples/?action=remove');
 //        $this->assertStatusCode(200, $client);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());

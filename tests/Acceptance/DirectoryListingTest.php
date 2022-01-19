@@ -2,6 +2,7 @@
 
 namespace App\Tests\Acceptance;
 
+use App\DataFixtures\UserCommitter;
 use App\DataFixtures\UserReferenceTrait;
 use App\DataFixtures\Users;
 
@@ -13,7 +14,7 @@ class DirectoryListingTest extends BaseAcceptanceTest
     {
         $referenceRepository = $this->loadClientAndFixtures([Users::class]);
 
-        $this->logIn($this->getUser(Users::COMMITTER, $referenceRepository));
+        $this->logIn($this->getUser(UserCommitter::class, $referenceRepository));
 
         $crawler = $this->client->request('GET', '/browse/?action=list');
         //$this->assertStatusCode(200, $client);

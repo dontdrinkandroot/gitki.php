@@ -16,7 +16,7 @@ class UserCommitter extends Fixture
     /**
      * {@inheritdoc}
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $user = new User(
             email: 'committer@example.com',
@@ -28,7 +28,6 @@ class UserCommitter extends Fixture
         $manager->persist($user);
         $manager->flush();
 
-        $this->addReference(Users::COMMITTER, $user);
         $this->addReference(self::class, $user);
     }
 }

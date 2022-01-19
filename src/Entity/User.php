@@ -34,17 +34,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, GitUser
     ) {
     }
 
-    public function getGitUserName()
+    public function getGitUserName(): string
     {
         return $this->realName;
     }
 
-    public function getGitUserEmail()
+    public function getGitUserEmail(): string
     {
         return $this->email;
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
         return $this->roles;
     }
@@ -54,22 +54,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, GitUser
         return $this->password;
     }
 
-    public function getSalt()
+    public function getSalt(): ?string
     {
         return null;
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         /* Noop */
     }
 
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->getUserIdentifier();
     }
 
-    public function getUserIdentifier()
+    public function getUserIdentifier(): string
     {
         return $this->email;
     }

@@ -16,7 +16,7 @@ class UserAdmin extends Fixture
     /**
      * {@inheritdoc}
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $user = new User(
             email: 'admin@example.com',
@@ -28,7 +28,6 @@ class UserAdmin extends Fixture
         $manager->persist($user);
         $manager->flush();
 
-        $this->addReference(Users::ADMIN, $user);
         $this->addReference(self::class, $user);
     }
 }

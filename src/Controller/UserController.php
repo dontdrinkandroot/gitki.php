@@ -31,7 +31,7 @@ class UserController extends BaseController
         return $this->render('User/list.html.twig', ['users' => $users]);
     }
 
-    public function editAction(Request $request, $id): Response
+    public function editAction(Request $request, int|string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
@@ -66,7 +66,7 @@ class UserController extends BaseController
         return $this->render('User/edit.html.twig', ['form' => $form->createView()]);
     }
 
-    public function deleteAction($id): Response
+    public function deleteAction(int $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 

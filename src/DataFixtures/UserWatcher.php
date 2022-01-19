@@ -28,7 +28,6 @@ class UserWatcher extends Fixture
         $manager->persist($user);
         $manager->flush();
 
-        $this->addReference(Users::WATCHER, $user);
         $this->addReference(self::class, $user);
     }
 }

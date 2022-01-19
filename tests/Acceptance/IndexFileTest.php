@@ -2,6 +2,7 @@
 
 namespace App\Tests\Acceptance;
 
+use App\DataFixtures\UserCommitter;
 use App\DataFixtures\UserReferenceTrait;
 use App\DataFixtures\Users;
 
@@ -21,7 +22,7 @@ class IndexFileTest extends BaseAcceptanceTest
     {
         $referenceRepository = $this->loadClientAndFixtures([Users::class]);
 
-        $this->login($this->getUser(Users::COMMITTER, $referenceRepository));
+        $this->login($this->getUser(UserCommitter::class, $referenceRepository));
 
         $crawler = $this->client->request('GET', '/');
 //        $this->assertStatusCode(302, $client);
