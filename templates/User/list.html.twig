@@ -31,8 +31,8 @@
                 <td>{{ user.email }}</td>
                 <td>{{ user.roles | join(',') }}</td>
                 <td>
-                    <a href="{{ path('ddr_gitki.user.edit', {'id': user.id}) }}"><span class="fa fa-fw fa-pencil"></span></a>
-                    <a href="{{ path('ddr_gitki.user.delete', {'id': user.id}) }}"><span class="fa fa-fw fa-trash-o"></span></a>
+                    <a href="{{ path('ddr_gitki.user.edit', {'id': user.id}) }}"><span class="fas fa-fw fa-pen"></span></a>
+                    <a href="{{ path('ddr_gitki.user.delete', {'id': user.id}) }}"><span class="fas fa-fw fa-trash"></span></a>
                 </td>
             </tr>
         {% endfor %}

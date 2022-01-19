@@ -3,42 +3,58 @@
 namespace App\Command;
 
 use App\Entity\User;
+use App\Repository\UserRepository;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UserAdminCheckCommand extends AbstractUserCommand
+class UserAdminCheckCommand extends Command
 {
-    protected function configure()
-    {
-        $this
-            ->setName('gitki:user:admin-check')
-            ->setDescription('Checks if a user with username "admin" is available or creates it');
+    private const ADMIN_EMAIL = 'admin@example.com';
+
+    protected static $defaultName = 'app:user:admin-check';
+
+    public function __construct(
+        private UserRepository $userRepository,
+        private UserPasswordHasherInterface $passwordHasher
+    ) {
+        parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    /**
+     * {@inheritdoc}
+     */
+    protected function configure(): void
     {
-        $userManager = $this->getUserManager();
+        $this
+            ->setDescription('Checks if a user with email "admin@example.com" is available or creates it');
+    }
 
-        $user = $userManager->findUserByUsername('admin');
+    /**
+     * {@inheritdoc}
+     */
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $user = $this->userRepository->findOneBy(['email' => self::ADMIN_EMAIL]);
         if (null !== $user) {
             $output->writeln('Admin user already exists');
 
-            return;
+            return 0;
         }
 
         $password = bin2hex(random_bytes(16));
-        /** @var User $user */
-        $user = $userManager->createUser();
-        $user->setUsername('admin');
-        $user->setEmail('admin@example.com');
-        $user->setRealName('Administration User');
-        $user->addRole('ROLE_ADMIN');
-        $user->setEnabled(true);
-        $user->setPlainPassword($password);
-        $userManager->updateUser($user);
+        $user = new User(
+            email: self::ADMIN_EMAIL,
+            realName: 'Administration User',
+            roles: ['ROLE_ADMIN']
+        );
+        $user->password = $this->passwordHasher->hashPassword($user, $password);
+        $this->userRepository->create($user);
 
-        $output->writeln('Admin user created:');
-        $this->printUser($user, $output);
+        $output->writeln('Create User: ' . self::ADMIN_EMAIL);
         $output->writeln('Password: ' . $password);
+
+        return 0;
     }
 }
