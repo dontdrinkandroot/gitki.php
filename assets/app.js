@@ -1,3 +1,3 @@
-const $ = require('jquery');
+require('./app.scss')
 require('bootstrap');
 require('./external-links');
