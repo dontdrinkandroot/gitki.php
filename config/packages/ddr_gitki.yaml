@@ -3,3 +3,8 @@ ddr_gitki:
     repository_path: '%env(resolve:DDR_GITKI_REPOSITORY_PATH)%'
 #    elasticsearch:
 #        index_name: ddr_gitki
+
+when@test:
+    ddr_gitki:
+        display_name: 'TestGitki'
+        repository_path: '/tmp/gitkirepo/'
