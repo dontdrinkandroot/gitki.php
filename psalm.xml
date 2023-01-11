@@ -16,12 +16,9 @@
     <issueHandlers>
         <PropertyNotSetInConstructor>
             <errorLevel type="suppress">
-                <file name="src/Controller/DefaultController.php" />
-                <file name="src/Controller/UserController.php" />
-                <file name="src/Entity/User.php" />
-                <file name="src/DataFixtures/UserAdmin.php" />
-                <file name="src/DataFixtures/UserWatcher.php" />
-                <file name="src/DataFixtures/UserCommitter.php" />
+                <referencedProperty name="Symfony\Bundle\FrameworkBundle\Controller\AbstractController::$container"/>
+                <referencedProperty name="Doctrine\Common\DataFixtures\AbstractFixture::$referenceRepository"/>
+                <referencedProperty name="App\Entity\User::$id"/>
             </errorLevel>
         </PropertyNotSetInConstructor>
     </issueHandlers>

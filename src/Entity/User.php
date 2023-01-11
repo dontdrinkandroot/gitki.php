@@ -74,7 +74,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, GitUser
         return $this->email;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         $s = 'id=' . $this->id;
         $s .= ',realName=' . $this->realName;
