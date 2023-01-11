@@ -27,7 +27,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, GitUser
         #[Assert\NotBlank]
         #[ORM\Column(type: Types::STRING, nullable: false)]
         public string $realName,
-        #[ORM\Column(type: Types::ARRAY, nullable: false)]
+        #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: false)]
         public array $roles = ['ROLE_USER'],
         #[ORM\Column(type: Types::STRING, nullable: false)]
         public string $password = ''
