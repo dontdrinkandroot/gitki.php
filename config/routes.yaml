@@ -39,4 +39,4 @@ ddr_gitki.user.delete:
         _controller: App\Controller\UserController:deleteAction
 
 ddr_gitki_base:
-    resource: "@DdrGitkiBundle/Resources/config/routing.yaml"
+    resource: "@DdrGitkiBundle/config/routing.yaml"

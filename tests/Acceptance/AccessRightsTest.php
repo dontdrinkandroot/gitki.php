@@ -13,7 +13,7 @@ class AccessRightsTest extends BaseAcceptanceTest
 {
     use UserReferenceTrait;
 
-    const LOGIN_URL = 'http://localhost/login';
+    final const LOGIN_URL = 'http://localhost/login';
 
     public function testAnonymousRights(): void
     {

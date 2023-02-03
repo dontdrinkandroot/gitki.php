@@ -6,13 +6,14 @@ use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Dontdrinkandroot\GitkiBundle\Model\GitUserInterface;
+use Stringable;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[Orm\Entity(repositoryClass: UserRepository::class)]
 #[Orm\Table("`User`")]
-class User implements UserInterface, PasswordAuthenticatedUserInterface, GitUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, GitUserInterface, Stringable
 {
     #[ORM\Id]
     #[ORM\Column(type: Types::BIGINT, nullable: false)]

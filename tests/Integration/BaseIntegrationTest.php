@@ -42,7 +42,7 @@ abstract class BaseIntegrationTest extends WebTestCase
      */
     protected function getRepositoryTemplatePath(): string
     {
-        $repoPath = realpath(__DIR__ . '/../../vendor/dontdrinkandroot/gitki-bundle/Tests/Data/repo/');
+        $repoPath = realpath(__DIR__ . '/../../vendor/dontdrinkandroot/gitki-bundle/tests/Data/repo/');
         assert(is_string($repoPath));
 
         return $repoPath;

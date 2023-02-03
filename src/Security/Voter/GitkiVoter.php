@@ -11,8 +11,8 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class GitkiVoter extends BaseGitkiVoter
 {
     public function __construct(
-        private AuthorizationCheckerInterface $authorizationChecker,
-        private bool $publicRead
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly bool $publicRead
     ) {
     }
 

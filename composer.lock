@@ -1130,16 +1130,16 @@
         },
         {
             "name": "doctrine/persistence",
-            "version": "3.1.3",
+            "version": "3.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/persistence.git",
-                "reference": "920da294b4bb0bb527f2a91ed60c18213435880f"
+                "reference": "8bf8ab15960787f1a49d405f6eb8c787b4841119"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/persistence/zipball/920da294b4bb0bb527f2a91ed60c18213435880f",
-                "reference": "920da294b4bb0bb527f2a91ed60c18213435880f",
+                "url": "https://api.github.com/repos/doctrine/persistence/zipball/8bf8ab15960787f1a49d405f6eb8c787b4841119",
+                "reference": "8bf8ab15960787f1a49d405f6eb8c787b4841119",
                 "shasum": ""
             },
             "require": {
@@ -1208,7 +1208,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/persistence/issues",
-                "source": "https://github.com/doctrine/persistence/tree/3.1.3"
+                "source": "https://github.com/doctrine/persistence/tree/3.1.4"
             },
             "funding": [
                 {
@@ -1224,7 +1224,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-19T13:39:42+00:00"
+            "time": "2023-02-03T11:13:07+00:00"
         },
         {
             "name": "doctrine/sql-formatter",
@@ -1335,16 +1335,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dontdrinkandroot/gitki-bundle.php.git",
-                "reference": "7d93ea794e0a4e8f7cd8c8fb1e0376bf264b2d84"
+                "reference": "d77a9cc5b4aec5837a912a86af3c53751c4d945c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dontdrinkandroot/gitki-bundle.php/zipball/7d93ea794e0a4e8f7cd8c8fb1e0376bf264b2d84",
-                "reference": "7d93ea794e0a4e8f7cd8c8fb1e0376bf264b2d84",
+                "url": "https://api.github.com/repos/dontdrinkandroot/gitki-bundle.php/zipball/d77a9cc5b4aec5837a912a86af3c53751c4d945c",
+                "reference": "d77a9cc5b4aec5837a912a86af3c53751c4d945c",
                 "shasum": ""
             },
             "require": {
-                "dontdrinkandroot/common": "dev-master",
+                "dontdrinkandroot/common": "^0.2",
                 "dontdrinkandroot/path": "^0.1.0",
                 "league/commonmark": "^2.1",
                 "php": "^8.1",
@@ -1381,13 +1381,17 @@
             "default-branch": true,
             "type": "symfony-bundle",
             "extra": {
+                "symfony": {
+                    "require": "5.4.*",
+                    "allow-contrib": true
+                },
                 "branch-alias": {
                     "dev-master": "0.3.x-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Dontdrinkandroot\\GitkiBundle\\": ""
+                    "Dontdrinkandroot\\GitkiBundle\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1413,7 +1417,7 @@
                 "issues": "https://github.com/dontdrinkandroot/gitki-bundle.php/issues",
                 "source": "https://github.com/dontdrinkandroot/gitki-bundle.php/tree/master"
             },
-            "time": "2022-01-20T10:01:04+00:00"
+            "time": "2023-02-03T12:34:10+00:00"
         },
         {
             "name": "dontdrinkandroot/path",

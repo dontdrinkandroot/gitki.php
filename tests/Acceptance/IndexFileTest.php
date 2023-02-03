@@ -13,12 +13,12 @@ class IndexFileTest extends BaseAcceptanceTest
     /**
      * {@inheritdoc}
      */
-    protected function getFixtureClasses()
+    protected function getFixtureClasses(): array
     {
         return [Users::class];
     }
 
-    public function testIndexFileShown()
+    public function testIndexFileShown(): void
     {
         $referenceRepository = $this->loadClientAndFixtures([Users::class]);
 

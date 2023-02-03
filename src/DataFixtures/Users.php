@@ -9,11 +9,11 @@ use Doctrine\Persistence\ObjectManager;
 class Users extends Fixture implements DependentFixtureInterface
 {
     /** @deprecated */
-    public const WATCHER = 'user_watcher';
+    final public const WATCHER = 'user_watcher';
     /** @deprecated */
-    public const COMMITTER = 'user_committer';
+    final public const COMMITTER = 'user_committer';
     /** @deprecated */
-    public const ADMIN = 'user_admin';
+    final public const ADMIN = 'user_admin';
 
     /**
      * {@inheritdoc}

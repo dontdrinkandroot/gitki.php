@@ -10,7 +10,7 @@ class DirectoryListingTest extends BaseAcceptanceTest
 {
     use UserReferenceTrait;
 
-    public function testDirectoryIndex()
+    public function testDirectoryIndex(): void
     {
         $referenceRepository = $this->loadClientAndFixtures([Users::class]);
 

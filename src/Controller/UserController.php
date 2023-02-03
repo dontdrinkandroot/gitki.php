@@ -16,8 +16,8 @@ class UserController extends BaseController
 {
     public function __construct(
         SecurityService $securityService,
-        private UserRepository $userRepository,
-        private UserPasswordHasherInterface $passwordHasher
+        private readonly UserRepository $userRepository,
+        private readonly UserPasswordHasherInterface $passwordHasher
     ) {
         parent::__construct($securityService);
     }

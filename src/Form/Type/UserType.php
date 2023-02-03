@@ -48,13 +48,11 @@ class UserType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => User::class,
-                'empty_data' => function (FormInterface $form) {
-                    return new User(
-                        email: $form->get('email')->getData(),
-                        realName: $form->get('realName')->getData(),
-                        roles: $form->get('roles')->getData()
-                    );
-                }
+                'empty_data' => fn(FormInterface $form): User => new User(
+                    email: $form->get('email')->getData(),
+                    realName: $form->get('realName')->getData(),
+                    roles: $form->get('roles')->getData()
+                )
             ]
         );
     }

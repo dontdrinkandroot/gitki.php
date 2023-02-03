@@ -40,7 +40,7 @@ class DirectoryRemoveTest extends BaseAcceptanceTest
         );
     }
 
-    public function testRemoveNonEmptyDirectoryTest()
+    public function testRemoveNonEmptyDirectoryTest(): void
     {
         $referenceRepository = $this->loadClientAndFixtures([Users::class]);
 
