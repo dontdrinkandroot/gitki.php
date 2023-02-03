@@ -18,13 +18,13 @@
         }
     ],
     "require": {
-        "php": "^8.1",
+        "php": ">=8.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "doctrine/doctrine-bundle": "^2.8",
         "doctrine/orm": "^2.14",
-        "dontdrinkandroot/common": "0.2.x-dev",
-        "dontdrinkandroot/gitki-bundle": "0.3.x-dev",
+        "dontdrinkandroot/common": "^0.2",
+        "dontdrinkandroot/gitki-bundle": "^0.3",
         "elasticsearch/elasticsearch": "^7.0",
         "sensio/framework-extra-bundle": "^6.2",
         "symfony/console": "^5.4",
