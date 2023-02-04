@@ -21,6 +21,8 @@ jobs:
                     ini-values: "zend.assertions=1"
             -   name: "Install dependencies with Composer"
                 uses: "ramsey/composer-install@v1"
+            -   name: "Set empty manifest.json"
+                run: "echo '{}' > public/build/manifest.json"
             -   name: "Run PHPUnit"
                 run: "bin/phpunit --coverage-clover=coverage.clover.xml --log-junit log.junit.xml"
             -   name: "Upload coverage"
